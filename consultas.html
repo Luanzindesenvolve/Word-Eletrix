@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Dados</title>
+<!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%; 
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1000;
+        }
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+        #consulta {
+            margin-bottom: 20px;
+        }
+        #tipoConsulta {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #digiteAqui {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #pesquisar {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #loading {
+            display: none;
+            margin-top: 20px;
+        }
+        pre {
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+
+<video autoplay muted loop id="video-background">
+  <source src="consulta.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div id="content">
+    <h1>Consulta de Dados</h1>
+
+    <label for="tipoConsulta">Tipo:</label>
+    <select id="tipoConsulta">
+        <option value="cpf2">CPF 2</option>
+        <option value="informacoes">Informações</option>
+        <option value="spc">SPC</option>
+        <option value="spc1">SPC1</option>
+        <option value="cadsus">Cadsus</option>
+        <option value="cpf">CPF</option>
+        <option value="cpf6">CPF 6</option>
+        <option value="cpf3">CPF 3</option>
+        <option value="buscarPorCPF">Buscar Por CPF</option>
+        <option value="cnpj">CNPJ</option>
+        <option value="cpf5">CPF 5</option>
+        <option value="nb">NB</option>
+        <option value="cpftel">CPF Tel</option>
+        <option value="score">Score</option>
+        <option value="parente">Parente</option>
+        <option value="cepfull">CEP Full</option>
+        <option value="spcnome">SPC Nome</option>
+        <option value="nome">Nome</option>
+        <option value="spcemail">SPC Email</option>
+        <option value="detran">Detran</option>
+        <option value="data">Data</option>
+        <option value="spctel">SPC Tel</option>
+        <option value="telefoni">Telefoni</option>
+        <option value="historico-telefone-completo">Histórico Telefone Completo</option>
+        <option value="rg">RG</option>
+        <option value="titulo">Título</option>
+        <option value="foto">Foto</option>
+    </select>
+
+    <br><br>
+
+    <label for="digiteAqui">Digite:</label>
+    <input type="text" id="digiteAqui" placeholder="Digite sua consulta">
+
+    <br><br>
+
+    <button id="pesquisar" onclick="realizarConsulta()">consultar</button>
+
+    <div id="loading">Carregando...</div>
+    <pre id="resultado"></pre>
+</div>
+
+<script>
+    function realizarConsulta() {
+    var tipoConsulta = document.getElementById('tipoConsulta').value.trim();
+    var consulta = document.getElementById('digiteAqui').value.trim();
+
+    // Exibir mensagem de carregamento
+    document.getElementById('loading').style.display = 'block';
+
+    // Construir a URL da API com base no tipo de consulta
+    var apiURL = 'http://api3.minerdapifoda.xyz:8080/api/' + tipoConsulta + '?' + tipoConsulta + '=' + consulta;
+
+    // Atualizar o resultado na página
+    document.getElementById('resultado').innerText = 'Use vpn em caso de bloqueio por IP';
+
+    // Redirecionar para a URL da API
+    window.open(apiURL);
+    }
+</script>
+
+    <audio autoplay loop>
+        <source src="consultas.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+</html>

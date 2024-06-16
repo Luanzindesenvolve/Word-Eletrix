@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas Grátis</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 50px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            flex: 1 1 calc(33.333% - 10px); /* 3 botões por linha */
+            box-sizing: border-box;
+        }
+
+        .netflix { background-color: #e50914; }
+        .hbo { background-color: #6b3eff; }
+        .starplus { background-color: #fc3c44; }
+        .disney { background-color: #0077ff; }
+        .paramount { background-color: #003087; }
+        .spotify { background-color: #1db954; }
+        .crunchyroll { background-color: #f47521; }
+        .iptv { background-color: #ffffff; color: #000000; border: 2px solid #000000; }
+        .myfamily { background-color: #8B4513; }
+        .clarotv { background-color: #FF69B4; }
+        .vpn { background-color: #9370DB; }
+        .dazn { background-color: #FF4500; }
+        .bin { background-color: #4682B4; }
+        
+        .top-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #28a745;
+            border-radius: 5px 0 0 5px;
+            width: 200px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            background-color: #000000;
+            color: #28a745;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-button:hover {
+            background-color: #333333;
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        .highlight {
+            border: 2px solid #ff0000;
+            transform: scale(1.1);
+            transition: transform 0.3s;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+            <button class="search-button" onclick="searchButton()">
+                <i class="fas fa-search icon"></i> Pesquisar
+            </button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    <video autoplay muted loop class="video-background">
+        <source src="contas.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="content">
+        <h1>Contas Grátis</h1>
+        <div class="button-container">
+            <a href="netflix.txt" class="button netflix">Netflix</a>
+            <a href="hbo.txt" class="button hbo">HBO</a>
+            <a href="starplus.txt" class="button starplus">Star+</a>
+            <a href="disney.txt" class="button disney">Disney+</a>
+            <a href="paramount.txt" class="button paramount">Paramount+</a>
+            <a href="spotify.txt" class="button spotify">Spotify</a>
+            <a href="crunchyroll.txt" class="button crunchyroll">Crunchyroll</a>
+            <a href="iptv.txt" class="button iptv">IPTV</a>
+            <a href="myfamily.txt" class="button myfamily">My Family</a>
+            <a href="clarotv.txt" class="button clarotv">Claro TV</a>
+            <a href="vpn.txt" class="button vpn">VPN</a>
+            <a href="dazn.txt" class="button dazn">DAZN</a>
+            <a href="bin.txt" class="button bin">BIN</a>
+        </div>
+    </div>
+    <script>
+        function searchButton() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const buttons = document.querySelectorAll('.button');
+            let found = false;
+
+            buttons.forEach(button => {
+                button.classList.remove('highlight');
+                if (button.textContent.toLowerCase().includes(query)) {
+                    button.classList.add('highlight');
+                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                }
+            });
+
+            const errorMessage = document.getElementById('error-message');
+            if (!found) {
+                errorMessage.textContent = 'Botão não encontrado.';
+            } else {
+                errorMessage.textContent = '';
+            }
+        }
+    </script>
+    <audio autoplay loop>
+        <source src="contas.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+</html>

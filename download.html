@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download de Música e Vídeo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px;
+            width: 300px;
+            font-size: 1em;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop muted>
+        <source src="download.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="content">
+        <h1>Download de Música e Vídeo</h1>
+        <form id="downloadForm">
+            <label for="option">Selecione uma opção:</label><br>
+            <select id="option" name="option">
+                <optgroup label="Baixar música 🎵">
+                    <option value="musicByName">Pelo nome</option>
+                    <option value="musicByLink">Pelo link</option>
+                </optgroup>
+                <optgroup label="Baixar vídeo 🎥">
+                    <option value="videoByName">Pelo nome</option>
+                    <option value="videoByLink">Pelo link</option>
+                </optgroup>
+                <optgroup label="Baixar do Instagram 🎥">
+                    <option value="instagramByLink">Baixar vídeo pelo link</option>
+                    <option value="instagramStoryByLink">Baixar story pelo link</option>
+                    <option value="instagramSearch">Pesquisar Instagram</option>
+                </optgroup>
+                <optgroup label="Baixar vídeo do Facebook 🎥">
+                    <option value="facebookByLink1">Pelo link (API 1)</option>
+                    <option value="facebookByLink2">Pelo link (API 2)</option>
+                </optgroup>
+                <optgroup label="Baixar do TikTok 🎥">
+                    <option value="tiktokByLinkVideo">Vídeo</option>
+                    <option value="tiktokByLinkAudio">Áudio</option>
+                </optgroup>
+            </select><br><br>
+            <label for="query">Nome ou link:</label><br>
+            <input type="text" id="query" name="query" required><br><br>
+            <input type="submit" value="Baixar">
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const option = formData.get('option');
+            const query = formData.get('query');
+
+            let apiUrl;
+
+            if (option === 'instagramByLink') {
+                apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
+            } else if (option === 'instagramStoryByLink') {
+                apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
+            } else if (option === 'instagramSearch') {
+                apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
+            } else if (option === 'musicByName') {
+                apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?name=${encodeURIComponent(query)}`;
+            } else if (option === 'musicByLink') {
+                apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?url=${encodeURIComponent(query)}`;
+            } else if (option === 'videoByName') {
+                apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?name=${encodeURIComponent(query)}`;
+            } else if (option === 'videoByLink') {
+                apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?url=${encodeURIComponent(query)}`;
+            } else if (option === 'facebookByLink1') {
+                apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
+            } else if (option === 'facebookByLink2') {
+                apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
+            } else if (option === 'tiktokByLinkVideo') {
+                apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+            } else if (option === 'tiktokByLinkAudio') {
+                apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+            }
+
+            window.location.href = apiUrl;
+        });
+    </script>
+    <audio autoplay loop>
+        <source src="download.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+</html>
