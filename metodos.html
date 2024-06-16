@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métodos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('marrom.jpg'); /* Adicione sua imagem de fundo aqui */
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column; /* Adicionado para posicionar o título acima dos botões */
+        }
+    
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            max-width: 1200px; /* Limite de largura para centralização */
+            width: 100%;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none; /* Remove a borda vermelha */
+            border-radius: 20px;
+            background-color: #8B4513; /* Define a cor de fundo do botão como marrom */
+            color: white; /* Define a cor do texto do botão como branco */
+            transition: all 0.3s ease; /* Adiciona uma transição suave para mudanças de estilo */
+            width: calc(33.33% - 20px); 
+        }
+        .button:hover {
+            background-color: #A0522D; /* Marrom mais escuro ao passar o mouse */
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+            padding: 10px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #28a745; /* Verde */
+            border-radius: 5px 0 0 5px;
+            width: 200px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            background-color: #000000; /* Preto */
+            color: #28a745; /* Verde */
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-button:hover {
+            background-color: #333333; /* Preto mais claro ao passar o mouse */
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        .highlight {
+            border: 2px solid #ff0000; /* Destacar com borda vermelha */
+            transform: scale(1.1); /* Zoom */
+            transition: transform 0.3s;
+        }
+
+        .error-message {
+            color: #ff0000; /* Cor da mensagem de erro */
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .title-container {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            margin-top: 75px;  /* Espaçamento entre o botão de pesquisa e o título */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+            <button class="search-button" onclick="searchButton()">
+                <i class="fas fa-search icon"></i> Pesquisar
+            </button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    <div class="title-container">Métodos & Hackers</div>
+    
+    <div class="buttons">
+        <button class="button" onclick="window.location.href = 'https://pastebin.com/zyZwCwyk';">
+            <i class="fas fa-ban"></i> Bloquear Anúncios
+        </button>
+        <button class="button" onclick="window.location.href = 'https://pt.anotepad.com/notes/nf7g2f5g';">
+            <i class="fas fa-users"></i> Seguidores no Instagram
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.dbftools.pro/';">
+            <i class="fas fa-database"></i> Puxar Dados
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.skylinewebcams.com';">
+            <i class="fas fa-video"></i> Câmeras no Brasil
+        </button>
+        <button class="button" onclick="window.location.href = 'https://play.google.com/store/apps/details?id=com.dubox.drive';">
+            <i class="fas fa-cloud"></i> 1 Tera iOS/QND
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/HackWeiser360/MaxPhisher';">
+            <i class="fas fa-user-secret"></i> Colher Dados
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/DeepSociety/beautiful';">
+            <i class="fas fa-terminal"></i> Personalizar Termux
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/neon-l/ddos-attack-tool-mod';">
+            <i class="fas fa-bolt"></i> DDOS
+        </button>
+        <button class="button" onclick="window.location.href = 'https://mega.nz/file/lIIA1L5J#K4rauR6uUGLdRzo5v0Do2l06asj6IuisgdZWqyACC-s';">
+            <i class="fas fa-exclamation-triangle"></i> Spam Code
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/topics/instagram-bruteforce';">
+            <i class="fas fa-key"></i> Brute Force
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/adamff-dev/WiFi-Spam';">
+            <i class="fas fa-wifi"></i> Wi-Fi Spam
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/topics/camera-hacking';">
+            <i class="fas fa-camera"></i> Cam Hack
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/topics/live-camera';">
+            <i class="fas fa-video"></i> Cam/Live Ao Vivo
+        </button>
+        <button class="button" onclick="window.location.href = 'https://wigle.net/';">
+            <i class="fas fa-wifi"></i> Buscar Wi-Fi
+        </button>
+        <button class="button" onclick="window.location.href = 'https://donodozap.com/';">
+            <i class="fas fa-mobile-alt"></i> Dono do ZAP
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.tellows.com.br/';">
+            <i class="fas fa-phone"></i> Tellows
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.qualoperadora.net/';">
+            <i class="fas fa-signal"></i> Qual operadora
+        </button>
+        <button class="button" onclick="window.location.href = 'https://geolocation.com/pt';">
+            <i class="fas fa-globe"></i> Localizar IP
+        </button>
+        <button class="button" onclick="window.location.href = 'https://9uhdmax.pro/baixar/';">
+            <i class="fas fa-tv"></i> 9 UHDMax
+        </button>
+        <button class="button" onclick="window.location.href = 'https://playtvgehapk.app/play-tv-geh-para-smart-tv/';">
+            <i class="fas fa-tv"></i> Play Geh TV
+        </button>
+        <button class="button" onclick="window.location.href = 'https://play.google.com/store/apps/details?id=com.lenovo.anyshare.gps';">
+            <i class="fas fa-share-alt"></i> Shareit
+        </button>
+        <button class="button" onclick="window.location.href = 'https://play.google.com/store/search?q=shazam&c=apps';">
+            <i class="fas fa-music"></i> Shazam
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.shazam.com/home';">
+            <i class="fas fa-music"></i> Descubra a música
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/HackWeiser360/MaxPhisher';">
+            <i class="fas fa-user-secret"></i> MaxPhisher
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/mamba-9mm/phishing';">
+            <i class="fas fa-fish"></i> Mambaphishing
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/sqlmapproject/sqlmap';">
+            <i class="fas fa-database"></i> Hackear sites
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.hoverwatch.com/pt/aplicativo-espiao';">
+            <i class="fas fa-eye"></i> Aplicativo Espião
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/topics/wifi-password';">
+            <i class="fas fa-lock"></i> Descobrir Senha Wi-Fi
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/U7P4L-IN/Cam-Virus';">
+            <i class="fas fa-virus"></i> Vírus de Câmera
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/sherlock-project/sherlock';">
+            <i class="fas fa-search"></i> Sherlock
+        </button>
+        <button class="button" onclick="window.location.href = 'https://filepursuit.com/';">
+            <i class="fas fa-search"></i> Pesquisar Arquivos
+        </button>
+        <button class="button" onclick="window.location.href = 'https://justdeleteme.xyz/';">
+            <i class="fas fa-trash-alt"></i> Deletar Contas
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/htr-tech/zphisher';">
+            <i class="fas fa-fish"></i> Zphisher
+        </button>
+        <button class="button" onclick="window.location.href = 'https://www.shodan.io/';">
+            <i class="fas fa-eye"></i> Shodan IO
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/nmap/nmap';">
+            <i class="fas fa-network-wired"></i> Nmap
+        </button>
+        <button class="button" onclick="window.location.href = 'https://10web.io/';">
+            <i class="fas fa-brain"></i> Criar Sites com IA
+        </button>
+        <button class="button" onclick="window.location.href = 'https://github.com/rdWei/SocialMediaHackingToolkit';">
+            <i class="fas fa-user-secret"></i> Social Media Hack
+        </button>
+        <button class="button" onclick="window.location.href = 'https://saveweb2zip.com/en';">
+            <i class="fas fa-clone"></i> Clonar site
+        </button>
+    </div>
+    <script>
+        function searchButton() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const buttons = document.querySelectorAll('.button');
+            let found = false;
+
+            buttons.forEach(button => {
+                button.classList.remove('highlight');
+                if (button.textContent.toLowerCase().includes(query)) {
+                    button.classList.add('highlight');
+                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                }
+            });
+
+            const errorMessage = document.getElementById('error-message');
+            if (!found) {
+                errorMessage.textContent = 'Botão não encontrado.';
+            } else {
+                errorMessage.textContent = '';
+            }
+        }
+    </script>
+    <!-- Música de fundo -->
+    <audio autoplay loop>
+        <source src="marrom.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sites Úteis</title>
+    <!-- Importando Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('rosa.jpg');
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Usando min-height para garantir que a altura da tela seja sempre preenchida */
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+            padding: 10px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #28a745; /* Verde */
+            border-radius: 5px 0 0 5px;
+            width: 200px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: #000000; /* Preto */
+            color: #28a745; /* Verde */
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-button:hover {
+            background-color: #333333; /* Preto mais claro ao passar o mouse */
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        .highlight {
+            border: 2px solid #ff0000; /* Destacar com borda vermelha */
+            transform: scale(1.1); /* Zoom */
+            transition: transform 0.3s;
+        }
+
+        .error-message {
+            color: #ff0000; /* Cor da mensagem de erro */
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .title-container {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            margin-top: 75px; /* Espaçamento entre o botão de pesquisa e o título */
+        }
+
+        .buttons {
+            display: flex; /* Os botões serão exibidos em linha */
+            flex-wrap: wrap; /* Se necessário, os botões serão envolvidos para a próxima linha */
+            justify-content: center; /* Os botões serão centralizados horizontalmente */
+            align-items: center; /* Os botões serão centralizados verticalmente */
+            padding: 20px;
+            max-width: 1200px; /* Largura máxima para o contêiner dos botões */
+        }
+
+        .button {
+            padding: 10px 20px; /* Define o preenchimento interno do botão */
+            margin: 10px; /* Define a margem ao redor do botão */
+            font-size: 16px; /* Define o tamanho da fonte do texto do botão */
+            border: none; /* Remove a borda do botão */
+            border-radius: 20px; /* Adiciona cantos arredondados ao botão */
+            cursor: pointer; /* Define o cursor como ponteiro quando o mouse passa sobre o botão */
+            background-color: #FF1493; /* Define a cor de fundo do botão como rosa */
+            color: white; /* Define a cor do texto do botão como branco */
+            transition: all 0.3s ease; /* Adiciona uma transição suave para mudanças de estilo */
+            width: calc(33.33% - 20px); /* Ajusta a largura dos botões para que caibam três por linha */
+            box-sizing: border-box; /* Inclui padding e bordas na largura total do elemento */
+        }
+
+        .button:hover {
+            background-color: #FF0066; /* Rosa mais escuro ao passar o mouse */
+        }
+     </style>
+</head>
+
+<body>
+<div class="top-bar">
+    <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+        <button class="search-button" onclick="searchButton()">
+            <i class="fas fa-search icon"></i> Pesquisar
+        </button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+</div>
+        <div class="title-container">Sites úteis</div>
+        <div class="buttons">
+            <button class="button" onclick="window.location.href = 'https://pt1.savefrom.net/59/';"><i class="fas fa-download"></i> Baixar Vídeos</button>
+            <button class="button" onclick="window.location.href = 'https://snapinsta.app/pt';"><i class="fas fa-download"></i> Dow Insta vid</button>
+            <button class="button" onclick="window.location.href = 'https://instavideosave.net/audio';"><i class="fas fa-download"></i> Dow Insta aud</button>
+            <button class="button" onclick="window.location.href = 'https://pinterestdownloader.com/pt';"><i class="fas fa-download"></i> Dow Pinterest</button>
+            <button class="button" onclick="window.location.href = 'https://flvto.bz/tpshcqayw';"><i class="fas fa-download"></i> Dow YouTube</button>
+            <button class="button" onclick="window.location.href = 'https://fdown.net/pt/';"><i class="fas fa-download"></i> Dow Facebook</button>
+            <button class="button" onclick="window.location.href = 'https://ssstik.io/pt';"><i class="fas fa-download"></i> Dow TikTok</button>
+            <button class="button" onclick="window.location.href = 'https://www.google.com/advanced_search';"><i class="fas fa-search"></i> Pesquisa Avançada</button>
+            <button class="button" onclick="window.location.href = 'https://www.video2edit.com/pt';"><i class="fas fa-video"></i> Video Edit</button>
+            <button class="button" onclick="window.location.href = 'https://www.fastreel.com/pt/transformar-fotos-em-video-online.html';"><i class="fas fa-image"></i> Foto para Video</button>
+            <button class="button" onclick="window.location.href = 'https://studio.d-id.com/';"><i class="fas fa-brain"></i> Video com IA</button>
+            <button class="button" onclick="window.location.href = 'https://simplified.com/pt-ai-image-generator/';"><i class="fas fa-image"></i> Gerador de Imagem</button>
+            <button class="button" onclick="window.location.href = 'https://character.ai/';"><i class="fas fa-comments"></i> Falar com Personagem</button>
+            <button class="button" onclick="window.location.href = 'https://www.flexclip.com/';"><i class="fas fa-video"></i> Criar Vídeos</button>
+            <button class="button" onclick="window.location.href = 'https://motocard.io/';"><i class="fas fa-microphone"></i> Criar Voz</button>
+            <button class="button" onclick="window.location.href = 'https://www.img2go.com/pt/ampliar-imagem';"><i class="fas fa-image"></i> Aumentar foto</button>
+            <button class="button" onclick="window.location.href = 'https://picwish.com/pt/photo-enhancer';"><i class="fas fa-image"></i> Melhorar foto</button>
+            <button class="button" onclick="window.location.href = 'https://www.erase.bg/pt';"><i class="fas fa-image"></i> Remover fundo</button>
+            <button class="button" onclick="window.location.href = 'https://www.photopea.com/';"><i class="fas fa-image"></i> Photopea</button>
+            <button class="button" onclick="window.location.href = 'https://www.invertexto.com/';"><i class="fas fa-file-alt"></i> Ferramentas TXT</button>
+            <button class="button" onclick="window.location.href = 'https://pimeyes.com/pt';"><i class="fas fa-eye"></i> Pesquisar Foto</button>
+            <button class="button" onclick="window.location.href = 'https://www.duplichecker.com/reverse-image-search.php';"><i class="fas fa-image"></i> Pesquisar Foto 2</button>
+            <button class="button" onclick="window.location.href = 'https://facecheck.id/';"><i class="fas fa-camera"></i> Pesquisar Foto 3</button>
+            <button class="button" onclick="window.location.href = 'https://www.siteconfiavel.com.br/';"><i class="fas fa-shield-alt"></i> Site Confiável?</button>
+            <button class="button" onclick="window.location.href = 'https://www.wolframalpha.com/';"><i class="fas fa-calculator"></i> IA para Calcular</button>
+            <button class="button" onclick="window.location.href = 'https://falatron.com/';"><i class="fas fa-microphone"></i> Vozes de Famosos</button>
+            <button class="button" onclick="window.location.href = 'https://multicanais.bet/';"><i class="fas fa-tv"></i> Canais Ao Vivo</button>
+            <button class="button" onclick="window.location.href = 'https://futemax.zip/';"><i class="fas fa-tv"></i> Canais Ao Vivo 2</button>
+            <button class="button" onclick="window.location.href = 'https://supertvaovivo.co/';"><i class="fas fa-tv"></i> Canais Ao Vivo 3</button>
+            <button class="button" onclick="window.location.href = 'https://megacanais.com/aovivo/';"><i class="fas fa-tv"></i> Canais Ao Vivo 4</button>
+            <button class="button" onclick="window.location.href = 'https://www.cxtv.com.br/';"><i class="fas fa-tv"></i> Canais Ao Vivo 5</button>
+            <button class="button" onclick="window.location.href = 'https://temp-mail.org/pt/';"><i class="fas fa-envelope"></i> Temp Mail</button>
+            <button class="button" onclick="window.location.href = 'https://www.invertexto.com/gerador-email-temporario';"><i class="fas fa-envelope"></i> Temp Mail 2</button>
+            <button class="button" onclick="window.location.href = 'https://tempail.com/en/temp-email/';"><i class="fas fa-envelope"></i> Temp Mail 3</button>
+            <button class="button" onclick="window.location.href = 'https://www.cxtv.com.br/cameras';"><i class="fas fa-camera"></i> Câmeras Pelo Mundo</button>
+            <button class="button" onclick="window.location.href = 'https://camerasdomundo.com/';"><i class="fas fa-camera"></i> Câmeras 2</button>
+            <button class="button" onclick="window.location.href = 'https://www20.opovo.com.br/fortaleza/aovivo/';"><i class="fas fa-camera"></i> Câmeras 3</button>
+            <button class="button" onclick="window.location.href = 'https://haveibeenpwned.com/';"><i class="fas fa-lock"></i> Verificar Hackeamento</button>
+            <button class="button" onclick="window.location.href = 'https://chatgptdemo.ai/chat/';"><i class="fas fa-robot"></i> ChatGPT4</button>
+            <button class="button" onclick="window.location.href = 'http://webtv.iptvsmarters.com';"><i class="fas fa-tv"></i> IPTV web</button>
+            <button class="button" onclick="window.location.href = 'https://gpte.ai/';"><i class="fas fa-robot"></i> Várias AIS</button>
+            <button class="button" onclick="window.location.href = 'https://lottiefiles.com/';"><i class="fas fa-film"></i> Animações Grátis</button>
+            <button class="button" onclick="window.location.href = 'https://obfuscator.io/';"><i class="fas fa-code"></i> Criptografar JS</button>
+            <button class="button" onclick="window.location.href = 'https://magnific.ai/';"><i class="fas fa-image"></i> Melhorar Fotos</button>
+            <button class="button" onclick="window.location.href = 'https://musicfy.lol/';"><i class="fas fa-music"></i> Voz de Cantores AI</button>
+            <button class="button" onclick="window.location.href = 'https://www.blackbox.ai/';"><i class="fas fa-laptop-code"></i> Programar AI</button>
+            <button class="button" onclick="window.location.href = 'https://sider.ai/pt/chatpdf';"><i class="fas fa-file-pdf"></i> Ler PDF com AI</button>
+            <button class="button" onclick="window.location.href = 'https://fabricadeaplicativos.com.br/';"><i class="fas fa-mobile-alt"></i> Criar App</button>
+            <button class="button" onclick="window.location.href = 'https://www.glideapps.com/';"><i class="fas fa-mobile-alt"></i> Criar App 2</button>
+            <button class="button" onclick="window.location.href = 'https://bubble.io/';"><i class="fas fa-mobile-alt"></i> Criar App 3</button>
+            <button class="button" onclick="window.location.href = 'https://ideogram.ai/';"><i class="fas fa-camera"></i> Criar Fotos</button>
+            <button class="button" onclick="window.location.href = 'https://www.notta.ai/pt/tools/youtube-video-summarizer';"><i class="fas fa-film"></i> Resumir Vídeo</button>
+            <button class="button" onclick="window.location.href = 'https://hix.ai/pt/summarizer/video';"><i class="fas fa-film"></i> Resumir Vídeo 2</button>
+            <button class="button" onclick="window.location.href = 'https://www.jusbrasil.com.br/consulta-processual/';"><i class="fas fa-balance-scale"></i> Jus Brasil</button>
+            <button class="button" onclick="window.location.href = 'https://portalbnmp.cnj.jus.br/';"><i class="fas fa-gavel"></i> Mandado de Prisão</button>
+            <button class="button" onclick="window.location.href = 'https://www.zerogpt.com/';"><i class="fas fa-robot"></i> Zero GPT</button>
+            <button class="button" onclick="window.location.href = 'https://gamma.app/?lng=pt-BR';"><i class="fas fa-sliders-h"></i> Criar Slides com AI</button>
+            <button class="button" onclick="window.location.href = 'https://www.visioncine-1.com/';"><i class="fas fa-film"></i> Vision Cine</button>
+            <button class="button" onclick="window.location.href = 'https://redecanais.mov/';"><i class="fas fa-tv"></i> Redecanais</button>
+            <button class="button" onclick="window.location.href = 'https://animesonlinecc.to/';"><i class="fas fa-tv"></i> Animes</button>
+            <button class="button" onclick="window.location.href = 'https://animesonline.nz/';"><i class="fas fa-tv"></i> Animes 2</button>
+            <button class="button" onclick="window.location.href = 'https://animesgames.cc/';"><i class="fas fa-tv"></i> Animes 3</button>            <button class="button" onclick="window.location.href = 'https://www.animesonlinecc.info/';"><i class="fas fa-tv"></i> Animes 4</button>
+            <button class="button" onclick="window.location.href = 'https://www.paraphrasetool.ai/pt/humanizar-texto-ia';"><i class="fas fa-user"></i> Humanizar Texto com GPT</button>
+            <button class="button" onclick="window.location.href = 'https://animesbr.tv/';"><i class="fas fa-tv"></i> AnimesBR</button>
+            <button class="button" onclick="window.location.href = 'https://www.social-searcher.com/';"><i class="fas fa-search"></i> Social Searcher</button>
+            <button class="button" onclick="window.location.href = 'https://brandfetch.com/';"><i class="fas fa-search"></i> Brand Fetch</button>
+            <button class="button" onclick="window.location.href = 'https://easy-peasy.ai/';"><i class="fas fa-robot"></i> Easy Peasy</button>
+            <button class="button" onclick="window.location.href = 'https://webmii.com/';"><i class="fas fa-search"></i> Webmii</button>
+            <button class="button" onclick="window.location.href = 'https://uiverse.io/elements';"><i class="fas fa-cogs"></i> Uiverse Elements</button>
+            <button class="button" onclick="window.location.href = 'https://huggingface.co/';"><i class="fas fa-hug"></i> Hugging Face</button>
+            <button class="button" onclick="window.location.href = 'https://app.kits.ai/convert';"><i class="fas fa-exchange-alt"></i> Kits AI</button>
+            <button class="button" onclick="window.location.href = 'https://savee.it/';"><i class="fas fa-download"></i> Savee.it</button>
+        </div>
+        <script>
+        function searchButton() {
+    consfunction searchButton() {
+    const query = docufunction searchButton() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const buttons = document.querySelectorAll('.button');
+    let found = false;
+
+    buttons.forEach(button => {
+        button.classList.remove('highlight');
+        if (button.textContent.toLowerCase().includes(query)) {
+            button.classList.add('highlight');
+            button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            found = true;
+        }
+    });
+
+    const errorMessage = document.getElementById('error-message');
+    if (!found) {
+        errorMessage.textContent = 'Botão não encontrado.';
+    } else {
+        errorMessage.textContent = '';
+    }
+                                          }
+        </script>
+    </div>
+    <!-- Música de fundo -->
+    <audio autoplay loop>
+        <source src="rosa.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+
+</html>

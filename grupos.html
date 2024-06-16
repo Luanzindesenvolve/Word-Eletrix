@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos - Luanzin Dev</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px 0; /* Adiciona um espaçamento extra na parte de cima */
+            padding: 0;
+            background-image: url('laranja.jpg');
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* Alterado para min-height para garantir que o conteúdo fique visível em dispositivos pequenos */
+        }
+
+        .buttons-container {
+            text-align: center;
+            color: #FFF;
+            margin-bottom: 20px;
+        }
+
+        .button-wrapper {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha */
+            justify-content: space-between; /* Distribui os botões igualmente na linha */
+            max-width: 800px; /* Limita a largura para evitar que os botões se espalhem demais */
+            margin: 0 auto; /* Centraliza os botões horizontalmente */
+        }
+
+        .button {
+            width: calc(33.33% - 20px); /* Calcula a largura de cada botão com espaço entre eles */
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            background-color: #FFA500; /* Laranja */
+            color: white;
+            transition: all 0.3s ease;
+            border-radius: 10px; /* Bordas arredondadas */
+        }
+
+        .button:hover {
+            background-color: #FF8C00; /* Laranja mais escuro ao passar o mouse */
+        }
+        .top-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+    padding: 10px 0;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #28a745; /* Verde */
+    border-radius: 5px 0 0 5px;
+    width: 200px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    background-color: #000000; /* Preto */
+    color: #28a745; /* Verde */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.search-button:hover {
+    background-color: #333333; /* Preto mais claro ao passar o mouse */
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.highlight {
+    border: 2px solid #ff0000; /* Destacar com borda vermelha */
+    transform: scale(1.1); /* Zoom */
+    transition: transform 0.3s;
+}
+
+.error-message {
+    color: #ff0000; /* Cor da mensagem de erro */
+    font-size: 14px;
+    margin-top: 5px;
+}
+        .title-container {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            margin-top: 75px;  /* Espaçamento entre o botão de pesquisa e o título */
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+    <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+        <button class="search-button" onclick="searchButton()">
+            <i class="fas fa-search icon"></i> Pesquisar
+        </button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+    </div>
+    <div class="buttons-container">
+        <div class="title-container">grupos - fóruns</div>
+        <div class="button-wrapper">
+            <button class="button" onclick="window.location.href = 'https://www.gruposdewhatss.com.br/';">
+                <i class="fas fa-users"></i> Divulgar Grupo
+            </button>
+            <button class="button" onclick="window.location.href = 'https://gruposwhats.app/';">
+                <i class="fas fa-share-square"></i> Divulgar 2
+            </button>
+            <button class="button" onclick="window.location.href = 'https://zaplinksbrasil.com.br/grupo/5493/';">
+                <i class="fas fa-link"></i> Divulgar 3
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/underrchannel';">
+                <i class="fas fa-file"></i> Conteúdos Gerais
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/DonatesCentral';">
+                <i class="fas fa-donate"></i> Donate Central
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/botsnovos';">
+                <i class="fas fa-robot"></i> Bots do Telegram
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/APKS_UTEIS';">
+                <i class="fas fa-list"></i> Listas IPTV
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/brappstop';">
+                <i class="fas fa-mobile-alt"></i> Br Apps
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/PlugadoApk';">
+                <i class="fas fa-plug"></i> IPTV Plugado
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/CentralDonates';">
+                <i class="fas fa-donate"></i> Donate Central
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/underconsultas';">
+                <i class="fas fa-search"></i> Consultas
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/puxada0';">
+                <i class="fas fa-hand-paper"></i> Puxadas
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/BTTSearchCHAT';">
+                <i class="fas fa-tachometer-alt"></i> Painel
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/VirusTotal_AV_bot';">
+                <i class="fas fa-shield-virus"></i> Scanner de Vírus Bot
+           </button>
+           <button class="button" onclick="window.location.href = 'https://t.me/BLACK_CANAL40';">
+                <i class="fas fa-user-secret"></i> Conteúdo Hack
+           </button>
+           <button class="button" onclick="window.location.href = 'https://t.me/SRJKMA';">
+                <i class="fas fa-code"></i> SRJKMA
+           </button>
+           <button class="button" onclick="window.location.href = 'https://t.me/The369Method';">
+                <i class="fas fa-archive"></i> Vários Conteúdos
+           </button>
+           <button class="button" onclick="window.location.href = 'https://brunofraga.com/';">
+               <i class="fas fa-globe"></i> Bruno Fraga
+           </button>
+           <button class="button" onclick="window.location.href = 'https://t.me/HackModsApk';">
+               <i class="fas fa-user-secret"></i> Hack Mods
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/Compton4i20';">
+              <i class="fas fa-key"></i> Contas e Métodos
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/MidasAccounts';">
+              <i class="fas fa-users"></i> Mídia Contas
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/AlienKeys';">
+              <i class="fas fa-donate"></i> Alien Donates
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/Monxx_Mod';">
+              <i class="fas fa-code"></i> Monx Mods
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/androidtunado';">
+               <i class="fab fa-android"></i> Android Tunado
+          </button>
+          <button class="button" onclick="window.location.href = 'https://t.me/Mixrootmods';">
+               <i class="fas fa-seedling"></i> Mix Root
+           </button> 
+           <button class="button" onclick="window.location.href = 'https://t.me/modyolo_official';">
+                <i class="fas fa-user-ninja"></i> Mod Tolo
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/JWXPMOD';">
+                <i class="fab fa-apple"></i> iOS Mods
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/queromods';">
+                <i class="fas fa-search"></i> Quero Mods
+            </button>
+            <button class="button" onclick="window.location.href = 'https://t.me/GETMODSAPK_COM';">
+                <i class="fas fa-download"></i> Get Mods
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/primefliixx';">
+    <i class="fas fa-film"></i> Primeflix
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/Cursos_Filmes_Livros';">
+    <i class="fas fa-book-open"></i> Filmes e Cursos
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/Filmes_Aqui';">
+    <i class="fas fa-video"></i> Multi Mídias
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/Cursos_Livros_Filmes';">
+    <i class="fas fa-book"></i> Curso e Filmes
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/TemasTelegramOficial';">
+    <i class="fas fa-paint-brush"></i> Temas Telegram
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/temaslindos';">
+    <i class="fas fa-paint-brush"></i> Temas 2 <button class="button" onclick="window.location.href = 'https://t.me/temaslindos';">
+    <i class="fas fa-paint-brush"></i> Temas 2
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/DNZ_Temas';">
+    <i class="fas fa-paint-brush"></i> Temas 3
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/temas';">
+    <i class="fas fa-paint-brush"></i> Temas 4
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/Termux_For_Android';">
+    <i class="fab fa-android"></i> Hacks Termux
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/TERMUXCOMMANDD';">
+    <i class="fas fa-terminal"></i> Termux Command
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/BINS_FREE1';">
+    <i class="fas fa-credit-card"></i> Bins Free
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/+08qD09-Jn2VjNWEx';">
+    <i class="fas fa-donate"></i> Relíquia Donates
+</button>
+<button class="button" onclick="window.location.href = 'https://t.me/+-JjG5bQ_-y40NTRk';">
+    <i class="fas fa-bug'></i> Crash Donates
+</button>
+        <button class="button" onclick="window.location.href = 'https://t.me/gamesk10';"><i class="fas fa-gamepad"></i> Steam verde</button>
+        </div>
+        <script>
+        function searchButton() {
+    consfunction searchButton() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const buttons = document.querySelectorAll('.button');
+    let found = false;
+
+    buttons.forEach(button => {
+        button.classList.remove('highlight');
+        if (button.textContent.toLowerCase().includes(query)) {
+            button.classList.add('highlight');
+            button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            found = true;
+        }
+    });
+
+    const errorMessage = document.getElementById('error-message');
+    if (!found) {
+        errorMessage.textContent = 'Botão não encontrado.';
+    } else {
+        errorMessage.textContent = '';
+            }
+        </script>
+    </div>
+    <!-- Música de fundo -->
+    <audio autoplay loop>
+        <source src="laranja.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+
+    </html>
