@@ -84,6 +84,11 @@
         <option value="siregi">SIREGI</option>
         <option value="cadsus">Cadsus</option>
         <option value="si-pni">SI-PNI</option>
+        <option value="vpninfo">Puxar IP</option>
+        <option value="serasa">Busca Nome Serasa</option>
+        <option value="whatsapp">Pairing Code WhatsApp</option>
+        <option value="simih">API SIMIH</option>
+        <option value="gpt">API Chat GPT 4.0</option>
         <option value="cpf2">CPF 2</option>
         <option value="informacoes">Informações</option>
         <option value="spc">SPC</option>
@@ -144,6 +149,21 @@
                 break;
             case 'si-pni':
                 apiURL = 'https://apis.ngrok.app/apis/si-pni/api.php?key=@BINGSIXBOT&cpf=' + consulta;
+                break;
+            case 'vpninfo':
+                apiURL = 'https://mdzapis.online/vpninfo?ip=' + consulta;
+                break;
+            case 'serasa':
+                apiURL = 'https://mdzapis.online/name/serasa?query=' + encodeURIComponent(consulta);
+                break;
+            case 'whatsapp':
+                apiURL = 'https://pairing.mdzapis.online/code?number=' + encodeURIComponent(consulta);
+                break;
+            case 'simih':
+                apiURL = 'https://apis.mdzapis.online/api/simih?q=' + encodeURIComponent(consulta);
+                break;
+            case 'gpt':
+                apiURL = 'https://mdzapis.online/api/gpt?query=' + encodeURIComponent(consulta);
                 break;
             default:
                 apiURL = 'http://api3.minerdapifoda.xyz:8080/api/' + tipoConsulta + '?' + tipoConsulta + '=' + consulta;
