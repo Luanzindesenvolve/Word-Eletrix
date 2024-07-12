@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Dados</title>
-<!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
     <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
     <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
@@ -67,7 +67,6 @@
         pre {
             font-size: 18px;
         }
-
     </style>
 </head>
 <body>
@@ -82,11 +81,13 @@
 
     <label for="tipoConsulta">Tipo:</label>
     <select id="tipoConsulta">
+        <option value="siregi">SIREGI</option>
+        <option value="cadsus">Cadsus</option>
+        <option value="si-pni">SI-PNI</option>
         <option value="cpf2">CPF 2</option>
         <option value="informacoes">Informações</option>
         <option value="spc">SPC</option>
         <option value="spc1">SPC1</option>
-        <option value="cadsus">Cadsus</option>
         <option value="cpf">CPF</option>
         <option value="cpf6">CPF 6</option>
         <option value="cpf3">CPF 3</option>
@@ -126,26 +127,40 @@
 
 <script>
     function realizarConsulta() {
-    var tipoConsulta = document.getElementById('tipoConsulta').value.trim();
-    var consulta = document.getElementById('digiteAqui').value.trim();
+        var tipoConsulta = document.getElementById('tipoConsulta').value.trim();
+        var consulta = document.getElementById('digiteAqui').value.trim();
 
-    // Exibir mensagem de carregamento
-    document.getElementById('loading').style.display = 'block';
+        // Exibir mensagem de carregamento
+        document.getElementById('loading').style.display = 'block';
 
-    // Construir a URL da API com base no tipo de consulta
-    var apiURL = 'http://api3.minerdapifoda.xyz:8080/api/' + tipoConsulta + '?' + tipoConsulta + '=' + consulta;
+        // Construir a URL da API com base no tipo de consulta
+        var apiURL;
+        switch(tipoConsulta) {
+            case 'siregi':
+                apiURL = 'https://apis.ngrok.app/apis/siregi/api.php?key=@BINGSIXBOT&consulta=' + consulta;
+                break;
+            case 'cadsus':
+                apiURL = 'https://apis.ngrok.app/apis/cadsus/api.php?key=@BINGSIXBOT&cpf=' + consulta;
+                break;
+            case 'si-pni':
+                apiURL = 'https://apis.ngrok.app/apis/si-pni/api.php?key=@BINGSIXBOT&cpf=' + consulta;
+                break;
+            default:
+                apiURL = 'http://api3.minerdapifoda.xyz:8080/api/' + tipoConsulta + '?' + tipoConsulta + '=' + consulta;
+                break;
+        }
 
-    // Atualizar o resultado na página
-    document.getElementById('resultado').innerText = 'Use vpn em caso de bloqueio por IP';
+        // Atualizar o resultado na página
+        document.getElementById('resultado').innerText = 'Use VPN em caso de bloqueio por IP';
 
-    // Redirecionar para a URL da API
-    window.open(apiURL);
+        // Redirecionar para a URL da API
+        window.open(apiURL);
     }
 </script>
 
-    <audio autoplay loop>
-        <source src="consultas.mp3" type="audio/mpeg">
-        Seu navegador não suporta áudio HTML5.
-    </audio>
+<audio autoplay loop>
+    <source src="consultas.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio HTML5.
+</audio>
 </body>
 </html>
