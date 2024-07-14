@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download de Música e Vídeo</title>
+    <title>Download e Criação de Links</title>
     <style>
         body {
             margin: 0;
@@ -51,6 +51,7 @@
         }
 
         input[type="text"],
+        input[type="file"],
         select {
             padding: 10px;
             width: 300px;
@@ -80,7 +81,7 @@
     </video>
 
     <div id="content">
-        <h1>Download de Música e Vídeo</h1>
+        <h1>Download e Criação de Links</h1>
         <form id="downloadForm">
             <label for="option">Selecione uma opção:</label><br>
             <select id="option" name="option">
@@ -105,10 +106,20 @@
                     <option value="tiktokByLinkVideo">Vídeo</option>
                     <option value="tiktokByLinkAudio">Áudio</option>
                 </optgroup>
+                <optgroup label="Baixar do Pinterest 📌">
+                    <option value="pinterestVideoByLink">Baixar vídeo pelo link</option>
+                    <option value="pinterestImageByLink">Baixar imagem pelo link</option>
+                </optgroup>
+                <optgroup label="Criar link no Telegra.ph 🌐">
+                    <option value="telegraphVideo">Vídeo para link</option>
+                    <option value="telegraphImage">Foto para link</option>
+                </optgroup>
             </select><br><br>
             <label for="query">Nome ou link:</label><br>
             <input type="text" id="query" name="query" required><br><br>
-            <input type="submit" value="Baixar">
+            <label for="fileUpload">Selecionar arquivo (foto ou vídeo):</label><br>
+            <input type="file" id="fileUpload" name="fileUpload"><br><br>
+            <input type="submit" value="Enviar">
         </form>
 
         <div id="result"></div>
@@ -121,8 +132,10 @@
             const formData = new FormData(e.target);
             const option = formData.get('option');
             const query = formData.get('query');
+            const file = formData.get('fileUpload');
 
             let apiUrl;
+            let resultElement = document.getElementById('result');
 
             if (option === 'instagramByLink') {
                 apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
@@ -146,13 +159,61 @@
                 apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
             } else if (option === 'tiktokByLinkAudio') {
                 apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+            } else if (option === 'pinterestVideoByLink') {
+                apiUrl = `http://api-pinterest-y7jx.onrender.com/api/vid?url=${encodeURIComponent(query)}`;
+            } else if (option === 'pinterestImageByLink') {
+                apiUrl = `http://api-pinterest-y7jx.onrender.com/api/img?url=${encodeURIComponent(query)}`;
+            } else if (option === 'telegraphVideo' || option === 'telegraphImage') {
+                if (!file) {
+                    resultElement.textContent = 'Por favor, selecione um arquivo para upload';
+                    return;
+                }
+
+                // Upload the file to a server or cloud storage and get the URL
+                // This is a placeholder for actual upload code
+                const uploadUrl = await uploadFile(file);
+
+                try {
+                    const response = await fetch('https://api.telegra.ph/createPage', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            access_token: 'YOUR_ACCESS_TOKEN',
+                            title: 'Media Link',
+                            author_name: 'Bot',
+                            content: `[{"tag":"a","attrs":{"href":"${uploadUrl}"},"children":["Link"]}]`,
+                            return_content: true
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.ok) {
+                        const link = `https://telegra.ph/${result.result.path}`;
+                        resultElement.textContent = `Link criado com sucesso: ${link}`;
+                        window.open(link, '_blank');
+                    } else {
+                        resultElement.textContent = 'Erro ao criar o link';
+                    }
+                } catch (error) {
+                    resultElement.textContent = 'Erro ao criar o link';
+                }
+                return;
             }
 
             window.location.href = apiUrl;
         });
+
+        async function uploadFile(file) {
+            // Implement the actual file upload logic here
+            // For now, we'll just return a placeholder URL
+            return 'https://example.com/uploaded-file-url';
+        }
     </script>
     <audio autoplay loop>
-        <source src="download.mp3" type="audio/mpeg">
+        <source src="download.mp3" type="<source src="download.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio HTML5.
     </audio>
 </body>
