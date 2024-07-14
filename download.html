@@ -51,7 +51,6 @@
         }
 
         input[type="text"],
-        input[type="file"],
         select {
             padding: 10px;
             width: 300px;
@@ -113,8 +112,6 @@
             </select><br><br>
             <label for="query">Nome ou link:</label><br>
             <input type="text" id="query" name="query"><br><br>
-            <label for="fileUpload" id="fileUploadLabel" style="display: none;">Selecione um arquivo:</label><br>
-            <input type="file" id="fileUpload" name="fileUpload" style="display: none;"><br><br>
             <input type="submit" value="Enviar">
         </form>
 
@@ -122,75 +119,17 @@
     </div>
 
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const formData = new FormData(e.target);
             const option = formData.get('option');
             const query = formData.get('query');
-            const file = formData.get('fileUpload');
             const resultElement = document.getElementById('result');
 
             if (option === 'telegraphImage' || option === 'telegraphVideo') {
-                if (!file) {
-                    resultElement.textContent = 'Por favor, selecione um arquivo para upload';
-                    return;
-                }
-
-                const fileBuffer = await file.arrayBuffer();
-
-                try {
-                    // Envia o arquivo para Telegra.ph
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('file', new Blob([fileBuffer]), file.name);
-
-                    const uploadResponse = await fetch('https://telegra.ph/upload', {
-                        method: 'POST',
-                        body: uploadFormData
-                    });
-
-                    const uploadResult = await uploadResponse.json();
-
-                    if (!uploadResult || !uploadResult[0] || !uploadResult[0].src) {
-                        throw new Error('Erro ao fazer upload do arquivo');
-                    }
-
-                    const filePath = 'https://telegra.ph' + uploadResult[0].src;
-
-                    // Cria uma página no Telegra.ph
-                    const createPageResponse = await fetch('https://api.telegra.ph/createPage', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            title: 'Arquivo Enviado',
-                            author_name: 'Uploader',
-                            content: JSON.stringify([{
-                                tag: option === 'telegraphImage' ? 'figure' : 'video',
-                                children: [{
-                                    tag: option === 'telegraphImage' ? 'img' : 'source',
-                                    attrs: {
-                                        src: filePath,
-                                        type: option === 'telegraphImage' ? '' : 'video/mp4'
-                                    }
-                                }]
-                            }])
-                        })
-                    });
-
-                    const createPageResult = await createPageResponse.json();
-
-                    if (createPageResult.error) {
-                        throw new Error('Erro ao criar a página');
-                    }
-
-                    const telegraphUrl = createPageResult.result.url;
-                    window.open(telegraphUrl, '_blank');
-                } catch (error) {
-                    resultElement.textContent = error.message;
-                    console.error('Erro:', error);
-                }
+                // Redireciona para o Telegra.ph
+                window.open('https://telegra.ph', '_blank');
             } else {
                 // Para as outras opções, redireciona o usuário para a URL da API correspondente
                 let apiUrl;
@@ -224,23 +163,12 @@
                 } else {
                     resultElement.textContent = 'Opção inválida ou não suportada';
                 }
+            }
         });
 
-        // Exibe os campos de upload de arquivo apenas para opções Telegra.ph
-        document.getElementById('option').addEventListener('change', (e) => {
-            const option = e.target.value;
-            const fileUpload = document.getElementById('fileUpload');
-            const fileUploadLabel = document.getElementById('fileUploadLabel');
-
-            if (option === 'telegraphImage' || option === 'telegraphVideo') {
-                fileUpload.style.display = 'block';
-                fileUploadLabel.style.display = 'block';
-                document.getElementById('query').style.display = 'none'; // Oculta o campo de texto
-            } else {
-                fileUpload.style.display = 'none';
-                fileUploadLabel.style.display = 'none';
-                document.getElementById('query').style.display = 'block'; // Exibe o campo de texto
-            }
+        // Exibe a mensagem de resultado apenas se houver
+        document.getElementById('result').addEventListener('click', () => {
+            document.getElementById('result').textContent = '';
         });
     </script>
     <audio autoplay loop>
@@ -248,4 +176,4 @@
         Seu navegador não suporta áudio HTML5.
     </audio>
 </body>
-</html>
+</html
