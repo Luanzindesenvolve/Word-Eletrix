@@ -115,27 +115,47 @@
                     <option value="telegraphImage">Foto para link</option>
                 </optgroup>
             </select><br><br>
-            <label for="query">Nome ou link:</label><br>
+            <label for="query" id="queryLabel">Nome ou link:</label><br>
             <input type="text" id="query" name="query" required><br><br>
-            <label for="fileUpload">Selecionar arquivo (foto ou vídeo):</label><br>
-            <input type="file" id="fileUpload" name="fileUpload"><br><br>
-            <input type="submit" value="Enviar">
+            <input type="file" id="fileUpload" name="fileUpload" style="display:none;"><br><br>
+            <input type="submit" id="submitButton" value="Enviar">
         </form>
 
         <div id="result"></div>
     </div>
 
     <script>
-        document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+        const optionSelect = document.getElementById('option');
+        const queryLabel = document.getElementById('queryLabel');
+        const queryInput = document.getElementById('query');
+        const fileUpload = document.getElementById('fileUpload');
+        const submitButton = document.getElementById('submitButton');
+        const downloadForm = document.getElementById('downloadForm');
+        const resultElement = document.getElementById('result');
+
+        optionSelect.addEventListener('change', () => {
+            const selectedOption = optionSelect.value;
+
+            if (selectedOption === 'telegraphVideo' || selectedOption === 'telegraphImage') {
+                queryLabel.style.display = 'none';
+                queryInput.style.display = 'none';
+                fileUpload.style.display = 'block';
+            } else {
+                queryLabel.style.display = 'block';
+                queryInput.style.display = 'block';
+                fileUpload.style.display = 'none';
+            }
+        });
+
+        downloadForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const formData = new FormData(e.target);
+            const formData = new FormData(downloadForm);
             const option = formData.get('option');
             const query = formData.get('query');
             const file = formData.get('fileUpload');
 
             let apiUrl;
-            let resultElement = document.getElementById('result');
 
             if (option === 'instagramByLink') {
                 apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
@@ -170,10 +190,13 @@
                 }
 
                 try {
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('file', file);
+
                     // Upload the file to Telegra.ph
                     const uploadResponse = await fetch('https://telegra.ph/upload', {
                         method: 'POST',
-                        body: new FormData(document.getElementById('downloadForm'))
+                        body: uploadFormData
                     });
 
                     const uploadResult = await uploadResponse.json();
@@ -186,36 +209,45 @@
                     const filePath = uploadResult[0].src;
 
                     // Create the Telegra.ph page
-                    const createPageResponse = await fetch('https://api.telegra.ph/createPage', {
+                    const createPageResponse = await fetch('https://api.telegr.ph/createPage', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            title: 'Media Link',
-                            author_name: 'Bot',
-                            content: `[{"tag":"a","attrs":{"href":"https://telegra.ph${filePath}"},"children":["Link"]}]`,
-                            return_content: true
+                            access_token: '', // Deixe vazio se não estiver usando um token
+                            title: 'Uploaded File',
+                            author_name: 'Uploader',
+                            content: JSON.stringify([{
+                                tag: 'figure',
+                                children: [{
+                                    tag: 'img',
+                                    attrs: {
+                                        src: filePath
+                                    }
+                                }]
+                            }])
                         })
                     });
 
                     const createPageResult = await createPageResponse.json();
 
-                    if (createPageResult.ok) {
-                        const link = `https://telegra.ph/${createPageResult.result.path}`;
-                        resultElement.textContent = `Link criado com sucesso: ${link}`;
-                        window.open(link, '_blank');
-                    } else {
-                        resultElement.textContent = 'Erro ao criar o link';
+                    if (createPageResult.error) {
+                        resultElement.textContent = 'Erro ao criar a página';
+                        return;
                     }
+
+                    const telegraphUrl = createPageResult.result.url;
+                    window.open(telegraphUrl, '_blank');
                 } catch (error) {
-                    resultElement.textContent = 'Erro ao criar o linkresultElement.textContent = 'Erro ao criar o link';
+                    resultElement.textContent = 'Erro ao criar o link';
                     console.error('Erro:', error);
                 }
-            } else {
-                // Para as opções de download, redireciona o usuário para a URL da API correspondente
-                window.location.href = apiUrl;
+                return;
             }
+
+            // Para as opções de download, redireciona o usuário para a URL da API correspondente
+            window.location.href = apiUrl;
         });
     </script>
     <audio autoplay loop>
