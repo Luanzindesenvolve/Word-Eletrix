@@ -139,10 +139,10 @@
 
                 if (option === 'pinterestVideo') {
                     // Redireciona para a API do Pinterest para baixar vídeo
-                    apiUrl = `https://api.pinterest.com/v1/pins/${encodeURIComponent(query)}/video`;
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/vid?url=${encodeURIComponent(query)}`;
                 } else if (option === 'pinterestImage') {
                     // Redireciona para a API do Pinterest para baixar imagem
-                    apiUrl = `https://api.pinterest.com/v1/pins/${encodeURIComponent(query)}/image`;
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/img?url=${encodeURIComponent(query)}`;
                 }
 
                 if (apiUrl) {
