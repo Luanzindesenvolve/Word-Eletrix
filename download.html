@@ -117,7 +117,7 @@
             </select><br><br>
             <label for="query" id="queryLabel">Nome ou link:</label><br>
             <input type="text" id="query" name="query" required><br><br>
-            <input type="file" id="fileUpload" name="fileUpload" style="display:none;"><br><br>
+            <input type="file" id="fileUpload" name="fileUpload" style="display:none;" required><br><br>
             <input type="submit" id="submitButton" value="Enviar">
         </form>
 
@@ -140,10 +140,12 @@
                 queryLabel.style.display = 'none';
                 queryInput.style.display = 'none';
                 fileUpload.style.display = 'block';
+                fileUpload.required = true;
             } else {
                 queryLabel.style.display = 'block';
                 queryInput.style.display = 'block';
                 fileUpload.style.display = 'none';
+                fileUpload.required = false;
             }
         });
 
@@ -209,14 +211,13 @@
                     const filePath = uploadResult[0].src;
 
                     // Create the Telegra.ph page
-                    const createPageResponse = await fetch('https://api.telegr.ph/createPage', {
+                    const createPageResponse = await fetch('https://api.telegra.ph/createPage', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            access_token: '', // Deixe vazio se não estiver usando um token
-                            title: 'Uploaded File',
+                            title: 'Arquivo Enviado',
                             author_name: 'Uploader',
                             content: JSON.stringify([{
                                 tag: 'figure',
@@ -246,7 +247,7 @@
                 return;
             }
 
-            // Para as opções de download, redireciona o usuário para a URL da API correspondente
+            // Para as outras opções de download, redireciona o usuário para a URL da API correspondente
             window.location.href = apiUrl;
         });
     </script>
