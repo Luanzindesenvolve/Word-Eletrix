@@ -109,6 +109,10 @@
                     <option value="telegraphImage">Foto para link</option>
                     <option value="telegraphVideo">Vídeo para link</option>
                 </optgroup>
+                <optgroup label="Pinterest 📌">
+                    <option value="pinterestVideo">Vídeo pelo link</option>
+                    <option value="pinterestImage">Imagem pelo link</option>
+                </optgroup>
             </select><br><br>
             <label for="query">Nome ou link:</label><br>
             <input type="text" id="query" name="query"><br><br>
@@ -128,8 +132,24 @@
             const resultElement = document.getElementById('result');
 
             if (option === 'telegraphImage' || option === 'telegraphVideo') {
-                // Redireciona para o Telegra.ph
+                // Redireciona para o Telegra.ph para upload de arquivos
                 window.open('https://telegra.ph', '_blank');
+            } else if (option === 'pinterestVideo' || option === 'pinterestImage') {
+                let apiUrl;
+
+                if (option === 'pinterestVideo') {
+                    // Redireciona para a API do Pinterest para baixar vídeo
+                    apiUrl = `https://api.pinterest.com/v1/pins/${encodeURIComponent(query)}/video`;
+                } else if (option === 'pinterestImage') {
+                    // Redireciona para a API do Pinterest para baixar imagem
+                    apiUrl = `https://api.pinterest.com/v1/pins/${encodeURIComponent(query)}/image`;
+                }
+
+                if (apiUrl) {
+                    window.open(apiUrl, '_blank');
+                } else {
+                    resultElement.textContent = 'Opção inválida ou não suportada';
+                }
             } else {
                 // Para as outras opções, redireciona o usuário para a URL da API correspondente
                 let apiUrl;
@@ -164,11 +184,6 @@
                     resultElement.textContent = 'Opção inválida ou não suportada';
                 }
             }
-        });
-
-        // Exibe a mensagem de resultado apenas se houver
-        document.getElementById('result').addEventListener('click', () => {
-            document.getElementById('result').textContent = '';
         });
     </script>
     <audio autoplay loop>
