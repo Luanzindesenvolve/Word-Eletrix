@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download e Criação de Links</title>
+    <title>Download e Upload de Arquivos</title>
     <style>
         body {
             margin: 0;
@@ -77,12 +77,12 @@
 <body>
     <video autoplay loop muted>
         <source src="download.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        Seu navegador não suporta a tag de vídeo.
     </video>
 
     <div id="content">
-        <h1>Download e Criação de Links</h1>
-        <form id="downloadForm">
+        <h1>Download e Upload de Arquivos</h1>
+        <form id="uploadForm">
             <label for="option">Selecione uma opção:</label><br>
             <select id="option" name="option">
                 <optgroup label="Baixar música 🎵">
@@ -106,96 +106,44 @@
                     <option value="tiktokByLinkVideo">Vídeo</option>
                     <option value="tiktokByLinkAudio">Áudio</option>
                 </optgroup>
-                <optgroup label="Baixar do Pinterest 📌">
-                    <option value="pinterestVideoByLink">Baixar vídeo pelo link</option>
-                    <option value="pinterestImageByLink">Baixar imagem pelo link</option>
-                </optgroup>
-                <optgroup label="Criar link no Telegra.ph 🌐">
-                    <option value="telegraphVideo">Vídeo para link</option>
+                <optgroup label="Telegra.ph 🌐">
                     <option value="telegraphImage">Foto para link</option>
+                    <option value="telegraphVideo">Vídeo para link</option>
                 </optgroup>
             </select><br><br>
-            <label for="query" id="queryLabel">Nome ou link:</label><br>
-            <input type="text" id="query" name="query" required><br><br>
-            <input type="file" id="fileUpload" name="fileUpload" style="display:none;" required><br><br>
-            <input type="submit" id="submitButton" value="Enviar">
+            <label for="query">Nome ou link:</label><br>
+            <input type="text" id="query" name="query"><br><br>
+            <label for="fileUpload" id="fileUploadLabel" style="display: none;">Selecione um arquivo:</label><br>
+            <input type="file" id="fileUpload" name="fileUpload" style="display: none;"><br><br>
+            <input type="submit" value="Enviar">
         </form>
 
         <div id="result"></div>
     </div>
 
     <script>
-        const optionSelect = document.getElementById('option');
-        const queryLabel = document.getElementById('queryLabel');
-        const queryInput = document.getElementById('query');
-        const fileUpload = document.getElementById('fileUpload');
-        const submitButton = document.getElementById('submitButton');
-        const downloadForm = document.getElementById('downloadForm');
-        const resultElement = document.getElementById('result');
-
-        optionSelect.addEventListener('change', () => {
-            const selectedOption = optionSelect.value;
-
-            if (selectedOption === 'telegraphVideo' || selectedOption === 'telegraphImage') {
-                queryLabel.style.display = 'none';
-                queryInput.style.display = 'none';
-                fileUpload.style.display = 'block';
-                fileUpload.required = true;
-            } else {
-                queryLabel.style.display = 'block';
-                queryInput.style.display = 'block';
-                fileUpload.style.display = 'none';
-                fileUpload.required = false;
-            }
-        });
-
-        downloadForm.addEventListener('submit', async (e) => {
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const formData = new FormData(downloadForm);
+
+            const formData = new FormData(e.target);
             const option = formData.get('option');
             const query = formData.get('query');
             const file = formData.get('fileUpload');
+            const resultElement = document.getElementById('result');
 
-            let apiUrl;
-
-            if (option === 'instagramByLink') {
-                apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
-            } else if (option === 'instagramStoryByLink') {
-                apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
-            } else if (option === 'instagramSearch') {
-                apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
-            } else if (option === 'musicByName') {
-                apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?name=${encodeURIComponent(query)}`;
-            } else if (option === 'musicByLink') {
-                apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?url=${encodeURIComponent(query)}`;
-            } else if (option === 'videoByName') {
-                apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?name=${encodeURIComponent(query)}`;
-            } else if (option === 'videoByLink') {
-                apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?url=${encodeURIComponent(query)}`;
-            } else if (option === 'facebookByLink1') {
-                apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
-            } else if (option === 'facebookByLink2') {
-                apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
-            } else if (option === 'tiktokByLinkVideo') {
-                apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
-            } else if (option === 'tiktokByLinkAudio') {
-                apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
-            } else if (option === 'pinterestVideoByLink') {
-                apiUrl = `http://api-pinterest-y7jx.onrender.com/api/vid?url=${encodeURIComponent(query)}`;
-            } else if (option === 'pinterestImageByLink') {
-                apiUrl = `http://api-pinterest-y7jx.onrender.com/api/img?url=${encodeURIComponent(query)}`;
-            } else if (option === 'telegraphVideo' || option === 'telegraphImage') {
+            if (option === 'telegraphImage' || option === 'telegraphVideo') {
                 if (!file) {
                     resultElement.textContent = 'Por favor, selecione um arquivo para upload';
                     return;
                 }
 
-                try {
-                    const uploadFormData = new FormData();
-                    uploadFormData.append('file', file);
+                const fileBuffer = await file.arrayBuffer();
 
-                    // Upload the file to Telegra.ph
+                try {
+                    // Envia o arquivo para Telegra.ph
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('file', new Blob([fileBuffer]), file.name);
+
                     const uploadResponse = await fetch('https://telegra.ph/upload', {
                         method: 'POST',
                         body: uploadFormData
@@ -203,14 +151,13 @@
 
                     const uploadResult = await uploadResponse.json();
 
-                    if (uploadResult.error) {
-                        resultElement.textContent = 'Erro ao fazer upload do arquivo';
-                        return;
+                    if (!uploadResult || !uploadResult[0] || !uploadResult[0].src) {
+                        throw new Error('Erro ao fazer upload do arquivo');
                     }
 
-                    const filePath = uploadResult[0].src;
+                    const filePath = 'https://telegra.ph' + uploadResult[0].src;
 
-                    // Create the Telegra.ph page
+                    // Cria uma página no Telegra.ph
                     const createPageResponse = await fetch('https://api.telegra.ph/createPage', {
                         method: 'POST',
                         headers: {
@@ -220,11 +167,12 @@
                             title: 'Arquivo Enviado',
                             author_name: 'Uploader',
                             content: JSON.stringify([{
-                                tag: 'figure',
+                                tag: option === 'telegraphImage' ? 'figure' : 'video',
                                 children: [{
-                                    tag: 'img',
+                                    tag: option === 'telegraphImage' ? 'img' : 'source',
                                     attrs: {
-                                        src: filePath
+                                        src: filePath,
+                                        type: option === 'telegraphImage' ? '' : 'video/mp4'
                                     }
                                 }]
                             }])
@@ -234,21 +182,65 @@
                     const createPageResult = await createPageResponse.json();
 
                     if (createPageResult.error) {
-                        resultElement.textContent = 'Erro ao criar a página';
-                        return;
+                        throw new Error('Erro ao criar a página');
                     }
 
                     const telegraphUrl = createPageResult.result.url;
                     window.open(telegraphUrl, '_blank');
                 } catch (error) {
-                    resultElement.textContent = 'Erro ao criar o link';
+                    resultElement.textContent = error.message;
                     console.error('Erro:', error);
                 }
-                return;
-            }
+            } else {
+                // Para as outras opções, redireciona o usuário para a URL da API correspondente
+                let apiUrl;
 
-            // Para as outras opções de download, redireciona o usuário para a URL da API correspondente
-            window.location.href = apiUrl;
+                if (option === 'instagramByLink') {
+                    apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
+                } else if (option === 'instagramStoryByLink') {
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
+                } else if (option === 'instagramSearch') {
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
+                } else if (option === 'musicByName') {
+                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?name=${encodeURIComponent(query)}`;
+                } else if (option === 'musicByLink') {
+                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?url=${encodeURIComponent(query)}`;
+                } else if (option === 'videoByName') {
+                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?name=${encodeURIComponent(query)}`;
+                } else if (option === 'videoByLink') {
+                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?url=${encodeURIComponent(query)}`;
+                } else if (option === 'facebookByLink1') {
+                    apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
+                } else if (option === 'facebookByLink2') {
+                    apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
+                } else if (option === 'tiktokByLinkVideo') {
+                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                } else if (option === 'tiktokByLinkAudio') {
+                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                }
+
+                if (apiUrl) {
+                    window.location.href = apiUrl;
+                } else {
+                    resultElement.textContent = 'Opção inválida ou não suportada';
+                }
+        });
+
+        // Exibe os campos de upload de arquivo apenas para opções Telegra.ph
+        document.getElementById('option').addEventListener('change', (e) => {
+            const option = e.target.value;
+            const fileUpload = document.getElementById('fileUpload');
+            const fileUploadLabel = document.getElementById('fileUploadLabel');
+
+            if (option === 'telegraphImage' || option === 'telegraphVideo') {
+                fileUpload.style.display = 'block';
+                fileUploadLabel.style.display = 'block';
+                document.getElementById('query').style.display = 'none'; // Oculta o campo de texto
+            } else {
+                fileUpload.style.display = 'none';
+                fileUploadLabel.style.display = 'none';
+                document.getElementById('query').style.display = 'block'; // Exibe o campo de texto
+            }
         });
     </script>
     <audio autoplay loop>
