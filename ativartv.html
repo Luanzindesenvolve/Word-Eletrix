@@ -16,6 +16,18 @@
         h1 {
             color: #00e5ff;
             margin-top: 30px;
+            
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            
         }
         .button-container {
             display: flex;
@@ -49,6 +61,10 @@
     </style>
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="ativartv.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
     <h1>Ativação de Serviços de Streaming</h1>
     <div class="button-container">
         <a href="https://www.netflix.com/tv2" class="button">Netflix</a>
@@ -101,5 +117,9 @@
         <a href="https://www.viki.com/activate" class="button">Viki</a>
         <a href="https://www.starz.com/br/activate" class="button">Starz Play</a>
     </div>
+    <audio autoplay loop>
+        <source src="ativartv.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
 </body>
 </html>
