@@ -8,16 +8,24 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
         }
+        h1 {
+            color: #00e5ff;
+            margin-top: 30px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 50px;
+        }
         .button {
-            background-color: #6200ea;
-            color: white;
+            background-color: #000000;
+            color: #00ff00;
             padding: 15px 30px;
             margin: 10px;
             border: none;
@@ -27,37 +35,71 @@
             text-decoration: none;
             transition: background-color 0.3s, transform 0.3s;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: calc(33% - 20px); /* Ajuste a largura dos botões */
+            box-sizing: border-box;
         }
         .button:hover {
-            background-color: #3700b3;
+            background-color: #333333;
             transform: translateY(-2px);
         }
         .button:active {
-            background-color: #30009c;
+            background-color: #666666;
             transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <a href="https://www.netflix.com/tv2" class="button">Netflix</a>
-    <a href="https://www.primevideo.com/mytv" class="button">Prime Video</a>
-    <a href="https://ativar.globo.com/" class="button">Globoplay</a>
-    <a href="https://www.disneyplus.com/start" class="button">Disney+</a>
-    <a href="https://max.com/signin" class="button">HBO Max</a>
-    <a href="https://www.paramountplus.com/br/tv/" class="button">Paramount+</a>
-    <a href="https://www.starplus.com/start" class="button">Star+</a>
-    <a href="https://activate.apple.com" class="button">Apple TV+</a>
-    <a href="https://www.clarotvmais.com.br/ativar" class="button">Claro TV+</a>
-    <a href="https://www.skymais.com.br/ativar" class="button">Sky</a>
-    <a href="https://Spotify.com/pair" class="button">Spotify</a>
-    <a href="https://www.crunchyroll.com/pt-br/activate" class="button">Crunchyroll</a>
-    <a href="https://www.looke.com.br/activate" class="button">Looke</a>
-    <a href="https://www.telecineplay.com.br/activate" class="button">Telecine Play</a>
-    <a href="https://www.globosatplay.com.br/activate" class="button">Globosat Play</a>
-    <a href="https://youtube.com/activate" class="button">YouTube</a>
-    <a href="https://www.twitch.tv/activate" class="button">Twitch</a>
-    <a href="https://plex.tv/link" class="button">Plex</a>
-    <a href="https://www.deezer.com/us/activate" class="button">Deezer</a>
-    <a href="https://www.dazn.com/pt-BR/help/articles/how-to-watch-dazn-on-tv" class="button">Dazn</a>
+    <h1>Ativação de Serviços de Streaming</h1>
+    <div class="button-container">
+        <a href="https://www.netflix.com/tv2" class="button">Netflix</a>
+        <a href="https://www.primevideo.com/mytv" class="button">Prime Video</a>
+        <a href="https://ativar.globo.com/" class="button">Globoplay</a>
+        <a href="https://www.disneyplus.com/start" class="button">Disney+</a>
+        <a href="https://max.com/signin" class="button">HBO Max</a>
+        <a href="https://www.paramountplus.com/br/tv/" class="button">Paramount+</a>
+        <a href="https://www.starplus.com/start" class="button">Star+</a>
+        <a href="https://activate.apple.com" class="button">Apple TV+</a>
+        <a href="https://www.clarotvmais.com.br/ativar" class="button">Claro TV+</a>
+        <a href="https://www.skymais.com.br/ativar" class="button">Sky</a>
+        <a href="https://Spotify.com/pair" class="button">Spotify</a>
+        <a href="https://www.crunchyroll.com/pt-br/activate" class="button">Crunchyroll</a>
+        <a href="https://www.looke.com.br/activate" class="button">Looke</a>
+        <a href="https://www.telecineplay.com.br/activate" class="button">Telecine Play</a>
+        <a href="https://youtube.com/activate" class="button">YouTube</a>
+        <a href="https://www.twitch.tv/activate" class="button">Twitch</a>
+        <a href="https://plex.tv/link" class="button">Plex</a>
+        <a href="https://www.deezer.com/us/activate" class="button">Deezer</a>
+        <a href="https://www.dazn.com/pt-BR/help/articles/how-to-watch-dazn-on-tv" class="button">Dazn</a>
+        <a href="https://www.playplus.com/ativar" class="button">PlayPlus</a>
+        <a href="https://www.nowonline.com.br/ativar" class="button">NOW</a>
+        <a href="https://uolplay.uol.com.br/ativar" class="button">UOL Play</a>
+        <a href="https://cultura.uol.com.br/ativar" class="button">TV Cultura</a>
+        <a href="https://www.sbtvideos.com.br/ativar" class="button">SBT Vídeos</a>
+        <a href="https://www.band.uol.com.br/ativar" class="button">Band Play</a>
+        <a href="https://www.funimation.com/activate" class="button">Funimation</a>
+        <a href="https://www.discoveryplus.com/br/activate" class="button">Discovery+</a>
+        <a href="https://www.cinebrasiltv.com.br/ativar" class="button">Cinebrasiltv</a>
+        <a href="https://www.vivo.com.br/ativar" class="button">Vivo Play</a>
+        <a href="https://www.foxplay.com/activate" class="button">Fox Premium</a>
+        <a href="https://www.eiplus.com.br/ativar" class="button">Esporte Interativo Plus</a>
+        <a href="https://watch.espn.com/activate" class="button">Watch ESPN</a>
+        <a href="https://www.redbull.com/br-pt/tv/activate" class="button">Red Bull TV</a>
+        <a href="https://www.bbc.co.uk/iplayer/activate" class="button">BBC iPlayer</a>
+        <a href="https://www.kanopy.com/tv" class="button">Kanopy</a>
+        <a href="https://www.shudder.com/login" class="button">Shudder</a>
+        <a href="https://signup.acorn.tv/activate" class="button">Acorn TV</a>
+        <a href="https://mubi.com/tv" class="button">Mubi</a>
+        <a href="https://activate.pluto.tv" class="button">Pluto TV</a>
+        <a href="https://www.tvtime.com/activate" class="button">TV Time</a>
+        <a href="https://www.directvgo.com/br/ativar" class="button">DirecTV Go</a>
+        <a href="https://www.spcineplay.com.br/ativar" class="button">Spcine Play</a>
+        <a href="https://www.cineplay.com.br/ativar" class="button">CinePlay</a>
+        <a href="https://www.oldflix.com.br/ativar" class="button">Oldflix</a>
+        <a href="https://tv.youtube.com/activate" class="button">YouTube TV</a>
+        <a href="https://www.netmovies.com.br/ativar" class="button">NetMovies</a>
+        <a href="https://www.spuul.com/activate" class="button">Spuul</a>
+        <a href="https://www.viki.com/activate" class="button">Viki</a>
+        <a href="https://www.starz.com/br/activate" class="button">Starz Play</a>
+    </div>
 </body>
-</html
+</html>
