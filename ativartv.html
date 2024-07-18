@@ -16,18 +16,19 @@
         h1 {
             color: #00e5ff;
             margin-top: 30px;
+        }
             
-        video {
+        /* Estilos para o vídeo de fundo */
+        #video-background {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            right: 0;
+            bottom: 0;
             min-width: 100%;
             min-height: 100%;
             width: auto;
             height: auto;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            
+            z-index: -100;
+        
         }
         .button-container {
             display: flex;
@@ -61,9 +62,9 @@
     </style>
 </head>
 <body>
-    <video> autoplay loop muted>
-        <source src="ativartv.mp4" type="video/mp4">
-        Seu navegador não suporta a tag de vídeo.
+    <video autoplay muted loop id="video-background">
+        <source src="V.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
     </video>
     <h1>Ativação de Serviços de Streaming</h1>
     <div class="button-container">
