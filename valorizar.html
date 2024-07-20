@@ -3,7 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cartola min. para Valorização</title>
+    <title>Cálculo de Valorização</title>
+    <style>
+        /* Estilo para o vídeo de fundo */
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        
+        /* Estilo para o conteúdo da página */
+        body {
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
     <script>
         function calcularValorizacao() {
             // Obter o valor inserido pelo usuário
@@ -24,6 +67,11 @@
     </script>
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="valorizar.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
+    
     <h1>Valorização do Jogador</h1>
     <form onsubmit="event.preventDefault(); calcularValorizacao();">
         <label for="valor-jogador">Qual o valor do jogador? (R$):</label>
@@ -32,4 +80,4 @@
     </form>
     <p id="resultado"></p>
 </body>
-</html
+</html>
