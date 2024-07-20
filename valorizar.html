@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartola min. para Valorização</title>
+    <script>
+        function calcularValorizacao() {
+            // Obter o valor inserido pelo usuário
+            var valor = parseFloat(document.getElementById('valor-jogador').value);
+            
+            // Verificar se o valor é um número válido
+            if (isNaN(valor) || valor <= 0) {
+                alert('Por favor, insira um valor válido.');
+                return;
+            }
+            
+            // Calcular a multiplicação por 0.45
+            var valorNecessario = valor * 0.45;
+            
+            // Exibir a mensagem com o valor calculado
+            document.getElementById('resultado').innerText = 'Esse jogador precisa de R$ ' + valorNecessario.toFixed(2) + ' para valorizar.';
+        }
+    </script>
+</head>
+<body>
+    <h1>Valorização do Jogador</h1>
+    <form onsubmit="event.preventDefault(); calcularValorizacao();">
+        <label for="valor-jogador">Qual o valor do jogador? (R$):</label>
+        <input type="number" id="valor-jogador" step="0.01" required>
+        <button type="submit">Calcular</button>
+    </form>
+    <p id="resultado"></p>
+</body>
+</html
