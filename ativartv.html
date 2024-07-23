@@ -7,17 +7,52 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f0f0;
+            background-color: transparent;
             margin: 0;
+            padding: 20px;
         }
         h1 {
             color: #00e5ff;
-            margin-top: 30px;
+            text-align: center;
+            margin-bottom: 30px;
         }
-            
+        .button-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .button-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button-list li span {
+            color: #ffffff;
+            font-size: 18px;
+        }
+        .button {
+            background-color: #00ff00;
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #66ff66;
+            transform: translateY(-2px);
+        }
+        .button:active {
+            background-color: #33cc33;
+            transform: translateY(0);
+        }
         /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
@@ -28,36 +63,6 @@
             width: auto;
             height: auto;
             z-index: -100;
-        
-        }
-        .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 50px;
-        }
-        .button {
-            background-color: #000000;
-            color: #00ff00;
-            padding: 15px 30px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 18px;
-            text-decoration: none;
-            transition: background-color 0.3s, transform 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: calc(33% - 20px); /* Ajuste a largura dos botões */
-            box-sizing: border-box;
-        }
-        .button:hover {
-            background-color: #333333;
-            transform: translateY(-2px);
-        }
-        .button:active {
-            background-color: #666666;
-            transform: translateY(0);
         }
     </style>
 </head>
@@ -67,57 +72,57 @@
         Seu navegador não suporta vídeos HTML5.
     </video>
     <h1>Ativação de Serviços de Streaming</h1>
-    <div class="button-container">
-        <a href="https://www.netflix.com/tv2" class="button">Netflix</a>
-        <a href="https://www.primevideo.com/mytv" class="button">Prime Video</a>
-        <a href="https://ativar.globo.com/" class="button">Globoplay</a>
-        <a href="https://www.disneyplus.com/start" class="button">Disney+</a>
-        <a href="https://max.com/signin" class="button">HBO Max</a>
-        <a href="https://www.paramountplus.com/br/tv/" class="button">Paramount+</a>
-        <a href="https://www.starplus.com/start" class="button">Star+</a>
-        <a href="https://activate.apple.com" class="button">Apple TV+</a>
-        <a href="https://www.clarotvmais.com.br/ativar" class="button">Claro TV+</a>
-        <a href="https://www.skymais.com.br/ativar" class="button">Sky</a>
-        <a href="https://Spotify.com/pair" class="button">Spotify</a>
-        <a href="https://www.crunchyroll.com/pt-br/activate" class="button">Crunchyroll</a>
-        <a href="https://www.looke.com.br/activate" class="button">Looke</a>
-        <a href="https://www.telecineplay.com.br/activate" class="button">Telecine Play</a>
-        <a href="https://youtube.com/activate" class="button">YouTube</a>
-        <a href="https://www.twitch.tv/activate" class="button">Twitch</a>
-        <a href="https://plex.tv/link" class="button">Plex</a>
-        <a href="https://www.deezer.com/us/activate" class="button">Deezer</a>
-        <a href="https://www.dazn.com/pt-BR/help/articles/how-to-watch-dazn-on-tv" class="button">Dazn</a>
-        <a href="https://www.playplus.com/ativar" class="button">PlayPlus</a>
-        <a href="https://www.nowonline.com.br/ativar" class="button">NOW</a>
-        <a href="https://uolplay.uol.com.br/ativar" class="button">UOL Play</a>
-        <a href="https://cultura.uol.com.br/ativar" class="button">TV Cultura</a>
-        <a href="https://www.sbtvideos.com.br/ativar" class="button">SBT Vídeos</a>
-        <a href="https://www.band.uol.com.br/ativar" class="button">Band Play</a>
-        <a href="https://www.funimation.com/activate" class="button">Funimation</a>
-        <a href="https://www.discoveryplus.com/br/activate" class="button">Discovery+</a>
-        <a href="https://www.cinebrasiltv.com.br/ativar" class="button">Cinebrasiltv</a>
-        <a href="https://www.vivo.com.br/ativar" class="button">Vivo Play</a>
-        <a href="https://www.foxplay.com/activate" class="button">Fox Premium</a>
-        <a href="https://www.eiplus.com.br/ativar" class="button">Esporte Interativo Plus</a>
-        <a href="https://watch.espn.com/activate" class="button">Watch ESPN</a>
-        <a href="https://www.redbull.com/br-pt/tv/activate" class="button">Red Bull TV</a>
-        <a href="https://www.bbc.co.uk/iplayer/activate" class="button">BBC iPlayer</a>
-        <a href="https://www.kanopy.com/tv" class="button">Kanopy</a>
-        <a href="https://www.shudder.com/login" class="button">Shudder</a>
-        <a href="https://signup.acorn.tv/activate" class="button">Acorn TV</a>
-        <a href="https://mubi.com/tv" class="button">Mubi</a>
-        <a href="https://activate.pluto.tv" class="button">Pluto TV</a>
-        <a href="https://www.tvtime.com/activate" class="button">TV Time</a>
-        <a href="https://www.directvgo.com/br/ativar" class="button">DirecTV Go</a>
-        <a href="https://www.spcineplay.com.br/ativar" class="button">Spcine Play</a>
-        <a href="https://www.cineplay.com.br/ativar" class="button">CinePlay</a>
-        <a href="https://www.oldflix.com.br/ativar" class="button">Oldflix</a>
-        <a href="https://tv.youtube.com/activate" class="button">YouTube TV</a>
-        <a href="https://www.netmovies.com.br/ativar" class="button">NetMovies</a>
-        <a href="https://www.spuul.com/activate" class="button">Spuul</a>
-        <a href="https://www.viki.com/activate" class="button">Viki</a>
-        <a href="https://www.starz.com/br/activate" class="button">Starz Play</a>
-    </div>
+    <ul class="button-list">
+        <li><span>Netflix</span> <a href="https://www.netflix.com/tv2" class="button">Site</a></li>
+        <li><span>Prime Video</span> <a href="https://www.primevideo.com/mytv" class="button">Site</a></li>
+        <li><span>Globoplay</span> <a href="https://ativar.globo.com/" class="button">Site</a></li>
+        <li><span>Disney+</span> <a href="https://www.disneyplus.com/start" class="button">Site</a></li>
+        <li><span>HBO Max</span> <a href="https://max.com/signin" class="button">Site</a></li>
+        <li><span>Paramount+</span> <a href="https://www.paramountplus.com/br/tv/" class="button">Site</a></li>
+        <li><span>Star+</span> <a href="https://www.starplus.com/start" class="button">Site</a></li>
+        <li><span>Apple TV+</span> <a href="https://activate.apple.com" class="button">Site</a></li>
+        <li><span>Claro TV+</span> <a href="https://www.clarotvmais.com.br/ativar" class="button">Site</a></li>
+        <li><span>Sky</span> <a href="https://www.skymais.com.br/ativar" class="button">Site</a></li>
+        <li><span>Spotify</span> <a href="https://Spotify.com/pair" class="button">Site</a></li>
+        <li><span>Crunchyroll</span> <a href="https://www.crunchyroll.com/pt-br/activate" class="button">Site</a></li>
+        <li><span>Looke</span> <a href="https://www.looke.com.br/activate" class="button">Site</a></li>
+        <li><span>Telecine Play</span> <a href="https://www.telecineplay.com.br/activate" class="button">Site</a></li>
+        <li><span>YouTube</span> <a href="https://youtube.com/activate" class="button">Site</a></li>
+        <li><span>Twitch</span> <a href="https://www.twitch.tv/activate" class="button">Site</a></li>
+        <li><span>Plex</span> <a href="https://plex.tv/link" class="button">Site</a></li>
+        <li><span>Deezer</span> <a href="https://www.deezer.com/us/activate" class="button">Site</a></li>
+        <li><span>Dazn</span> <a href="https://www.dazn.com/pt-BR/help/articles/how-to-watch-dazn-on-tv" class="button">Site</a></li>
+        <li><span>PlayPlus</span> <a href="https://www.playplus.com/ativar" class="button">Site</a></li>
+        <li><span>NOW</span> <a href="https://www.nowonline.com.br/ativar" class="button">Site</a></li>
+        <li><span>UOL Play</span> <a href="https://uolplay.uol.com.br/ativar" class="button">Site</a></li>
+        <li><span>TV Cultura</span> <a href="https://cultura.uol.com.br/ativar" class="button">Site</a></li>
+        <li><span>SBT Vídeos</span> <a href="https://www.sbtvideos.com.br/ativar" class="button">Site</a></li>
+        <li><span>Band Play</span> <a href="https://www.band.uol.com.br/ativar" class="button">Site</a></li>
+        <li><span>Funimation</span> <a href="https://www.funimation.com/activate" class="button">Site</a></li>
+        <li><span>Discovery+</span> <a href="https://www.discoveryplus.com/br/activate" class="button">Site</a></li>
+        <li><span>Cinebrasiltv</span> <a href="https://www.cinebrasiltv.com.br/ativar" class="button">Site</a></li>
+        <li><span>Vivo Play</span> <a href="https://www.vivo.com.br/ativar" class="button">Site</a></li>
+        <li><span>Fox Premium</span> <a href="https://www.foxplay.com/activate" class="button">Site</a></li>
+        <li><span>Esporte Interativo Plus</span> <a href="https://www.eiplus.com.br/ativar" class="button">Site</a></li>
+        <li><span>Watch ESPN</span> <a href="https://watch.espn.com/activate" class="button">Site</a></li>
+        <li><span>Red Bull TV</span> <a href="https://www.redbull.com/br-pt/tv/activate" class="button">Site</a></li>
+        <li><span>BBC iPlayer</span> <a href="https://www.bbc.co.uk/iplayer/activate" class="button">Site</a></li>
+        <li><span>Kanopy</span> <a href="https://www.kanopy.com/tv" class="button">Site</a></li>
+        <li><span>Shudder</span> <a href="https://www.shudder.com/login" class="button">Site</a></li>
+        <li><span>Acorn TV</span> <a href="https://signup.acorn.tv/activate" class="button">Site</a></li>
+        <li><span>Mubi</span> <a href="https://mubi.com/tv" class="button">Site</a></li>
+        <li><span>Pluto TV</span> <a href="https://activate.pluto.tv" class="button">Site</a></li>
+        <li><span>TV Time</span> <a href="https://www.tvtime.com/activate" class="button">Site</a></li>
+        <li><span>DirecTV Go</span> <a href="https://www.directvgo.com/br/ativar" class="button">Site</a></li>
+        <li><span>Spcine Play</span> <a href="https://www.s<li><span>Spcine Play</span> <a href="https://www.spcineplay.com.br/ativar" class="button">Site</a></li>
+        <li><span>CinePlay</span> <a href="https://www.cineplay.com.br/ativar" class="button">Site</a></li>
+        <li><span>Oldflix</span> <a href="https://www.oldflix.com.br/ativar" class="button">Site</a></li>
+        <li><span>YouTube TV</span> <a href="https://tv.youtube.com/activate" class="button">Site</a></li>
+        <li><span>NetMovies</span> <a href="https://www.netmovies.com.br/ativar" class="button">Site</a></li>
+        <li><span>Spuul</span> <a href="https://www.spuul.com/activate" class="button">Site</a></li>
+        <li><span>Viki</span> <a href="https://www.viki.com/activate" class="button">Site</a></li>
+        <li><span>Starz Play</span> <a href="https://www.starz.com/br/activate" class="button">Site</a></li>
+    </ul>
     <audio autoplay loop>
         <source src="ativartv.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio HTML5.
