@@ -10,7 +10,21 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+// Rota para servir arquivos JSON da API
+app.get('/api/:category', (req, res) => {
+  const category = req.params.category;
+  const filePath = path.join(__dirname, 'db', `${category}.json`);
 
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      return res.status(404).json({
+        status: false,
+        mensagem: `Arquivo ${category}.json não encontrado.`,
+      });
+    }
+    res.json(JSON.parse(data));
+  });
+});
 // Rota dinâmica para servir arquivos HTML e TXT sem a extensão
 app.get('/:page', (req, res) => {
   const page = req.params.page;
