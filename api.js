@@ -5,7 +5,6 @@ const app = express();
 
 const criador = "World Ecletix";
 
-// Função para carregar URLs de arquivos JSON
 function carregarUrls(arquivo) {
     try {
         const data = fs.readFileSync(path.join(__dirname, 'db', arquivo), 'utf8');
@@ -14,6 +13,14 @@ function carregarUrls(arquivo) {
         console.error(`Erro ao ler o arquivo ${arquivo}: ${err}`);
         return [];
     }
+}
+
+function obterUrlAleatoria(categoria) {
+    const urls = carregarUrls(`${categoria}.json`);
+    if (urls.length > 0) {
+        return urls[Math.floor(Math.random() * urls.length)];
+    }
+    return null;
 }
 
 // Funções para carregar dados específicos
