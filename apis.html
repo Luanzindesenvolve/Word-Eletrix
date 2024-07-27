@@ -1,25 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Rest-Apis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas da API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        .sidebar-header {
+            padding: 15px;
+            background-color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-header .arrow {
+            font-size: 20px;
+        }
+        .sidebar-content {
+            display: none;
+            padding: 15px;
+        }
+        .sidebar-content a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .sidebar-content a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+            margin-left: 270px;
+        }
+        .container h1 {
+            color: #333;
+        }
+        .container a {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .container a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>EM BREVE!!!
-    
-    
-    vou adicionar apis privadas criadas por mim e públicas de outros devs
-      apis de download
-      apis de consultas
-      apis de entretenimento
-      apis de funcionalidades 
-      apis de para bots
-      apis de automação
-      apis de sites
-      apis de devs
-      apis de diversão
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" onclick="toggleSidebar()">
+            <span>Mídias</span>
+            <span class="arrow" id="arrow">▼</span>
+        </div>
+        <div class="sidebar-content" id="sidebar-content">
+            <a href="/aesthetic">Aesthetic</a>
+            <a href="/ahegao">Ahegao</a>
+            <a href="/akira">Akira</a>
+            <a href="/ass">Ass</a>
+            <a href="/bonek">Bonek</a>
+            <a href="/Boruto">Boruto</a>
+            <a href="/cosplayloli">Cosplay Loli</a>
+            <a href="/cosplay">Cosplay</a>
+            <a href="/cosplaysagiri">Cosplay Sagiri</a>
+            <a href="/cum">Cum</a>
+            <a href="/contasonly">Contas Only</a>
+            <a href="/Deidara">Deidara</a>
+            <a href="/elaina">Elaina</a>
+            <a href="/emilia">Emilia</a>
+            <a href="/ero">Ero</a>
+            <a href="/erza">Erza</a>
+            <a href="/feminotrava">Feminotrava</a>
+            <a href="/fotinhas">Fotinhas</a>
+            <a href="/GameWallp">GameWallp</a>
+            <a href="/hinata">Hinata</a>
+            <a href="/itachi">Itachi</a>
+            <a href="/itori">Itori</a>
+            <a href="/lolis">Lolis</a>
+            <a href="/madara">Madara</a>
+            <a href="/manga">Manga</a>
+            <a href="/masturbation">Masturbation</a>
+            <a href="/meme">Meme</a>
+            <a href="/memes-video">Memes Video</a>
+            <a href="/mikasa">Mikasa</a>
+            <a href="/metadinhas">Metadinhas</a>
+            <a href="/minato">Minato</a>
+            <a href="/neko">Neko</a>
+            <a href="/neko2">Neko2</a>
+            <a href="/nezuko">Nezuko</a>
+            <a href="/nsfwelisa">NSFW Elisa</a>
+            <a href="/nsfwlolis">NSFW Lolis</a>
+            <a href="/nsfwmia">NSFW Mia</a>
+            <a href="/onepiece">One Piece</a>
+            <a href="/orgy">Orgy</a>
+            <a href="/onlyfans">OnlyFans</a>
+            <a href="/pack">Pack</a>
+            <a href="/pokemon">Pokemon</a>
+            <a href="/pussy">Pussy</a>
+            <a href="/rize">Rize</a>
+            <a href="/rose">Rose</a>
+            <a href="/sagiri">Sagiri</a>
+            <a href="/sakura">Sakura</a>
+            <a href="/sasuke">Sasuke</a>
+            <a href="/satanic">Satanic</a>
+            <a href="/shotas">Shotas</a>
+            <a href="/tentacles">Tentacles</a>
+            <a href="/travazap">Travazap</a>
+            <a href="/tsunade">Tsunade</a>
+            <a href="/videozinhos">Videozinhos</a>
+            <a href="/waifu">Waifu</a>
+            <a href="/waifu2">Waifu2</a>
+            <a href="/wallhp2">Wallhp2</a>
+            <a href="/wallpapernime">Wallpapernime</a>
+            <a href="/zettai">Zettai</a>
+        </div>
+    </div>
 
+    <!-- Conteúdo da página -->
+    <div class="container">
+        <h1>Redirecionar para Páginas da API</h1>
+        <p>Use o menu lateral para navegar para as páginas da API.</p>
+    </div>
 
-      by: luazn dev
-    </h1>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById('sidebar');
+            var arrow = document.getElementById('arrow');
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+                arrow.textContent = '▼';
+            } else {
+                sidebar.classList.add('active');
+                arrow.textContent = '▲';
+            }
+        }
+    </script>
 </body>
-</html>
+                </html>
