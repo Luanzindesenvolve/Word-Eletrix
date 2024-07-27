@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-
+const fs = require('fs'); // Certifique-se de que fs está importado corretamente
+const api = require('./api');  // Importa o módulo da API
 const app = express();
 
 // Define o diretório público para servir os arquivos estáticos
