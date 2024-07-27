@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
-const criador = "Chupa cu";
+const criador = "World Ecletix";
 
 // Função para carregar URLs de arquivos JSON
 function carregarUrls(arquivo) {
@@ -34,7 +34,7 @@ const urls = {
     "emilia": carregarUrls('emilia.json'),
     "ero": carregarUrls('ero.json'),
     "erza": carregarUrls('erza.json'),
-    "feminotrava": carregarUrls('feminonotrava.json'),
+    "feminotrava": carregarUrls('femininotrava.json'),
     "fotinhas": carregarUrls('fotinhas.json'),
     "GameWallp": carregarUrls('GameWallp.json'),
     "hinata": carregarUrls('hinata.json'),
@@ -149,4 +149,4 @@ app.get('/metadinhas', (req, res) => {
     }
 });
 
-module.exports = app
+module.exports = app;
