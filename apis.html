@@ -1,146 +1,68 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de APIs</title>
+    <title>Galeria de Imagens</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
         }
-
-        .menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+        .button-container {
+            margin: 20px;
         }
-
-        .menu-button {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .menu-items {
-            display: none;
-            margin-top: 10px;
-        }
-
-        .menu-items a {
+        button {
             display: block;
-            color: white;
-            text-decoration: none;
+            margin: 10px;
             padding: 10px;
-            border-bottom: 1px solid #444;
-        }
-
-        .menu-items a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .arrow {
-            font-size: 20px;
-            transition: transform 0.3s;
-        }
-
-        .arrow.up {
-            transform: rotate(180deg);
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div class="menu">
-        <div class="menu-button">
-            <span>Mídias</span>
-            <span class="arrow down">&#9660;</span>
-            <span class="arrow up" style="display:none;">&#9650;</span>
-        </div>
-        <div class="menu-items">
-            <a href="/aesthetic">Aesthetic</a>
-            <a href="/ahegao">Ahegao</a>
-            <a href="/akira">Akira</a>
-            <a href="/ass">Ass</a>
-            <a href="/bonek">Bonek</a>
-            <a href="/Boruto">Boruto</a>
-            <a href="/cosplayloli">Cosplayloli</a>
-            <a href="/cosplay">Cosplay</a>
-            <a href="/cosplaysagiri">Cosplaysagiri</a>
-            <a href="/cum">Cum</a>
-            <a href="/contasonly">Contasonly</a>
-            <a href="/Deidara">Deidara</a>
-            <a href="/elaina">Elaina</a>
-            <a href="/emilia">Emilia</a>
-            <a href="/ero">Ero</a>
-            <a href="/erza">Erza</a>
-            <a href="/feminotrava">Feminotrava</a>
-            <a href="/fotinhas">Fotinhas</a>
-            <a href="/GameWallp">GameWallp</a>
-            <a href="/hinata">Hinata</a>
-            <a href="/itachi">Itachi</a>
-            <a href="/itori">Itori</a>
-            <a href="/lolis">Lolis</a>
-            <a href="/madara">Madara</a>
-            <a href="/manga">Manga</a>
-            <a href="/masturbation">Masturbation</a>
-            <a href="/meme">Meme</a>
-            <a href="/memes-video">Memes-video</a>
-            <a href="/mikasa">Mikasa</a>
-            <a href="/metadinhas">Metadinhas</a>
-            <a href="/minato">Minato</a>
-            <a href="/neko">Neko</a>
-            <a href="/neko2">Neko2</a>
-            <a href="/nezuko">Nezuko</a>
-            <a href="/nsfwelisa">Nsfwelisa</a>
-            <a href="/nsfwlolis">Nsfwlolis</a>
-            <a href="/nsfwmia">Nsfwmia</a>
-            <a href="/onepiece">Onepiece</a>
-            <a href="/orgy">Orgy</a>
-            <a href="/onlyfans">Onlyfans</a>
-            <a href="/pack">Pack</a>
-            <a href="/pokemon">Pokemon</a>
-            <a href="/pussy">Pussy</a>
-            <a href="/rize">Rize</a>
-            <a href="/rose">Rose</a>
-            <a href="/sagiri">Sagiri</a>
-            <a href="/sakura">Sakura</a>
-            <a href="/sasuke">Sasuke</a>
-            <a href="/satanic">Satanic</a>
-            <a href="/shotas">Shotas</a>
-            <a href="/tentcles">Tentcles</a>
-            <a href="/travazap">Travazap</a>
-            <a href="/tsunade">Tsunade</a>
-            <a href="/videozinhos">Videozinhos</a>
-            <a href="/waifu">Waifu</a>
-            <a href="/waifu2">Waifu2</a>
-            <a href="/wallhp2">Wallhp2</a>
-            <a href="/wallpapernime">Wallpapernime</a>
-            <a href="/zettai">Zettai</a>
-        </div>
-    </div>
+    <h1>Galeria de Imagens</h1>
+    <div class="button-container" id="button-container"></div>
+    <div id="result"></div>
 
     <script>
-        const menuButton = document.querySelector('.menu-button');
-        const menuItems = document.querySelector('.menu-items');
-        const arrowDown = document.querySelector('.arrow.down');
-        const arrowUp = document.querySelector('.arrow.up');
+        const categories = [
+            "aesthetic", "ahegao", "akira", "ass", "bonek", "Boruto", "cosplayloli", "cosplay", "cosplaysagiri", "cum",
+            "contasonly", "Deidara", "elaina", "emilia", "ero", "erza", "feminotrava", "fotinhas", "GameWallp", "hinata",
+            "itachi", "itori", "lolis", "madara", "manga", "masturbation", "meme", "memes-video", "mikasa", "metadinhas",
+            "minato", "neko", "neko2", "nezuko", "nsfwelisa", "nsfwlolis", "nsfwmia", "onepiece", "orgy", "onlyfans",
+            "pack", "pokemon", "pussy", "rize", "rose", "sagiri", "sakura", "sasuke", "satanic", "shotas", "tentcles",
+            "travazap", "tsunade", "videozinhos", "waifu", "waifu2", "wallhp2", "wallpapernime", "zettai"
+        ];
 
-        menuButton.addEventListener('click', () => {
-            const isVisible = menuItems.style.display === 'block';
-            menuItems.style.display = isVisible ? 'none' : 'block';
-            arrowDown.style.display = isVisible ? 'inline' : 'none';
-            arrowUp.style.display = isVisible ? 'none' : 'inline';
-        });
+        function fetchCategoryData(category) {
+            fetch(`http://localhost:5000/${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    if (data.status) {
+                        resultDiv.innerHTML = `<img src="${data.url}" alt="${category}" style="max-width: 100%; height: auto;">`;
+                    } else {
+                        resultDiv.innerHTML = `<p>${data.mensagem}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar dados:', error);
+                    document.getElementById('result').innerHTML = '<p>Erro ao buscar dados.</p>';
+                });
+        }
+
+        function createButtons() {
+            const buttonContainer = document.getElementById('button-container');
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.textContent = category;
+                button.onclick = () => fetchCategoryData(category);
+                buttonContainer.appendChild(button);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', createButtons);
     </script>
 </body>
 </html>
