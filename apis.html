@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Páginas da API</title>
+    <title>Página de APIs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,81 +11,73 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-        .sidebar {
+
+        .menu {
             position: fixed;
             top: 0;
             left: 0;
-            width: 250px;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            transition: transform 0.3s ease;
-            transform: translateX(-100%);
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
         }
-        .sidebar.active {
-            transform: translateX(0);
-        }
-        .sidebar-header {
-            padding: 15px;
-            background-color: #333;
-            cursor: pointer;
+
+        .menu-button {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            font-size: 18px;
         }
-        .sidebar-header .arrow {
-            font-size: 20px;
-        }
-        .sidebar-content {
+
+        .menu-items {
             display: none;
-            padding: 15px;
+            margin-top: 10px;
         }
-        .sidebar-content a {
+
+        .menu-items a {
             display: block;
-            color: #fff;
+            color: white;
             text-decoration: none;
-            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #444;
         }
-        .sidebar-content a:hover {
-            text-decoration: underline;
+
+        .menu-items a:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
-        .container {
-            padding: 20px;
-            margin-left: 270px;
+
+        .arrow {
+            font-size: 20px;
+            transition: transform 0.3s;
         }
-        .container h1 {
-            color: #333;
-        }
-        .container a {
-            display: block;
-            color: #007bff;
-            text-decoration: none;
-            margin-bottom: 10px;
-        }
-        .container a:hover {
-            text-decoration: underline;
+
+        .arrow.up {
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header" onclick="toggleSidebar()">
+    <div class="menu">
+        <div class="menu-button">
             <span>Mídias</span>
-            <span class="arrow" id="arrow">▼</span>
+            <span class="arrow down">&#9660;</span>
+            <span class="arrow up">&#9650;</span>
         </div>
-        <div class="sidebar-content" id="sidebar-content">
+        <div class="menu-items">
             <a href="/aesthetic">Aesthetic</a>
             <a href="/ahegao">Ahegao</a>
             <a href="/akira">Akira</a>
             <a href="/ass">Ass</a>
             <a href="/bonek">Bonek</a>
             <a href="/Boruto">Boruto</a>
-            <a href="/cosplayloli">Cosplay Loli</a>
+            <a href="/cosplayloli">Cosplayloli</a>
             <a href="/cosplay">Cosplay</a>
-            <a href="/cosplaysagiri">Cosplay Sagiri</a>
+            <a href="/cosplaysagiri">Cosplaysagiri</a>
             <a href="/cum">Cum</a>
-            <a href="/contasonly">Contas Only</a>
+            <a href="/contasonly">Contasonly</a>
             <a href="/Deidara">Deidara</a>
             <a href="/elaina">Elaina</a>
             <a href="/emilia">Emilia</a>
@@ -102,19 +94,19 @@
             <a href="/manga">Manga</a>
             <a href="/masturbation">Masturbation</a>
             <a href="/meme">Meme</a>
-            <a href="/memes-video">Memes Video</a>
+            <a href="/memes-video">Memes-video</a>
             <a href="/mikasa">Mikasa</a>
             <a href="/metadinhas">Metadinhas</a>
             <a href="/minato">Minato</a>
             <a href="/neko">Neko</a>
             <a href="/neko2">Neko2</a>
             <a href="/nezuko">Nezuko</a>
-            <a href="/nsfwelisa">NSFW Elisa</a>
-            <a href="/nsfwlolis">NSFW Lolis</a>
-            <a href="/nsfwmia">NSFW Mia</a>
-            <a href="/onepiece">One Piece</a>
+            <a href="/nsfwelisa">Nsfwelisa</a>
+            <a href="/nsfwlolis">Nsfwlolis</a>
+            <a href="/nsfwmia">Nsfwmia</a>
+            <a href="/onepiece">Onepiece</a>
             <a href="/orgy">Orgy</a>
-            <a href="/onlyfans">OnlyFans</a>
+            <a href="/onlyfans">Onlyfans</a>
             <a href="/pack">Pack</a>
             <a href="/pokemon">Pokemon</a>
             <a href="/pussy">Pussy</a>
@@ -125,7 +117,7 @@
             <a href="/sasuke">Sasuke</a>
             <a href="/satanic">Satanic</a>
             <a href="/shotas">Shotas</a>
-            <a href="/tentacles">Tentacles</a>
+            <a href="/tentcles">Tentcles</a>
             <a href="/travazap">Travazap</a>
             <a href="/tsunade">Tsunade</a>
             <a href="/videozinhos">Videozinhos</a>
@@ -137,24 +129,23 @@
         </div>
     </div>
 
-    <!-- Conteúdo da página -->
-    <div class="container">
-        <h1>Redirecionar para Páginas da API</h1>
-        <p>Use o menu lateral para navegar para as páginas da API.</p>
-    </div>
-
     <script>
-        function toggleSidebar() {
-            var sidebar = document.getElementById('sidebar');
-            var arrow = document.getElementById('arrow');
-            if (sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                arrow.textContent = '▼';
+        const menuButton = document.querySelector('.menu-button');
+        const menuItems = document.querySelector('.menu-items');
+        const arrowDown = document.querySelector('.arrow.down');
+        const arrowUp = document.querySelector('.arrow.up');
+
+        menuButton.addEventListener('click', () => {
+            if (menuItems.style.display === 'block') {
+                menuItems.style.display = 'none';
+                arrowDown.style.display = 'inline';
+                arrowUp.style.display = 'none';
             } else {
-                sidebar.classList.add('active');
-                arrow.textContent = '▲';
+                menuItems.style.display = 'block';
+                arrowDown.style.display = 'none';
+                arrowUp.style.display = 'inline';
             }
-        }
+        });
     </script>
 </body>
-                </html>
+</html>
