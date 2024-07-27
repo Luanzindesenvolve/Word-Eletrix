@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 5000;
-const criador = "Worl ecletix";
+const criador = "Chupa cu";
 
 // Função para carregar URLs de um arquivo JSON
 const carregarUrls = (arquivo) => {
@@ -35,7 +34,7 @@ const urls = {
     "emilia": carregarUrls('db/emilia.json'),
     "ero": carregarUrls('db/ero.json'),
     "erza": carregarUrls('db/erza.json'),
-    "feminotrava": carregarUrls('db/feminonotrava.json'),
+    "feminotrava": carregarUrls('db/feminotrava.json'),
     "fotinhas": carregarUrls('db/fotinhas.json'),
     "GameWallp": carregarUrls('db/GameWallp.json'),
     "hinata": carregarUrls('db/hinata.json'),
@@ -150,6 +149,4 @@ app.get('/metadinhas', (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);
-})
+module.exports = app;
