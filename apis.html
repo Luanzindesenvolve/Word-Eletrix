@@ -64,7 +64,7 @@
         <div class="menu-button">
             <span>Mídias</span>
             <span class="arrow down">&#9660;</span>
-            <span class="arrow up">&#9650;</span>
+            <span class="arrow up" style="display:none;">&#9650;</span>
         </div>
         <div class="menu-items">
             <a href="/aesthetic">Aesthetic</a>
@@ -136,15 +136,10 @@
         const arrowUp = document.querySelector('.arrow.up');
 
         menuButton.addEventListener('click', () => {
-            if (menuItems.style.display === 'block') {
-                menuItems.style.display = 'none';
-                arrowDown.style.display = 'inline';
-                arrowUp.style.display = 'none';
-            } else {
-                menuItems.style.display = 'block';
-                arrowDown.style.display = 'none';
-                arrowUp.style.display = 'inline';
-            }
+            const isVisible = menuItems.style.display === 'block';
+            menuItems.style.display = isVisible ? 'none' : 'block';
+            arrowDown.style.display = isVisible ? 'inline' : 'none';
+            arrowUp.style.display = isVisible ? 'none' : 'inline';
         });
     </script>
 </body>
