@@ -19,7 +19,7 @@ function carregarUrlAleatoria(arquivo) {
     }
 }
 
-// Funções para carregar dados específicos
+// Lista de categorias
 const categorias = [
     "aesthetic", "ahegao", "akira", "ass", "bonek", "Boruto", "cosplayloli",
     "cosplay", "cosplaysagiri", "cum", "contasonly", "Deidara", "elaina",
