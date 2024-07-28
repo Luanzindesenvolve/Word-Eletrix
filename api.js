@@ -38,7 +38,7 @@ const categorias = [
 ];
 
 categorias.forEach(category => {
-    app.all(`/nsfw/${category}`, async (req, res) => {
+    app.all(`/${category}`, async (req, res) => {
         try {
             const randomUrl = carregarUrlAleatoria(`${category}.json`);
             if (randomUrl) {
@@ -123,4 +123,4 @@ app.get('/metadinhas', (req, res) => {
     }
 });
 
-module.exports = app;
+module.exports = app
