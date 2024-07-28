@@ -10,9 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "axios": ""
-    "yt-search": "",
-    "fs": "",
-    "path": ""
+    "axios": "",
+    "yt-search": ""
   }
 }
