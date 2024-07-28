@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
         }
         .overlay {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             top: 0;
             left: 0;
@@ -40,14 +40,25 @@
             width: 50%;
         }
         .menu-item {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 1em;
             margin: 0.5em 0;
             border-radius: 5px;
             cursor: pointer;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .menu-item span {
+            display: flex;
+            align-items: center;
+        }
+        .menu-item span img {
+            margin-right: 0.5em;
         }
         .submenu {
             display: none;
@@ -57,6 +68,9 @@
         .menu-item.active .submenu {
             display: block;
         }
+        .arrow {
+            color: green;
+        }
     </style>
 </head>
 <body>
@@ -65,37 +79,37 @@
         <h2>Rest API</h2>
         <div class="menu">
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Animes Masculinos <span>&#9660;</span>
+                <span><img src="icon1.png" alt="Icon" width="24" height="24"> Animes Masculinos</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Animes Femininos <span>&#9660;</span>
+                <span><img src="icon2.png" alt="Icon" width="24" height="24"> Animes Femininos</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Wallpapers <span>&#9660;</span>
+                <span><img src="icon3.png" alt="Icon" width="24" height="24"> Wallpapers</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Downloads <span>&#9660;</span>
+                <span><img src="icon4.png" alt="Icon" width="24" height="24"> Downloads</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Pesquisas <span>&#9660;</span>
+                <span><img src="icon5.png" alt="Icon" width="24" height="24"> Pesquisas</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                Ferramentas <span>&#9660;</span>
+                <span><img src="icon6.png" alt="Icon" width="24" height="24"> Ferramentas</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
@@ -108,4 +122,4 @@
         }
     </script>
 </body>
-</html
+</html>
