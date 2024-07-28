@@ -39,7 +39,7 @@ const categorias = [
 ];
 
 categorias.forEach(category => {
-    app.all(`/db/${category}`, async (req, res) => {
+    app.all(`/${category}`, async (req, res) => {
         try {
             const randomUrl = carregarUrlAleatoria(`${category}.json`);
             if (randomUrl) {
