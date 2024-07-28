@@ -29,6 +29,8 @@ app.get('/:page', (req, res) => {
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
+// Importando as rotas da API
+const apiRoutes = require('./api');
 
 // Define a porta do servidor
 const PORT = process.env.PORT || 3000;
