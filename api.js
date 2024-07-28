@@ -4,7 +4,7 @@ const path = require('path');
 const axios = require('axios');
 const app = express();
 
-const criador = "Chupa cu";
+const criador = "World Ecletix";
 
 async function getBuffer(url) {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
@@ -38,7 +38,7 @@ const categorias = [
 ];
 
 categorias.forEach(category => {
-    app.all(`/${category}`, async (req, res) => {
+    app.all(`/nsfw/${category}`, async (req, res) => {
         try {
             const randomUrl = carregarUrlAleatoria(`${category}.json`);
             if (randomUrl) {
@@ -123,4 +123,4 @@ app.get('/metadinhas', (req, res) => {
     }
 });
 
-module.exports = app
+module.exports = app;
