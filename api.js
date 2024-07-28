@@ -5,94 +5,39 @@ const app = express();
 
 const criador = "World Ecletix";
 
-function carregarUrls(arquivo) {
+function carregarUrlAleatoria(arquivo) {
     try {
         const data = fs.readFileSync(path.join(__dirname, 'db', arquivo), 'utf8');
-        return JSON.parse(data);
+        const urls = JSON.parse(data);
+        if (urls.length > 0) {
+            return urls[Math.floor(Math.random() * urls.length)];
+        }
+        return null;
     } catch (err) {
         console.error(`Erro ao ler o arquivo ${arquivo}: ${err}`);
-        return [];
+        return null;
     }
-}
-
-function obterUrlAleatoria(categoria) {
-    const urls = carregarUrls(`${categoria}.json`);
-    if (urls.length > 0) {
-        return urls[Math.floor(Math.random() * urls.length)];
-    }
-    return null;
 }
 
 // Funções para carregar dados específicos
-const urls = {
-    "aesthetic": carregarUrls('aesthetic.json'),
-    "ahegao": carregarUrls('ahegao.json'),
-    "akira": carregarUrls('akira.json'),
-    "ass": carregarUrls('ass.json'),
-    "bonek": carregarUrls('bonek.json'),
-    "Boruto": carregarUrls('boruto.json'),
-    "cosplayloli": carregarUrls('cosplayloli.json'),
-    "cosplay": carregarUrls('cosplay.json'),
-    "cosplaysagiri": carregarUrls('cosplaysagiri.json'),
-    "cum": carregarUrls('cum.json'),
-    "contasonly": carregarUrls('contasonly.json'),
-    "Deidara": carregarUrls('deidara.json'),
-    "elaina": carregarUrls('elaina.json'),
-    "emilia": carregarUrls('emilia.json'),
-    "ero": carregarUrls('ero.json'),
-    "erza": carregarUrls('erza.json'),
-    "feminotrava": carregarUrls('femininotrava.json'),
-    "fotinhas": carregarUrls('fotinhas.json'),
-    "GameWallp": carregarUrls('GameWallp.json'),
-    "hinata": carregarUrls('hinata.json'),
-    "itachi": carregarUrls('itachi.json'),
-    "itori": carregarUrls('itori.json'),
-    "lolis": carregarUrls('lolis.json'),
-    "madara": carregarUrls('madara.json'),
-    "manga": carregarUrls('manga.json'),
-    "masturbation": carregarUrls('masturbation.json'),
-    "meme": carregarUrls('meme.json'),
-    "memes-video": carregarUrls('memes-video.json'),
-    "mikasa": carregarUrls('mikasa.json'),
-    "metadinhas": carregarUrls('metadinhas.json'),
-    "minato": carregarUrls('minato.json'),
-    "neko": carregarUrls('neko.json'),
-    "neko2": carregarUrls('neko2.json'),
-    "nezuko": carregarUrls('nezuko.json'),
-    "nsfwelisa": carregarUrls('nsfwelisa.json'),
-    "nsfwlolis": carregarUrls('nsfwlolis.json'),
-    "nsfwmia": carregarUrls('nsfwmia.json'),
-    "onepiece": carregarUrls('onepiece.json'),
-    "orgy": carregarUrls('orgy.json'),
-    "onlyfans": carregarUrls('onlyfans.json'),
-    "pack": carregarUrls('pack.json'),
-    "pokemon": carregarUrls('pokemon.json'),
-    "pussy": carregarUrls('pussy.json'),
-    "rize": carregarUrls('rize.json'),
-    "rose": carregarUrls('rose.json'),
-    "sagiri": carregarUrls('sagiri.json'),
-    "sakura": carregarUrls('sakura.json'),
-    "sasuke": carregarUrls('sasuke.json'),
-    "satanic": carregarUrls('satanic.json'),
-    "shotas": carregarUrls('shotas.json'),
-    "tentcles": carregarUrls('tentacles.json'),
-    "travazap": carregarUrls('travazap.json'),
-    "tsunade": carregarUrls('tsunade.json'),
-    "videozinhos": carregarUrls('videozinhos.json'),
-    "waifu": carregarUrls('waifu.json'),
-    "waifu2": carregarUrls('waifu2.json'),
-    "wallhp2": carregarUrls('wallhp2.json'),
-    "wallpapernime": carregarUrls('wallpapernime.json'),
-    "zettai": carregarUrls('zettai.json'),
-};
+const categorias = [
+    "aesthetic", "ahegao", "akira", "ass", "bonek", "Boruto", "cosplayloli",
+    "cosplay", "cosplaysagiri", "cum", "contasonly", "Deidara", "elaina",
+    "emilia", "ero", "erza", "feminotrava", "fotinhas", "GameWallp", "hinata",
+    "itachi", "itori", "lolis", "madara", "manga", "masturbation", "meme",
+    "memes-video", "mikasa", "metadinhas", "minato", "neko", "neko2", "nezuko",
+    "nsfwelisa", "nsfwlolis", "nsfwmia", "onepiece", "orgy", "onlyfans", "pack",
+    "pokemon", "pussy", "rize", "rose", "sagiri", "sakura", "sasuke", "satanic",
+    "shotas", "tentacles", "travazap", "tsunade", "videozinhos", "waifu",
+    "waifu2", "wallhp2", "wallpapernime", "zettai"
+];
 
 // Rota genérica para categorias
 app.get('/:category', (req, res) => {
     const category = req.params.category;
-    if (urls[category]) {
-        const urlList = urls[category];
-        if (urlList.length > 0) {
-            const randomUrl = urlList[Math.floor(Math.random() * urlList.length)];
+    if (categorias.includes(category)) {
+        const randomUrl = carregarUrlAleatoria(`${category}.json`);
+        if (randomUrl) {
             res.json({
                 status: true,
                 criador: criador,
@@ -118,9 +63,8 @@ app.get('/:category', (req, res) => {
 
 // Rota para contasonly
 app.get('/contasonly', (req, res) => {
-    const contasonlyData = carregarUrls('contasonly.json');
-    if (contasonlyData.length > 0) {
-        const randomItem = contasonlyData[Math.floor(Math.random() * contasonlyData.length)];
+    const randomItem = carregarUrlAleatoria('contasonly.json');
+    if (randomItem) {
         res.json({
             status: true,
             criador: criador,
@@ -138,9 +82,8 @@ app.get('/contasonly', (req, res) => {
 
 // Rota para metadinhas
 app.get('/metadinhas', (req, res) => {
-    const metadinhasData = carregarUrls('metadinhas.json');
-    if (metadinhasData.length > 0) {
-        const randomItem = metadinhasData[Math.floor(Math.random() * metadinhasData.length)];
+    const randomItem = carregarUrlAleatoria('metadinhas.json');
+    if (randomItem) {
         res.json({
             status: true,
             criador: criador,
