@@ -1928,7 +1928,37 @@ router.get('/zettai', async (req, res) => {
         res.status(500).send('Erro ao obter imagem aleatória');
     }
 });
+// Rota para obter um vídeo aleatório
+router.get('/memesvideos', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const videoFilePath = path.join(__dirname, 'dados', 'memesvideos.json');
 
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(videoFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const videoData = lerArquivoJSON();
+        const videos = videoData.videos;
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter vídeo aleatório');
+    }
+});
 // Rota para gerar link aleatório com nome
 router.get('/contasonly', (req, res) => {
     try {
