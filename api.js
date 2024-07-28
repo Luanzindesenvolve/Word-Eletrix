@@ -1,9 +1,15 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 const app = express();
 
 const criador = "World Ecletix";
+
+async function getBuffer(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    return Buffer.from(response.data, 'binary');
+}
 
 function carregarUrlAleatoria(arquivo) {
     try {
@@ -32,71 +38,37 @@ const categorias = [
     "waifu2", "wallhp2", "wallpapernime", "zettai"
 ];
 
-// Rota genérica para categorias
-app.get('/:category', (req, res) => {
-    const category = req.params.category;
-    if (categorias.includes(category)) {
-        const randomUrl = carregarUrlAleatoria(`${category}.json`);
-        if (randomUrl) {
-            res.json({
-                status: true,
-                criador: criador,
-                url: randomUrl
-            });
-        } else {
-            res.json({
+categorias.forEach(category => {
+    app.all(`/nsfw/${category}`, async (req, res) => {
+        try {
+            const randomUrl = carregarUrlAleatoria(`${category}.json`);
+            if (randomUrl) {
+                res.type('png'); // ou 'jpg' dependendo do tipo de imagem que você espera
+                res.send(await getBuffer(randomUrl));
+            } else {
+                res.json({
+                    status: false,
+                    criador: criador,
+                    código: 404,
+                    mensagem: `ei 🤨 Naum Achei Nenhum Link De Imagem Na Categoria ${category}`
+                });
+            }
+        } catch (e) {
+            res.send({
                 status: false,
                 criador: criador,
-                código: 404,
-                mensagem: `ei 🤨 Naum Achei Nenhum Link De Imagem Na Categoria ${category}`
+                mensagem: 'Erro ao processar a solicitação'
             });
         }
-    } else {
-        res.json({
-            status: false,
-            criador: criador,
-            código: 404,
-            mensagem: `ei 🤨 Categoria ${category} Naum Encontrada`
-        });
-    }
+    });
 });
 
-// Rota para contasonly
-app.get('/contasonly', (req, res) => {
-    const randomItem = carregarUrlAleatoria('contasonly.json');
-    if (randomItem) {
-        res.json({
-            status: true,
-            criador: criador,
-            mensagem: randomItem
-        });
-    } else {
-        res.json({
-            status: false,
-            criador: criador,
-            código: 404,
-            mensagem: "Arquivo contasonly.json não encontrado ou vazio."
-        });
-    }
-});
-
-// Rota para metadinhas
-app.get('/metadinhas', (req, res) => {
-    const randomItem = carregarUrlAleatoria('metadinhas.json');
-    if (randomItem) {
-        res.json({
-            status: true,
-            criador: criador,
-            mensagem: randomItem
-        });
-    } else {
-        res.json({
-            status: false,
-            criador: criador,
-            código: 404,
-            mensagem: "Arquivo metadinhas.json não encontrado ou vazio."
-        });
-    }
+app.all('*', async (req, res) => {
+    res.status(404).json({
+        status: 404,
+        error: 'A página que você está procurando não foi encontrada',
+        endpoint: req.path
+    });
 });
 
 module.exports = app;
