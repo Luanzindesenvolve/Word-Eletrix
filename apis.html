@@ -48,6 +48,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-direction: column;
         }
         .menu-item:hover {
             background-color: rgba(0, 0, 0, 0.9);
@@ -55,6 +56,8 @@
         .menu-item span {
             display: flex;
             align-items: center;
+            width: 100%;
+            justify-content: space-between;
         }
         .menu-item span .icon {
             margin-right: 0.5em;
@@ -63,6 +66,7 @@
             display: none;
             margin-top: 0.5em;
             padding-left: 1em;
+            width: 100%;
         }
         .menu-item.active .submenu {
             display: block;
@@ -79,37 +83,49 @@
         <h2>Rest API</h2>
         <div class="menu">
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-male icon"></i> Animes Masculinos</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-male icon"></i> Animes Masculinos <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-female icon"></i> Animes Femininos</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-female icon"></i> Animes Femininos <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-image icon"></i> Wallpapers</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-image icon"></i> Wallpapers <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-download icon"></i> Downloads</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-download icon"></i> Downloads <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-search icon"></i> Pesquisas</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-search icon"></i> Pesquisas <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-tools icon"></i> Ferramentas</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-tools icon"></i> Ferramentas <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <p>EM BREVE!!!</p>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-exclamation-circle icon"></i> +18 <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <p>EM BREVE!!!</p>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-user-check icon"></i> Consultas <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
