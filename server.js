@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require('path');
+const apiRoutes = require('./api');  // Importa o módulo da API
+
+const app = express();
 
 // Define o diretório público para servir os arquivos estáticos
 app.use(express.static(path.join(__dirname)));
@@ -8,6 +11,7 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 // Rota dinâmica para servir arquivos HTML e TXT sem a extensão
 app.get('/:page', (req, res) => {
   const page = req.params.page;
@@ -25,12 +29,13 @@ app.get('/:page', (req, res) => {
   });
 });
 
+// Usar as rotas do api.js para qualquer caminho que comece com /api
+app.use('/api', apiRoutes);
+
 // Rota para lidar com erros 404 e enviar a página de erro personalizada
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
-// Importando as rotas da API
-const apiRoutes = require('./api');
 
 // Define a porta do servidor
 const PORT = process.env.PORT || 3000;
