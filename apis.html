@@ -16,7 +16,6 @@
             font-family: Arial, sans-serif;
         }
         .overlay {
-            background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
             top: 0;
             left: 0;
@@ -57,7 +56,7 @@
             display: flex;
             align-items: center;
         }
-        .menu-item span img {
+        .menu-item span .icon {
             margin-right: 0.5em;
         }
         .submenu {
@@ -72,6 +71,7 @@
             color: green;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="overlay">
@@ -79,37 +79,37 @@
         <h2>Rest API</h2>
         <div class="menu">
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon1.png" alt="Icon" width="24" height="24"> Animes Masculinos</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-male icon"></i> Animes Masculinos</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon2.png" alt="Icon" width="24" height="24"> Animes Femininos</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-female icon"></i> Animes Femininos</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon3.png" alt="Icon" width="24" height="24"> Wallpapers</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-image icon"></i> Wallpapers</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon4.png" alt="Icon" width="24" height="24"> Downloads</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-download icon"></i> Downloads</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon5.png" alt="Icon" width="24" height="24"> Pesquisas</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-search icon"></i> Pesquisas</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><img src="icon6.png" alt="Icon" width="24" height="24"> Ferramentas</span> <span class="arrow">&#9660;</span>
+                <span><i class="fas fa-tools icon"></i> Ferramentas</span> <span class="arrow">&#9660;</span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
