@@ -1,4 +1,5 @@
-var loli = ['https://i.imgur.com/5Gy4Ae2.jpg',
+{
+"imagens": ['https://i.imgur.com/5Gy4Ae2.jpg',
   'https://i.imgur.com/FXp0hGU.jpg',
   'https://i.imgur.com/tU8GBob.jpg',
   'https://i.imgur.com/RtIXKxC.jpg',
@@ -124,20 +125,8 @@ var loli = ['https://i.imgur.com/5Gy4Ae2.jpg',
   'https://i.imgur.com/S2B9dfE.png',
   'https://i.imgur.com/LEqNv2B.png',
   'https://i.imgur.com/GenlAx5.png',
-  'https://i.imgur.com/odMI0Qih.jpg']
- exports.loli = loli
-
-
-
-
-
-
-
-
-
-
-
-var ahegao = ['https://cdn.discordapp.com/attachments/770948564947304448/770950434180956160/004-7FVbFKsy0Z0.jpg',
+  'https://i.imgur.com/odMI0Qih.jpg',
+ 'https://cdn.discordapp.com/attachments/770948564947304448/770950434180956160/004-7FVbFKsy0Z0.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770950436122525716/3d763900d18610184bdf6cc30102150f.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770950437880856586/3ec23da409a88cbf4bc7daaaf9f50a3d.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770950439759380520/3f5a759d1dc69dd4ba188ec91c13bf15.jpg',
@@ -175,10 +164,8 @@ var ahegao = ['https://cdn.discordapp.com/attachments/770948564947304448/7709504
     'https://cdn.discordapp.com/attachments/770948564947304448/771374935717052476/426-5x4J4OuuFDQ.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771374940171665446/426-drQcdvVsNnQ.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771374948978524161/427-YLirbUpKQeY.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/771374956008833045/428-AAiKa5S2XDM.jpg']
-exports.ahegao = ahegao
-
-var ass = ['https://media.discordapp.net/attachments/530635618003451904/683209653261303808/yande.re_613351_sample_ass_azur_lane_cameltoe_damao_yu_feet_pantsu_stockings_taihou_azur_lane_thighh.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/771374956008833045/428-AAiKa5S2XDM.jpg',
+     'https://media.discordapp.net/attachments/530635618003451904/683209653261303808/yande.re_613351_sample_ass_azur_lane_cameltoe_damao_yu_feet_pantsu_stockings_taihou_azur_lane_thighh.jpg',
     'https://media.discordapp.net/attachments/530635618003451904/683209648664215585/yande.re_612976_sample_4min_ass_azur_lane_cameltoe_dido_azur_lane_erect_nipples_maid_no_bra_pantsu_s.jpg',
     'https://media.discordapp.net/attachments/530635618003451904/683209646592360448/yande.re_612245_sample_animal_ears_ass_chita_ketchup_dress_nekomimi_pantsu_skirt_lift_tail_thighhigh.jpg',
     'https://media.discordapp.net/attachments/530635618003451904/683209641865510953/yande.re_609551_sample_ass_breasts_censored_cosplay_cum_dress_kagami_masara_kkkk12103_nipples_no_bra.jpg',
@@ -356,10 +343,8 @@ var ass = ['https://media.discordapp.net/attachments/530635618003451904/68320965
     'https://cdn.discordapp.com/attachments/770948564947304448/771016668159803422/1694-22uvMW0T09I.jpg',
     'https://cdn.discordapp.com/attachments/707201738255368194/771373670655852575/RJ290927_img_smp1.png',
     'https://cdn.discordapp.com/attachments/707201738255368194/771377721699074048/947c1173cccc094affd65ba4d1c817b5.png',
-    'https://i.imgur.com/1JJpaxX.jpg']
-exports.ass = ass
-
-var bdsm = ['https://media.discordapp.net/attachments/531827668002275328/682642520060330037/fdbiq6ovshj41.jpg',
+    'https://i.imgur.com/1JJpaxX.jpg',
+    'https://media.discordapp.net/attachments/531827668002275328/682642520060330037/fdbiq6ovshj41.jpg',
     'https://media.discordapp.net/attachments/531827668002275328/682430717652893754/62brFYV_d.jpg',
     'https://media.discordapp.net/attachments/531827668002275328/682747340041224248/4Gg9Cp2_d.jpg',
     'https://media.discordapp.net/attachments/531827668002275328/682403179966759034/TmOtKZi_d.jpg',
@@ -503,10 +488,8 @@ var bdsm = ['https://media.discordapp.net/attachments/531827668002275328/6826425
     'https://konachan.com/sample/d85db565ce195e5fbc3fcc4045f80fe0/Konachan.com%20-%20313418%20sample.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771001917278912543/573-16reT2pK3sc.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771017155272507412/1758-DcgdH3kfJTY.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/771017302874390558/1814-5G-g9PY315s.jpg']
-    exports.bdsm = bdsm 
-
-var blowjob = ['https://konachan.com/sample/79580dfece36d208c76d55fe22ca21ec/Konachan.com%20-%20316451%20sample.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/771017302874390558/1814-5G-g9PY315s.jpg',
+    'https://konachan.com/sample/79580dfece36d208c76d55fe22ca21ec/Konachan.com%20-%20316451%20sample.jpg',
     'https://konachan.com/sample/737a707688c52fdfdd74797e76d67ee2/Konachan.com%20-%20316192%20sample.jpg',
     'https://konachan.com/sample/d274dae687e5755fa73dfe709de90b47/Konachan.com%20-%20316017%20sample.jpg',
     'https://konachan.com/sample/e94bc73cafb5d81656f0f54051a3676f/Konachan.com%20-%20313642%20sample.jpg',
@@ -564,10 +547,8 @@ var blowjob = ['https://konachan.com/sample/79580dfece36d208c76d55fe22ca21ec/Kon
     'https://cdn.discordapp.com/attachments/770948564947304448/771002204998860850/0596-60zzeLzSqeU.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771002458888470588/0613-F9J046Su2Oo.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771015661089980427/1634-pjF5xdLo3WU.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/771026536094629908/e731a0dc-9755-402f-af98-4b00717bcb1e.png']
-  exports.blowjob = blowjob
-
-var cum = ['https://media.discordapp.net/attachments/480750844363538433/682844580265197608/yande.re_492406_sample_anus_ass_breasts_cum_fellatio_gangbang_handjob_heels_horns_maid_no_bra_nopan_.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/771026536094629908/e731a0dc-9755-402f-af98-4b00717bcb1e.png',
+    'https://media.discordapp.net/attachments/480750844363538433/682844580265197608/yande.re_492406_sample_anus_ass_breasts_cum_fellatio_gangbang_handjob_heels_horns_maid_no_bra_nopan_.jpg',
     'https://media.discordapp.net/attachments/480750844363538433/682844300521766932/image0.jpg',
     'https://media.discordapp.net/attachments/480750844363538433/682841909453914132/qeXIT47.jpg',
     'https://media.discordapp.net/attachments/480750844363538433/682841370532380672/image0.jpg',
@@ -756,10 +737,8 @@ var cum = ['https://media.discordapp.net/attachments/480750844363538433/68284458
     'https://cdn.discordapp.com/attachments/770948564947304448/771035046428934154/raniwM_3PA8.jpg',
     'https://cdn.discordapp.com/attachments/707201738255368194/771369379069296640/61.png',
     'https://cdn.discordapp.com/attachments/770948564947304448/771374675946897408/00446-kTcnNdtJZec.jpg',
-    'https://cdn.discordapp.com/attachments/707201738255368194/771861442127331388/8I2eO9j.png']
-exports.cum = cum
-
-var ero = ['https://media.discordapp.net/attachments/527959391446761473/682672218207027260/A9I9FLW_d.jpg',
+    'https://cdn.discordapp.com/attachments/707201738255368194/771861442127331388/8I2eO9j.png',
+    'https://media.discordapp.net/attachments/527959391446761473/682672218207027260/A9I9FLW_d.jpg',
     'https://media.discordapp.net/attachments/527959391446761473/681855421245554708/J4gfxcR_d.jpg',
     'https://media.discordapp.net/attachments/527959391446761473/681790172592865315/xgt7ys7ua1b41.jpg',
     'https://media.discordapp.net/attachments/527959391446761473/681790129203052568/image0-5.jpg',
@@ -883,10 +862,8 @@ var ero = ['https://media.discordapp.net/attachments/527959391446761473/68267221
     'https://cdn.discordapp.com/attachments/763827461250613268/771857665046872085/image0.gif',
     'https://cdn.discordapp.com/attachments/707201738255368194/771861522757976064/1mu59y817hm41.png',
     'https://cdn.discordapp.com/attachments/707201738255368194/771861594694352926/4a61e5528a0d1efb0ed163edc4cd31c1.png',
-    'https://cdn.discordapp.com/attachments/707201738255368194/771861708267585596/qakn1osmum451.png']
-exports.ero = ero
-
-var femdom = ['https://media.discordapp.net/attachments/516059858924208138/681659736759861318/image0_6.jpg',
+    'https://cdn.discordapp.com/attachments/707201738255368194/771861708267585596/qakn1osmum451.png',
+    'https://media.discordapp.net/attachments/516059858924208138/681659736759861318/image0_6.jpg',
     'https://media.discordapp.net/attachments/516059858924208138/681658400810991650/lusciousnet_lusciousnet_hentai-a-small-facesitting-album-x-p_160480173_1.jpg',
     'https://media.discordapp.net/attachments/516059858924208138/679172636252700692/5d63377e84f7d.jpeg',
     'https://media.discordapp.net/attachments/516059858924208138/678115448344018944/image0.jpg',
@@ -930,10 +907,8 @@ var femdom = ['https://media.discordapp.net/attachments/516059858924208138/68165
     'https://media.discordapp.net/attachments/516059858924208138/650617998717091856/mcjtmzwzj0m31.png',
     'https://media.discordapp.net/attachments/516059858924208138/650617985689583617/kniqtktx3sp31.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771016911948611624/1728-J6EgZMRLOYs.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/771023805438623784/Hentai_Nation_592.jpg']
-exports.femdom = femdom
-
-var ganbganb = ['https://telegra.ph/file/e0cfae46505053c5ab076.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/771023805438623784/Hentai_Nation_592.jpg',
+    'https://telegra.ph/file/e0cfae46505053c5ab076.jpg',
  'https://telegra.ph/file/5f7994ef4075ebe4a24f8.jpg',
  'https://telegra.ph/file/478d718b142074b6cc6e9.jpg',
  'https://telegra.ph/file/4f43a5a5e10534d4407d1.jpg',
@@ -1023,10 +998,8 @@ var ganbganb = ['https://telegra.ph/file/e0cfae46505053c5ab076.jpg',
  'https://telegra.ph/file/089a0114470d5546ce5ae.jpg',
  'https://telegra.ph/file/25f938b10487500111769.jpg',
  'https://telegra.ph/file/1b75e868bdfb74307dc86.jpg',
- 'https://telegra.ph/file/5f91da6ccd410022e7699.jpg']
- exports.ganbganb = ganbganb
-
-var glasses = ['https://media.discordapp.net/attachments/556959468252954634/694944530285199440/image0-2.jpg',
+ 'https://telegra.ph/file/5f91da6ccd410022e7699.jpg',
+ 'https://media.discordapp.net/attachments/556959468252954634/694944530285199440/image0-2.jpg',
   'https://media.discordapp.net/attachments/556959468252954634/704130759199293580/image0.png',
   'https://media.discordapp.net/attachments/556959468252954634/603283581002842155/image0.jpg',
   'https://media.discordapp.net/attachments/556959468252954634/634877730416099336/image0.jpg',
@@ -1082,10 +1055,8 @@ var glasses = ['https://media.discordapp.net/attachments/556959468252954634/6949
   'https://media.discordapp.net/attachments/556959468252954634/615581457733124096/image0.jpg',
   'https://media.discordapp.net/attachments/556959468252954634/627289233572233217/68282091_p0_master1200.jpg',
   'https://media.discordapp.net/attachments/556959468252954634/603283626225827900/image0.jpg',
-  'https://media.discordapp.net/attachments/556959468252954634/706739518522523658/image0.jpg']
-  exports.glasses = glasses
-
-var hentai2 = ['https://media.discordapp.net/attachments/527958344921514004/682392150004203556/Yt3hls8_d.jpg',
+  'https://media.discordapp.net/attachments/556959468252954634/706739518522523658/image0.jpg',
+  'https://media.discordapp.net/attachments/527958344921514004/682392150004203556/Yt3hls8_d.jpg',
     'https://media.discordapp.net/attachments/527958344921514004/682383171970531518/1i1cwipuibj41.jpg',
     'https://media.discordapp.net/attachments/527958344921514004/682011053659389963/image0.png',
     'https://media.discordapp.net/attachments/527958344921514004/681985899113873409/1rfjy.jpg',
@@ -1240,10 +1211,8 @@ var hentai2 = ['https://media.discordapp.net/attachments/527958344921514004/6823
     'https://cdn.discordapp.com/attachments/707201738255368194/771861384345681981/614asqtqokt51.png',
     'https://cdn.discordapp.com/attachments/716326877488349275/772539305405972521/LeezZhlwAHM.jpg',
     'https://cdn.discordapp.com/attachments/716326877488349275/772539305687908412/jQD7xDpl27k.jpg',
-    'https://cdn.discordapp.com/attachments/716326877488349275/772539306166190140/kKcvcYiN9Ck.jpg']
-exports.hentai2 = hentai2
-
-var kasedaiki = ['https://telegra.ph/file/88829931d6b734cb81d45.jpg',
+    'https://cdn.discordapp.com/attachments/716326877488349275/772539306166190140/kKcvcYiN9Ck.jpg',
+    'https://telegra.ph/file/88829931d6b734cb81d45.jpg',
     'https://telegra.ph/file/b2ca52345fb9d34dc00aa.jpg',
     'https://telegra.ph/file/eee3b383da06978bd3345.jpg',
     'https://telegra.ph/file/45ece02bf4344ca71db6f.jpg',
@@ -1411,10 +1380,8 @@ var kasedaiki = ['https://telegra.ph/file/88829931d6b734cb81d45.jpg',
     'https://telegra.ph/file/acb69ad6677ed80c8fd11.jpg',
     'https://telegra.ph/file/5637fef6262131c3cb05a.jpg',
     'https://telegra.ph/file/e63be610961172732aae6.jpg',
-    'https://telegra.ph/file/376cd8f5b10e50a056481.jpg']
-external.kasedaiki = kasedaiki
-
-var manga = ['https://cdn.discordapp.com/attachments/770948564947304448/770950443089264650/00004-VNJ6qrF23KQ.jpg',
+    'https://telegra.ph/file/376cd8f5b10e50a056481.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/770950443089264650/00004-VNJ6qrF23KQ.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770951666174132224/05.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770951690300031006/06.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/770951703041671178/07.jpg',
@@ -1467,10 +1434,8 @@ var manga = ['https://cdn.discordapp.com/attachments/770948564947304448/77095044
     'https://cdn.discordapp.com/attachments/770948564947304448/771374875494449152/00423-pLtfHabSh8Q.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771374902518218772/00424-eFQtPC4yxYI.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771374923499175936/00425-UgxpF5O-SSs.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/771374932352303124/00426-zmmGnSPzAMw.jpg']
-exports.manga = mamga
-
-var masturbation = ['https://media.discordapp.net/attachments/527959815717388299/740760092256763963/sample_64474316af46cc1241013d465fea986111abd85e.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/771374932352303124/00426-zmmGnSPzAMw.jpg',
+   'https://media.discordapp.net/attachments/527959815717388299/740760092256763963/sample_64474316af46cc1241013d465fea986111abd85e.jpg',
     'https://media.discordapp.net/attachments/527959815717388299/744277346470854857/IMG_1584.JPG?width=577&height=834',
     'https://konachan.com/image/981bb7a9606e67f11710598eeb7e4312/Konachan.com%20-%20292127%20animal_ears%20blush%20breasts%20ke-ta%20masturbation%20mystia_lorelei%20nipples%20nude%20red_eyes%20red_hair%20short_hair%20tears%20touhou%20wings.png',
     'https://konachan.com/image/7e615f214e87a7f370d7b7c59e9a458d/Konachan.com%20-%20290971%20aconitea%20ass%20brown_hair%20game_cg%20gray_hair%20handjob%20il_shi%20koichi_ai%20long_hair%20masturbation%20navel%20penis%20pussy%20red_eyes%20short_hair%20uncensored.png',
@@ -1596,10 +1561,8 @@ var masturbation = ['https://media.discordapp.net/attachments/527959815717388299
     'https://media.discordapp.net/attachments/527959815717388299/732242718453137408/image1.jpg?width=490&height=834',
     'https://konachan.com/image/34cc7d180d3697a0b60d0425ebad698e/Konachan.com%20-%20303863%20amego%20anus%20breasts%20censored%20chiyoda_momo%20green_eyes%20masturbation%20nipples%20nude%20pink_hair%20pussy%20pussy_juice%20spread_legs%20thighhighs%20twintails.png',
     'https://konachan.com/image/326a628ca22a90db52ba10ca33f3b0c0/Konachan.com%20-%20294303%20ass%20dark%20fingering%20idolmaster%20idolmaster_cinderella_girls%20masturbation%20panties%20phone%20pussy_juice%20sunaba_suzume%20underwear%20yumemi_riamu.jpg',
-    'https://konachan.com/image/1fd2cebbdc055ec037c6997dbfe41502/Konachan.com%20-%20286054%20black_hair%20blush%20breast_hold%20breasts%20fingering%20masturbation%20nipples%20original%20panties%20pussy_juice%20shirt_lift%20skirt_lift%20toenketsu%20underwear.jpg']
-exports.masturbation = masturbation
-
-var neko2 = ['https://media.discordapp.net/attachments/476921568291848205/681629039772958807/20200224_172700.jpg',
+    'https://konachan.com/image/1fd2cebbdc055ec037c6997dbfe41502/Konachan.com%20-%20286054%20black_hair%20blush%20breast_hold%20breasts%20fingering%20masturbation%20nipples%20original%20panties%20pussy_juice%20shirt_lift%20skirt_lift%20toenketsu%20underwear.jpg',
+    'https://media.discordapp.net/attachments/476921568291848205/681629039772958807/20200224_172700.jpg',
     'https://media.discordapp.net/attachments/527959344520888321/681548393180561479/sf4nqj0mdwi41.jpg',
     'https://media.discordapp.net/attachments/476921568291848205/681248927630360624/7tyydw3smbx21.jpg',
     'https://media.discordapp.net/attachments/476921568291848205/680978007686774786/image1-3.jpg',
@@ -1965,10 +1928,8 @@ var neko2 = ['https://media.discordapp.net/attachments/476921568291848205/681629
     'https://media.discordapp.net/attachments/527959344520888321/757190816803586089/illust_84491563_20200920_034601.png',
     'https://media.discordapp.net/attachments/527959344520888321/753637827325067385/Anubis_Bastet_Breast_Press_1.jpg',
     'https://media.discordapp.net/attachments/527959344520888321/734455700486488134/5290ec6.jpg',
-    'https://media.discordapp.net/attachments/527959344520888321/758725032989032478/192e0e4471848e8c501be0131146db06-1.jpg']
-exports.neko2 = neko2
-
-var orgy = ['https://media.discordapp.net/attachments/531827568966631425/683171889190797313/BQY3GFi_d.jpg',
+    'https://media.discordapp.net/attachments/527959344520888321/758725032989032478/192e0e4471848e8c501be0131146db06-1.jpg',
+    'https://media.discordapp.net/attachments/531827568966631425/683171889190797313/BQY3GFi_d.jpg',
     'https://media.discordapp.net/attachments/531827568966631425/681081380930846726/image-3.jpg',
     'https://media.discordapp.net/attachments/531827568966631425/677196930182283330/image0.jpg',
     'https://media.discordapp.net/attachments/531827568966631425/673765341649829898/7mylpnyd3qm31.png',
@@ -2188,10 +2149,8 @@ var orgy = ['https://media.discordapp.net/attachments/531827568966631425/6831718
     'https://cdn.discordapp.com/attachments/770948564947304448/771002631786594335/629-k8LrraY_lI.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771016193234305074/1637-n594l7QjF50.jpg',
     'https://cdn.discordapp.com/attachments/770948564947304448/771373045550022686/3ca192a6-073d-4693-ba1f-87189202c04e.gif',
-    'https://media.discordapp.net/attachments/531827568966631425/539913500722724864/cf2646eee9d96c3a1ae8d46bd064da82.png']
-exports.orgy = orgy
-
-var panties = ['https://media.discordapp.net/attachments/560547733463891968/682403255481139200/sabhvzadjcj41.jpg',
+    'https://media.discordapp.net/attachments/531827568966631425/539913500722724864/cf2646eee9d96c3a1ae8d46bd064da82.png',
+    'https://media.discordapp.net/attachments/560547733463891968/682403255481139200/sabhvzadjcj41.jpg',
     'https://media.discordapp.net/attachments/560547733463891968/680073378232664111/1f5db4a.jpg',
     'https://media.discordapp.net/attachments/560547733463891968/680051738849705993/79fbdb8.jpg',
     'https://media.discordapp.net/attachments/560547733463891968/679870595038576650/436acfd.jpg',
@@ -2320,10 +2279,8 @@ var panties = ['https://media.discordapp.net/attachments/560547733463891968/6824
     'https://media.discordapp.net/attachments/560547733463891968/561743150415085568/komc5cr.png',
     'https://media.discordapp.net/attachments/560547733463891968/561624963115909120/Konachan.png',
     'https://konachan.com/sample/d85db565ce195e5fbc3fcc4045f80fe0/Konachan.com%20-%20313418%20sample.jpg',
-    'https://cdn.discordapp.com/attachments/770948564947304448/770989069110607912/Hentai_nation_2.jpg']
-external.panties = panties
-
-var yuri = ['https://konachan.com/image/e137c359f365f112573f76eee499e41d/Konachan.com%20-%20317364%202girls%20bed%20breasts%20censored%20naga_%28pixiv%29%20nipples%20nude%20pussy%20shinobu_akira%20tears%20tokiwa_nanaka%20translation_request%20tribadism%20white%20yuri.jpg',
+    'https://cdn.discordapp.com/attachments/770948564947304448/770989069110607912/Hentai_nation_2.jpg',
+    'https://konachan.com/image/e137c359f365f112573f76eee499e41d/Konachan.com%20-%20317364%202girls%20bed%20breasts%20censored%20naga_%28pixiv%29%20nipples%20nude%20pussy%20shinobu_akira%20tears%20tokiwa_nanaka%20translation_request%20tribadism%20white%20yuri.jpg',
     'https://konachan.com/image/87a2d73ac859e02cdb0fabe8f16d345e/Konachan.com%20-%20297889%202girls%20aqua_eyes%20bed%20blue_hair%20blush%20breasts%20censored%20dildo%20gloves%20long_hair%20navel%20nipples%20nude%20passionlip%20pussy%20ribbons%20thighhighs%20wei_yu%20yuri.png',
     'https://konachan.com/image/ffd89da1ccfffb4e50e1104e0a036ae6/Konachan.com%20-%20286706%20arknights%20breasts%20fingering%20headdress%20long_hair%20muike%20navel%20nipples%20nude%20nun%20pussy_juice%20red_eyes%20skadi_%28arknights%29%20white_hair%20yuri.png',
     'https://konachan.com/image/b21daf2c057692c869e79ed4f3363829/Konachan.com%20-%20281360%202girls%20blue_eyes%20blue_hair%20blush%20breasts%20cunnilingus%20headdress%20nipples%20nude%20pink_eyes%20pink_hair%20short_hair%20spread_legs%20thighhighs%20twins%20yuri.png',
@@ -2481,10 +2438,8 @@ var yuri = ['https://konachan.com/image/e137c359f365f112573f76eee499e41d/Konacha
     'https://img2.gelbooru.com/images/be/14/be14e6fc288f3c6cfaa43d727cec1004.png',
     'https://hk.rule34.xxx/images/3748/b72a7fadc4e19ca4d90b26faf21e105e.jpeg',
     'https://konachan.com/image/cd3e3e928f2a343a1ce0674493017e20/Konachan.com%20-%20279799%202girls%20animal_ears%20blush%20breasts%20brown_hair%20censored%20fingering%20gray_hair%20microphone%20nipples%20panty_pull%20pantyhose%20pussy%20thighhighs%20twintails%20urine%20yuri.jpg',
-    'https://img2.gelbooru.com/images/9a/9a/9a9aba73a9401f5062215b24fbe8cbc2.jpeg']
-exports.yuri = yuri
-
-var zettai = ['https://konachan.com/image/e5d8cdf95933ac0965562974b5420dc0/Konachan.com%20-%20318834%20bikini_top%20blush%20breasts%20choker%20cleavage%20cropped%20cross%20fang%20gray_hair%20green_eyes%20katana%20long_hair%20navel%20original%20pink%20skirt%20sword%20thighhighs%20weapon.png',
+    'https://img2.gelbooru.com/images/9a/9a/9a9aba73a9401f5062215b24fbe8cbc2.jpeg',
+    'https://konachan.com/image/e5d8cdf95933ac0965562974b5420dc0/Konachan.com%20-%20318834%20bikini_top%20blush%20breasts%20choker%20cleavage%20cropped%20cross%20fang%20gray_hair%20green_eyes%20katana%20long_hair%20navel%20original%20pink%20skirt%20sword%20thighhighs%20weapon.png',
     'https://konachan.com/image/1ea1cb824046f8804048aa01fafaf7e0/Konachan.com%20-%20310941%20amano_don%20blush%20breasts%20brown_eyes%20brown_hair%20long_hair%20necklace%20original%20phone%20spread_legs%20thighhighs%20zettai_ryouiki.jpg',
     'https://konachan.com/image/81887a167a92e2618ff875448b004543/Konachan.com%20-%20253342%20ass%20breasts%20brown_eyes%20chain%20cum%20gloves%20gray_hair%20green_eyes%20headband%20jack_dempa%20long_hair%20male%20military%20open_shirt%20twintails%20uniform%20white_hair.png',
     'https://konachan.com/image/a7345fd96f102eeebe36e866f454f500/Konachan.com%20-%20317205%20bicolored_eyes%20blush%20boots%20choker%20game_cg%20gray_hair%20hat%20hulotte%20ikegami_akane%20kuzunoha_chitose%20long_hair%20shorts%20thighhighs%20zettai_ryouiki.png',
@@ -2535,4 +2490,4 @@ var zettai = ['https://konachan.com/image/e5d8cdf95933ac0965562974b5420dc0/Konac
     'https://konachan.com/image/8dc8bd8d27dbbceabd6749aab8d4ad8a/Konachan.com%20-%20311055%202girls%20bandage%20bed%20blush%20breasts%20collar%20crossover%20dress%20gloves%20gray_hair%20hug%20kokkoro%20megumin%20nipples%20no_bra%20open_shirt%20red_eyes%20short_hair%20thighhighs.png',
     'https://konachan.com/image/e8bf61ae63a1abc677e9c92ddac05305/Konachan.com%20-%20312503%20bell%20black_hair%20blush%20bow%20cameltoe%20catgirl%20eluthel%20gloves%20headband%20idolmaster%20panties%20ribbons%20short_hair%20signed%20tail%20tie%20twintails%20underwear%20upskirt.jpg',
     'https://konachan.com/image/46d27c3bdf813aec4164534b11e39ca2/Konachan.com%20-%20317758%20black_hair%20bra%20breasts%20choker%20cleavage%20fang%20necklace%20open_shirt%20original%20purple_eyes%20shirt%20short_hair%20skirt%20thighhighs%20underwear%20waifu2x.png']
-exports.zettai = zettai 
+} 
