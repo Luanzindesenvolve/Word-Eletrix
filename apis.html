@@ -10,7 +10,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-image: url('3.jpg');
+            background-image: url('4.png');
             background-size: cover;
             background-position: center;
             font-family: Arial, sans-serif;
@@ -74,6 +74,15 @@
         .arrow {
             color: green;
         }
+        .submenu-item {
+            margin-top: 0.5em;
+            padding-left: 1em;
+            cursor: pointer;
+        }
+        .submenu-item a {
+            color: white;
+            text-decoration: none;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -83,21 +92,85 @@
         <h2>Rest API</h2>
         <div class="menu">
             <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-male icon"></i> Animes Masculinos <span class="arrow">&#9660;</span></span>
-                <div class="submenu">
-                    <p>EM BREVE!!!</p>
-                </div>
-            </div>
-            <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-female icon"></i> Animes Femininos <span class="arrow">&#9660;</span></span>
-                <div class="submenu">
-                    <p>EM BREVE!!!</p>
-                </div>
-            </div>
-            <div class="menu-item" onclick="toggleSubmenu(this)">
                 <span><i class="fas fa-image icon"></i> Wallpapers <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
-                    <p>EM BREVE!!!</p>
+                    <div class="submenu-item"><a href="/api/aesthetic">aesthetic</a></div>
+                    <div class="submenu-item"><a href="/api/cosplay">cosplay</a></div>
+                    <div class="submenu-item"><a href="/api/cosplayloli">cosplayloli</a></div>
+                    <div class="submenu-item"><a href="/api/cosplaysagiri">cosplaysagiri</a></div>
+                    <div class="submenu-item"><a href="/api/fotodev">fotodev</a></div>
+                    <div class="submenu-item"><a href="/api/gameWallp">gameWallp</a></div>
+                    <div class="submenu-item"><a href="/api/imagens">imagens</a></div>
+                    <div class="submenu-item"><a href="/api/loli">loli</a></div>
+                    <div class="submenu-item"><a href="/api/meme">meme</a></div>
+                    <div class="submenu-item"><a href="/api/memevideos">memevideos</a></div>
+                    <div class="submenu-item"><a href="/api/metadinhas">metadinhas</a></div>
+                    <div class="submenu-item"><a href="/api/pokemon">pokemon</a></div>
+                    <div class="submenu-item"><a href="/api/satanic">satanic</a></div>
+                    <div class="submenu-item"><a href="/api/shotas">shotas</a></div>
+                    <div class="submenu-item"><a href="/api/videos">videos</a></div>
+                    <div class="submenu-item"><a href="/api/Nime">Nime</a></div>
+                    <div class="submenu-item"><a href="/api/wallhp2">wallhp2</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-male icon"></i> Masculino <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/akira">akira</a></div>
+                    <div class="submenu-item"><a href="/api/boruto">boruto</a></div>
+                    <div class="submenu-item"><a href="/api/bonek">bonek</a></div>
+                    <div class="submenu-item"><a href="/api/deidara">deidara</a></div>
+                    <div class="submenu-item"><a href="/api/itori">itori</a></div>
+                    <div class="submenu-item"><a href="/api/itachi">itachi</a></div>
+                    <div class="submenu-item"><a href="/api/madara">madara</a></div>
+                    <div class="submenu-item"><a href="/api/minato">minato</a></div>
+                    <div class="submenu-item"><a href="/api/sasuke">sasuke</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-female icon"></i> Feminino <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/elaina">elaina</a></div>
+                    <div class="submenu-item"><a href="/api/emilia">emilia</a></div>
+                    <div class="submenu-item"><a href="/api/erza">erza</a></div>
+                    <div class="submenu-item"><a href="/api/femininotrava">femininotrava</a></div>
+                    <div class="submenu-item"><a href="/api/hinata">hinata</a></div>
+                    <div class="submenu-item"><a href="/api/lolis">lolis</a></div>
+                    <div class="submenu-item"><a href="/api/mikasa">mikasa</a></div>
+                    <div class="submenu-item"><a href="/api/nezuko">nezuko</a></div>
+                    <div class="submenu-item"><a href="/api/rize">rize</a></div>
+                    <div class="submenu-item"><a href="/api/rose">rose</a></div>
+                    <div class="submenu-item"><a href="/api/sakura">sakura</a></div>
+                    <div class="submenu-item"><a href="/api/sagir">sagir</a></div>
+                    <div class="submenu-item"><a href="/api/tsunade">tsunade</a></div>
+                    <div class="submenu-item"><a href="/api/waifu">waifu</a></div>
+                    <div class="submenu-item"><a href="/api/Waifu2">Waifu2</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-exclamation-circle icon"></i> +18 <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/ero">ero</a></div>
+                    <div class="submenu-item"><a href="/api/neko">neko</a></div>
+                    <div class="submenu-item"><a href="/api/neko2">neko2</a></div>
+                    <div class="submenu-item"><a href="/api/zettai">zettai</a></div>
+                    <div class="submenu-item"><a href="/api/tentacles">tentacles</a></div>
+                    <div class="submenu-item"><a href="/api/ass">ass</a></div>
+                    <div class="submenu-item"><a href="/api/ahegao">ahegao</a></div>
+                    <div class="submenu-item"><a href="/api/manga">manga</a></div>
+                    <div class="submenu-item"><a href="/api/mia">mia</a></div>
+                    <div class="submenu-item"><a href="/api/elisa">elisa</a></div>
+                    <div class="submenu-item"><a href="/api/orgy">orgy</a></div>
+                    <div class="submenu-item"><a href="/api/hentai">hentai</a></div>
+                        <div class="submenu-item"><a href="/api/hentai2">hentai2</a></div>
+                    <div class="submenu-item"><a href="/api/pussy">pussy</a></div>
+                    <div class="submenu-item"><a href="/api/nsfwlolis">nsfwlolis</a></div>
+                    <div class="submenu-item"><a href="/api/masturbation">masturbation</a></div>
+                    <div class="submenu-item"><a href="/api/atriz">atriz</a></div>
+                    <div class="submenu-item"><a href="/api/fotinhas">fotinhas</a></div>
+                    <div class="submenu-item"><a href="/api/videozinhos">videozinhos</a></div>
+                    <div class="submenu-item"><a href="/api/pack">pack</a></div>
+                    <div class="submenu-item"><a href="/api/onlyfans">onlyfans</a></div>
                 </div>
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
@@ -114,12 +187,6 @@
             </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
                 <span><i class="fas fa-tools icon"></i> Ferramentas <span class="arrow">&#9660;</span></span>
-                <div class="submenu">
-                    <p>EM BREVE!!!</p>
-                </div>
-            </div>
-            <div class="menu-item" onclick="toggleSubmenu(this)">
-                <span><i class="fas fa-exclamation-circle icon"></i> +18 <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
                     <p>EM BREVE!!!</p>
                 </div>
