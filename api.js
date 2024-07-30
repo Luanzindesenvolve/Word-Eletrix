@@ -28,7 +28,7 @@ function gerarCPF() {
 }
 
 // Rota para pesquisa no YouTube
-router.get('/api/youtube-search', async (req, res) => {
+router.get('/pesquisayt', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
 
     if (!query) {
@@ -58,7 +58,7 @@ router.get('/api/youtube-search', async (req, res) => {
 });
 
 // Rota para consulta de CEP
-router.get('/api/consulta/cep/:cep', async (req, res) => {
+router.get('/consulta/cep/:cep', async (req, res) => {
     const cep = req.params.cep;
     if (!cep) return res.json({ erro: "Digite o CEP no parâmetro da URL" });
 
