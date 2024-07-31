@@ -220,14 +220,13 @@ router.get('/play', async (req, res) => {
     }
 
     try {
-        const result = await ytPlayMp3(query); // Certifique-se de que ytPlayMp3 é uma função async
+        const result = await ytPlayMp3(query); // Função assíncrona sendo aguardada
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o áudio do YouTube:', error.message);
         res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube' });
     }
 });
-
 // Roteador GET para buscar e retornar vídeo MP4
 router.get('/playvideo', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
