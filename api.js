@@ -131,28 +131,14 @@ router.get('/ytmp4', async (req, res) => {
 //play
 
 // Função para buscar e retornar informações de áudio MP3
-async function ytPlayMp3(query) {
+async function ytPlayMp3(videoUrl) {
     try {
-        console.log(`Procurando áudio MP3 para: ${query}`);
-        const searchResult = await yts(query);
-        console.log('Resultados da pesquisa:', searchResult);
-
-        const videoUrls = searchResult.videos.map(video => video.url);
-
-        if (videoUrls.length === 0) {
-            console.error('Nenhum vídeo encontrado para a consulta fornecida.');
-            throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
-        }
-
-        const videoUrl = videoUrls[0];
-        console.log(`Obtendo informações do vídeo: ${videoUrl}`);
+        console.log(`Obtendo informações do áudio para: ${videoUrl}`);
         const videoInfo = await ytdl.getInfo(videoUrl);
         console.log('Informações do vídeo:', videoInfo);
 
         const formats = videoInfo.formats;
-        const audioFormat = formats.find(format => 
-            format.mimeType.includes('audio/webm') || format.mimeType.includes('audio/mp4')
-        );
+        const audioFormat = formats.find(format => format.mimeType.includes('audio/mp4') || format.mimeType.includes('audio/webm'));
 
         if (!audioFormat) {
             console.error('Formato de áudio não encontrado para o vídeo.');
@@ -174,21 +160,9 @@ async function ytPlayMp3(query) {
 }
 
 // Função para buscar e retornar informações de vídeo MP4
-async function ytPlayMp4(query) {
+async function ytPlayMp4(videoUrl) {
     try {
-        console.log(`Procurando vídeo MP4 para: ${query}`);
-        const searchResult = await yts(query);
-        console.log('Resultados da pesquisa:', searchResult);
-
-        const videoUrls = searchResult.videos.map(video => video.url);
-
-        if (videoUrls.length === 0) {
-            console.error('Nenhum vídeo encontrado para a consulta fornecida.');
-            throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
-        }
-
-        const videoUrl = videoUrls[0];
-        console.log(`Obtendo informações do vídeo: ${videoUrl}`);
+        console.log(`Obtendo informações do vídeo para: ${videoUrl}`);
         const videoInfo = await ytdl.getInfo(videoUrl);
         console.log('Informações do vídeo:', videoInfo);
 
@@ -218,16 +192,16 @@ async function ytPlayMp4(query) {
 
 // Roteador GET para buscar e retornar áudio MP3
 router.get('/play', async (req, res) => {
-    const query = req.query.query;
+    const videoUrl = req.query.url; // URL do vídeo fornecida como query parameter
 
-    if (!query) {
-        console.error('Termo de pesquisa não fornecido.');
-        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    if (!videoUrl) {
+        console.error('URL do vídeo não fornecida.');
+        return res.status(400).json({ error: 'É necessário fornecer a URL do vídeo.' });
     }
 
     try {
-        console.log(`Iniciando pesquisa para áudio MP3 com o termo: ${query}`);
-        const result = await ytPlayMp3(query);
+        console.log(`Iniciando pesquisa para áudio MP3 com o link: ${videoUrl}`);
+        const result = await ytPlayMp3(videoUrl);
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o áudio do YouTube:', error.message);
@@ -237,23 +211,22 @@ router.get('/play', async (req, res) => {
 
 // Roteador GET para buscar e retornar vídeo MP4
 router.get('/playvideo', async (req, res) => {
-    const query = req.query.query;
+    const videoUrl = req.query.url; // URL do vídeo fornecida como query parameter
 
-    if (!query) {
-        console.error('Termo de pesquisa não fornecido.');
-        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    if (!videoUrl) {
+        console.error('URL do vídeo não fornecida.');
+        return res.status(400).json({ error: 'É necessário fornecer a URL do vídeo.' });
     }
 
     try {
-        console.log(`Iniciando pesquisa para vídeo MP4 com o termo: ${query}`);
-        const result = await ytPlayMp4(query);
+        console.log(`Iniciando pesquisa para vídeo MP4 com o link: ${videoUrl}`);
+        const result = await ytPlayMp4(videoUrl);
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o vídeo do YouTube:', error.message);
         res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube', details: error.message });
     }
 });
-
 
 //fim
 
