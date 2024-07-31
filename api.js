@@ -220,7 +220,7 @@ router.get('/play', async (req, res) => {
     }
 
     try {
-        const result = await ytPlayMp3(query); // await dentro de função async
+        const result = await ytPlayMp3(query); // Certifique-se de que ytPlayMp3 é uma função async
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o áudio do YouTube:', error.message);
