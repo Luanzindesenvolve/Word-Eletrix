@@ -130,10 +130,6 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
-const express = require('express');
-const ytdl = require('ytdl-core');
-const ytSearch = require('yt-search'); // Biblioteca para busca de vídeos
-const router = express.Router();
 
 // Função auxiliar para obter o melhor formato de áudio
 const getBestAudioFormat = async (url) => {
@@ -227,7 +223,7 @@ router.get('/playvideo', async (req, res) => {
     }
 });
 
-module.exports = router;
+
 
 
 
