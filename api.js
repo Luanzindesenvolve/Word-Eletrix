@@ -140,6 +140,107 @@ router.get('/ytmp4', async (req, res) => {
 });
 //play
 
+// Função para buscar e retornar informações de áudio MP3
+async function ytPlayMp3(query) {
+    try {
+        const searchResult = await yts(query);
+        const videoUrls = searchResult.all
+            .filter(item => item.type === 'video')
+            .map(item => item.url);
+
+        if (videoUrls.length === 0) {
+            throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
+        }
+
+        const videoUrl = videoUrls[0];
+        const videoInfo = await ytdl.getInfo(videoUrl);
+        const formats = videoInfo.formats;
+        const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+
+        if (!audioFormat) {
+            throw new Error('Formato de áudio não encontrado');
+        }
+
+        return {
+            título: videoInfo.videoDetails.title,
+            thumb: videoInfo.videoDetails.thumbnails[0].url,
+            canal: videoInfo.videoDetails.author.name,
+            publicado: videoInfo.videoDetails.uploadDate,
+            visualizações: videoInfo.videoDetails.viewCount,
+            link: audioFormat.url
+        };
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Função para buscar e retornar informações de vídeo MP4
+async function ytPlayMp4(query) {
+    try {
+        const searchResult = await yts(query);
+        const videoUrls = searchResult.all
+            .filter(item => item.type === 'video')
+            .map(item => item.url);
+
+        if (videoUrls.length === 0) {
+            throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
+        }
+
+        const videoUrl = videoUrls[0];
+        const videoInfo = await ytdl.getInfo(videoUrl);
+        const formats = videoInfo.formats;
+        const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+
+        if (!videoFormat) {
+            throw new Error('Formato de vídeo MP4 não encontrado');
+        }
+
+        return {
+            título: videoInfo.videoDetails.title,
+            thumb: videoInfo.videoDetails.thumbnails[0].url,
+            canal: videoInfo.videoDetails.author.name,
+            publicado: videoInfo.videoDetails.uploadDate,
+            visualizações: videoInfo.videoDetails.viewCount,
+            url: videoFormat.url
+        };
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Roteador GET para buscar e retornar áudio MP3
+router.get('/play', async (req, res) => {
+    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
+
+    try {
+        const result = await ytPlayMp3(query);
+        res.json({ criador: 'World Ecletix', result });
+    } catch (error) {
+        console.error('Erro ao buscar o áudio do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube' });
+    }
+});
+
+// Roteador GET para buscar e retornar vídeo MP4
+router.get('/playvideo', async (req, res) => {
+    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
+
+    try {
+        const result = await ytPlayMp4(query);
+        res.json({ criador: 'World Ecletix', result });
+    } catch (error) {
+        console.error('Erro ao buscar o vídeo do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
+    }
+});
 
 //fim
 // Rota para consulta de CEP
