@@ -142,7 +142,6 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
-
 // Função para buscar e retornar informações de áudio MP3
 async function ytPlayMp3(query) {
     try {
