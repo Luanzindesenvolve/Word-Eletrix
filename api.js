@@ -128,7 +128,7 @@ router.get('/ytmp4', async (req, res) => {
 });
 
     return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
-  }
+  
 
   try {
     const result = await ytPlayMp3(query);
