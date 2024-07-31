@@ -133,21 +133,29 @@ router.get('/ytmp4', async (req, res) => {
 // Função para buscar e retornar informações de áudio MP3
 async function ytPlayMp3(query) {
     try {
+        console.log(`Procurando áudio MP3 para: ${query}`);
         const searchResult = await yts(query);
-        const videoUrls = searchResult.all
-            .filter(item => item.type === 'video')
-            .map(item => item.url);
+        console.log('Resultados da pesquisa:', searchResult);
+
+        const videoUrls = searchResult.videos.map(video => video.url);
 
         if (videoUrls.length === 0) {
+            console.error('Nenhum vídeo encontrado para a consulta fornecida.');
             throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
         }
 
         const videoUrl = videoUrls[0];
+        console.log(`Obtendo informações do vídeo: ${videoUrl}`);
         const videoInfo = await ytdl.getInfo(videoUrl);
+        console.log('Informações do vídeo:', videoInfo);
+
         const formats = videoInfo.formats;
-        const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+        const audioFormat = formats.find(format => 
+            format.mimeType.includes('audio/webm') || format.mimeType.includes('audio/mp4')
+        );
 
         if (!audioFormat) {
+            console.error('Formato de áudio não encontrado para o vídeo.');
             throw new Error('Formato de áudio não encontrado');
         }
 
@@ -157,9 +165,10 @@ async function ytPlayMp3(query) {
             canal: videoInfo.videoDetails.author.name,
             publicado: videoInfo.videoDetails.uploadDate,
             visualizações: videoInfo.videoDetails.viewCount,
-            link: audioFormat.url
+            audioDownloadLink: audioFormat.url
         };
     } catch (error) {
+        console.error('Erro na função ytPlayMp3:', error.message);
         throw error;
     }
 }
@@ -167,21 +176,29 @@ async function ytPlayMp3(query) {
 // Função para buscar e retornar informações de vídeo MP4
 async function ytPlayMp4(query) {
     try {
+        console.log(`Procurando vídeo MP4 para: ${query}`);
         const searchResult = await yts(query);
-        const videoUrls = searchResult.all
-            .filter(item => item.type === 'video')
-            .map(item => item.url);
+        console.log('Resultados da pesquisa:', searchResult);
+
+        const videoUrls = searchResult.videos.map(video => video.url);
 
         if (videoUrls.length === 0) {
+            console.error('Nenhum vídeo encontrado para a consulta fornecida.');
             throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
         }
 
         const videoUrl = videoUrls[0];
+        console.log(`Obtendo informações do vídeo: ${videoUrl}`);
         const videoInfo = await ytdl.getInfo(videoUrl);
+        console.log('Informações do vídeo:', videoInfo);
+
         const formats = videoInfo.formats;
-        const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+        const videoFormat = formats.find(format => 
+            format.container === 'mp4' && format.hasVideo && format.hasAudio
+        );
 
         if (!videoFormat) {
+            console.error('Formato de vídeo MP4 não encontrado para o vídeo.');
             throw new Error('Formato de vídeo MP4 não encontrado');
         }
 
@@ -191,45 +208,53 @@ async function ytPlayMp4(query) {
             canal: videoInfo.videoDetails.author.name,
             publicado: videoInfo.videoDetails.uploadDate,
             visualizações: videoInfo.videoDetails.viewCount,
-            url: videoFormat.url
+            videoDownloadLink: videoFormat.url
         };
     } catch (error) {
+        console.error('Erro na função ytPlayMp4:', error.message);
         throw error;
     }
 }
 
 // Roteador GET para buscar e retornar áudio MP3
 router.get('/play', async (req, res) => {
-    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+    const query = req.query.query;
 
     if (!query) {
+        console.error('Termo de pesquisa não fornecido.');
         return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
     }
 
     try {
-        const result = await ytPlayMp3(query); // Função assíncrona sendo aguardada
+        console.log(`Iniciando pesquisa para áudio MP3 com o termo: ${query}`);
+        const result = await ytPlayMp3(query);
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o áudio do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube' });
+        res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube', details: error.message });
     }
 });
+
 // Roteador GET para buscar e retornar vídeo MP4
 router.get('/playvideo', async (req, res) => {
-    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+    const query = req.query.query;
 
     if (!query) {
+        console.error('Termo de pesquisa não fornecido.');
         return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
     }
 
     try {
-        const result = await ytPlayMp4(query); // await dentro de função async
+        console.log(`Iniciando pesquisa para vídeo MP4 com o termo: ${query}`);
+        const result = await ytPlayMp4(query);
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o vídeo do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
+        res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube', details: error.message });
     }
 });
+
+
 //fim
 
 // Rota para consulta de CEP
