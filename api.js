@@ -138,6 +138,8 @@ router.get('/ytmp4', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube' });
   }
 });
+
+
 //play
 
 // Função para buscar e retornar informações de áudio MP3
@@ -241,6 +243,9 @@ router.get('/playvideo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
     }
 });
+
+
+
 
 //fim
 // Rota para consulta de CEP
