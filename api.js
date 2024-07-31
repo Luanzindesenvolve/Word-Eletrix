@@ -131,6 +131,79 @@ router.get('/ytmp4', async (req, res) => {
 //play
 
 
+// Rota para buscar e baixar áudio do YouTube
+router.get('/play', async (req, res) => {
+    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
+
+    try {
+        // Pesquisa o vídeo
+        const searchResult = await ytSearch(query);
+        const video = searchResult.videos[0]; // Pegando o primeiro vídeo
+
+        if (!video) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+        }
+
+        // Monta a URL para o áudio
+        const audioUrl = ytdl(video.url, { quality: 'highestaudio' });
+
+        const result = {
+            título: video.title,
+            thumb: video.thumbnail,
+            canal: video.author.name,
+            publicado: video.timestamp,
+            visualizações: video.views,
+            link: audioUrl // URL para o download do áudio
+        };
+
+        res.json({ criador: 'World Ecletix', result });
+    } catch (error) {
+        console.error('Erro ao buscar e baixar áudio do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar e baixar áudio do YouTube' });
+    }
+});
+
+// Rota para buscar e baixar vídeo do YouTube
+router.get('/playvideo', async (req, res) => {
+    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
+
+    try {
+        // Pesquisa o vídeo
+        const searchResult = await ytSearch(query);
+        const video = searchResult.videos[0]; // Pegando o primeiro vídeo
+
+        if (!video) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+        }
+
+        // Monta a URL para o vídeo
+        const videoUrl = ytdl(video.url, { quality: 'highestvideo' });
+
+        const result = {
+            título: video.title,
+            thumb: video.thumbnail,
+            canal: video.author.name,
+            publicado: video.timestamp,
+            visualizações: video.views,
+            link: videoUrl // URL para o download do vídeo
+        };
+
+        res.json({ criador: 'World Ecletix', result });
+    } catch (error) {
+        console.error('Erro ao buscar e baixar vídeo do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar e baixar vídeo do YouTube' });
+    }
+});
+
+
 
 //fim
 
