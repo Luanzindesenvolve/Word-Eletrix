@@ -184,8 +184,8 @@ router.get('/play', async (req, res) => {
 });
 
 //playvideo
-const express = require('express');
-const router = express.Router();
+
+
 const { ytPlayMp4 } = require('./path/to/ytPlayMp4'); // Ajuste o caminho conforme necessário
 
 // Roteador GET para buscar informações do vídeo MP4
