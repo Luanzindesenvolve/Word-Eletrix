@@ -224,7 +224,7 @@ async function ytPlayMp4(query) {
 }
 
 // Roteador GET para buscar informações do vídeo MP4
-router.get('playvideo', async (req, res) => {
+router.get('/playvideo', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
 
     if (!query) {
