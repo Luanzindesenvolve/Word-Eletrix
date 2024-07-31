@@ -186,30 +186,64 @@ router.get('/play', async (req, res) => {
 //playvideo
 
 
-const { ytPlayMp4 } = require('./path/to/ytPlayMp4'); // Ajuste o caminho conforme necessário
+// Função ytPlayMp4 já implementada, deve estar acessível aqui
+async function ytPlayMp4(query) {
+    
+    try {
+        const searchResult = await yts(query);
+        const videoUrls = searchResult.all
+            .filter(item => item.type === 'video')
+            .map(item => item.url);
+
+        if (videoUrls.length === 0) {
+            throw new Error('Nenhum vídeo encontrado para a consulta fornecida.');
+        }
+
+        const videoUrl = videoUrls[0];
+        const videoId = yt.getVideoID(videoUrl);
+
+        const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${videoId}`);
+        const formats = videoInfo.formats;
+        const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+
+        if (!videoFormat) {
+            throw new Error('Formato de vídeo MP4 não encontrado');
+        }
+
+        return {
+            título: videoInfo.videoDetails.title,
+            thumb: videoInfo.videoDetails.thumbnails[0].url,
+            canal: videoInfo.videoDetails.author.name,
+            publicado: videoInfo.videoDetails.uploadDate,
+            visualizações: videoInfo.videoDetails.viewCount,
+            url: videoFormat.url
+        };
+    } catch (error) {
+        throw error;
+    }
+}
 
 // Roteador GET para buscar informações do vídeo MP4
-router.get('/playvideo', async (req, res) => {
-  const query = req.query.query; // Termo de pesquisa enviado como query parameter
+router.get('playvideo', async (req, res) => {
+    const query = req.query.query; // Termo de pesquisa enviado como query parameter
 
-  if (!query) {
-    return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
-  }
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
 
-  try {
-    const videoInfo = await ytPlayMp4(query);
+    try {
+        const videoInfo = await ytPlayMp4(query);
 
-    // Retorna todas as informações do vídeo junto com o link do vídeo MP4
-    res.json({
-      criador: 'World Ecletix',
-      ...videoInfo
-    });
-  } catch (error) {
-    console.error('Erro ao buscar o vídeo do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
-  }
+        // Retorna todas as informações do vídeo junto com o link do vídeo MP4
+        res.json({
+            criador: 'World Ecletix',
+            ...videoInfo
+        });
+    } catch (error) {
+        console.error('Erro ao buscar o vídeo do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
+    }
 });
-
 
 //fim
 // Rota para consulta de CEP
