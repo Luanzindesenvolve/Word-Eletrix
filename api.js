@@ -3,6 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const search = require('yt-search');
+const yt = require('ytdl-core');
 
 const router = express.Router();
 
@@ -57,6 +58,76 @@ router.get('/pesquisayt', async (req, res) => {
     }
 });
 
+//ytmp3 pela ulr
+
+router.get('/ytmp3', async (req, res) => {
+  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+
+  if (!url) {
+    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
+  }
+
+  try {
+    const id = yt.getVideoID(url);
+    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+    const formats = data.formats;
+    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+
+    if (!audioFormat) {
+      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    }
+
+    const result = {
+      título: data.videoDetails.title,
+      thumb: data.videoDetails.thumbnails[0].url,
+      canal: data.videoDetails.author.name,
+      publicado: data.videoDetails.uploadDate,
+      visualizações: data.videoDetails.viewCount,
+      link: audioFormat.url
+    };
+
+    res.json({ criador: 'World Ecletix', result });
+  } catch (error) {
+    console.error('Erro ao baixar o áudio do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao baixar o áudio do YouTube' });
+  }
+}); 
+//ytmp4 pela ulr vídeo
+
+router.get('/ytmp4', async (req, res) => {
+  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+
+  if (!url) {
+    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
+  }
+
+  try {
+    const id = yt.getVideoID(url);
+    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+    const formats = data.formats;
+    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+
+    if (!videoFormat) {
+      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
+    }
+
+    const result = {
+      título: data.videoDetails.title,
+      thumb: data.videoDetails.thumbnails[0].url,
+      canal: data.videoDetails.author.name,
+      publicado: data.videoDetails.uploadDate,
+      visualizações: data.videoDetails.viewCount,
+      link: videoFormat.url
+    };
+
+    res.json({ criador: 'World Ecletix', result });
+  } catch (error) {
+    console.error('Erro ao baixar o vídeo do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao baixar o vídeo do YouTube' });
+  }
+});
+
+//fim
 // Rota para consulta de CEP
 router.get('/consulta/cep/:cep', async (req, res) => {
     const cep = req.params.cep;
