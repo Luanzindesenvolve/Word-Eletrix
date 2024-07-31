@@ -131,8 +131,10 @@ router.get('/ytmp4', async (req, res) => {
 //play
 
 
+
+
 // Função auxiliar para obter o melhor formato de áudio
-const getBestAudioFormat = async (url) => {
+const getBestAudioUrl = async (url) => {
     try {
         const info = await ytdl.getInfo(url);
         const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
@@ -142,9 +144,9 @@ const getBestAudioFormat = async (url) => {
     }
 };
 
-// Rota para buscar e baixar áudio do YouTube
+// Rota para buscar e obter link de áudio do YouTube
 router.get('/play', async (req, res) => {
-    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+    const query = req.query.query;
 
     if (!query) {
         return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
@@ -152,33 +154,31 @@ router.get('/play', async (req, res) => {
 
     try {
         const searchResult = await ytSearch(query);
-        const video = searchResult.videos[0]; // Pegando o primeiro vídeo
+        const video = searchResult.videos[0];
 
         if (!video) {
             return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
         }
 
-        // Obtém o link para o melhor formato de áudio
-        const audioUrl = await getBestAudioFormat(video.url);
+        const audioUrl = await getBestAudioUrl(video.url);
 
-        const result = {
+        res.json({
+            criador: 'World Ecletix',
             título: video.title,
             thumb: video.thumbnail,
             canal: video.author.name,
             publicado: video.timestamp,
             visualizações: video.views,
-            link: audioUrl // URL para o download do áudio
-        };
-
-        res.json({ criador: 'World Ecletix', result });
+            link: audioUrl
+        });
     } catch (error) {
-        console.error('Erro ao buscar e baixar áudio do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar e baixar áudio do YouTube' });
+        console.error('Erro ao buscar e obter áudio do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar e obter áudio do YouTube' });
     }
 });
 
 // Função auxiliar para obter o melhor formato de vídeo
-const getBestVideoFormat = async (url) => {
+const getBestVideoUrl = async (url) => {
     try {
         const info = await ytdl.getInfo(url);
         const videoFormat = ytdl.chooseFormat(info.formats, { filter: 'videoandaudio' });
@@ -188,9 +188,9 @@ const getBestVideoFormat = async (url) => {
     }
 };
 
-// Rota para buscar e baixar vídeo do YouTube
+// Rota para buscar e obter link de vídeo do YouTube
 router.get('/playvideo', async (req, res) => {
-    const query = req.query.query; // Termo de pesquisa enviado como query parameter
+    const query = req.query.query;
 
     if (!query) {
         return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
@@ -198,30 +198,29 @@ router.get('/playvideo', async (req, res) => {
 
     try {
         const searchResult = await ytSearch(query);
-        const video = searchResult.videos[0]; // Pegando o primeiro vídeo
+        const video = searchResult.videos[0];
 
         if (!video) {
             return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
         }
 
-        // Obtém o link para o melhor formato de vídeo
-        const videoUrl = await getBestVideoFormat(video.url);
+        const videoUrl = await getBestVideoUrl(video.url);
 
-        const result = {
+        res.json({
+            criador: 'World Ecletix',
             título: video.title,
             thumb: video.thumbnail,
             canal: video.author.name,
             publicado: video.timestamp,
             visualizações: video.views,
-            link: videoUrl // URL para o download do vídeo
-        };
-
-        res.json({ criador: 'World Ecletix', result });
+            link: videoUrl
+        });
     } catch (error) {
-        console.error('Erro ao buscar e baixar vídeo do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar e baixar vídeo do YouTube' });
+        console.error('Erro ao buscar e obter vídeo do YouTube:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar e obter vídeo do YouTube' });
     }
 });
+
 
 
 
