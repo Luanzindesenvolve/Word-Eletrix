@@ -132,6 +132,7 @@ router.get('/ytmp4', async (req, res) => {
 
   try {
     const result = await ytPlayMp3(query);
+                   ^^^^^
     res.json({ criador: 'World Ecletix', result });
   } catch (error) {
     console.error('Erro ao buscar o áudio do YouTube:', error.message);
@@ -141,6 +142,7 @@ router.get('/ytmp4', async (req, res) => {
 
 
 //play
+
 
 // Função para buscar e retornar informações de áudio MP3
 async function ytPlayMp3(query) {
@@ -219,7 +221,7 @@ router.get('/play', async (req, res) => {
     }
 
     try {
-        const result = await ytPlayMp3(query);
+        const result = await ytPlayMp3(query); // await dentro de função async
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o áudio do YouTube:', error.message);
@@ -236,13 +238,15 @@ router.get('/playvideo', async (req, res) => {
     }
 
     try {
-        const result = await ytPlayMp4(query);
+        const result = await ytPlayMp4(query); // await dentro de função async
         res.json({ criador: 'World Ecletix', result });
     } catch (error) {
         console.error('Erro ao buscar o vídeo do YouTube:', error.message);
         res.status(500).json({ error: 'Erro ao buscar o vídeo do YouTube' });
     }
 });
+
+
 
 //fim
 
