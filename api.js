@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const search = require('yt-search');
 const yt = require('ytdl-core');
-
+const app = express(); // Inicializa o aplicativo Express
 const router = express.Router();
 
 // Função para gerar CPF aleatório
