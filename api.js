@@ -132,7 +132,6 @@ router.get('/ytmp4', async (req, res) => {
 
   try {
     const result = await ytPlayMp3(query);
-                   ^^^^^
     res.json({ criador: 'World Ecletix', result });
   } catch (error) {
     console.error('Erro ao buscar o áudio do YouTube:', error.message);
