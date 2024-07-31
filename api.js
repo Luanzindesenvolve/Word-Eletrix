@@ -128,6 +128,8 @@ router.get('/ytmp4', async (req, res) => {
 });
 //play
 
+
+
 // Função para buscar o áudio MP3
 async function ytPlayMp3(query) {
   try {
@@ -162,6 +164,7 @@ async function ytPlayMp3(query) {
       link: audioFormat.url
     };
   } catch (error) {
+    console.error('Erro na função ytPlayMp3:', error.message);
     throw error;
   }
 }
@@ -182,6 +185,8 @@ router.get('/play', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar o áudio do YouTube' });
   }
 });
+
+
 
 //playvideo
 
