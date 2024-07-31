@@ -130,6 +130,22 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
+const express = require('express');
+const ytdl = require('ytdl-core');
+const ytSearch = require('yt-search'); // Biblioteca para busca de vídeos
+const router = express.Router();
+
+// Função auxiliar para obter o melhor formato de áudio
+const getBestAudioFormat = async (url) => {
+    try {
+        const info = await ytdl.getInfo(url);
+        const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
+        return audioFormat.url;
+    } catch (error) {
+        throw new Error('Erro ao obter o formato de áudio');
+    }
+};
+
 // Rota para buscar e baixar áudio do YouTube
 router.get('/play', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
@@ -139,7 +155,6 @@ router.get('/play', async (req, res) => {
     }
 
     try {
-        // Pesquisa o vídeo
         const searchResult = await ytSearch(query);
         const video = searchResult.videos[0]; // Pegando o primeiro vídeo
 
@@ -147,8 +162,8 @@ router.get('/play', async (req, res) => {
             return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
         }
 
-        // Monta a URL para o áudio
-        const audioUrl = ytdl(video.url, { quality: 'highestaudio' });
+        // Obtém o link para o melhor formato de áudio
+        const audioUrl = await getBestAudioFormat(video.url);
 
         const result = {
             título: video.title,
@@ -166,6 +181,17 @@ router.get('/play', async (req, res) => {
     }
 });
 
+// Função auxiliar para obter o melhor formato de vídeo
+const getBestVideoFormat = async (url) => {
+    try {
+        const info = await ytdl.getInfo(url);
+        const videoFormat = ytdl.chooseFormat(info.formats, { filter: 'videoandaudio' });
+        return videoFormat.url;
+    } catch (error) {
+        throw new Error('Erro ao obter o formato de vídeo');
+    }
+};
+
 // Rota para buscar e baixar vídeo do YouTube
 router.get('/playvideo', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
@@ -175,7 +201,6 @@ router.get('/playvideo', async (req, res) => {
     }
 
     try {
-        // Pesquisa o vídeo
         const searchResult = await ytSearch(query);
         const video = searchResult.videos[0]; // Pegando o primeiro vídeo
 
@@ -183,8 +208,8 @@ router.get('/playvideo', async (req, res) => {
             return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
         }
 
-        // Monta a URL para o vídeo
-        const videoUrl = ytdl(video.url, { quality: 'highestvideo' });
+        // Obtém o link para o melhor formato de vídeo
+        const videoUrl = await getBestVideoFormat(video.url);
 
         const result = {
             título: video.title,
@@ -202,6 +227,7 @@ router.get('/playvideo', async (req, res) => {
     }
 });
 
+module.exports = router;
 
 
 
