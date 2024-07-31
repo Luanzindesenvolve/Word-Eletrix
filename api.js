@@ -130,7 +130,6 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
-
 // Rota para buscar e baixar áudio do YouTube
 router.get('/play', async (req, res) => {
     const query = req.query.query; // Termo de pesquisa enviado como query parameter
@@ -202,6 +201,7 @@ router.get('/playvideo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar e baixar vídeo do YouTube' });
     }
 });
+
 
 
 
