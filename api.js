@@ -130,18 +130,23 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
+
 // Função para buscar e obter link de áudio
 async function ytPlayMp3(query) {
     try {
+        // Realizar a pesquisa no YouTube
         const data = await yts(query);
-        const url = data.all.filter(video => video.type === 'video')[0]?.url;
+        const video = data.all.find(video => video.type === 'video');
 
-        if (!url) {
+        if (!video) {
             throw new Error('Nenhum vídeo encontrado');
         }
 
-        const id = yt.getVideoID(url);
+        // Obter o ID do vídeo
+        const id = yt.getVideoID(video.url);
         const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+
+        // Encontrar o formato de áudio
         const audioFormat = videoInfo.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
 
         if (!audioFormat) {
@@ -164,15 +169,19 @@ async function ytPlayMp3(query) {
 // Função para buscar e obter link de vídeo
 async function ytPlayMp4(query) {
     try {
+        // Realizar a pesquisa no YouTube
         const data = await yts(query);
-        const url = data.all.filter(video => video.type === 'video')[0]?.url;
+        const video = data.all.find(video => video.type === 'video');
 
-        if (!url) {
+        if (!video) {
             throw new Error('Nenhum vídeo encontrado');
         }
 
-        const id = yt.getVideoID(url);
+        // Obter o ID do vídeo
+        const id = yt.getVideoID(video.url);
         const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+
+        // Encontrar o formato de vídeo
         const videoFormat = videoInfo.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
 
         if (!videoFormat) {
@@ -241,6 +250,7 @@ router.get('/playmp4', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 
 //fim
