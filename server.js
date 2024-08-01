@@ -1,10 +1,7 @@
 const express = require('express');
 const path = require('path');
-const apiRoutes = require('./api');  // Importa o módulo da API
-
-const app = express();
-const PORT = process.env.PORT || 30000;
-
+const apiRoutes = require('./api'); 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
