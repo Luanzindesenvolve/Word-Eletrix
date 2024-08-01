@@ -129,27 +129,42 @@ router.get('/ytmp4', async (req, res) => {
 
 
 //play
-// Rota para buscar e retornar informações de áudio
+ 
+// Função para buscar vídeo no YouTube e retornar detalhes
+async function searchYouTube(query) {
+  try {
+    const results = await yts(query);
+    return results.all.find(result => result.type === 'video') || null;
+  } catch (error) {
+    throw new Error('Erro ao buscar resultados no YouTube: ' + error.message);
+  }
+}
+
+// Função para obter informações de vídeo e formatos
+async function getVideoInfo(url) {
+  try {
+    return await ytdl.getInfo(url);
+  } catch (error) {
+    throw new Error('Erro ao obter informações do vídeo: ' + error.message);
+  }
+}
 
 // Rota para buscar e tocar um vídeo
-router.get('/playvideo', async (req, res) => {
-  const query = req.query.query; // Consulta para buscar o vídeo
+router.get('/play', async (req, res) => {
+  const query = req.query.query;
 
   if (!query) {
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    // Busca os resultados do YouTube
-    const searchResults = await yts(query);
-    const video = searchResults.all.find(result => result.type === 'video');
+    const video = await searchYouTube(query);
 
     if (!video) {
       return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
-    // Obtém informações sobre o vídeo
-    const videoInfo = await yt.getInfo(video.url);
+    const videoInfo = await getVideoInfo(video.url);
     const formats = videoInfo.formats;
     const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
     const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
@@ -158,7 +173,6 @@ router.get('/playvideo', async (req, res) => {
       return res.status(404).json({ error: 'Formato de vídeo MP4 ou áudio não encontrado' });
     }
 
-    // Cria o resultado com as informações do vídeo
     const result = {
       title: videoInfo.videoDetails.title,
       thumb: videoInfo.videoDetails.thumbnails[0].url,
@@ -171,30 +185,27 @@ router.get('/playvideo', async (req, res) => {
 
     res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
   } catch (error) {
-    console.error('Erro ao buscar o áudio:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar o áudio' });
+    console.error('Erro ao buscar o vídeo e o áudio:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar o vídeo e o áudio' });
   }
 });
 
 // Rota para buscar e baixar o áudio
-router.get('/play', async (req, res) => {
-  const query = req.query.query; // Consulta para buscar o áudio
+router.get('/playaudio', async (req, res) => {
+  const query = req.query.query;
 
   if (!query) {
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    // Busca os resultados do YouTube
-    const searchResults = await yts(query);
-    const video = searchResults.all.find(result => result.type === 'video');
+    const video = await searchYouTube(query);
 
     if (!video) {
       return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
-    // Obtém informações sobre o vídeo
-    const videoInfo = await yt.getInfo(video.url);
+    const videoInfo = await getVideoInfo(video.url);
     const formats = videoInfo.formats;
     const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
 
@@ -202,7 +213,6 @@ router.get('/play', async (req, res) => {
       return res.status(404).json({ error: 'Formato de áudio não encontrado' });
     }
 
-    // Cria o resultado com as informações do áudio
     const result = {
       title: videoInfo.videoDetails.title,
       thumb: videoInfo.videoDetails.thumbnails[0].url,
@@ -218,8 +228,6 @@ router.get('/play', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar o áudio' });
   }
 });
-
-
 
 
 //fim
