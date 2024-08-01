@@ -173,13 +173,12 @@ router.get('/playvideo', async (req, res) => {
 });
 
 
-
-// Função para buscar e retornar informações de uma música do YouTube em formato MP3
-app.get('/play', async (req, res) => {
-  const query = req.query.query; // Nome da música enviada como query parameter
+// Definição das rotas usando `router`
+router.get('/play', async (req, res) => {
+  const query = req.query.query; // Query string para buscar o vídeo
 
   if (!query) {
-    return res.status(400).json({ error: 'É necessário fornecer um nome para busca.' });
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
@@ -187,40 +186,32 @@ app.get('/play', async (req, res) => {
     const video = searchResults.all.find(result => result.type === 'video');
 
     if (!video) {
-      return res.status(404).json({ error: 'Música não encontrada' });
+      return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
-    const id = yt.getVideoID(video.url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-    const formats = data.formats;
-    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+    const videoInfo = await yt.getInfo(video.url);
+    const formats = videoInfo.formats;
+    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
 
-    if (!audioFormat) {
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    if (!videoFormat) {
+      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
     }
 
     const result = {
-      title: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      channel: data.videoDetails.author.name,
-      publi: data.videoDetails.uploadDate,
-      views: data.videoDetails.viewCount,
-      link: audioFormat.url
+      title: videoInfo.videoDetails.title,
+      thumb: videoInfo.videoDetails.thumbnails[0].url,
+      channel: videoInfo.videoDetails.author.name,
+      publi: videoInfo.videoDetails.uploadDate,
+      views: videoInfo.videoDetails.viewCount,
+      link: videoFormat.url
     };
 
-    res.json({
-      status: true,
-      code: 200,
-      criador: '[🐦] world ecletix [🐦]',
-      resultado: result
-    });
+    res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
   } catch (error) {
-    console.error('Erro ao buscar a música no YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar a música no YouTube' });
+    console.error('Erro ao buscar o vídeo:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar o vídeo' });
   }
 });
-
-
 //fim
 
 // Rota para consulta de CEP
