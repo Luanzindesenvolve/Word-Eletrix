@@ -130,43 +130,43 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 // Rota para buscar e retornar informações de áudio
-router.get('/play', async (req, res) => {
-  const query = req.query.query;
+
+// Rota para buscar e tocar um vídeo
+router.get('/playvideo', async (req, res) => {
+  const query = req.query.query; // Consulta para buscar o vídeo
 
   if (!query) {
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    console.log('Procurando áudio com a consulta:', query);
-
+    // Busca os resultados do YouTube
     const searchResults = await yts(query);
-    console.log('Resultados da busca:', searchResults);
-
     const video = searchResults.all.find(result => result.type === 'video');
-    console.log('Vídeo encontrado:', video);
 
     if (!video) {
       return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
+    // Obtém informações sobre o vídeo
     const videoInfo = await yt.getInfo(video.url);
-    console.log('Informações do vídeo:', videoInfo);
-
     const formats = videoInfo.formats;
+    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
     const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
 
-    if (!audioFormat) {
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    if (!videoFormat || !audioFormat) {
+      return res.status(404).json({ error: 'Formato de vídeo MP4 ou áudio não encontrado' });
     }
 
+    // Cria o resultado com as informações do vídeo
     const result = {
       title: videoInfo.videoDetails.title,
       thumb: videoInfo.videoDetails.thumbnails[0].url,
       channel: videoInfo.videoDetails.author.name,
       publi: videoInfo.videoDetails.uploadDate,
       views: videoInfo.videoDetails.viewCount,
-      link: audioFormat.url
+      videoLink: videoFormat.url,
+      audioLink: audioFormat.url
     };
 
     res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
@@ -176,52 +176,50 @@ router.get('/play', async (req, res) => {
   }
 });
 
-// Rota para buscar e retornar informações do vídeo
+// Rota para buscar e baixar o áudio
 router.get('/play', async (req, res) => {
-  const query = req.query.query;
+  const query = req.query.query; // Consulta para buscar o áudio
 
   if (!query) {
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    console.log('Procurando vídeo com a consulta:', query);
-
+    // Busca os resultados do YouTube
     const searchResults = await yts(query);
-    console.log('Resultados da busca:', searchResults);
-
     const video = searchResults.all.find(result => result.type === 'video');
-    console.log('Vídeo encontrado:', video);
 
     if (!video) {
       return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
+    // Obtém informações sobre o vídeo
     const videoInfo = await yt.getInfo(video.url);
-    console.log('Informações do vídeo:', videoInfo);
-
     const formats = videoInfo.formats;
-    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
 
-    if (!videoFormat) {
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
+    if (!audioFormat) {
+      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
     }
 
+    // Cria o resultado com as informações do áudio
     const result = {
       title: videoInfo.videoDetails.title,
       thumb: videoInfo.videoDetails.thumbnails[0].url,
       channel: videoInfo.videoDetails.author.name,
       publi: videoInfo.videoDetails.uploadDate,
       views: videoInfo.videoDetails.viewCount,
-      link: videoFormat.url
+      audioLink: audioFormat.url
     };
 
     res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
   } catch (error) {
-    console.error('Erro ao buscar o vídeo:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar o vídeo' });
+    console.error('Erro ao buscar o áudio:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar o áudio' });
   }
 });
+
+
 
 
 //fim
