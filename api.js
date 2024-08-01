@@ -150,7 +150,7 @@ async function getVideoInfo(url) {
 }
 
 // Rota para buscar e tocar um vídeo
-router.get('/play', async (req, res) => {
+router.get('/playvideo', async (req, res) => {
   const query = req.query.query;
 
   if (!query) {
@@ -191,7 +191,7 @@ router.get('/play', async (req, res) => {
 });
 
 // Rota para buscar e baixar o áudio
-router.get('/playaudio', async (req, res) => {
+router.get('/play', async (req, res) => {
   const query = req.query.query;
 
   if (!query) {
