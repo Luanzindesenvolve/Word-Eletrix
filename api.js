@@ -130,22 +130,70 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
-
-
-
-// Função auxiliar para obter o melhor formato de áudio
-const getBestAudioUrl = async (url) => {
+// Função para buscar e obter link de áudio
+async function ytPlayMp3(query) {
     try {
-        const info = await ytdl.getInfo(url);
-        const audioFormat = ytdl.chooseFormat(info.formats, { filter: 'audioonly' });
-        return audioFormat.url;
-    } catch (error) {
-        throw new Error('Erro ao obter o formato de áudio');
-    }
-};
+        const data = await yts(query);
+        const url = data.all.filter(video => video.type === 'video')[0]?.url;
 
-// Rota para buscar e obter link de áudio do YouTube
-router.get('/play', async (req, res) => {
+        if (!url) {
+            throw new Error('Nenhum vídeo encontrado');
+        }
+
+        const id = yt.getVideoID(url);
+        const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+        const audioFormat = videoInfo.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+
+        if (!audioFormat) {
+            throw new Error('Formato de áudio não encontrado');
+        }
+
+        return {
+            title: videoInfo.videoDetails.title,
+            thumb: videoInfo.videoDetails.thumbnails[0].url,
+            channel: videoInfo.videoDetails.author.name,
+            publi: videoInfo.videoDetails.publishDate,
+            views: videoInfo.videoDetails.viewCount,
+            link: audioFormat.url
+        };
+    } catch (error) {
+        throw new Error(`Erro ao buscar e obter áudio do YouTube: ${error.message}`);
+    }
+}
+
+// Função para buscar e obter link de vídeo
+async function ytPlayMp4(query) {
+    try {
+        const data = await yts(query);
+        const url = data.all.filter(video => video.type === 'video')[0]?.url;
+
+        if (!url) {
+            throw new Error('Nenhum vídeo encontrado');
+        }
+
+        const id = yt.getVideoID(url);
+        const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+        const videoFormat = videoInfo.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+
+        if (!videoFormat) {
+            throw new Error('Formato de vídeo MP4 não encontrado');
+        }
+
+        return {
+            title: videoInfo.videoDetails.title,
+            thumb: videoInfo.videoDetails.thumbnails[0].url,
+            channel: videoInfo.videoDetails.author.name,
+            publi: videoInfo.videoDetails.publishDate,
+            views: videoInfo.videoDetails.viewCount,
+            link: videoFormat.url
+        };
+    } catch (error) {
+        throw new Error(`Erro ao buscar e obter vídeo do YouTube: ${error.message}`);
+    }
+}
+
+// Rota para buscar e obter link de áudio
+router.get('/playmp3', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
@@ -153,43 +201,24 @@ router.get('/play', async (req, res) => {
     }
 
     try {
-        const searchResult = await ytSearch(query);
-        const video = searchResult.videos[0];
-
-        if (!video) {
-            return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
-        }
-
-        const audioUrl = await getBestAudioUrl(video.url);
-
+        const result = await ytPlayMp3(query);
         res.json({
             criador: 'World Ecletix',
-            título: video.title,
-            thumb: video.thumbnail,
-            canal: video.author.name,
-            publicado: video.timestamp,
-            visualizações: video.views,
-            link: audioUrl
+            título: result.title,
+            thumb: result.thumb,
+            canal: result.channel,
+            publicado: result.publi,
+            visualizações: result.views,
+            link: result.link
         });
     } catch (error) {
-        console.error('Erro ao buscar e obter áudio do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar e obter áudio do YouTube' });
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 
-// Função auxiliar para obter o melhor formato de vídeo
-const getBestVideoUrl = async (url) => {
-    try {
-        const info = await ytdl.getInfo(url);
-        const videoFormat = ytdl.chooseFormat(info.formats, { filter: 'videoandaudio' });
-        return videoFormat.url;
-    } catch (error) {
-        throw new Error('Erro ao obter o formato de vídeo');
-    }
-};
-
-// Rota para buscar e obter link de vídeo do YouTube
-router.get('/playvideo', async (req, res) => {
+// Rota para buscar e obter link de vídeo
+router.get('/playmp4', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
@@ -197,33 +226,21 @@ router.get('/playvideo', async (req, res) => {
     }
 
     try {
-        const searchResult = await ytSearch(query);
-        const video = searchResult.videos[0];
-
-        if (!video) {
-            return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
-        }
-
-        const videoUrl = await getBestVideoUrl(video.url);
-
+        const result = await ytPlayMp4(query);
         res.json({
             criador: 'World Ecletix',
-            título: video.title,
-            thumb: video.thumbnail,
-            canal: video.author.name,
-            publicado: video.timestamp,
-            visualizações: video.views,
-            link: videoUrl
+            título: result.title,
+            thumb: result.thumb,
+            canal: result.channel,
+            publicado: result.publi,
+            visualizações: result.views,
+            link: result.link
         });
     } catch (error) {
-        console.error('Erro ao buscar e obter vídeo do YouTube:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar e obter vídeo do YouTube' });
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
     }
 });
-
-
-
-
 
 
 //fim
