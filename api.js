@@ -130,79 +130,94 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
-
-// Função para buscar e obter link de áudio
-async function ytPlayMp3(query) {
+// Função para baixar áudio do YouTube
+async function ytDonlodMp3(url) {
     try {
-        // Realizar a pesquisa no YouTube
-        const data = await yts(query);
-        const video = data.all.find(video => video.type === 'video');
-
-        if (!video) {
-            throw new Error('Nenhum vídeo encontrado');
-        }
-
-        // Obter o ID do vídeo
-        const id = yt.getVideoID(video.url);
-        const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-
-        // Encontrar o formato de áudio
-        const audioFormat = videoInfo.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
-
-        if (!audioFormat) {
-            throw new Error('Formato de áudio não encontrado');
-        }
+        const id = yt.getVideoID(url);
+        const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+        
+        const audioFormats = data.formats.filter(format => format.mimeType === 'audio/webm; codecs="opus"');
+        const audioUrl = audioFormats.length > 0 ? audioFormats[0].url : null;
 
         return {
-            title: videoInfo.videoDetails.title,
-            thumb: videoInfo.videoDetails.thumbnails[0].url,
-            channel: videoInfo.videoDetails.author.name,
-            publi: videoInfo.videoDetails.publishDate,
-            views: videoInfo.videoDetails.viewCount,
-            link: audioFormat.url
+            title: data.videoDetails.title,
+            thumb: data.videoDetails.thumbnails[0].url,
+            channel: data.videoDetails.author.name,
+            publi: data.videoDetails.publishDate,
+            views: data.videoDetails.viewCount,
+            link: audioUrl
         };
     } catch (error) {
         throw new Error(`Erro ao buscar e obter áudio do YouTube: ${error.message}`);
     }
 }
 
-// Função para buscar e obter link de vídeo
-async function ytPlayMp4(query) {
+// Função para baixar vídeo do YouTube
+async function ytDonlodMp4(url) {
     try {
-        // Realizar a pesquisa no YouTube
-        const data = await yts(query);
-        const video = data.all.find(video => video.type === 'video');
+        const id = yt.getVideoID(url);
+        const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
 
-        if (!video) {
-            throw new Error('Nenhum vídeo encontrado');
-        }
-
-        // Obter o ID do vídeo
-        const id = yt.getVideoID(video.url);
-        const videoInfo = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-
-        // Encontrar o formato de vídeo
-        const videoFormat = videoInfo.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
-
-        if (!videoFormat) {
-            throw new Error('Formato de vídeo MP4 não encontrado');
-        }
+        const videoFormats = data.formats.filter(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+        const videoUrl = videoFormats.length > 0 ? videoFormats[0].url : null;
 
         return {
-            title: videoInfo.videoDetails.title,
-            thumb: videoInfo.videoDetails.thumbnails[0].url,
-            channel: videoInfo.videoDetails.author.name,
-            publi: videoInfo.videoDetails.publishDate,
-            views: videoInfo.videoDetails.viewCount,
-            link: videoFormat.url
+            title: data.videoDetails.title,
+            thumb: data.videoDetails.thumbnails[0].url,
+            channel: data.videoDetails.author.name,
+            publi: data.videoDetails.publishDate,
+            views: data.videoDetails.viewCount,
+            link: videoUrl
         };
     } catch (error) {
         throw new Error(`Erro ao buscar e obter vídeo do YouTube: ${error.message}`);
     }
 }
 
+// Função para buscar e obter áudio
+async function ytPlayMp3(query) {
+    try {
+        const data = await yts(query);
+        const video = data.all.find(item => item.type === 'video');
+
+        if (!video) {
+            throw new Error('Nenhum vídeo encontrado');
+        }
+
+        return ytDonlodMp3(video.url);
+    } catch (error) {
+        throw new Error(`Erro ao buscar e obter áudio do YouTube: ${error.message}`);
+    }
+}
+
+// Função para buscar e obter vídeo
+async function ytPlayMp4(query) {
+    try {
+        const data = await yts(query);
+        const video = data.all.find(item => item.type === 'video');
+
+        if (!video) {
+            throw new Error('Nenhum vídeo encontrado');
+        }
+
+        return ytDonlodMp4(video.url);
+    } catch (error) {
+        throw new Error(`Erro ao buscar e obter vídeo do YouTube: ${error.message}`);
+    }
+}
+
+// Função para buscar vídeos
+async function ytSearch(query) {
+    try {
+        const data = await yts(query);
+        return data.all;
+    } catch (error) {
+        throw new Error(`Erro ao buscar no YouTube: ${error.message}`);
+    }
+}
+
 // Rota para buscar e obter link de áudio
-router.get('/playmp3', async (req, res) => {
+router.get('/play', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
@@ -227,7 +242,7 @@ router.get('/playmp3', async (req, res) => {
 });
 
 // Rota para buscar e obter link de vídeo
-router.get('/playmp4', async (req, res) => {
+router.get('/playvideo', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
@@ -245,6 +260,23 @@ router.get('/playmp4', async (req, res) => {
             visualizações: result.views,
             link: result.link
         });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Rota para buscar vídeos
+router.get('/search', async (req, res) => {
+    const query = req.query.query;
+
+    if (!query) {
+        return res.status(400).json({ error: 'É necessário fornecer um termo de pesquisa.' });
+    }
+
+    try {
+        const results = await ytSearch(query);
+        res.json(results);
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ error: error.message });
