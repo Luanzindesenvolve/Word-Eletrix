@@ -130,12 +130,13 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
+
 // Função para baixar áudio do YouTube
 async function ytDonlodMp3(url) {
     try {
         const id = yt.getVideoID(url);
         const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-        
+
         const audioFormats = data.formats.filter(format => format.mimeType === 'audio/webm; codecs="opus"');
         const audioUrl = audioFormats.length > 0 ? audioFormats[0].url : null;
 
@@ -217,7 +218,7 @@ async function ytSearch(query) {
 }
 
 // Rota para buscar e obter link de áudio
-router.get('/play', async (req, res) => {
+router.get('/playmp3', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
@@ -242,7 +243,7 @@ router.get('/play', async (req, res) => {
 });
 
 // Rota para buscar e obter link de vídeo
-router.get('/playvideo', async (req, res) => {
+router.get('/playmp4', async (req, res) => {
     const query = req.query.query;
 
     if (!query) {
