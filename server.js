@@ -3,7 +3,11 @@ const path = require('path');
 const apiRoutes = require('./api');  // Importa o módulo da API
 
 const app = express();
+const PORT = process.env.PORT || 30000;
 
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 // Define o diretório público para servir os arquivos estáticos
 app.use(express.static(path.join(__dirname)));
 
