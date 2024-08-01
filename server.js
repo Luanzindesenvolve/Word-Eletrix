@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
 const apiRoutes = require('./api'); 
+
+const app = express();
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+
 // Define o diretório público para servir os arquivos estáticos
 app.use(express.static(path.join(__dirname)));
 
@@ -37,9 +37,6 @@ app.use('/api', apiRoutes);
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, '404.html'));
 });
-
-// Define a porta do servidor
-const PORT = process.env.PORT || 3000;
 
 // Inicia o servidor
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
