@@ -129,67 +129,77 @@ router.get('/ytmp4', async (req, res) => {
 
 
 //play
-
-
-// Defina suas rotas usando o `router` aqui
-
-router.get('/playvideo', async (req, res) => {
-  const query = req.query.query; // Query string para buscar o vídeo
-
-  if (!query) {
-    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
-  }
-
-  try {
-    const searchResults = await yts(query);
-    const video = searchResults.all.find(result => result.type === 'video');
-
-    if (!video) {
-      return res.status(404).json({ error: 'Vídeo não encontrado.' });
-    }
-
-    const videoInfo = await yt.getInfo(video.url);
-    const formats = videoInfo.formats;
-    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
-
-    if (!videoFormat) {
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
-    }
-
-    const result = {
-      title: videoInfo.videoDetails.title,
-      thumb: videoInfo.videoDetails.thumbnails[0].url,
-      channel: videoInfo.videoDetails.author.name,
-      publi: videoInfo.videoDetails.uploadDate,
-      views: videoInfo.videoDetails.viewCount,
-      link: videoFormat.url
-    };
-
-    res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
-  } catch (error) {
-    console.error('Erro ao buscar o vídeo:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar o vídeo' });
-  }
-});
-
-
-// Definição das rotas usando `router`
+// Rota para buscar e retornar informações de áudio
 router.get('/play', async (req, res) => {
-  const query = req.query.query; // Query string para buscar o vídeo
+  const query = req.query.query;
 
   if (!query) {
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
+    console.log('Procurando áudio com a consulta:', query);
+
     const searchResults = await yts(query);
+    console.log('Resultados da busca:', searchResults);
+
     const video = searchResults.all.find(result => result.type === 'video');
+    console.log('Vídeo encontrado:', video);
 
     if (!video) {
       return res.status(404).json({ error: 'Vídeo não encontrado.' });
     }
 
     const videoInfo = await yt.getInfo(video.url);
+    console.log('Informações do vídeo:', videoInfo);
+
+    const formats = videoInfo.formats;
+    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+
+    if (!audioFormat) {
+      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    }
+
+    const result = {
+      title: videoInfo.videoDetails.title,
+      thumb: videoInfo.videoDetails.thumbnails[0].url,
+      channel: videoInfo.videoDetails.author.name,
+      publi: videoInfo.videoDetails.uploadDate,
+      views: videoInfo.videoDetails.viewCount,
+      link: audioFormat.url
+    };
+
+    res.json({ status: true, code: 200, criador: '[🐦] world ecletix [🐦]', resultado: result });
+  } catch (error) {
+    console.error('Erro ao buscar o áudio:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar o áudio' });
+  }
+});
+
+// Rota para buscar e retornar informações do vídeo
+router.get('/play', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
+  }
+
+  try {
+    console.log('Procurando vídeo com a consulta:', query);
+
+    const searchResults = await yts(query);
+    console.log('Resultados da busca:', searchResults);
+
+    const video = searchResults.all.find(result => result.type === 'video');
+    console.log('Vídeo encontrado:', video);
+
+    if (!video) {
+      return res.status(404).json({ error: 'Vídeo não encontrado.' });
+    }
+
+    const videoInfo = await yt.getInfo(video.url);
+    console.log('Informações do vídeo:', videoInfo);
+
     const formats = videoInfo.formats;
     const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
 
@@ -212,6 +222,8 @@ router.get('/play', async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar o vídeo' });
   }
 });
+
+
 //fim
 
 // Rota para consulta de CEP
