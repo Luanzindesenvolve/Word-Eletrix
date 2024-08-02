@@ -130,24 +130,38 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
  router.get('/playvideo', async (req, res) => {
-  const query = req.query.query; // Consulta enviada como query parameter
+  const query = req.query.query;
+
+  console.log(`Recebida consulta para MP4: ${query}`);
 
   if (!query) {
+    console.error('Nenhuma consulta fornecida.');
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
     const searchResult = await yts(query);
-    const video = searchResult.all.find(v => v.type === 'video');
+    console.log('Resultados da pesquisa:', searchResult);
+
+    const video = searchResult.videos[0];
     if (!video) {
+      console.error('Nenhum vídeo encontrado para a consulta.');
       return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
     }
 
+    console.log(`Primeiro vídeo encontrado: ${video.url}`);
+
     const id = yt.getVideoID(video.url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+    console.log(`ID do vídeo: ${id}`);
+
+    const data = await yt.getInfo(id);
+    console.log('Informações do vídeo:', data);
+
     const videoFormat = data.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+    console.log('Formato de vídeo encontrado:', videoFormat);
 
     if (!videoFormat) {
+      console.error('Formato de vídeo MP4 não encontrado.');
       return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
     }
 
@@ -160,6 +174,7 @@ router.get('/ytmp4', async (req, res) => {
       link: videoFormat.url
     };
 
+    console.log('Resultado final:', result);
     res.json({ criador: 'World Ecletix', result });
   } catch (error) {
     console.error('Erro ao buscar e baixar o vídeo do YouTube:', error.message);
@@ -168,24 +183,38 @@ router.get('/ytmp4', async (req, res) => {
 });
 
 router.get('/play', async (req, res) => {
-  const query = req.query.query; // Consulta enviada como query parameter
+  const query = req.query.query;
+
+  console.log(`Recebida consulta para MP3: ${query}`);
 
   if (!query) {
+    console.error('Nenhuma consulta fornecida.');
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
     const searchResult = await yts(query);
-    const video = searchResult.all.find(v => v.type === 'video');
+    console.log('Resultados da pesquisa:', searchResult);
+
+    const video = searchResult.videos[0];
     if (!video) {
+      console.error('Nenhum vídeo encontrado para a consulta.');
       return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
     }
 
+    console.log(`Primeiro vídeo encontrado: ${video.url}`);
+
     const id = yt.getVideoID(video.url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
+    console.log(`ID do vídeo: ${id}`);
+
+    const data = await yt.getInfo(id);
+    console.log('Informações do vídeo:', data);
+
     const audioFormat = data.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+    console.log('Formato de áudio encontrado:', audioFormat);
 
     if (!audioFormat) {
+      console.error('Formato de áudio não encontrado.');
       return res.status(404).json({ error: 'Formato de áudio não encontrado' });
     }
 
@@ -198,6 +227,7 @@ router.get('/play', async (req, res) => {
       link: audioFormat.url
     };
 
+    console.log('Resultado final:', result);
     res.json({ criador: 'World Ecletix', result });
   } catch (error) {
     console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
