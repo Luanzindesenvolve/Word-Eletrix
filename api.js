@@ -20,7 +20,7 @@ const {
   buscarMenoresPrecos,
   XnxxDL,
   XnxxSearch
-} = require('./config/um.js'); // Supondo que o arquivo com suas funções se chama functions.js
+} = require('./config.js'); // Supondo que o arquivo com suas funções se chama functions.js
 
 // Rota para rastrear encomendas
 router.get('/rastrearEncomendas', async (req, res) => {
