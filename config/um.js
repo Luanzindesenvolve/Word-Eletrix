@@ -314,4 +314,4 @@ async function buscarDetalhesProduto(urlProduto) {
   }
 }
 
-module.exports = { rastrearEncomendas, dafontDownload, dafontSearch, xvideosPorno, pensador, dicionarioNome, XvideosSearch, XvideosDL, buscarMenoresPrecos, XnxxDL, XnxxSearch 
+module.exports = { rastrearEncomendas, dafontDownload, dafontSearch, xvideosPorno, pensador, dicionarioNome, XvideosSearch, XvideosDL, buscarMenoresPrecos, XnxxDL, XnxxSearch };
