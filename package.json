@@ -12,7 +12,7 @@
     "express": "^4.17.1",
     "axios": "",
     "yt-search": "",
-    "requests": "",
+    "request": "",
     "ytdl-core": ""
   }
 }
