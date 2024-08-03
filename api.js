@@ -7,6 +7,152 @@ const yt = require('ytdl-core');
 
 const router = express.Router();
 
+//teste
+const {
+  rastrearEncomendas,
+  dafontDownload,
+  dafontSearch,
+  xvideosPorno,
+  pensador,
+  dicionarioNome,
+  XvideosSearch,
+  XvideosDL,
+  buscarMenoresPrecos,
+  XnxxDL,
+  XnxxSearch
+} = require('./configs1'); // Supondo que o arquivo com suas funções se chama functions.js
+
+// Rota para rastrear encomendas
+router.get('/rastrearEncomendas', async (req, res) => {
+  const { id } = req.query;
+  if (!id) return res.status(400).json({ error: 'ID da encomenda é necessário.' });
+
+  try {
+    const dados = await rastrearEncomendas(id);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar fontes no DaFont
+router.get('/dafont/search', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await dafontSearch(query);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para baixar fonte do DaFont
+router.get('/dafont/download', async (req, res) => {
+  const { link } = req.query;
+  if (!link) return res.status(400).json({ error: 'O link da fonte é necessário.' });
+
+  try {
+    const dados = await dafontDownload(link);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar vídeos no Xvideos
+router.get('/xvideos/search', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await XvideosSearch(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter detalhes do vídeo do Xvideos
+router.get('/xvideos/dl', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'A URL do vídeo é necessária.' });
+
+  try {
+    const dados = await XvideosDL(url);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar vídeos no Xnxx
+router.get('/xnxx/search', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await XnxxSearch(query);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter detalhes do vídeo do Xnxx
+router.get('/xnxx/dl', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'A URL do vídeo é necessária.' });
+
+  try {
+    const dados = await XnxxDL(url);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar frases no Pensador
+router.get('/pensador', async (req, res) => {
+  const { nome } = req.query;
+  if (!nome) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await pensador(nome);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar significado de nomes
+router.get('/dicionarioNome', async (req, res) => {
+  const { nome } = req.query;
+  if (!nome) return res.status(400).json({ error: 'O nome é necessário.' });
+
+  try {
+    const dados = await dicionarioNome(nome);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar menores preços de produtos
+router.get('/buscarMenoresPrecos', async (req, res) => {
+  const { produto } = req.query;
+  if (!produto) return res.status(400).json({ error: 'O nome do produto é necessário.' });
+
+  try {
+    const dados = await buscarMenoresPrecos(produto);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+//fim do teste
 // Função para gerar CPF aleatório
 function gerarCPF() {
     let n = '';
