@@ -83,8 +83,7 @@ const {
   hentaihome, 
   lojadomecanico,
   wallpaper,
-  wikimedia, 
-  styletext
+  wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Rota para pinterest
 router.get('/pinterestfoto', async (req, res) => {
