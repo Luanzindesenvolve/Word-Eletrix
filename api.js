@@ -308,15 +308,6 @@ router.get('/y2mate', async (req, res) => {
   }
 });
 
-router.get('/pesquisarnoxv', async (req, res) => {
-  const { query } = req.query;
-  try {
-    const resultado = await xvideosSearch(query);
-    res.json(resultado);
-  } catch (e) {
-    res.status(500).json({ error: 'Ocorreu um erro ao buscar vídeos.' });
-  }
-});
 
 router.get('/mercadolivre', async (req, res) => {
   const { query } = req.query;
@@ -440,15 +431,6 @@ router.get('/pesgoyabu', async (req, res) => {
   }
 });
 
-// Rota para buscar conteúdos no LulaFlix
-router.get('/lula', async (req, res) => {
-  try {
-    const dados = await lulaFlix();
-    res.json(dados);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // Rota para buscar grupos de WhatsApp
 router.get('/gruposzap', async (req, res) => {
@@ -461,24 +443,7 @@ router.get('/gruposzap', async (req, res) => {
   }
 });
 // Rota para buscar notícias do Partido Liberal
-router.get('/pl', async (req, res) => {
-  try {
-    const dados = await partidoLiberal();
-    res.json(dados);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
-// Rota para buscar notícias do Partido dos Trouxas
-router.get('/pt', async (req, res) => {
-  try {
-    const dados = await partidoDosTrouxas();
-    res.json(dados);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 // Rota para buscar produtos na Amazon
 router.get('/amazon', async (req, res) => {
@@ -816,21 +781,8 @@ router.get('/rastrear', async (req, res) => {
   }
 })
 
-// Rota para buscar vídeos no Xvideos
-router.get('/xvideos', async (req, res) => {
-  const { termo } = req.query;
-  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
-
-  try {
-    const resultados = await xvideos(termo);
-    res.json(resultados);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // Rota para buscar vídeos no Xvideos com outro método
-router.get('/xvideos1', async (req, res) => {
+router.get('/pesquisarnoxv', async (req, res) => {
   const { termo } = req.query;
   if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
 
@@ -895,7 +847,7 @@ router.get('/dafontdow', async (req, res) => {
 });
 
 // Rota para buscar vídeos no Xvideos
-router.get('/xv', async (req, res) => {
+router.get('/xvideos', async (req, res) => {
   const { termo } = req.query;
   if (!termo) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
 
