@@ -13,6 +13,10 @@
     "axios": "",
     "yt-search": "",
     "request": "",
+    "node-fetch": "",
+    "linkifyjs": "",
+    "qs": "",
+    "fs-extra": "",
     "ytdl-core": ""
   }
 }
