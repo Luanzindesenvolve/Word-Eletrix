@@ -8,22 +8,374 @@ const yt = require('ytdl-core');
 const router = express.Router();
 
 //teste
+
+
 const {
   rastrearEncomendas,
-  dafontDownload,
+  dafontDowland,
   dafontSearch,
   xvideosPorno,
-  pensador,
   dicionarioNome,
   XvideosSearch,
   XvideosDL,
   buscarMenoresPrecos,
   XnxxDL,
-  XnxxSearch
-} = require('./config.js'); // Supondo que o arquivo com suas funções se chama functions.js
+  XnxxSearch,
+  geturl,
+  pensador,
+  styletext,
+  getgrupos,
+  gpwhatsapp,
+  hentaistube,
+  nerding,
+  apkmodhacker,
+  uptodown,
+  pornhub,
+  st,
+  gpsrc,
+  dafontDown,
+  igstalk,
+  ff,
+  papeldeparede,
+  htdl,
+  assistithtdl,
+  assistitht,
+  pornogratis,
+  wallmob,
+  pinterest,
+  rastrear,
+  xvideos,
+  xvideos1,
+  soundl
+} = require('./config.js'); // arquivo que ele puxa as funções 
+
+// Rota para obter URLs
+router.get('/geturl', async (req, res) => {
+  const { id } = req.query;
+  if (!id) return res.status(400).json({ error: 'ID é necessário.' });
+
+  try {
+    const dados = await geturl(id);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar pensadores
+router.get('/frases', async (req, res) => {
+  const { nome } = req.query;
+  if (!nome) return res.status(400).json({ error: 'Nome do pensador é necessário.' });
+
+  try {
+    const dados = await pensador(nome);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para aplicar estilos ao texto
+router.get('/styletext', async (req, res) => {
+  const { texto } = req.query;
+  if (!texto) return res.status(400).json({ error: 'Texto é necessário.' });
+
+  try {
+    const resultado = await styletext(texto);
+    res.json(resultado);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter grupos
+router.get('/getgrupos', async (req, res) => {
+  const { nome } = req.query;
+  if (!nome) return res.status(400).json({ error: 'Nome do grupo é necessário.' });
+
+  try {
+    const dados = await getgrupos(nome);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter grupos WhatsApp
+router.get('/gpwhatsapp', async (req, res) => {
+  const { grupo } = req.query;
+  if (!grupo) return res.status(400).json({ error: 'Nome do grupo é necessário.' });
+
+  try {
+    const dados = await gpwhatsapp(grupo);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar vídeos no Hentaistube
+router.get('/hentaistube', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await hentaistube(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar nerding
+router.get('/nerding', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await nerding(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar mods e hacks de APK
+router.get('/apkmodhacker', async (req, res) => {
+  const { app } = req.query;
+  if (!app) return res.status(400).json({ error: 'Nome do aplicativo é necessário.' });
+
+  try {
+    const dados = await apkmodhacker(app);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar aplicativos no Uptodown
+router.get('/uptodown', async (req, res) => {
+  const { app } = req.query;
+  if (!app) return res.status(400).json({ error: 'Nome do aplicativo é necessário.' });
+
+  try {
+    const dados = await uptodown(app);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar vídeos no Pornhub
+router.get('/pornohub', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await pornhub(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter informações sobre ST
+router.get('/st', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo é necessário.' });
+
+  try {
+    const dados = await st(termo);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar fontes no GPSRC
+router.get('/gpsrc', async (req, res) => {
+  const { fonte } = req.query;
+  if (!fonte) return res.status(400).json({ error: 'Fonte é necessária.' });
+
+  try {
+    const dados = await gpsrc(fonte);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para stalkear Instagram
+router.get('/igstalk', async (req, res) => {
+  const { usuario } = req.query;
+  if (!usuario) return res.status(400).json({ error: 'Nome de usuário é necessário.' });
+
+  try {
+    const dados = await igstalk(usuario);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar informações no FF
+router.get('/ff', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo é necessário.' });
+
+  try {
+    const dados = await ff(termo);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar papel de parede
+router.get('/papeldeparede', async (req, res) => {
+  const { categoria } = req.query;
+  if (!categoria) return res.status(400).json({ error: 'Categoria é necessária.' });
+
+  try {
+    const dados = await papeldeparede(categoria);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para baixar vídeos do Hentai
+router.get('/baixarhentai', async (req, res) => {
+  const { link } = req.query;
+  if (!link) return res.status(400).json({ error: 'Link do vídeo é necessário.' });
+
+  try {
+    const dados = await htdl(link);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para assistir vídeos do Hentai
+router.get('/assistirhentai', async (req, res) => {
+  const { link } = req.query;
+  if (!link) return res.status(400).json({ error: 'Link do vídeo é necessário.' });
+
+  try {
+    const dados = await assistithtdl(link);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para assistir vídeos do Hentai (ou outra função similar)
+router.get('/assistirhentai2', async (req, res) => {
+  const { link } = req.query;
+  if (!link) return res.status(400).json({ error: 'Link do vídeo é necessário.' });
+
+  try {
+    const dados = await assistitht(link);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar conteúdo grátis
+router.get('/pornogratis', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await pornogratis(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter papéis de parede mobile
+router.get('/wallmob', async (req, res) => {
+  const { categoria } = req.query;
+  if (!categoria) return res.status(400).json({ error: 'Categoria é necessária.' });
+
+  try {
+    const dados = await wallmob(categoria);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar no Pinterest
+router.get('/pinterest', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await pinterest(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Rota para rastrear encomendas
-router.get('/rastrearEncomendas', async (req, res) => {
+router.get('/rastrear', async (req, res) => {
+  const { id } = req.query;
+  if (!id) return res.status(400).json({ error: 'ID da encomenda é necessário.' });
+
+  try {
+    const dados = await rastrear(id);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+})
+
+// Rota para buscar vídeos no Xvideos
+router.get('/xvideos', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await xvideos(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar vídeos no Xvideos com outro método
+router.get('/xvideos1', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await xvideos1(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar sons
+router.get('/soundl', async (req, res) => {
+  const { termo } = req.query;
+  if (!termo) return res.status(400).json({ error: 'Termo de pesquisa é necessário.' });
+
+  try {
+    const resultados = await soundl(termo);
+    res.json(resultados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para rastrear encomendas
+router.get('/rastrearencomendas', async (req, res) => {
   const { id } = req.query;
   if (!id) return res.status(400).json({ error: 'ID da encomenda é necessário.' });
 
@@ -36,7 +388,7 @@ router.get('/rastrearEncomendas', async (req, res) => {
 });
 
 // Rota para buscar fontes no DaFont
-router.get('/dafont/search', async (req, res) => {
+router.get('/dafont', async (req, res) => {
   const { query } = req.query;
   if (!query) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
 
@@ -49,7 +401,7 @@ router.get('/dafont/search', async (req, res) => {
 });
 
 // Rota para baixar fonte do DaFont
-router.get('/dafont/download', async (req, res) => {
+router.get('/dafontdow', async (req, res) => {
   const { link } = req.query;
   if (!link) return res.status(400).json({ error: 'O link da fonte é necessário.' });
 
@@ -62,7 +414,7 @@ router.get('/dafont/download', async (req, res) => {
 });
 
 // Rota para buscar vídeos no Xvideos
-router.get('/xvideos/search', async (req, res) => {
+router.get('/xv', async (req, res) => {
   const { termo } = req.query;
   if (!termo) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
 
@@ -75,7 +427,7 @@ router.get('/xvideos/search', async (req, res) => {
 });
 
 // Rota para obter detalhes do vídeo do Xvideos
-router.get('/xvideos/dl', async (req, res) => {
+router.get('/xvideosdow', async (req, res) => {
   const { url } = req.query;
   if (!url) return res.status(400).json({ error: 'A URL do vídeo é necessária.' });
 
@@ -88,7 +440,7 @@ router.get('/xvideos/dl', async (req, res) => {
 });
 
 // Rota para buscar vídeos no Xnxx
-router.get('/xnxx/search', async (req, res) => {
+router.get('/xnxx', async (req, res) => {
   const { query } = req.query;
   if (!query) return res.status(400).json({ error: 'O termo de pesquisa é necessário.' });
 
@@ -101,7 +453,7 @@ router.get('/xnxx/search', async (req, res) => {
 });
 
 // Rota para obter detalhes do vídeo do Xnxx
-router.get('/xnxx/dl', async (req, res) => {
+router.get('/xnxxdow', async (req, res) => {
   const { url } = req.query;
   if (!url) return res.status(400).json({ error: 'A URL do vídeo é necessária.' });
 
@@ -127,7 +479,7 @@ router.get('/pensador', async (req, res) => {
 });
 
 // Rota para buscar significado de nomes
-router.get('/dicionarioNome', async (req, res) => {
+router.get('/significadodonome', async (req, res) => {
   const { nome } = req.query;
   if (!nome) return res.status(400).json({ error: 'O nome é necessário.' });
 
@@ -140,7 +492,7 @@ router.get('/dicionarioNome', async (req, res) => {
 });
 
 // Rota para buscar menores preços de produtos
-router.get('/buscarMenoresPrecos', async (req, res) => {
+router.get('/menorpreco', async (req, res) => {
   const { produto } = req.query;
   if (!produto) return res.status(400).json({ error: 'O nome do produto é necessário.' });
 
@@ -151,6 +503,7 @@ router.get('/buscarMenoresPrecos', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 //fim do teste
 // Função para gerar CPF aleatório
