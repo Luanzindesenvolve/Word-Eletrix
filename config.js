@@ -2,6 +2,14 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const request = require('request');
 const yts = require("yt-search")
+const qs = require("qs")
+const fs = require('fs-extra')
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
+const encodeUrl = require('encodeurl');
+const linkfy = require('linkifyjs')
+const randomIntFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
 const removerAcentos = (s) => typeof s === 'string' ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
 const useragent_1 = {
   "user-agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.136 Mobile Safari/537.36"
