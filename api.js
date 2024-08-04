@@ -46,9 +46,492 @@ const {
   rastrear,
   xvideos,
   xvideos1,
-  soundl
+  soundl,
+  sambaPornoSearch,
+  playStoreSearch,
+  letrasMusica,
+  amazonSearch,
+  partidoDosTrouxas,
+  partidoLiberal,
+  memesDroid,
+  animesGoyabu,
+  animesGoyabu2,
+  gruposZap,
+  iFunny,
+  hentaiimg,
+  fraseAmor,
+  frasesPensador,
+  animesBrSearch,
+  ultimasNoticias,
+  mercadoLivreSearch,
+  xvideosSearch,
+  hentaivid,
+  xvideosDownloader,
+  topFlixDL,
+  pinterestVideo,
+  pinterestVideoV2,
+  ultimasNoticias,
+  uptodownsrc,
+  uptodowndl, 
+  teste, animesFireEps, 
+  animeFireDownload, 
+  mediafireDl,
+  randomGrupos,
+  hentai, 
+  twitter, 
+  quotesAnime,
+  wallpaper2,
+  hentaihome, 
+  lojadomecanico,
+  wallpaper,
+  wikimedia, 
+  styletext
 } = require('./config.js'); // arquivo que ele puxa as funções 
+// Rota para pinterest
+router.get('/pinterestfoto', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) return res.status(400).send({ error: 'Query é necessária' });
+    const result = await pinterest(query);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
 
+// Rota para wallpaper
+router.get('/wallpaper', async (req, res) => {
+  try {
+    const title = req.query.title;
+    const page = req.query.page || '1';
+    if (!title) return res.status(400).send({ error: 'Título é necessário' });
+    const result = await wallpaper(title, page);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para wikimedia
+router.get('/wikimedia', async (req, res) => {
+  try {
+    const title = req.query.title;
+    if (!title) return res.status(400).send({ error: 'Título é necessário' });
+    const result = await wikimedia(title);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para styletext
+router.get('/styletext', async (req, res) => {
+  try {
+    const text = req.query.text;
+    if (!text) return res.status(400).send({ error: 'Texto é necessário' });
+    const result = await styletext(text);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para hentai
+router.get('/hentai', async (req, res) => {
+  try {
+    const result = await hentai();
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para twitter
+router.post('/twitter', async (req, res) => {
+  try {
+    const link = req.body.link;
+    if (!link) return res.status(400).send({ error: 'Link é necessário' });
+    const result = await twitter(link);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para quotesAnime
+router.get('/quotesAnime', async (req, res) => {
+  try {
+    const result = await quotesAnime();
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para wallpaper2
+router.get('/wallpaper2', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) return res.status(400).send({ error: 'Query é necessária' });
+    const result = await wallpaper2(query);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para hentaihome
+router.get('/hentaihome', async (req, res) => {
+  try {
+    const nome = req.query.nome;
+    if (!nome) return res.status(400).send({ error: 'Nome é necessário' });
+    const result = await hentaihome(nome);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para lojadomecanico
+router.get('/lojadomecanico', async (req, res) => {
+  try {
+    const nome = req.query.nome;
+    if (!nome) return res.status(400).send({ error: 'Nome é necessário' });
+    const result = await lojadomecanico(nome);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para buscar episódios do AnimeFire
+router.get('/animefireeps', async (req, res) => {
+  try {
+    const link = req.query.link;
+    const result = await animesFireEps(link);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Rota para buscar detalhes de download no AnimeFire
+router.get('/animefiredow', async (req, res) => {
+  try {
+    const link = req.query.link;
+    const result = await animeFireDownload(link);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Rota para buscar detalhes do MediaFire
+router.get('/mediafire', async (req, res) => {
+  try {
+    const link = req.query.link;
+    const result = await mediafireDl(link);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
+// Rota para buscar grupos aleatórios
+router.get('/gruposaleatorios', async (req, res) => {
+  try {
+    const categoria = req.query.categoria;
+    const result = await randomGrupos(categoria);
+    res.json(result);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
+// Rota para pinterestVideo
+router.get('/pinterestdow', async (req, res) => {
+  try {
+    const link = req.query.link;
+    if (!link) return res.status(400).send({ error: 'Link é necessário' });
+    const result = await pinterestVideo(link);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para pinterestVideoV2
+router.post('/pinterestdowv2', async (req, res) => {
+  try {
+    const url = req.body.url;
+    if (!url) return res.status(400).send({ error: 'URL é necessária' });
+    const result = await pinterestVideoV2(url);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para uptodownsrc
+router.get('/uptodownsrc', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) return res.status(400).send({ error: 'Consulta é necessária' });
+    const result = await uptodownsrc(query);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para uptodowndl
+router.get('/uptodowndl', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) return res.status(400).send({ error: 'URL é necessária' });
+    const result = await uptodowndl(url);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Rota para teste
+router.get('/y2mate', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) return res.status(400).send({ error: 'URL é necessária' });
+    const result = await teste(url);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+router.get('/pesquisarnoxv', async (req, res) => {
+  const { query } = req.query;
+  try {
+    const resultado = await xvideosSearch(query);
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar vídeos.' });
+  }
+});
+
+router.get('/mercadolivre', async (req, res) => {
+  const { query } = req.query;
+  try {
+    const resultado = await mercadoLivreSearch(query);
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar produtos.' });
+  }
+});
+
+router.get('/baixarxv', async (req, res) => {
+  const { url } = req.query;
+  try {
+    const resultado = await xvideosDownloader(url);
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao baixar o vídeo.' });
+  }
+});
+//ate aqu
+router.get('/hentaiimg', async (req, res) => {
+  const { title } = req.query;
+  try {
+    const resultado = await hentaiimg(title);
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar imagens hentai.' });
+  }
+});
+
+router.get('/hentaivid', async (req, res) => {
+  try {
+    const resultado = await hentaivid();
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar vídeos hentai.' });
+  }
+});
+
+
+router.get('/fraseamor', async (req, res) => {
+  try {
+    const resultado = await fraseAmor();
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar frases de amor.' });
+  }
+});
+
+router.get('/frasespensador', async (req, res) => {
+  try {
+    const resultado = await frasesPensador();
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar frases no Pensador.' });
+  }
+});
+
+router.get('/animesbr', async (req, res) => {
+  const { query } = req.query;
+  try {
+    const resultado = await animesBrSearch(query);
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar animes.' });
+  }
+});
+
+router.get('/ultimasnoticias', async (req, res) => {
+  try {
+    const resultado = await ultimasNoticias();
+    res.json(resultado);
+  } catch (e) {
+    res.status(500).json({ error: 'Ocorreu um erro ao buscar notícias.' });
+  }
+});
+
+router.get('/ifunny', async (req, res) => {
+  try {
+    const dados = await iFunny();
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar memes do MemesDroid
+router.get('/memesdroid', async (req, res) => {
+  try {
+    const dados = await memesDroid();
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar animes no Goyabu
+router.get('/goyabu', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: 'Query é necessária.' });
+
+  try {
+    const dados = await animesGoyabu(query);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar detalhes de um anime no Goyabu
+router.get('/pesgoyabu', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'URL é necessária.' });
+
+  try {
+    const dados = await animesGoyabu2(url);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar conteúdos no LulaFlix
+router.get('/lula', async (req, res) => {
+  try {
+    const dados = await lulaFlix();
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar grupos de WhatsApp
+router.get('/gruposzap', async (req, res) => {
+  const { url } = req.query;
+  try {
+    const dados = await gruposZap(url);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// Rota para buscar notícias do Partido Liberal
+router.get('/pl', async (req, res) => {
+  try {
+    const dados = await partidoLiberal();
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar notícias do Partido dos Trouxas
+router.get('/pt', async (req, res) => {
+  try {
+    const dados = await partidoDosTrouxas();
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar produtos na Amazon
+router.get('/amazon', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: 'Query é necessária.' });
+
+  try {
+    const dados = await amazonSearch(query);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para obter letras de música
+router.get('/letras', async (req, res) => {
+  const { url } = req.query;
+  if (!url) return res.status(400).json({ error: 'URL é necessária.' });
+
+  try {
+    const dados = await letrasMusica(url);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// Função de busca na Google Play Store
+router.get('/playstore', async (req, res) => {
+  const { query } = req.query;
+  if (!query) return res.status(400).json({ error: 'Query é necessária.' });
+
+  try {
+    const dados = await playStoreSearch(query);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Função de busca no Samba Pornô
+router.get('/sambaporno', async (req, res) => {
+  const { q } = req.query;
+  if (!q) return res.status(400).json({ error: 'Query é necessária.' });
+
+  try {
+    const dados = await sambaPornoSearch(q);
+    res.json(dados);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 // Rota para obter URLs
 router.get('/geturl', async (req, res) => {
   const { id } = req.query;
