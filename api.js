@@ -70,7 +70,6 @@ const {
   topFlixDL,
   pinterestVideo,
   pinterestVideoV2,
-  ultimasNoticias,
   uptodownsrc,
   uptodowndl, 
   teste, animesFireEps, 
