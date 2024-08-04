@@ -111,7 +111,7 @@ router.get('/wallpaper', async (req, res) => {
 });
 
 // Rota para wikimedia
-router.get('/wikimedia', async (req, res) => {
+router.get('/wikipedia', async (req, res) => {
   try {
     const title = req.query.title;
     if (!title) return res.status(400).send({ error: 'Título é necessário' });
