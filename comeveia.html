@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Calendário</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Favicon -->
+    <link href="https://avatars.githubusercontent.com/u/113657908?v=4" rel="icon">
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,42 +14,31 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Libraries Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.0.0/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Template Stylesheet -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        #calender {
-            margin-top: 20px;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Calendário</h1>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Calendário -->
         <div id="calender"></div>
-    </div>
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.0.0/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Initialize Calendar -->
-    <script>
-        $(document).ready(function () {
-            $('#calender').datetimepicker({
-                inline: true,
-                sideBySide: true,
-                format: 'L'
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/tempusdominus/js/moment.min.js"></script>
+        <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Template Javascript -->
+        <script>
+            $(document).ready(function () {
+                $('#calender').datetimepicker({
+                    format: 'MMMM YYYY',
+                    inline: true,
+                    sideBySide: true
+                });
             });
-        });
-    </script>
+        </script>
+    </div>
 </body>
-
 </html>
