@@ -3,49 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário</title>
-    <!-- Tempus Dominus CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/css/tempusdominus-bootstrap-4.min.css">
+    <title>World Ecletix</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            width: 100%;
+            height: 100%;
+            background-image: url('3.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            color: white;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
+        .menu {
+            width: 50%;
+        }
+        .menu-item {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 1em;
+            margin: 0.5em 0;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             flex-direction: column;
         }
-        #calendar-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
+        .menu-item:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .menu-item span {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+        .menu-item span .icon {
+            margin-right: 0.5em;
+        }
+        .submenu {
+            display: none;
+            margin-top: 0.5em;
+            padding-left: 1em;
+            width: 100%;
+        }
+        .menu-item.active .submenu {
+            display: block;
+        }
+        .arrow {
+            color: green;
+        }
+        .submenu-item {
+            margin-top: 0.5em;
+            padding-left: 1em;
+            cursor: pointer;
+        }
+        .submenu-item a {
+            color: white;
+            text-decoration: none;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div id="calendar-container">
-        <div id="calendar"></div>
+    <div class="overlay">
+        <h1>World Ecletix</h1>
+        <h2>Rest API</h2>
+        <div class="menu">
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-image icon"></i> Wallpapers <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/aesthetic">aesthetic</a></div>
+                    <div class="submenu-item"><a href="/api/cosplay">cosplay</a></div>
+                    <div class="submenu-item"><a href="/api/cosplayloli">cosplayloli</a></div>
+                    <div class="submenu-item"><a href="/api/cosplaysagiri">cosplaysagiri</a></div>
+                    <div class="submenu-item"><a href="/api/fotodev">fotodev</a></div>
+                    <div class="submenu-item"><a href="/api/gameWallp">gameWallp</a></div>
+                    <div class="submenu-item"><a href="/api/imagens">imagens</a></div>
+                    <div class="submenu-item"><a href="/api/loli">loli</a></div>
+                    <div class="submenu-item"><a href="/api/meme">meme</a></div>
+                    <div class="submenu-item"><a href="/api/memevideos">memevideos</a></div>
+                    <div class="submenu-item"><a href="/api/metadinhas">metadinhas</a></div>
+                    <div class="submenu-item"><a href="/api/pokemon">pokemon</a></div>
+                    <div class="submenu-item"><a href="/api/satanic">satanic</a></div>
+                    <div class="submenu-item"><a href="/api/shotas">shotas</a></div>
+                    <div class="submenu-item"><a href="/api/videos">videos</a></div>
+                    <div class="submenu-item"><a href="/api/Nime">Nime</a></div>
+                    <div class="submenu-item"><a href="/api/wallhp2">wallhp2</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-male icon"></i> Masculino <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/akira">akira</a></div>
+                    <div class="submenu-item"><a href="/api/boruto">boruto</a></div>
+                    <div class="submenu-item"><a href="/api/bonek">bonek</a></div>
+                    <div class="submenu-item"><a href="/api/deidara">deidara</a></div>
+                    <div class="submenu-item"><a href="/api/itori">itori</a></div>
+                    <div class="submenu-item"><a href="/api/itachi">itachi</a></div>
+                    <div class="submenu-item"><a href="/api/madara">madara</a></div>
+                    <div class="submenu-item"><a href="/api/minato">minato</a></div>
+                    <div class="submenu-item"><a href="/api/sasuke">sasuke</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-female icon"></i> Feminino <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/elaina">elaina</a></div>
+                    <div class="submenu-item"><a href="/api/emilia">emilia</a></div>
+                    <div class="submenu-item"><a href="/api/erza">erza</a></div>
+                    <div class="submenu-item"><a href="/api/femininotrava">femininotrava</a></div>
+                    <div class="submenu-item"><a href="/api/hinata">hinata</a></div>
+                    <div class="submenu-item"><a href="/api/lolis">lolis</a></div>
+                    <div class="submenu-item"><a href="/api/mikasa">mikasa</a></div>
+                    <div class="submenu-item"><a href="/api/nezuko">nezuko</a></div>
+                    <div class="submenu-item"><a href="/api/rize">rize</a></div>
+                    <div class="submenu-item"><a href="/api/rose">rose</a></div>
+                    <div class="submenu-item"><a href="/api/sakura">sakura</a></div>
+                    <div class="submenu-item"><a href="/api/sagir">sagir</a></div>
+                    <div class="submenu-item"><a href="/api/tsunade">tsunade</a></div>
+                    <div class="submenu-item"><a href="/api/waifu">waifu</a></div>
+                    <div class="submenu-item"><a href="/api/Waifu2">Waifu2</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-exclamation-circle icon"></i> +18 <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/ero">ero</a></div>
+                    <div class="submenu-item"><a href="/api/neko">neko</a></div>
+                    <div class="submenu-item"><a href="/api/neko2">neko2</a></div>
+                    <div class="submenu-item"><a href="/api/zettai">zettai</a></div>
+                    <div class="submenu-item"><a href="/api/tentacles">tentacles</a></div>
+                    <div class="submenu-item"><a href="/api/ass">ass</a></div>
+                    <div class="submenu-item"><a href="/api/ahegao">ahegao</a></div>
+                    <div class="submenu-item"><a href="/api/manga">manga</a></div>
+                    <div class="submenu-item"><a href="/api/mia">mia</a></div>
+                    <div class="submenu-item"><a href="/api/elisa">elisa</a></div>
+                    <div class="submenu-item"><a href="/api/orgy">orgy</a></div>
+                    <div class="submenu-item"><a href="/api/hentai">hentai</a></div>
+                    <div class="submenu-item"><a href="/api/hentai2">hentai2</a></div>
+                    <div class="submenu-item"><a href="/api/pussy">pussy</a></div>
+                    <div class="submenu-item"><a href="/api/lolis18">lolis18</a></div>
+                    <div class="submenu-item"><a href="/api/masturbation">masturbation</a></div>
+                    <div class="submenu-item"><a href="/api/atriz">atriz</a></div>
+                    <div class="submenu-item"><a href="/api/fotinhas">fotinhas</a></div>
+                    <div class="submenu-item"><a href="/api/videozinhos">videozinhos</a></div>
+                    <div class="submenu-item"><a href="/api/pack">pack</a></div>
+                    <div class="submenu-item"><a href="/api/onlyfans">onlyfans</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-download icon"></i> Downloads <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                <div class="submenu-item"><a href="/api/play?query=">play</a></div>
+                <div class="submenu-item"><a href="/api/playvideo?query=">playvideo</a></div>
+                <div class="submenu-item"><a href="/api/ytmp3?url=">ytmp3</a></div>
+                <div class="submenu-item"><a href="/api/ytmp4?url=">ytmp4</a></div>
+                <div class="submenu-item"><a href="https://api-pinterest-y7jx.onrender.com/api/vid?url=">Pinterest video</a></div>
+                <div class="submenu-item"><a href="https://api-pinterest-y7jx.onrender.com/api/vid2?url=">Pinterest video v2</a></div>
+                <div class="submenu-item"><a href="https://api-pinterest-y7jx.onrender.com/api/img?url=">Pinterest foto</a></div>
+                <div class="submenu-item"><a href="https://api-pinterest-y7jx.onrender.com/api/img2?url=">Pinterest foto v2</a></div>
+             </div>
+          </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-search icon"></i> Pesquisas <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/pinterestfoto?query=">Pinterest</a></div>
+                    <div class="submenu-item"><a href="/api/pinterest?query=">Pinterest 2</a></div>
+                    <div class="submenu-item"><a href="/api/wikipedia?title=">Wikipedia</a></div>
+                    <div class="submenu-item"><a href="/api/hentai">Hentai</a></div>
+                    <div class="submenu-item"><a href="/api/quotesAnime">quotesAnime</a></div>
+                    <div class="submenu-item"><a href="/api/hentaihome?nome=">hentaihome</a></div>
+                    <div class="submenu-item"><a href="/api/gruposaleatorios?categoria=">grupos aleatórios</a></div>
+                    <div class="submenu-item"><a href="/api/gpwhatsapp?grupo=">gpwhatsapp</a></div>
+                    <div class="submenu-item"><a href="/api/getgrupos?nome=">getgrupos</a></div>
+                    <div class="submenu-item"><a href="/api/geturl?id=">geturl</a></div>
+                    <div class="submenu-item"><a href="/api/animefireeps?link=">animefireeps</a></div>
+                    <div class="submenu-item"><a href="/api/lojadomecanico?nome=">lojadomecanico</a></div>
+                    <div class="submenu-item"><a href="/api/mercadolivre?query=">mercadolivre</a></div>
+                    <div class="submenu-item"><a href="/api/amazon?query=">amazon</a></div>
+                    <div class="submenu-item"><a href="/api/playstore?query=">playsotore</a></div>
+                    <div class="submenu-item"><a href="/api/letras?url=">letras</a></div>
+                    <div class="submenu-item"><a href="/api/pesquisarnoxv?query=">links do xv</a></div>
+                    <div class="submenu-item"><a href="/api/xvidoes?termo=">xvideo</a></div>
+                    <div class="submenu-item"><a href="/api/xnxx?query=">xnxx</a></div>
+                    <div class="submenu-item"><a href="/api/dafont?query=">dafont</a></div>
+                    <div class="submenu-item"><a href="/api/significadodonome?nome=">significadodonome</a></div>
+                    <div class="submenu-item"><a href="/api/sambaporno?query=">sambaporno</a></div>
+                    <div class="submenu-item"><a href="/api/y2mate?query=">y2mate</a></div>
+                    <div class="submenu-item"><a href="/api/ultimasnoticias">ultimasnoticias</a></div>
+                    <div class="submenu-item"><a href="/api/animesbr?query=">animesbr</a></div>
+                    <div class="submenu-item"><a href="/api/hentaiimg?title=">hentaiimg</a></div>
+                    <div class="submenu-item"><a href="/api/hentaistube?termo=">hentai tube</a></div>
+                    <div class="submenu-item"><a href="/api/memesdroid">memesdroid</a></div>
+                    <div class="submenu-item"><a href="/api/goyabu?query=">goyabu</a></div>
+                    <div class="submenu-item"><a href="/api/pesgoyabu?url=">pesgoyabu</a></div>
+                    <div class="submenu-item"><a href="/api/nerding?termo=">nerding</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-tools icon"></i> Ferramentas <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <div class="submenu-item"><a href="/api/rastrear?id=">rastrear</a></div>
+                    <div class="submenu-item"><a href="/api/frasespensador=">frasespensador</a></div>
+                    <div class="submenu-item"><a href="/api/fraseamor=">fraseamor</a></div>
+                    <div class="submenu-item"><a href="/api/styletext?termo=">styletext</a></div>
+                    <div class="submenu-item"><a href="/api/ff?termo=">ff</a></div>
+                    <div class="submenu-item"><a href="/api/memesdroid">memesdroid</a></div>
+                    <div class="submenu-item"><a href="/api/ifunny">ifunny</a></div>
+                    <div class="submenu-item"><a href="/api/ultimasnoticias">ultimasnoticias</a></div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+                <span><i class="fas fa-user-check icon"></i> Consultas <span class="arrow">&#9660;</span></span>
+                <div class="submenu">
+                    <p>EM BREVE!!!</p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Moment.js -->
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-    <!-- Tempus Dominus JS -->
-    <script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/js/tempusdominus-bootstrap-4.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#calendar').datetimepicker({
-                inline: true,
-                sideBySide: true,
-                format: 'L'
-            });
-        });
+        function toggleSubmenu(element) {
+            element.classList.toggle('active');
+        }
     </script>
 </body>
-</html>
+                    </html>
