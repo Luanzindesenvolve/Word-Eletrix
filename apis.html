@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="icon" href="favicon-32x32.png" type="image/png">
+    <!-- Tempus Dominus CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/css/tempusdominus-bootstrap-4.min.css">
     <style>
         body {
@@ -24,27 +23,29 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .datetimepicker {
-            width: 100%;
+            width: 300px;
         }
     </style>
+</head>
+<body>
+    <div id="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Moment.js -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <!-- Tempus Dominus JS -->
     <script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.6/build/js/tempusdominus-bootstrap-4.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#calendar').datetimepicker({
-                format: 'L',
-                inline: true,  // Modo inline
-                sideBySide: true // Mostrar ao lado
+                inline: true,
+                sideBySide: true,
+                format: 'L'
             });
         });
     </script>
-</head>
-<body>
-    <div id="calendar-container">
-        <div id="calendar" class="datetimepicker"></div>
-    </div>
 </body>
 </html>
