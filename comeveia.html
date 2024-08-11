@@ -16,7 +16,7 @@
             width: 300px;
             margin: 0 auto;
             background-color: #000;
-            border: 1px solid #dee2e6;
+            border: 2px solid #32CD32; /* Borda verde clara ao redor do calendário */
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             color: #fff;
@@ -63,7 +63,8 @@
         }
 
         .datepicker table tr th {
-            background-color: #32CD32; /* Verde claro */
+            background-color: #32CD32; /* Dias da semana em verde claro */
+            color: #000;
         }
 
         .datepicker table tr td.day {
@@ -76,8 +77,9 @@
         }
 
         .datepicker table tr td.active {
-            background-color: #32CD32; /* Verde claro */
+            background-color: #32CD32; /* Destaque para o dia atual */
             color: #000;
+            border-radius: 50%; /* Bordas arredondadas para o dia atual */
         }
     </style>
 </head>
