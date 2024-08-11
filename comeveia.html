@@ -48,6 +48,8 @@
         .datepicker table {
             width: 100%;
             margin: 0;
+            border-spacing: 0;
+            border-collapse: collapse;
             color: #fff;
         }
 
@@ -56,6 +58,8 @@
             text-align: center;
             padding: 10px;
             cursor: pointer;
+            width: 14.28%; /* 100% dividido por 7 dias */
+            border: 1px solid #000;
         }
 
         .datepicker table tr th {
@@ -117,7 +121,7 @@
                         if (i === 0 && j < firstDay) {
                             tbl += '<td></td>';
                         } else if (date > daysInMonth) {
-                            break;
+                            tbl += '<td></td>';
                         } else {
                             const isActive = date === today.getDate() && month === today.getMonth() && year === today.getFullYear() ? 'active' : '';
                             tbl += '<td class="day ' + isActive + '">' + date + '</td>';
