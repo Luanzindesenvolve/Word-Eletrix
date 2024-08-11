@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +19,24 @@
             border: 1px solid #dee2e6;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         .datepicker {
@@ -62,21 +80,28 @@
         (function() {
             const calendar = document.getElementById('calendar');
 
-            const today = new Date();
-            const currentMonth = today.getMonth();
-            const currentYear = today.getFullYear();
+            let today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
 
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
             function generateCalendar(month, year) {
                 const firstDay = new Date(year, month).getDay();
                 const daysInMonth = 32 - new Date(year, month, 32).getDate();
 
-                let tbl = '<table class="datepicker">';
+                let tbl = '<div class="calendar-header">';
+                tbl += '<button onclick="prevMonth()">&lt;</button>';
+                tbl += '<span>' + months[month] + ' ' + year + '</span>';
+                tbl += '<button onclick="nextMonth()">&gt;</button>';
+                tbl += '</div>';
+
+                tbl += '<table class="datepicker">';
                 tbl += '<thead><tr>';
-                tbl += '<th colspan="7">' + months[month] + ' ' + year + '</th>';
-                tbl += '</tr><tr>';
-                tbl += '<th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>';
+                for (let day of days) {
+                    tbl += '<th>' + day + '</th>';
+                }
                 tbl += '</tr></thead><tbody>';
 
                 let date = 1;
@@ -98,6 +123,24 @@
 
                 tbl += '</tbody></table>';
                 calendar.innerHTML = tbl;
+            }
+
+            window.prevMonth = function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar(currentMonth, currentYear);
+            }
+
+            window.nextMonth = function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar(currentMonth, currentYear);
             }
 
             generateCalendar(currentMonth, currentYear);
