@@ -13,10 +13,11 @@
         }
 
         #calendar {
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             margin: 0 auto;
             background-color: #000;
-            border: 2px solid #32CD32; /* Borda verde clara ao redor do calendário */
+            border: 2px solid #32CD32; /* Borda verde clara */
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             color: #fff;
@@ -72,12 +73,12 @@
         }
 
         .datepicker table tr td.day:hover {
-            background-color: #32CD32; /* Verde claro */
+            background-color: #32CD32; /* Fundo verde claro ao passar o mouse */
             color: #000;
         }
 
         .datepicker table tr td.active {
-            background-color: #32CD32; /* Destaque para o dia atual */
+            background-color: #32CD32; /* Destaque verde claro para o dia atual */
             color: #000;
             border-radius: 50%; /* Bordas arredondadas para o dia atual */
         }
@@ -123,7 +124,7 @@
                         if (i === 0 && j < firstDay) {
                             tbl += '<td></td>';
                         } else if (date > daysInMonth) {
-                            tbl += '<td></td>';
+                            break;
                         } else {
                             const isActive = date === today.getDate() && month === today.getMonth() && year === today.getFullYear() ? 'active' : '';
                             tbl += '<td class="day ' + isActive + '">' + date + '</td>';
