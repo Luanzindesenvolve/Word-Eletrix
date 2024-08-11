@@ -2,45 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Calendário</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <!-- Favicon -->
-    <link href="https://avatars.githubusercontent.com/u/113657908?v=4" rel="icon">
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Libraries Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.0/build/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Embutido</title>
+    <!-- CSS Integrado -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        #calendar {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .datepicker {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .datepicker table {
+            width: 100%;
+            margin: 0;
+        }
+
+        .datepicker table tr th,
+        .datepicker table tr td {
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .datepicker table tr th {
+            background-color: #e9ecef;
+        }
+
+        .datepicker table tr td.day:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .datepicker table tr td.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <div class="container-xxl position-relative bg-white d-flex p-0">
-        <!-- Calendário -->
-        <div class="container mt-5">
-            <div id="calender"></div>
-        </div>
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.0/build/js/tempusdominus-bootstrap-4.min.js"></script>
-        <!-- Template Javascript -->
-        <script>
-            $(document).ready(function () {
-                $('#calender').datetimepicker({
-                    format: 'MMMM YYYY',
-                    inline: true,
-                    sideBySide: true
-                });
-            });
-        </script>
-    </div>
+
+    <div id="calendar"></div>
+
+    <!-- JavaScript Integrado -->
+    <script>
+        (function() {
+            const calendar = document.getElementById('calendar');
+
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            function generateCalendar(month, year) {
+                const firstDay = new Date(year, month).getDay();
+                const daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+                let tbl = '<table class="datepicker">';
+                tbl += '<thead><tr>';
+                tbl += '<th colspan="7">' + months[month] + ' ' + year + '</th>';
+                tbl += '</tr><tr>';
+                tbl += '<th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>';
+                tbl += '</tr></thead><tbody>';
+
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    tbl += '<tr>';
+                    for (let j = 0; j < 7; j++) {
+                        if (i === 0 && j < firstDay) {
+                            tbl += '<td></td>';
+                        } else if (date > daysInMonth) {
+                            break;
+                        } else {
+                            const isActive = date === today.getDate() && month === today.getMonth() && year === today.getFullYear() ? 'active' : '';
+                            tbl += '<td class="day ' + isActive + '">' + date + '</td>';
+                            date++;
+                        }
+                    }
+                    tbl += '</tr>';
+                }
+
+                tbl += '</tbody></table>';
+                calendar.innerHTML = tbl;
+            }
+
+            generateCalendar(currentMonth, currentYear);
+        })();
+    </script>
+
 </body>
 </html>
