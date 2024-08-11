@@ -15,10 +15,11 @@
         #calendar {
             width: 300px;
             margin: 0 auto;
-            background-color: #fff;
+            background-color: #000;
             border: 1px solid #dee2e6;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
         }
 
         .calendar-header {
@@ -26,7 +27,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #000;
             color: #fff;
             border-radius: 5px 5px 0 0;
         }
@@ -47,6 +48,7 @@
         .datepicker table {
             width: 100%;
             margin: 0;
+            color: #fff;
         }
 
         .datepicker table tr th,
@@ -57,17 +59,21 @@
         }
 
         .datepicker table tr th {
-            background-color: #e9ecef;
+            background-color: #32CD32; /* Verde claro */
+        }
+
+        .datepicker table tr td.day {
+            color: #fff; /* Dias em branco */
         }
 
         .datepicker table tr td.day:hover {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #32CD32; /* Verde claro */
+            color: #000;
         }
 
         .datepicker table tr td.active {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #32CD32; /* Verde claro */
+            color: #000;
         }
     </style>
 </head>
