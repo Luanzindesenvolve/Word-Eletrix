@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima Atual</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        input {
+            padding: 10px;
+            width: 70%;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #0072ff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        .weather-info {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .weather-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: left;
+        }
+
+        .details h2 {
+            font-size: 48px;
+            margin: 0;
+        }
+
+        .details p {
+            font-size: 20px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clima Atual</h1>
+        <input type="text" id="city" placeholder="Digite a cidade">
+        <button id="getWeatherBtn">Obter Clima</button>
+
+        <div class="weather-info" id="weatherInfo">
+            <div class="weather-icon" id="weatherIcon"></div>
+            <div class="details">
+                <h2 id="temperature"></h2>
+                <p id="description"></p>
+                <p>Máxima: <span id="tempMax"></span>°C</p>
+                <p>Mínima: <span id="tempMin"></span>°C</p>
+                <p>Umidade: <span id="humidity"></span>%</p>
+                <p>Vento: <span id="wind"></span> km/h</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        const apiKey = '363737d239ce3f7864e06da58d206887'; // Substitua com sua chave da API
+
+        document.getElementById('getWeatherBtn').addEventListener('click', function() {
+            const city = document.getElementById('city').value;
+            if (city) {
+                getWeather(city);
+            } else {
+                alert("Por favor, digite o nome de uma cidade!");
+            }
+        });
+
+        function getWeather(city) {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === 200) {
+                        displayWeather(data);
+                    } else {
+                        alert("Cidade não encontrada!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao obter os dados: ", error);
+                });
+        }
+
+        function displayWeather(data) {
+            const temperature = data.main.temp;
+            const tempMin = data.main.temp_min;
+            const tempMax = data.main.temp_max;
+            const humidity = data.main.humidity;
+            const windSpeed = data.wind.speed;
+            const description = data.weather[0].description;
+            const weatherIcon = document.getElementById('weatherIcon');
+
+            document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
+            document.getElementById('description').textContent = description;
+            document.getElementById('tempMin').textContent = tempMin.toFixed(1);
+            document.getElementById('tempMax').textContent = tempMax.toFixed(1);
+            document.getElementById('humidity').textContent = humidity;
+            document.getElementById('wind').textContent = windSpeed;
+
+            // Alterar ícone de acordo com o clima
+            switch (data.weather[0].main) {
+                case 'Clear':
+                    weatherIcon.innerHTML = '☀️'; // Sol
+                    break;
+                case 'Clouds':
+                    weatherIcon.innerHTML = '☁️'; // Nuvens
+                    break;
+                case 'Rain':
+                    weatherIcon.innerHTML = '🌧️'; // Chuva
+                    break;
+                case 'Thunderstorm':
+                    weatherIcon.innerHTML = '⛈️'; // Tempestade
+                    break;
+                case 'Snow':
+                    weatherIcon.innerHTML = '❄️'; // Neve
+                    break;
+                default:
+                    weatherIcon.innerHTML = '🌥️'; // Clima variável
+                    break;
+            }
+
+            document.getElementById('weatherInfo').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
