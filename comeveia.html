@@ -95,7 +95,7 @@
             const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
             function generateCalendar(month, year) {
-    let today = new Date(); // Mover para dentro da função
+    const today = new Date(); // Atualiza a data atual toda vez que o calendário é gerado
     const firstDay = new Date(year, month).getDay();
     const daysInMonth = 32 - new Date(year, month, 32).getDate();
 
@@ -121,6 +121,7 @@
             } else if (date > daysInMonth) {
                 break;
             } else {
+                // Verifica se o dia é o dia atual
                 const isActive = date === today.getDate() && month === today.getMonth() && year === today.getFullYear() ? 'active' : '';
                 tbl += `<td class="day ${isActive}">${date}</td>`;
                 date++;
@@ -131,7 +132,9 @@
 
     tbl += '</tbody></table>';
     calendar.innerHTML = tbl;
-            }
+}
+
+generateCalendar(currentMonth, currentYear);
 
             window.prevMonth = function() {
                 currentMonth--;
