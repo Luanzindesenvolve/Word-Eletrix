@@ -32,43 +32,42 @@
     font-weight: bold;
 }
 .weather-info {
-            margin-top: 20px;
-            display: none;
-        }
+    margin-top: 20px;
+    display: none;
+}
 
-        .weather-icon {
-            font-size: 100px;
-            margin-bottom: 20px;
-        }
+.weather-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
 
-        .details {
-            text-align: left;
-            margin: 0 auto;
-            display: inline-block;
-        }
+.details {
+    text-align: center;
+    margin-top: 10px;
+}
 
-        .details h2 {
-            font-size: 48px;
-            margin: 0;
-        }
+.details h2 {
+    font-size: 50px;
+    margin: 0;
+}
 
-        .details p {
-            font-size: 20px;
-            margin: 5px 0;
-        }
+.details p {
+    font-size: 18px;
+    margin: 5px 0;
+}
 
-        #user-ip {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
+#user-ip {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-        #current-time {
-            margin-top: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #FFD700; /* Cor dourada */
-        }
+#current-time {
+    margin-top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFD700; /* Cor dourada */
+}
             /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
@@ -470,109 +469,108 @@
 <script>
         const apiKey = '363737d239ce3f7864e06da58d206887'; // Substitua com sua chave da API do OpenWeatherMap
 
-        
-     // Função para obter o IP do usuário e buscar informações do clima
-        function getWeatherInfo() {
-            fetch('https://api.ipify.org?format=json')
+// Função para obter o IP do usuário e buscar informações do clima
+function getWeatherInfo() {
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            const userIP = data.ip;
+            document.getElementById("user-ip").textContent = "Seu IP🌐: " + userIP;
+
+            fetch(`https://ipapi.co/${userIP}/json/`)
                 .then(response => response.json())
                 .then(data => {
-                    const userIP = data.ip;
-                    document.getElementById("user-ip").textContent = "Seu IP🌐: " + userIP;
-
-                    fetch(`https://ipapi.co/${userIP}/json/`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const userCity = data.city;
-                            if (userCity) {
-                                fetchWeather(userCity);
-                            } else {
-                                console.error('Cidade não encontrada na resposta da API de IP.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Erro ao obter a cidade do usuário:', error);
-                        });
-                })
-                .catch(error => {
-                    console.error('Erro ao obter informações do IP:', error);
-                });
-        }
-
-        // Função para obter o clima da cidade
-        function fetchWeather(city) {
-            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.cod === 200) {
-                        displayWeather(data);
+                    const userCity = data.city;
+                    if (userCity) {
+                        fetchWeather(userCity);
                     } else {
-                        console.error("Cidade não encontrada! Verifique se a cidade está correta.");
+                        console.error('Cidade não encontrada na resposta da API de IP.');
                     }
                 })
                 .catch(error => {
-                    console.error("Erro ao obter os dados: ", error);
+                    console.error('Erro ao obter a cidade do usuário:', error);
                 });
-        }
+        })
+        .catch(error => {
+            console.error('Erro ao obter informações do IP:', error);
+        });
+}
 
-        // Função para exibir o clima na interface
-        function displayWeather(data) {
-            const temperature = data.main.temp;
-            const tempMin = data.main.temp_min;
-            const tempMax = data.main.temp_max;
-            const humidity = data.main.humidity;
-            const windSpeed = data.wind.speed;
-            const description = data.weather[0].description;
-            const weatherIcon = document.getElementById('weatherIcon');
+// Função para obter o clima da cidade
+function fetchWeather(city) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
-            document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
-            document.getElementById('description').textContent = description;
-            document.getElementById('tempMin').textContent = tempMin.toFixed(1);
-            document.getElementById('tempMax').textContent = tempMax.toFixed(1);
-            document.getElementById('humidity').textContent = humidity;
-            document.getElementById('wind').textContent = windSpeed;
-
-            // Alterar ícone de acordo com o clima
-            switch (data.weather[0].main) {
-                case 'Clear':
-                    weatherIcon.innerHTML = '☀️'; // Sol
-                    break;
-                case 'Clouds':
-                    weatherIcon.innerHTML = '☁️'; // Nuvens
-                    break;
-                case 'Rain':
-                    weatherIcon.innerHTML = '🌧️'; // Chuva
-                    break;
-                case 'Thunderstorm':
-                    weatherIcon.innerHTML = '⛈️'; // Tempestade
-                    break;
-                case 'Snow':
-                    weatherIcon.innerHTML = '❄️'; // Neve
-                    break;
-                default:
-                    weatherIcon.innerHTML = '🌥️'; // Clima variável
-                    break;
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === 200) {
+                displayWeather(data);
+            } else {
+                console.error("Cidade não encontrada! Verifique se a cidade está correta.");
             }
+        })
+        .catch(error => {
+            console.error("Erro ao obter os dados: ", error);
+        });
+}
 
-            document.getElementById('weatherInfo').style.display = 'block';
-        }
+// Função para exibir o clima na interface
+function displayWeather(data) {
+    const temperature = data.main.temp;
+    const tempMin = data.main.temp_min;
+    const tempMax = data.main.temp_max;
+    const humidity = data.main.humidity;
+    const windSpeed = data.wind.speed;
+    const description = data.weather[0].description;
+    const weatherIcon = document.getElementById('weatherIcon');
 
-        // Função para atualizar a hora
-        function updateCurrentTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            document.getElementById('current-time').textContent = `Hora Atual: ${timeString}`;
-        }
+    document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
+    document.getElementById('description').textContent = description;
+    document.getElementById('tempMin').textContent = tempMin.toFixed(1);
+    document.getElementById('tempMax').textContent = tempMax.toFixed(1);
+    document.getElementById('humidity').textContent = humidity;
+    document.getElementById('wind').textContent = windSpeed;
 
-        // Atualiza a hora a cada segundo
-        setInterval(updateCurrentTime, 1000);
+    // Alterar ícone de acordo com o clima
+    switch (data.weather[0].main) {
+        case 'Clear':
+            weatherIcon.innerHTML = '☀️'; // Sol
+            break;
+        case 'Clouds':
+            weatherIcon.innerHTML = '☁️'; // Nuvens
+            break;
+        case 'Rain':
+            weatherIcon.innerHTML = '🌧️'; // Chuva
+            break;
+        case 'Thunderstorm':
+            weatherIcon.innerHTML = '⛈️'; // Tempestade
+            break;
+        case 'Snow':
+            weatherIcon.innerHTML = '❄️'; // Neve
+            break;
+        default:
+            weatherIcon.innerHTML = '🌥️'; // Clima variável
+            break;
+    }
 
-        // Inicializa o processo ao carregar a página
-        window.onload = getWeatherInfo;
+    document.getElementById('weatherInfo').style.display = 'block';
+}
+
+// Função para atualizar a hora
+function updateCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    document.getElementById('current-time').textContent = `Hora Atual: ${timeString}`;
+}
+
+// Atualiza a hora a cada segundo
+setInterval(updateCurrentTime, 1000);
+
+// Inicializa o processo ao carregar a página
+window.onload = getWeatherInfo;
 </script>
     <!-- HTML para o menu lateral -->
     <div id="sidebar" class="sidebar">
