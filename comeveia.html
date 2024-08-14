@@ -18,31 +18,17 @@
 
         .container {
             text-align: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
         }
 
-        input {
-            padding: 10px;
-            width: 70%;
-            border-radius: 5px;
-            border: none;
+        h1 {
+            font-size: 2.5em;
             margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #0072ff;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #005bb5;
         }
 
         .weather-info {
@@ -51,31 +37,40 @@
         }
 
         .weather-icon {
-            font-size: 100px;
+            font-size: 80px;
             margin-bottom: 20px;
         }
 
         .details {
-            text-align: left;
+            text-align: center;
+            margin-top: 10px;
         }
 
         .details h2 {
-            font-size: 48px;
+            font-size: 50px;
             margin: 0;
         }
 
         .details p {
-            font-size: 20px;
+            font-size: 18px;
             margin: 5px 0;
+        }
+
+        #user-ip, #current-time {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #current-time {
+            color: #FFD700; /* Cor dourada */
+            font-size: 28px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Clima Atual</h1>
-        <input type="text" id="city" placeholder="Digite a cidade">
-        <button id="getWeatherBtn">Obter Clima</button>
-
         <div class="weather-info" id="weatherInfo">
             <div class="weather-icon" id="weatherIcon"></div>
             <div class="details">
@@ -86,21 +81,42 @@
                 <p>Umidade: <span id="humidity"></span>%</p>
                 <p>Vento: <span id="wind"></span> km/h</p>
             </div>
+            <div id="user-ip"></div>
+            <div id="current-time"></div>
         </div>
     </div>
     <script>
-        const apiKey = 'SUA_API_KEY'; // Substitua com sua chave da API
+        const apiKey = '363737d239ce3f7864e06da58d206887'; // Substitua com sua chave da API do OpenWeatherMap
 
-        document.getElementById('getWeatherBtn').addEventListener('click', function() {
-            const city = document.getElementById('city').value;
-            if (city) {
-                getWeather(city);
-            } else {
-                alert("Por favor, digite o nome de uma cidade!");
-            }
-        });
+        // Função para obter o IP do usuário e buscar informações do clima
+        function getWeatherInfo() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIP = data.ip;
+                    document.getElementById("user-ip").textContent = "Seu IP🌐: " + userIP;
 
-        function getWeather(city) {
+                    fetch(`https://ipapi.co/${userIP}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const userCity = data.city;
+                            if (userCity) {
+                                fetchWeather(userCity);
+                            } else {
+                                console.error('Cidade não encontrada na resposta da API de IP.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao obter a cidade do usuário:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Erro ao obter informações do IP:', error);
+                });
+        }
+
+        // Função para obter o clima da cidade
+        function fetchWeather(city) {
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
 
             fetch(apiUrl)
@@ -109,7 +125,7 @@
                     if (data.cod === 200) {
                         displayWeather(data);
                     } else {
-                        alert("Cidade não encontrada! Verifique se a cidade está correta.");
+                        console.error("Cidade não encontrada! Verifique se a cidade está correta.");
                     }
                 })
                 .catch(error => {
@@ -117,6 +133,7 @@
                 });
         }
 
+        // Função para exibir o clima na interface
         function displayWeather(data) {
             const temperature = data.main.temp;
             const tempMin = data.main.temp_min;
@@ -157,6 +174,22 @@
 
             document.getElementById('weatherInfo').style.display = 'block';
         }
+
+        // Função para atualizar a hora
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = `Hora Atual: ${timeString}`;
+        }
+
+        // Atualiza a hora a cada segundo
+        setInterval(updateCurrentTime, 1000);
+
+        // Inicializa o processo ao carregar a página
+        window.onload = getWeatherInfo;
     </script>
 </body>
 </html>
