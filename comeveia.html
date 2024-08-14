@@ -56,6 +56,12 @@
             margin: 5px 0;
         }
 
+        #city-name {
+            font-size: 24px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
         #user-ip, #current-time {
             margin-top: 20px;
             font-size: 16px;
@@ -63,8 +69,9 @@
         }
 
         #current-time {
-            color: #FFD700; /* Cor dourada */
+            color: #fff; /* Cor branca para a hora */
             font-size: 28px;
+            font-family: 'Courier New', monospace; /* Fonte monoespaçada para destacar */
         }
     </style>
 </head>
@@ -72,6 +79,7 @@
     <div class="container">
         <h1>Clima Atual</h1>
         <div class="weather-info" id="weatherInfo">
+            <div id="city-name"></div>
             <div class="weather-icon" id="weatherIcon"></div>
             <div class="details">
                 <h2 id="temperature"></h2>
@@ -141,8 +149,10 @@
             const humidity = data.main.humidity;
             const windSpeed = data.wind.speed;
             const description = data.weather[0].description;
+            const cityName = data.name;
             const weatherIcon = document.getElementById('weatherIcon');
 
+            document.getElementById('city-name').textContent = cityName;
             document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
             document.getElementById('description').textContent = description;
             document.getElementById('tempMin').textContent = tempMin.toFixed(1);
@@ -192,4 +202,4 @@
         window.onload = getWeatherInfo;
     </script>
 </body>
-</html>
+</html
