@@ -32,40 +32,65 @@
     font-weight: bold;
 }
  .weather-info {
-            margin-top: 20px;
-            display: none;
-        }
+.weather-info {
+    margin-top: 20px;
+    display: none;
+}
 
-        .weather-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
+.weather-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
 
-        .details {
-            text-align: center;
-            margin-top: 10px;
-        }
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
 
-        .details h2 {
-            font-size: 50px;
-            margin: 0;
-        }
+.details {
+    text-align: center;
+    margin-top: 10px;
+}
 
-        .details p {
-            font-size: 18px;
-            margin: 5px 0;
-        }
+.details h2 {
+    font-size: 50px;
+    margin: 0;
+    color: #ffffff; /* Temperatura em branco */
+}
 
-        #user-ip, #current-time {
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-        }
+.details p {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #ffffff; /* Detalhes em branco */
+}
 
-        #current-time {
-            color: #FFD700; /* Cor dourada */
-            font-size: 28px;
-        }
+#city-name {
+    font-size: 24px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #ffffff; /* Nome da cidade em branco */
+}
+
+#user-ip {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff; /* IP em branco */
+}
+
+#current-time {
+    color: #00f2fe; /* Hora em azul claro */
+    font-size: 28px;
+    font-family: 'Courier New', monospace;
+    margin-top: 15px;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
             /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
