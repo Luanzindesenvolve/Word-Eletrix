@@ -146,83 +146,6 @@ h1 {
             border-radius: 10px;
             padding: 10px;
         }
-        .active {
-    background-color: #007bff !important;
-    color: #fff !important;
-    border: 2px solid #007bff !important;
-}
-
-#calendar {
-    width: 400px; /* Largura igual à seção do clima */
-    height: auto; /* Ajusta a altura automaticamente com base no conteúdo */
-    margin: 0 auto;
-    background-color: #000;
-    border: 4px solid #007bff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding-bottom: 20px; /* Aumenta o comprimento um pouco */
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px 5px 0 0;
-}
-
-.calendar-header button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.datepicker {
-    width: 100%;
-    padding: 10px;
-}
-
-.datepicker table {
-    width: 100%;
-    margin: 0;
-    border-collapse: collapse;
-}
-
-.datepicker table tr th,
-.datepicker table tr td {
-    text-align: center;
-    padding: 15px; /* Aumentei o padding para centralizar melhor os números */
-    cursor: pointer;
-    border: 1px solid #333;
-    vertical-align: middle; /* Centraliza o conteúdo verticalmente */
-}
-
-.datepicker table tr th {
-    background-color: #d4edda;
-    color: #000;
-    font-weight: bold;
-    font-size: 14px; /* Ajusta o tamanho de fonte para os dias da semana */
-}
-
-.datepicker table tr td.day {
-    background-color: #000;
-    color: #fff;
-    font-size: 18px; /* Tamanho de fonte ajustado para melhorar a leitura */
-}
-
-.datepicker table tr td.day:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.datepicker table tr td.active {
-    background-color: #007bff;
-    color: #fff;
-    border: 2px solid #007bff;
 .active {
     background-color: #007bff !important;
     color: #fff !important;
@@ -270,10 +193,9 @@ h1 {
 .datepicker table tr th,
 .datepicker table tr td {
     text-align: center;
-    padding: 10px; /* Ajustado para melhorar a centralização dos números */
+    padding: 15px; /* Ajuste o padding para melhor centralização */
     cursor: pointer;
     border: 1px solid #333;
-    vertical-align: middle; /* Centraliza o conteúdo verticalmente */
 }
 
 .datepicker table tr th {
@@ -287,7 +209,10 @@ h1 {
     background-color: #000;
     color: #fff;
     font-size: 18px; /* Tamanho de fonte ajustado para melhor leitura */
-    line-height: 1.5; /* Ajuste para melhorar o alinhamento vertical */
+    line-height: 1.5; /* Ajuste o espaçamento vertical */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o conteúdo horizontalmente */
 }
 
 .datepicker table tr td.day:hover {
@@ -300,7 +225,6 @@ h1 {
     color: #fff;
     border: 2px solid #007bff;
 }
-
 
 
         /* Estilos para as informações do usuário */
