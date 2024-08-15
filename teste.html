@@ -31,16 +31,32 @@
 .bold {
     font-weight: bold;
 }
- .weather-info {
+.container {
+    text-align: center;
+    padding: 40px;
+    max-width: 400px;
+    width: 100%;
+}
+
 .weather-info {
-    margin-top: 20px;
-    display: none;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo transparente meio preto */
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #00f2fe; /* Borda azul */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #ffffff; /* Título em branco */
 }
 
 .weather-icon {
     font-size: 80px;
     margin-bottom: 20px;
     animation: bounce 1s infinite;
+    color: #ffffff; /* Ícones em branco */
 }
 
 @keyframes bounce {
@@ -86,11 +102,11 @@
 #current-time {
     color: #00f2fe; /* Hora em azul claro */
     font-size: 28px;
-    font-family: 'Courier New', monospace;
     margin-top: 15px;
     letter-spacing: 1.5px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
             /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
