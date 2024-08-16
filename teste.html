@@ -196,13 +196,9 @@ h1 {
     padding: 15px; /* Ajuste o padding para melhor centralização */
     cursor: pointer;
     border: 1px solid #333;
-}
-
-.datepicker table tr th {
-    background-color: #d4edda;
-    color: #000;
-    font-weight: bold;
-    font-size: 14px; /* Tamanho da fonte para os dias da semana */
+    vertical-align: middle; /* Centraliza o conteúdo verticalmente */
+    width: 14.28%; /* Distribui igualmente os dias da semana */
+    box-sizing: border-box; /* Garante que a largura inclua a borda */
 }
 
 .datepicker table tr td.day {
@@ -213,7 +209,19 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    height: 60px; /* Define uma altura fixa */
+    box-sizing: border-box; /* Garante que a altura inclua o padding */
 }
+
+
+.datepicker table tr th {
+    background-color: #d4edda;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px; /* Tamanho da fonte para os dias da semana */
+}
+
+
 
 .datepicker table tr td.day:hover {
     background-color: #007bff;
