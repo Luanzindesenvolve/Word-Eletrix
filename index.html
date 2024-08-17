@@ -37,12 +37,14 @@
     justify-content: center; /* Centraliza o vídeo no cabeçalho */
     padding: 0; /* Remove o padding para evitar espaços extras */
     background-color: transparent; /* Remove qualquer fundo atrás do vídeo */
+    overflow: hidden; /* Esconde qualquer parte do vídeo que exceda o cabeçalho */
+    height: 100px; /* Define a altura do cabeçalho */
 }
 
 .logo-video {
     width: 100%; /* Faz o vídeo preencher a largura do cabeçalho */
-    height: auto; /* Mantém a proporção do vídeo */
-    object-fit: cover; /* Garante que o vídeo preencha todo o espaço sem distorção */
+    height: 100%; /* Faz o vídeo preencher a altura do cabeçalho */
+    object-fit: cover; /* Cobre todo o espaço, cortando o vídeo se necessário */
 }
 
 header nav {
