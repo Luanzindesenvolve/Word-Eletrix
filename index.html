@@ -1016,7 +1016,187 @@ h1 {
             document.getElementById("sidebar").style.width = "0";
         }
     </script>
+<script>
+        const apiKey = '363737d239ce3f7864e06da58d206887'; // Substitua com sua chave da API do OpenWeatherMap
+   // Função para obter o IP do usuário e buscar informações do clima
+        function getWeatherInfo() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const userIP = data.ip;
+                    document.getElementById("user-ip").textContent = "Seu IP🌐: " + userIP;
 
+                    fetch(`https://ipapi.co/${userIP}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const userCity = data.city;
+                            if (userCity) {
+                                fetchWeather(userCity);
+                            } else {
+                                console.error('Cidade não encontrada na resposta da API de IP.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao obter a cidade do usuário:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Erro ao obter informações do IP:', error);
+                });
+        }
+
+        // Função para obter o clima da cidade
+        function fetchWeather(city) {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cod === 200) {
+                        displayWeather(data);
+                    } else {
+                        console.error("Cidade não encontrada! Verifique se a cidade está correta.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao obter os dados: ", error);
+                });
+        }
+
+        // Função para exibir o clima na interface
+        function displayWeather(data) {
+            const temperature = data.main.temp;
+            const tempMin = data.main.temp_min;
+            const tempMax = data.main.temp_max;
+            const humidity = data.main.humidity;
+            const windSpeed = data.wind.speed;
+            const description = data.weather[0].description;
+            const weatherIcon = document.getElementById('weatherIcon');
+
+            document.getElementById('temperature').textContent = `${temperature.toFixed(1)}°C`;
+            document.getElementById('description').textContent = description;
+            document.getElementById('tempMin').textContent = tempMin.toFixed(1);
+            document.getElementById('tempMax').textContent = tempMax.toFixed(1);
+            document.getElementById('humidity').textContent = humidity;
+            document.getElementById('wind').textContent = windSpeed;
+
+            // Alterar ícone de acordo com o clima
+            switch (data.weather[0].main) {
+                case 'Clear':
+                    weatherIcon.innerHTML = '☀️'; // Sol
+                    break;
+                case 'Clouds':
+                    weatherIcon.innerHTML = '☁️'; // Nuvens
+                    break;
+                case 'Rain':
+                    weatherIcon.innerHTML = '🌧️'; // Chuva
+                    break;
+                case 'Thunderstorm':
+                    weatherIcon.innerHTML = '⛈️'; // Tempestade
+                    break;
+                case 'Snow':
+                    weatherIcon.innerHTML = '❄️'; // Neve
+                    break;
+                default:
+                    weatherIcon.innerHTML = '🌥️'; // Clima variável
+                    break;
+            }
+
+            document.getElementById('weatherInfo').style.display = 'block';
+        }
+
+        // Função para atualizar a hora
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('current-time').textContent = `Hora Atual: ${timeString}`;
+        }
+
+        // Atualiza a hora a cada segundo
+        setInterval(updateCurrentTime, 1000);
+
+        // Inicializa o processo ao carregar a página
+        window.onload = getWeatherInfo;
+</script>
+    
+
+    <script>
+        (function() {
+            const calendar = document.getElementById('calendar');
+
+            let today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+
+            const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+            const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+            function generateCalendar(month, year) {
+    const today = new Date(); // Atualiza a data atual toda vez que o calendário é gerado
+    const firstDay = new Date(year, month).getDay();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    let tbl = '<div class="calendar-header">';
+    tbl += '<button onclick="prevMonth()">&lt;</button>';
+    tbl += '<span>' + months[month] + ' ' + year + '</span>';
+    tbl += '<button onclick="nextMonth()">&gt;</button>';
+    tbl += '</div>';
+
+    tbl += '<table class="datepicker">';
+    tbl += '<thead><tr>';
+    for (let day of days) {
+        tbl += '<th>' + day + '</th>';
+    }
+    tbl += '</tr></thead><tbody>';
+
+    let date = 1;
+    for (let i = 0; i < 6; i++) {
+        tbl += '<tr>';
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+                tbl += '<td></td>';
+            } else if (date > daysInMonth) {
+                break;
+            } else {
+                // Verifica se o dia é o dia atual
+                const isActive = date === today.getDate() && month === today.getMonth() && year === today.getFullYear() ? 'active' : '';
+                tbl += `<td class="day ${isActive}">${date}</td>`;
+                date++;
+            }
+        }
+        tbl += '</tr>';
+    }
+
+    tbl += '</tbody></table>';
+    calendar.innerHTML = tbl;
+}
+
+generateCalendar(currentMonth, currentYear);
+
+            window.prevMonth = function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar(currentMonth, currentYear);
+            }
+
+            window.nextMonth = function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar(currentMonth, currentYear);
+            }
+
+            generateCalendar(currentMonth, currentYear);
+        })();
+    </script>
     <!-- HTML para o menu lateral -->
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
