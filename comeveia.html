@@ -21,41 +21,41 @@ header {
     justify-content: center;
     padding: 0;
     background-color: transparent;
-    overflow: hidden;
-    height: 100px; /* Ajuste conforme necessário */
+    height: 150px; /* Ajuste conforme necessário */
     position: relative;
 }
 
-.video-wrapper {
+.video-container {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 150px; /* Ajuste o tamanho conforme necessário */
+    height: 150px; /* Deve ser igual à largura para manter a proporção */
 }
 
 .logo-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%; /* Torna o vídeo circular, opcional */
 }
 
-.rotating-line {
+.rotating-border {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120%; /* Ajuste o tamanho da linha em relação ao vídeo */
-    height: 120%; /* Ajuste o tamanho da linha em relação ao vídeo */
-    border: 2px solid #00f2fe; /* Cor da linha */
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #00f2fe; /* Cor e espessura da borda */
+    border-radius: 50%; /* Torna a borda circular */
+    box-sizing: border-box;
     animation: rotate 4s linear infinite; /* Animação de rotação */
 }
 
 @keyframes rotate {
     0% {
-        transform: translate(-50%, -50%) rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-        transform: translate(-50%, -50%) rotate(360deg);
+        transform: rotate(360deg);
     }
 }
         .container {
