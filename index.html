@@ -31,7 +31,23 @@
 .bold {
     font-weight: bold;
 }
-    
+    header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333; /* Cor de fundo opcional para o cabeçalho */
+}
+
+.logo-video {
+    max-width: 150px; /* Ajuste o tamanho do vídeo */
+    height: auto; /* Mantém a proporção do vídeo */
+    border-radius: 8px; /* Bordas arredondadas, opcional */
+}
+
+header nav {
+    /* Estilos para outros elementos no cabeçalho, como navegação */
+}
             /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
@@ -379,7 +395,13 @@
         <source src="V.mp4" type="video/mp4">
         Seu navegador não suporta vídeos HTML5.
     </video>
-    <h1>World EcletiX</h1>    
+   <header>
+    <video class="logo-video" autoplay loop muted>
+        <source src="logo.mp4" type="video/mp4">
+        Seu navegador não suporta o vídeo.
+    </video>
+    <!-- Outros elementos do cabeçalho, como menu, etc. -->
+   </header>
     <!-- Botão para abrir o menu lateral -->
     <button class="button" onclick="openSidebar()"><i class="fas fa-bars"></i> Menu</button>
      <!-- Botão de notificação -->
