@@ -21,33 +21,30 @@ header {
     justify-content: center;
     padding: 0;
     background-color: transparent;
-    height: 150px; /* Ajuste conforme necessário */
+    height: auto; /* Ajuste conforme necessário */
     position: relative;
 }
 
 .video-container {
     position: relative;
-    width: 150px; /* Ajuste o tamanho conforme necessário */
-    height: 150px; /* Deve ser igual à largura para manter a proporção */
+    display: inline-block;
 }
 
 .logo-video {
-    width: 100%;
-    height: 100%;
+    width: 300px; /* Ajuste conforme necessário */
+    height: auto; /* Mantém a proporção do vídeo */
     object-fit: cover;
-    border-radius: 50%; /* Torna o vídeo circular, opcional */
 }
 
-.rotating-border {
+.rotating-line {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 4px solid #00f2fe; /* Cor e espessura da borda */
-    border-radius: 50%; /* Torna a borda circular */
-    box-sizing: border-box;
-    animation: rotate 4s linear infinite; /* Animação de rotação */
+    width: 10px; /* Largura da linha giratória */
+    height: 100px; /* Altura da linha giratória */
+    background-color: #00f2fe; /* Cor da linha giratória */
+    top: 50%; /* Centraliza verticalmente em relação ao vídeo */
+    left: 50%; /* Centraliza horizontalmente em relação ao vídeo */
+    transform-origin: center -150px; /* Define o ponto ao redor do qual a linha gira */
+    animation: rotate 2s linear infinite; /* Animação de rotação */
 }
 
 @keyframes rotate {
@@ -135,15 +132,14 @@ header {
             <div id="current-time"></div>
         </div>
         <header>
-<header>
     <div class="video-container">
         <video class="logo-video" autoplay loop muted>
             <source src="logo.mp4" type="video/mp4">
             Seu navegador não suporta o vídeo.
         </video>
-        <div class="rotating-border"></div>
+        <div class="rotating-line"></div>
     </div>
-</header>
+        </header>
     <script>
         const apiKey = '363737d239ce3f7864e06da58d206887'; // Substitua com sua chave da API do OpenWeatherMap
 
