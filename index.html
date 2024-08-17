@@ -31,6 +31,13 @@
 .bold {
     font-weight: bold;
 }
+    .container {
+    text-align: center;
+    padding: 40px;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto; /* Garante que o container fique centralizado */
+    }
             /* Estilos para o vídeo de fundo */
         #video-background {
             position: fixed;
@@ -378,14 +385,16 @@ h1 {
         Seu navegador não suporta vídeos HTML5.
     </video>
     <h1>World EcletiX</h1>
+    <div class="container">
     <!-- Botão para abrir o menu lateral -->
     <button class="button" onclick="openSidebar()"><i class="fas fa-bars"></i> Menu</button>
-
+   <div class="container">
     <!-- Botão de notificação -->
     <button class="button notification" onclick="openWelcomeMessage()"><i class="fas fa-bell"></i> Notificação</button>
-
+   <div class="container">
         <div id="calendar"></div>
     </div>
+       <div class="container">
     <div class="weather-info" id="weatherInfo">
     <div id="city-name"></div>
     <div class="weather-icon" id="weatherIcon"></div>
