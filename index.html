@@ -34,16 +34,15 @@
     header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    background-color: #333; /* Cor de fundo opcional para o cabeçalho */
+    justify-content: center; /* Centraliza o vídeo no cabeçalho */
+    padding: 0; /* Remove o padding para evitar espaços extras */
+    background-color: transparent; /* Remove qualquer fundo atrás do vídeo */
 }
 
 .logo-video {
-    width: 150px; /* Largura desejada para o vídeo */
-    height: 80px; /* Altura desejada para o vídeo */
-    object-fit: cover; /* Corta o vídeo para preencher a área definida */
-    border-radius: 8px; /* Bordas arredondadas, opcional */
+    width: 100%; /* Faz o vídeo preencher a largura do cabeçalho */
+    height: auto; /* Mantém a proporção do vídeo */
+    object-fit: cover; /* Garante que o vídeo preencha todo o espaço sem distorção */
 }
 
 header nav {
