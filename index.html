@@ -198,31 +198,28 @@ header nav {
     box-sizing: border-box;
 }
 
-.datepicker table tr td.day {
-    background-color: #000;
-    color: #fff;
-    font-size: 18px;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    height: 60px; /* Define uma altura fixa */
-}
-
 .datepicker table tr th {
-    background-color: #d4edda;
-    color: #000;
+    background-color: #007bff; /* Cor de fundo dos cabeçalhos */
+    color: #ffffff; /* Cor do texto em branco */
     font-weight: bold;
     font-size: 14px;
 }
 
+.datepicker table tr td.day {
+    background-color: #000; /* Fundo preto */
+    color: #ffffff; /* Texto branco */
+    font-size: 18px;
+    height: 60px; /* Altura fixa */
+}
+
 .datepicker table tr td.day:hover {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #007bff; /* Fundo azul ao passar o mouse */
+    color: #ffffff; /* Texto branco ao passar o mouse */
 }
 
 .datepicker table tr td.active {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #007bff; /* Fundo azul para o dia ativo */
+    color: #ffffff; /* Texto branco para o dia ativo */
     border: 2px solid #007bff;
 }
 
