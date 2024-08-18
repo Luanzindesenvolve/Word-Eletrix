@@ -97,21 +97,30 @@ router.get('/pinterestfoto', async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
-// Rota para buscar a letra da música
-router.get('/letra', async (req, res) => {
-  const { musica } = req.query;
-  
-  if (!musica) {
-    return res.status(400).json({ error: 'Nome da música é necessário.' });
+
+
+router.get('/api/letra', async (req, res) => {
+  const texto = req.query.texto;
+  if (!texto) {
+    return res.json({ status: false, message: 'Cade o parametro texto??' });
   }
 
   try {
-    const resultado = await LetradaMusica(musica);
-    res.json(resultado);
+    const response = await axios.get(`https://api.popcat.xyz/lyrics?song=${texto}`);
+    const sitee = response.data;
+
+    res.json({
+      titulo: sitee.title,
+      imagem: sitee.image,
+      artista: sitee.artist,
+      letra: sitee.lyrics
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar a letra da música.' });
+    console.error(error);
+    res.status(500).json({ status: false, message: "Erro ao processar a requisição" });
   }
 });
+
 // Rota para wallpaper
 router.get('/wallpaper', async (req, res) => {
   try {
