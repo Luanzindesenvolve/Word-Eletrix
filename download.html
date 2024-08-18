@@ -92,10 +92,12 @@
                     <option value="videoByName">Pelo nome</option>
                     <option value="videoByLink">Pelo link</option>
                 </optgroup>
-                <optgroup label="Baixar do Instagram 🎥">
-                    <option value="instagramByLink">Baixar vídeo pelo link</option>
-                    <option value="instagramStoryByLink">Baixar story pelo link</option>
-                    <option value="instagramSearch">Pesquisar Instagram</option>
+                <optgroup label="Baixar vídeo do Instagram 🎥">
+                   <option value="instagramByLink">Baixar vídeo pelo link</option>
+                   <option value="instagramStoryByLink">Baixar story pelo link</option>
+                   <option value="instagramSearch">Pesquisar Instagram</option>
+                   <option value="instaByNewApi">Baixar vídeo</option> <!-- Adicionando nova opção -->
+                
                 </optgroup>
                 <optgroup label="Baixar vídeo do Facebook 🎥">
                     <option value="facebookByLink1">Pelo link (API 1)</option>
@@ -177,7 +179,9 @@
                 } else if (option === 'tiktokByLinkAudio') {
                     apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
                 }
-
+                else if (option === 'instaByNewApi') {
+                apiUrl = `https://api-instadow.onrender.com/Instagram/vídeo?url=${encodeURIComponent(query)}`;
+                }
                 if (apiUrl) {
                     window.location.href = apiUrl;
                 } else {
