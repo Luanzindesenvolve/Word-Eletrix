@@ -83,8 +83,7 @@ const {
   hentaihome, 
   lojadomecanico,
   wallpaper,
-  wikimedia,
-  LetradaMusica
+  wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Rota para pinterest
 router.get('/pinterestfoto', async (req, res) => {
@@ -99,7 +98,7 @@ router.get('/pinterestfoto', async (req, res) => {
 });
 
 
-router.get('/api/letra', async (req, res) => {
+router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
   if (!texto) {
     return res.json({ status: false, message: 'Cade o parametro texto??' });
