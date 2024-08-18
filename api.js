@@ -83,7 +83,8 @@ const {
   hentaihome, 
   lojadomecanico,
   wallpaper,
-  wikimedia
+  wikimedia,
+  LetradaMusica
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Rota para pinterest
 router.get('/pinterestfoto', async (req, res) => {
@@ -96,7 +97,21 @@ router.get('/pinterestfoto', async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+// Rota para buscar a letra da música
+router.get('/letra', async (req, res) => {
+  const { musica } = req.query;
+  
+  if (!musica) {
+    return res.status(400).json({ error: 'Nome da música é necessário.' });
+  }
 
+  try {
+    const resultado = await LetradaMusica(musica);
+    res.json(resultado);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar a letra da música.' });
+  }
+});
 // Rota para wallpaper
 router.get('/wallpaper', async (req, res) => {
   try {
