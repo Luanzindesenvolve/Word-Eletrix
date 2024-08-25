@@ -5,9 +5,16 @@ const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
-const criador = 'World Ecletic';
+const criador = 'World Ecletix';
 const router = express.Router();
-
+const getImageBuffer = async (url) => {
+    try {
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        return response.data;
+    } catch (error) {
+        throw new Error('Erro ao buscar imagem.');
+    }
+};
 //teste
 
 
@@ -156,46 +163,150 @@ router.post('/traduzir', async (req, res) => {
 
 
 
-router.get('/figurinhas/:categoria', async (req, res) => {
+router.get('/figu_emoji', async (req, res) => {
     try {
-        const { categoria } = req.params;
-
-        // Mapeia categorias para o número total de imagens
-        const categorias = {
-            'figu_emoji': 102,
-            'figu_flork2': 102,
-            'figu_aleatori': 8051,
-            'figu_memes': 109,
-            'figu_anime': 109,
-            'figu_coreana': 43,
-            'figu_bebe': 17,
-            'figu_desenho': 50,
-            'figu_animais': 50,
-            'figu_engracada': 25,
-            'figu_raiva': 25,
-            'figu_roblox': 25
-        };
-
-        const totalImagens = categorias[categoria];
-        if (!totalImagens) {
-            return res.status(404).json({ error: "Categoria não encontrada." });
-        }
-
-        const rnd = Math.floor(Math.random() * totalImagens);
-        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/${categoria}/${rnd}.png`;
-
-        // Buscar a imagem
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-
-        // Enviar a imagem como resposta
-        res.set('Content-Type', 'image/png'); // Define o tipo de conteúdo como imagem PNG
-        res.send(response.data);
-
+        const rnd = Math.floor(Math.random() * 102);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
     } catch (error) {
         console.error('Erro no endpoint:', error);
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
+
+router.get('/figu_flork2', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 102);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_aleatori', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 8051);
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig (${rnd}).webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_memes', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 109);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_anime', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 109);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_coreana', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 43);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_bebe', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 17);
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_desenho', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 50);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_animais', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 50);
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_engracada', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/figu_raiva', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/sticker/figu_roblox', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
 
 
 router.get('/filme', async (req, res) => {
