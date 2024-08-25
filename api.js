@@ -98,6 +98,30 @@ router.get('/pinterestfoto', async (req, res) => {
   }
 }); 
 
+
+// Rota de tradução usando a API LibreTranslate
+router.post('/traduzir', async (req, res) => {
+    const { text, target } = req.body;
+
+    if (!text || !target) {
+        return res.status(400).json({ error: 'Por favor, forneça o texto e o idioma alvo.' });
+    }
+
+    try {
+        const response = await axios.post('https://libretranslate.de/translate', {
+            q: text,
+            source: 'auto', // Detecta automaticamente a língua original
+            target: target
+        });
+
+        const translation = response.data.translatedText;
+        res.json({ translation });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao traduzir o texto.' });
+    }
+});
+
+
 // Endpoint para print de site
 router.all('/api/printsite', async (req, res) => {
     const url = req.query.url;
