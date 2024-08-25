@@ -147,53 +147,45 @@ router.get('/traduzir', async (req, res) => {
 });
 
 
-// Rotas de Figurinhas
-router.all('/sticker/figu_emoji', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', 102);
-});
+router.get('/figurinhas/:categoria', async (req, res) => {
+    try {
+        const { categoria } = req.params;
 
-router.all('/figu_flork2', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', 102);
-});
+        // Mapeia categorias para o número total de imagens
+        const categorias = {
+            'figu_emoji': 102,
+            'figu_flork2': 102,
+            'figu_aleatori': 8051,
+            'figu_memes': 109,
+            'figu_anime': 109,
+            'figu_coreana': 43,
+            'figu_bebe': 17,
+            'figu_desenho': 50,
+            'figu_animais': 50,
+            'figu_engracada': 25,
+            'figu_raiva': 25,
+            'figu_roblox': 25
+        };
 
-router.all('/figu_aleatori', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', 8051);
-});
+        const totalImagens = categorias[categoria];
+        if (!totalImagens) {
+            return res.status(404).json({ error: "Categoria não encontrada." });
+        }
 
-router.all('/figu_memes', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', 109);
-});
+        const rnd = Math.floor(Math.random() * totalImagens);
+        const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/${categoria}/${rnd}.png`;
 
-router.all('/figu_anime', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', 109);
-});
+        // Buscar a imagem
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
 
-router.all('/figu_coreana', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', 43);
-});
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/png'); // Define o tipo de conteúdo como imagem PNG
+        res.send(response.data);
 
-router.all('/figu_bebe', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', 17);
-});
-
-router.all('/figu_desenho', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', 50);
-});
-
-router.all('/figu_animais', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', 50);
-});
-
-router.all('/figu_engracada', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', 25);
-});
-
-router.all('/figu_raiva', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', 25);
-});
-
-router.all('/figu_roblox', (req, res) => {
-    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', 25);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
 });
 
 
