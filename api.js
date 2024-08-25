@@ -123,7 +123,7 @@ router.post('/traduzir', async (req, res) => {
 
 
 // Endpoint para print de site
-router.all('/api/printsite', async (req, res) => {
+router.all('/printsite', async (req, res) => {
     const url = req.query.url;
     if (!url) return res.json({ status: false, criador: `${criador}`, mensagem: "Faltou o parâmetro url" });
 
@@ -208,7 +208,7 @@ router.all('/sticker/figu_roblox', (req, res) => {
 });
 
 // Endpoint para informações de filmes
-router.get('/api/filme', async (req, res) => {
+router.get('/filme', async (req, res) => {
     try {
         const { nome } = req.query;
         if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
@@ -242,7 +242,7 @@ router.get('/api/filme', async (req, res) => {
 });
 
 // Endpoint para informações de séries
-router.get('/api/serie', async (req, res) => {
+router.get('/serie', async (req, res) => {
     try {
         const { nome } = req.query;
         if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
