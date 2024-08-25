@@ -123,44 +123,30 @@ router.get('/printsite', async (req, res) => {
 });
 
 
-// Endpoint para tradução
-router.post('/traduzir', async (req, res) => {
+
+// Rota GET para traduzir textos
+router.get('/traduzir', async (req, res) => {
+    const { texto, langFrom = 'en', langTo = 'pt' } = req.query;
+
+    if (!texto) {
+        return res.status(400).json({ error: 'Parâmetro "texto" é obrigatório.' });
+    }
+
     try {
-        // Obter parâmetros de tradução do corpo da requisição
-        const { texto, de = 'auto', para = 'pt' } = req.body;
-        if (!texto) return res.status(400).json({ status: false, message: 'Faltando parâmetro "texto"' });
-
-        // Fazer requisição para a API de tradução
-        const response = await axios.post('https://libretranslate.com/translate', {
-            q: texto,
-            source: de,
-            target: para,
-            format: 'text',
-            alternatives: 3,
-            api_key: '' // Deixe em branco se não for necessário
-        }, {
-            headers: { 'Content-Type': 'application/json' }
+        // Requisição à API MyMemory para tradução
+        const response = await axios.get('https://api.mymemory.translated.net/get', {
+            params: {
+                q: texto,
+                langpair: `${langFrom}|${langTo}`
+            }
         });
 
-        // Enviar resposta com o texto traduzido
-        res.json({
-            status: 'online',
-            texto_original: texto,
-            texto_traduzido: response.data.translatedText,
-            alternativas: response.data.alternatives,
-            linguagem_detectada: response.data.detectedLanguage.language,
-            confianca: response.data.detectedLanguage.confidence
-        });
+        const translation = response.data.responseData.translatedText;
+        res.json({ original: texto, translation });
     } catch (error) {
-        console.error('Erro ao traduzir texto:', error);
-        res.status(500).json({
-            status: false,
-            message: 'Erro ao processar a solicitação de tradução',
-            error: error.message
-        });
+        res.status(500).json({ error: 'Erro ao traduzir o texto.' });
     }
 });
-
 
 
 router.get('/figu_emoji', async (req, res) => {
