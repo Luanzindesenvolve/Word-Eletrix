@@ -115,26 +115,34 @@ router.get('/api/printsite', async (req, res) => {
     }
 });
 
-router.get('/traduzir', async (req, res) => {
+
+// Endpoint para tradução
+router.post('/traduzir', async (req, res) => {
     try {
-        // Obter parâmetros de tradução
-        const { texto, de = 'en', para = 'pt' } = req.query;
+        // Obter parâmetros de tradução do corpo da requisição
+        const { texto, de = 'auto', para = 'pt' } = req.body;
         if (!texto) return res.status(400).json({ status: false, message: 'Faltando parâmetro "texto"' });
 
-        // Fazer requisição para API de tradução
-        const response = await axios.get(`https://libretranslate.com/translate`, {
-            params: {
-                q: texto,
-                source: de,
-                target: para
-            }
+        // Fazer requisição para a API de tradução
+        const response = await axios.post('https://libretranslate.com/translate', {
+            q: texto,
+            source: de,
+            target: para,
+            format: 'text',
+            alternatives: 3,
+            api_key: '' // Deixe em branco se não for necessário
+        }, {
+            headers: { 'Content-Type': 'application/json' }
         });
 
         // Enviar resposta com o texto traduzido
         res.json({
             status: 'online',
             texto_original: texto,
-            texto_traduzido: response.data.translatedText
+            texto_traduzido: response.data.translatedText,
+            alternativas: response.data.alternatives,
+            linguagem_detectada: response.data.detectedLanguage.language,
+            confianca: response.data.detectedLanguage.confidence
         });
     } catch (error) {
         console.error('Erro ao traduzir texto:', error);
@@ -145,6 +153,7 @@ router.get('/traduzir', async (req, res) => {
         });
     }
 });
+
 
 
 router.get('/figurinhas/:categoria', async (req, res) => {
