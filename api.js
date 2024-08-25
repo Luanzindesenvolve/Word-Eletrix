@@ -121,91 +121,79 @@ router.post('/traduzir', async (req, res) => {
     }
 });
 
+// Função para enviar figura com URL modificável
+async function sendSticker(req, res, urlBase, max) {
+    try {
+        const rnd = Math.floor(Math.random() * max);
+        res.type('png');
+        res.send(await getBuffer(`${urlBase}${rnd}.webp`));
+    } catch (e) {
+        res.status(500).json({ status: false, mensagem: "Erro ao processar a solicitação." });
+    }
+}
 
-// Endpoint para print de site
+// Rota de PrintSite
 router.all('/printsite', async (req, res) => {
     const url = req.query.url;
-    if (!url) return res.json({ status: false, criador: `${criador}`, mensagem: "Faltou o parâmetro url" });
-
+    if (!url) return res.json({ status: false, criador: 'World Ecletix', mensagem: "Faltou o parâmetro url" });
     try {
-        // Removido a autenticação e verificação de saldo
-        try {
-            res.type('png');
-            res.send(await getBuffer(`https://api.bronxyshost.com.br/api-bronxys/print_de_site?url=${url}&apikey=tiomaker8930`));
-        } catch (e) {
-            res.send(e.message);
-        }
-    } catch (error) {
-        console.error('Erro no endpoint:', error);
-        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+        res.type('png');
+        res.send(await getBuffer(`https://api.bronxyshost.com.br/api-bronxys/print_de_site?url=${url}&apikey=tiomaker8930`));
+    } catch (e) {
+        res.status(500).json({ status: false, mensagem: "Erro ao processar a solicitação." });
     }
 });
 
-// Função para processar figurinhas
-const processSticker = async (req, res, path) => {
-    try {
-        // Removido a autenticação e verificação de saldo
-        try {
-            res.type('png'); // Ajustado para o tipo correto
-            const rnd = Math.floor(Math.random() * path.count);
-            res.send(await getBuffer(`${path.baseURL}${rnd}${path.extension}`));
-        } catch (e) {
-            res.send(e.message);
-        }
-    } catch (error) {
-        console.error('Erro no endpoint:', error);
-        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
-    }
-};
-
-// Endpoints para figurinhas
+// Rotas de Figurinhas
 router.all('/sticker/figu_emoji', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', count: 102, extension: '.png' });
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', 102);
 });
 
-router.all('/sticker/figu_flork2', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', count: 102, extension: '.png' });
+router.all('/figu_flork2', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', 102);
 });
 
-router.all('/sticker/figu_aleatori', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', count: 8051, extension: '.png' });
+router.all('/figu_aleatori', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', 8051);
 });
 
-router.all('/sticker/figu_memes', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', count: 109, extension: '.png' });
+router.all('/figu_memes', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', 109);
 });
 
-router.all('/sticker/figu_anime', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', count: 109, extension: '.png' });
+router.all('/figu_anime', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', 109);
 });
 
-router.all('/sticker/figu_coreana', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', count: 43, extension: '.png' });
+router.all('/figu_coreana', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', 43);
 });
 
-router.all('/sticker/figu_bebe', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', count: 17, extension: '.png' });
+router.all('/figu_bebe', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', 17);
 });
 
-router.all('/sticker/figu_desenho', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', count: 50, extension: '.png' });
+router.all('/figu_desenho', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', 50);
 });
 
-router.all('/sticker/figu_animais', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', count: 50, extension: '.png' });
+router.all('/figu_animais', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', 50);
 });
 
-router.all('/sticker/figu_engracada', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', count: 25, extension: '.png' });
+router.all('/figu_engracada', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', 25);
 });
 
-router.all('/sticker/figu_raiva', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', count: 25, extension: '.png' });
+router.all('/figu_raiva', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', 25);
 });
 
-router.all('/sticker/figu_roblox', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', count: 25, extension: '.png' });
+router.all('/figu_roblox', (req, res) => {
+    sendSticker(req, res, 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', 25);
 });
+
+
 
 // Endpoint para informações de filmes
 router.get('/filme', async (req, res) => {
