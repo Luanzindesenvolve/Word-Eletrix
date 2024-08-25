@@ -99,50 +99,53 @@ router.get('/pinterestfoto', async (req, res) => {
 }); 
 
 
-// Rota de tradução usando a API LibreTranslate
-router.post('/traduzir', async (req, res) => {
-    const { text, target } = req.body;
-
-    if (!text || !target) {
-        return res.status(400).json({ error: 'Por favor, forneça o texto e o idioma alvo.' });
-    }
-
+router.get('/api/printsite', async (req, res) => {
     try {
-        const response = await axios.post('https://libretranslate.de/translate', {
-            q: text,
-            source: 'auto', // Detecta automaticamente a língua original
-            target: target
+        const { url } = req.query;
+        if (!url) return res.json({ status: false, message: 'Faltando parâmetro url' });
+
+        const printsiteLink = `https://api.bronxyshost.com.br/api-bronxys/print_de_site?url=${encodeURIComponent(url)}&apikey=tiomaker8930`;
+        const response = await axios.get(printsiteLink, { responseType: 'arraybuffer' });
+
+        res.set('Content-Type', 'image/png'); // Ajuste o tipo conforme o formato da imagem
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter print do site:', error);
+        res.status(500).send('Erro ao obter print do site');
+    }
+});
+
+router.get('/traduzir', async (req, res) => {
+    try {
+        // Obter parâmetros de tradução
+        const { texto, de = 'en', para = 'pt' } = req.query;
+        if (!texto) return res.status(400).json({ status: false, message: 'Faltando parâmetro "texto"' });
+
+        // Fazer requisição para API de tradução
+        const response = await axios.get(`https://libretranslate.com/translate`, {
+            params: {
+                q: texto,
+                source: de,
+                target: para
+            }
         });
 
-        const translation = response.data.translatedText;
-        res.json({ translation });
+        // Enviar resposta com o texto traduzido
+        res.json({
+            status: 'online',
+            texto_original: texto,
+            texto_traduzido: response.data.translatedText
+        });
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao traduzir o texto.' });
+        console.error('Erro ao traduzir texto:', error);
+        res.status(500).json({
+            status: false,
+            message: 'Erro ao processar a solicitação de tradução',
+            error: error.message
+        });
     }
 });
 
-// Função para enviar figura com URL modificável
-async function sendSticker(req, res, urlBase, max) {
-    try {
-        const rnd = Math.floor(Math.random() * max);
-        res.type('png');
-        res.send(await getBuffer(`${urlBase}${rnd}.webp`));
-    } catch (e) {
-        res.status(500).json({ status: false, mensagem: "Erro ao processar a solicitação." });
-    }
-}
-
-// Rota de PrintSite
-router.all('/printsite', async (req, res) => {
-    const url = req.query.url;
-    if (!url) return res.json({ status: false, criador: 'World Ecletix', mensagem: "Faltou o parâmetro url" });
-    try {
-        res.type('png');
-        res.send(await getBuffer(`https://api.bronxyshost.com.br/api-bronxys/print_de_site?url=${url}&apikey=tiomaker8930`));
-    } catch (e) {
-        res.status(500).json({ status: false, mensagem: "Erro ao processar a solicitação." });
-    }
-});
 
 // Rotas de Figurinhas
 router.all('/sticker/figu_emoji', (req, res) => {
@@ -194,21 +197,17 @@ router.all('/figu_roblox', (req, res) => {
 });
 
 
-
-// Endpoint para informações de filmes
 router.get('/filme', async (req, res) => {
     try {
         const { nome } = req.query;
-        if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
+        if (!nome) return res.json({ status: false, message: 'Faltando parâmetro nome' });
 
         const movieInfo = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=ddfcb99fae93e4723232e4de755d2423&query=${encodeURIComponent(nome)}&language=pt`);
         const movie = movieInfo.data.results[0];
         const ImageMovieLink = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
-        const fotoFilme = await getBuffer(ImageMovieLink);
 
         res.json({
             status: 'FUNCIONANDO',
-            Criador: criador,
             Nome: movie.title,
             Nome_original: movie.original_title,
             Lancamento: movie.release_date,
@@ -220,7 +219,7 @@ router.get('/filme', async (req, res) => {
             imagem: ImageMovieLink
         });
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(500).json({
             status: false,
             message: 'Erro ao processar a solicitação',
@@ -229,20 +228,18 @@ router.get('/filme', async (req, res) => {
     }
 });
 
-// Endpoint para informações de séries
+
 router.get('/serie', async (req, res) => {
     try {
         const { nome } = req.query;
-        if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
+        if (!nome) return res.json({ status: false, message: 'Faltando parâmetro nome' });
 
         const serieInfo = await axios.get(`https://api.themoviedb.org/3/search/tv?api_key=ddfcb99fae93e4723232e4de755d2423&query=${encodeURIComponent(nome)}&language=pt`);
         const serie = serieInfo.data.results[0];
         const ImageSerieLink = `https://image.tmdb.org/t/p/original${serie.backdrop_path}`;
-        const fotoSerie = await getBuffer(ImageSerieLink);
 
         res.json({
             status: 'FUNCIONANDO',
-            Criador: criador,
             Nome: serie.name,
             Nome_original: serie.original_name,
             Lancamento: serie.first_air_date,
@@ -254,7 +251,7 @@ router.get('/serie', async (req, res) => {
             imagem: ImageSerieLink
         });
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(500).json({
             status: false,
             message: 'Erro ao processar a solicitação',
@@ -262,6 +259,7 @@ router.get('/serie', async (req, res) => {
         });
     }
 });
+
 
 // Função para normalizar o nome do signo
 function normalizeSign(sign) {
