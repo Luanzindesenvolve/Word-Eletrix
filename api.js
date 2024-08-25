@@ -160,51 +160,51 @@ const processSticker = async (req, res, path) => {
 
 // Endpoints para figurinhas
 router.all('/sticker/figu_emoji', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', count: 102, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', count: 102, extension: '.png' });
 });
 
 router.all('/sticker/figu_flork2', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', count: 102, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', count: 102, extension: '.png' });
 });
 
 router.all('/sticker/figu_aleatori', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', count: 8051, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', count: 8051, extension: '.png' });
 });
 
 router.all('/sticker/figu_memes', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', count: 109, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', count: 109, extension: '.png' });
 });
 
 router.all('/sticker/figu_anime', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', count: 109, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', count: 109, extension: '.png' });
 });
 
 router.all('/sticker/figu_coreana', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', count: 43, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', count: 43, extension: '.png' });
 });
 
 router.all('/sticker/figu_bebe', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', count: 17, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', count: 17, extension: '.png' });
 });
 
 router.all('/sticker/figu_desenho', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', count: 50, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', count: 50, extension: '.png' });
 });
 
 router.all('/sticker/figu_animais', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', count: 50, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', count: 50, extension: '.png' });
 });
 
 router.all('/sticker/figu_engracada', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', count: 25, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', count: 25, extension: '.png' });
 });
 
 router.all('/sticker/figu_raiva', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', count: 25, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', count: 25, extension: '.png' });
 });
 
 router.all('/sticker/figu_roblox', (req, res) => {
-    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', count: 25, extension: '.webp' });
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', count: 25, extension: '.png' });
 });
 
 // Endpoint para informações de filmes
