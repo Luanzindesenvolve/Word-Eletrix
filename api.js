@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
 
@@ -95,6 +96,83 @@ router.get('/pinterestfoto', async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
+});
+
+
+// Função para normalizar o nome do signo
+function normalizeSign(sign) {
+    const signs = {
+        'aries': 'horoscopo-do-dia-para-aries',
+        'touro': 'horoscopo-do-dia-para-touro',
+        'gemeos': 'horoscopo-do-dia-para-gemeos',
+        'cancer': 'horoscopo-do-dia-para-cancer',
+        'leao': 'horoscopo-do-dia-para-leao',
+        'virgem': 'horoscopo-do-dia-para-virgem',
+        'libra': 'horoscopo-do-dia-para-libra',
+        'escorpiao': 'horoscopo-do-dia-para-escorpiao',
+        'sagitario': 'horoscopo-do-dia-para-sagitario',
+        'capricornio': 'horoscopo-do-dia-para-capricornio',
+        'aquario': 'horoscopo-do-dia-para-aquario',
+        'peixes': 'horoscopo-do-dia-para-peixes'
+    };
+    
+    const normalizedSign = sign.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return signs[normalizedSign] || null;
+}
+
+// Função para obter o horóscopo
+async function getHoroscope(sign) {
+    const normalizedPath = normalizeSign(sign);
+    if (!normalizedPath) {
+        throw new Error('Signo inválido.');
+    }
+
+    const url = `https://joaobidu.com.br/horoscopo-do-dia/${normalizedPath}`;
+    
+    return new Promise((resolve, reject) => {
+        axios.get(url)
+            .then((res) => {
+                const $ = cheerio.load(res.data);
+
+                // Extrair o horóscopo principal
+                const horoscope = $('div.zoxrel.left p').first().text().trim();
+
+                // Extrair Palpite do dia e Cor do dia
+                const palpite = $('b:contains("Palpite do dia")').parent().text().split('Cor do dia:')[0].trim();
+                const cor = $('b:contains("Cor do dia")').parent().text().split('Cor do dia:')[1].trim();
+
+                // Extrair informações adicionais
+                const additionalInfo = {};
+                $('h3').each((i, element) => {
+                    const key = $(element).text().replace(':', '').trim();
+                    const value = $(element).next().text().trim();
+                    additionalInfo[key] = value;
+                });
+
+                resolve({
+                    horoscopo: horoscope,
+                    palpite: palpite,
+                    cor: cor,
+                    ...additionalInfo
+                });
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+// Rota para obter o horóscopo
+router.get('/signo', async (req, res) => {
+    try {
+        const sign = req.query.sign;
+        if (!sign) return res.status(400).send({ error: 'Signo é necessário' });
+        
+        const result = await getHoroscope(sign);
+        res.json(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
 });
 
 
