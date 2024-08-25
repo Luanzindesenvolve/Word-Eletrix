@@ -99,7 +99,7 @@ router.get('/pinterestfoto', async (req, res) => {
 }); 
 
 
-router.get('/api/printsite', async (req, res) => {
+router.get('/printsite', async (req, res) => {
     try {
         const { url } = req.query;
         if (!url) return res.json({ status: false, message: 'Faltando parâmetro url' });
