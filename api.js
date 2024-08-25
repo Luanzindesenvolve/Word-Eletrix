@@ -5,7 +5,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
-
+const criador = 'World Ecletic';
 const router = express.Router();
 
 //teste
@@ -96,8 +96,160 @@ router.get('/pinterestfoto', async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
+}); 
+
+// Endpoint para print de site
+router.all('/api/printsite', async (req, res) => {
+    const url = req.query.url;
+    if (!url) return res.json({ status: false, criador: `${criador}`, mensagem: "Faltou o parâmetro url" });
+
+    try {
+        // Removido a autenticação e verificação de saldo
+        try {
+            res.type('png');
+            res.send(await getBuffer(`https://api.bronxyshost.com.br/api-bronxys/print_de_site?url=${url}&apikey=tiomaker8930`));
+        } catch (e) {
+            res.send(e.message);
+        }
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
 });
 
+// Função para processar figurinhas
+const processSticker = async (req, res, path) => {
+    try {
+        // Removido a autenticação e verificação de saldo
+        try {
+            res.type('webp'); // Ajustado para o tipo correto
+            const rnd = Math.floor(Math.random() * path.count);
+            res.send(await getBuffer(`${path.baseURL}${rnd}${path.extension}`));
+        } catch (e) {
+            res.send(e.message);
+        }
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+};
+
+// Endpoints para figurinhas
+router.all('/sticker/figu_emoji', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-emoji/', count: 102, extension: '.webp' });
+});
+
+router.all('/sticker/figu_flork2', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/anya-bot/master/Figurinhas/figu_flork/', count: 102, extension: '.webp' });
+});
+
+router.all('/sticker/figu_aleatori', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig ', count: 8051, extension: '.webp' });
+});
+
+router.all('/sticker/figu_memes', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/Figurinha-memes/', count: 109, extension: '.webp' });
+});
+
+router.all('/sticker/figu_anime', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-anime/', count: 109, extension: '.webp' });
+});
+
+router.all('/sticker/figu_coreana', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-coreana/', count: 43, extension: '.webp' });
+});
+
+router.all('/sticker/figu_bebe', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figbebe/', count: 17, extension: '.webp' });
+});
+
+router.all('/sticker/figu_desenho', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-desenho/', count: 50, extension: '.webp' });
+});
+
+router.all('/sticker/figu_animais', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/badDevelopper/Apis/master/pack/figanimais/', count: 50, extension: '.webp' });
+});
+
+router.all('/sticker/figu_engracada', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-engracadas/', count: 25, extension: '.webp' });
+});
+
+router.all('/sticker/figu_raiva', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-raiva/', count: 25, extension: '.webp' });
+});
+
+router.all('/sticker/figu_roblox', (req, res) => {
+    processSticker(req, res, { baseURL: 'https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/', count: 25, extension: '.webp' });
+});
+
+// Endpoint para informações de filmes
+router.get('/api/filme', async (req, res) => {
+    try {
+        const { nome } = req.query;
+        if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
+
+        const movieInfo = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=ddfcb99fae93e4723232e4de755d2423&query=${encodeURIComponent(nome)}&language=pt`);
+        const movie = movieInfo.data.results[0];
+        const ImageMovieLink = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
+        const fotoFilme = await getBuffer(ImageMovieLink);
+
+        res.json({
+            status: 'FUNCIONANDO',
+            Criador: criador,
+            Nome: movie.title,
+            Nome_original: movie.original_title,
+            Lancamento: movie.release_date,
+            Avaliacoes: `${movie.vote_average} - ${movie.vote_count} Votos`,
+            Popularidade: `${movie.popularity.toFixed(1)}%`,
+            Classificacao_adulta: movie.adult ? 'Sim.' : 'Não.',
+            Linguagem_oficial: movie.original_language,
+            Sinopse: movie.overview,
+            imagem: ImageMovieLink
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            status: false,
+            message: 'Erro ao processar a solicitação',
+            error: e.message
+        });
+    }
+});
+
+// Endpoint para informações de séries
+router.get('/api/serie', async (req, res) => {
+    try {
+        const { nome } = req.query;
+        if (!nome) return res.json({ status: false, message: 'Cadê o parâmetro nome' });
+
+        const serieInfo = await axios.get(`https://api.themoviedb.org/3/search/tv?api_key=ddfcb99fae93e4723232e4de755d2423&query=${encodeURIComponent(nome)}&language=pt`);
+        const serie = serieInfo.data.results[0];
+        const ImageSerieLink = `https://image.tmdb.org/t/p/original${serie.backdrop_path}`;
+        const fotoSerie = await getBuffer(ImageSerieLink);
+
+        res.json({
+            status: 'FUNCIONANDO',
+            Criador: criador,
+            Nome: serie.name,
+            Nome_original: serie.original_name,
+            Lancamento: serie.first_air_date,
+            Avaliacoes: `${serie.vote_average} - ${serie.vote_count} Votos`,
+            Popularidade: `${serie.popularity.toFixed(1)}%`,
+            Classificacao_adulta: serie.adult ? 'Sim.' : 'Não.',
+            Linguagem_oficial: serie.original_language,
+            Sinopse: serie.overview,
+            imagem: ImageSerieLink
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            status: false,
+            message: 'Erro ao processar a solicitação',
+            error: e.message
+        });
+    }
+});
 
 // Função para normalizar o nome do signo
 function normalizeSign(sign) {
