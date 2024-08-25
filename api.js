@@ -146,7 +146,7 @@ const processSticker = async (req, res, path) => {
     try {
         // Removido a autenticação e verificação de saldo
         try {
-            res.type('webp'); // Ajustado para o tipo correto
+            res.type('png'); // Ajustado para o tipo correto
             const rnd = Math.floor(Math.random() * path.count);
             res.send(await getBuffer(`${path.baseURL}${rnd}${path.extension}`));
         } catch (e) {
