@@ -358,29 +358,24 @@ router.get('/serie', async (req, res) => {
     }
 });
 
+);
 
-// Rota GET para buscar o horóscopo com base no signo
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
-    
-    // Construa a URL com base no signo fornecido
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
     try {
-        // Faça uma requisição HTTP para a página
         const { data } = await axios.get(url);
-        
-        // Carregue o HTML com cheerio
         const $ = cheerio.load(data);
 
-        // Extraia o conteúdo do horóscopo
+        // Extração do horóscopo principal
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
-        
-        // Extraia as informações adicionais
-        const palpite = $('b:contains("Palpite do dia:")').parent().text().split(': ')[1].trim();
-        const cor = $('b:contains("Cor do dia:")').parent().text().split(': ')[1].trim();
 
-        // Extraia mais informações como Elemento, Regente, etc.
+        // Extração do palpite e cor
+        const palpite = $('b:contains("Palpite do dia:")').parent().text().split('Palpite do dia:')[1].split('Cor do dia:')[0].trim();
+        const cor = $('b:contains("Cor do dia:")').parent().text().split('Cor do dia:')[1].trim();
+
+        // Extração das características adicionais
         const elemento = $('h3:contains("Elemento:")').next().text().trim();
         const regente = $('h3:contains("Regente:")').next().text().trim();
         const flor = $('h3:contains("Flor:")').next().text().trim();
@@ -392,7 +387,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const orixa = $('h3:contains("Orixá:")').next().text().trim();
         const santoProtetor = $('h3:contains("Santo Protetor:")').next().text().trim();
 
-        // Crie o JSON com o conteúdo extraído
         const resultado = {
             signo: signo,
             horoscopo: horoscopoTexto,
@@ -410,13 +404,13 @@ router.get('/horoscopo/:signo', async (req, res) => {
             santoProtetor: santoProtetor
         };
 
-        // Envie o JSON como resposta
         res.json(resultado);
     } catch (error) {
         console.error('Erro ao extrair o horóscopo:', error.message);
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
