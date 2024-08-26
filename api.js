@@ -368,14 +368,14 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const { data } = await axios.get(url);
         const $ = cheerio.load(data);
 
-        // Extração do horóscopo principal
+        // Extraindo o horóscopo principal
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
 
-        // Extração do palpite e cor
-        const palpite = $('b:contains("Palpite do dia:")').next().text().trim();
+        // Extraindo o palpite e cor do dia
+        const palpite = $('b:contains("Palpite do dia:")').parent().text().split('Palpite do dia:')[1].split('Cor do dia:')[0].trim();
         const cor = $('b:contains("Cor do dia:")').parent().text().split('Cor do dia:')[1].trim();
 
-        // Extração das características adicionais
+        // Extraindo as características adicionais
         const elemento = $('h3:contains("Elemento:")').next().text().trim();
         const regente = $('h3:contains("Regente:")').next().text().trim();
         const flor = $('h3:contains("Flor:")').next().text().trim();
@@ -410,7 +410,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
-
 
 
 router.get('/letra', async (req, res) => {
