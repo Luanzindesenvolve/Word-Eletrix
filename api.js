@@ -360,34 +360,61 @@ router.get('/serie', async (req, res) => {
 
 
 
+
 // Rota que busca informações de horóscopo para um signo específico
-router.get('/horoscopo/:signo', async (req, res) => {
+router.get('/horoscopo/:signo', (req, res) => {
     const { signo } = req.params;
 
-    try {
-        // Faz a requisição POST para a API de horóscopo
-        const response = await axios.post('https://aztro.sameerkumar.website/', null, {
-            params: {
-                sign: signo,
-                day: 'today'
-            }
-        });
-        const data = response.data;
-
-        // Retorna as informações do horóscopo
-        res.json({
-            signo: signo,
-            data: data.current_date,
-            descrição: data.description,
-            compatibilidade: data.compatibility,
-            humor: data.mood,
-            cor: data.color,
-            número_da_sorte: data.lucky_number,
-            tempo_sorte: data.lucky_time
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar informações do horóscopo.' });
+    // Lista de signos permitidos
+    const signosPermitidos = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
+    if (!signosPermitidos.includes(signo)) {
+        return res.status(400).json({ error: 'Signo inválido.' });
     }
+
+    // Parâmetros para a requisição
+    const options = {
+        url: 'https://aztro.sameerkumar.website/',
+        method: 'POST',
+        form: {
+            sign: signo,
+            day: 'today'
+        }
+    };
+
+    // Faz a requisição POST para a API de horóscopo
+    request(options, (error, response, body) => {
+        if (error) {
+            console.error('Erro na requisição:', error);
+            return res.status(500).json({ error: 'Erro ao buscar informações do horóscopo.' });
+        }
+
+        if (response.statusCode !== 200) {
+            console.error('Erro na resposta da API:', {
+                status: response.statusCode,
+                body: body
+            });
+            return res.status(response.statusCode).json({ error: 'Erro na resposta da API.' });
+        }
+
+        try {
+            const data = JSON.parse(body);
+
+            // Retorna as informações do horóscopo
+            res.json({
+                signo: signo,
+                data: data.current_date,
+                descrição: data.description,
+                compatibilidade: data.compatibility,
+                humor: data.mood,
+                cor: data.color,
+                número_da_sorte: data.lucky_number,
+                tempo_sorte: data.lucky_time
+            });
+        } catch (parseError) {
+            console.error('Erro ao analisar a resposta:', parseError);
+            res.status(500).json({ error: 'Erro ao processar a resposta da API.' });
+        }
+    });
 });
 
 
