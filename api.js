@@ -358,6 +358,7 @@ router.get('/serie', async (req, res) => {
     }
 });
 
+
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -374,32 +375,33 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const cor = $('b:contains("Cor do dia:")').parent().text().split('Cor do dia:')[1].trim();
 
         // Extraindo as características adicionais
-        const elemento = $('h3:contains("Elemento:")').next().text().trim();
-        const regente = $('h3:contains("Regente:")').next().text().trim();
-        const flor = $('h3:contains("Flor:")').next().text().trim();
-        const metal = $('h3:contains("Metal:")').next().text().trim();
-        const pedra = $('h3:contains("Pedra:")').next().text().trim();
-        const amuletos = $('h3:contains("Amuletos:")').next().text().trim();
-        const perfume = $('h3:contains("Perfume:")').next().text().trim();
-        const anjo = $('h3:contains("Anjo:")').next().text().trim();
-        const orixa = $('h3:contains("Orixá:")').next().text().trim();
-        const santoProtetor = $('h3:contains("Santo Protetor:")').next().text().trim();
+        const elemento = $('h3:contains("Elemento:")').next('br').prev().text().trim();
+        const regente = $('h3:contains("Regente:")').next('br').prev().text().trim();
+        const flor = $('h3:contains("Flor:")').next('br').prev().text().trim();
+        const metal = $('h3:contains("Metal:")').next('br').prev().text().trim();
+        const pedra = $('h3:contains("Pedra:")').next('br').prev().text().trim();
+        const amuletos = $('h3:contains("Amuletos:")').next('br').prev().text().trim();
+        const perfume = $('h3:contains("Perfume:")').next('br').prev().text().trim();
+        const anjo = $('h3:contains("Anjo:")').next('br').prev().text().trim();
+        const orixa = $('h3:contains("Orixá:")').next('br').prev().text().trim();
+        const santoProtetor = $('h3:contains("Santo Protetor:")').next('br').prev().text().trim();
 
+        // Garantindo que os campos vazios não apareçam na resposta
         const resultado = {
             signo: signo,
-            horoscopo: horoscopoTexto,
-            palpite: palpite,
-            cor: cor,
-            elemento: elemento,
-            regente: regente,
-            flor: flor,
-            metal: metal,
-            pedra: pedra,
-            amuletos: amuletos,
-            perfume: perfume,
-            anjo: anjo,
-            orixa: orixa,
-            santoProtetor: santoProtetor
+            horoscopo: horoscopoTexto || 'Não disponível',
+            palpite: palpite || 'Não disponível',
+            cor: cor || 'Não disponível',
+            elemento: elemento || 'Não disponível',
+            regente: regente || 'Não disponível',
+            flor: flor || 'Não disponível',
+            metal: metal || 'Não disponível',
+            pedra: pedra || 'Não disponível',
+            amuletos: amuletos || 'Não disponível',
+            perfume: perfume || 'Não disponível',
+            anjo: anjo || 'Não disponível',
+            orixa: orixa || 'Não disponível',
+            santoProtetor: santoProtetor || 'Não disponível'
         };
 
         res.json(resultado);
@@ -408,6 +410,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 
 router.get('/letra', async (req, res) => {
