@@ -358,8 +358,6 @@ router.get('/serie', async (req, res) => {
     }
 });
 
-);
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
