@@ -360,8 +360,9 @@ router.get('/serie', async (req, res) => {
 
 
 
+
 // Rota que busca informações de horóscopo sem tradução
-router.get('/signo', async (req, res) => {
+router.get('/horoscopo/:signo', async (req, res) => {
     const { signo } = req.params;
 
     try {
@@ -382,7 +383,6 @@ router.get('/signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar informações do horóscopo.' });
     }
 });
-
 
 router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
