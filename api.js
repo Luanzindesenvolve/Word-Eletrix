@@ -361,14 +361,23 @@ router.get('/serie', async (req, res) => {
 
 
 
-// Rota que busca informações de horóscopo sem tradução
+
+
+// Rota que busca informações de horóscopo para um signo específico
 router.get('/horoscopo/:signo', async (req, res) => {
     const { signo } = req.params;
 
     try {
-        const response = await axios.get(`https://aztro.sameerkumar.website/?sign=${signo}&day=today`);
+        // Faz a requisição para a API de horóscopo
+        const response = await axios.post('https://aztro.sameerkumar.website/', null, {
+            params: {
+                sign: signo,
+                day: 'today'
+            }
+        });
         const data = response.data;
 
+        // Retorna as informações do horóscopo
         res.json({
             signo: signo,
             data: data.current_date,
