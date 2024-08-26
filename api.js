@@ -372,7 +372,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
 
         // Extração do palpite e cor
-        const palpite = $('b:contains("Palpite do dia:")').parent().text().split('Palpite do dia:')[1].split('Cor do dia:')[0].trim();
+        const palpite = $('b:contains("Palpite do dia:")').next().text().trim();
         const cor = $('b:contains("Cor do dia:")').parent().text().split('Cor do dia:')[1].trim();
 
         // Extração das características adicionais
@@ -410,6 +410,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 
 router.get('/letra', async (req, res) => {
