@@ -305,7 +305,7 @@ router.get('/filme', async (req, res) => {
         const ImageMovieLink = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
 
         res.json({
-            status: 'FUNCIONANDO',
+            status: 'online',
             Nome: movie.title,
             Nome_original: movie.original_title,
             Lancamento: movie.release_date,
@@ -337,7 +337,7 @@ router.get('/serie', async (req, res) => {
         const ImageSerieLink = `https://image.tmdb.org/t/p/original${serie.backdrop_path}`;
 
         res.json({
-            status: 'FUNCIONANDO',
+            status: 'online',
             Nome: serie.name,
             Nome_original: serie.original_name,
             Lancamento: serie.first_air_date,
@@ -360,15 +360,12 @@ router.get('/serie', async (req, res) => {
 
 
 
-
-
-
 // Rota que busca informações de horóscopo para um signo específico
 router.get('/horoscopo/:signo', async (req, res) => {
     const { signo } = req.params;
 
     try {
-        // Faz a requisição para a API de horóscopo
+        // Faz a requisição POST para a API de horóscopo
         const response = await axios.post('https://aztro.sameerkumar.website/', null, {
             params: {
                 sign: signo,
@@ -392,6 +389,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar informações do horóscopo.' });
     }
 });
+
 
 router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
