@@ -358,10 +358,8 @@ router.get('/serie', async (req, res) => {
     }
 });
 
-
-
 // Rota GET para buscar o horóscopo com base no signo
-router.get('/signo', async (req, res) => {
+router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
 
     // Construa a URL com base no signo fornecido
@@ -398,6 +396,7 @@ router.get('/signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 
 router.get('/letra', async (req, res) => {
