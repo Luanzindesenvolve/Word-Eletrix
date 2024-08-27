@@ -357,8 +357,6 @@ router.get('/serie', async (req, res) => {
         });
     }
 });
-
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -370,34 +368,37 @@ router.get('/horoscopo/:signo', async (req, res) => {
         // Extraindo o horóscopo principal
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
 
-        // Extraindo o palpite do dia e cor do dia
+        // Extraindo o palpite do dia e a cor do dia
         const palpite = $('b:contains("Palpite do dia:")').next().text().trim();
         const cor = $('b:contains("Cor do dia:")').next().text().trim();
 
-        // Função para extrair o texto após um <h3> específico
-        const getTextAfterHeading = (label) => {
+        // Função para extrair texto de um <h3> específico
+        const getTextFromHeading = (label) => {
             const heading = $(`h3:contains("${label}:")`);
             if (heading.length === 0) return 'Não disponível';
-            
+
             let text = '';
-            heading.each((i, el) => {
-                const nextElements = $(el).nextUntil('h3');
-                text += nextElements.filter('br').prev().text().trim() + ' ';
+            heading.nextUntil('h3').each((i, el) => {
+                if (el.tagName === 'p') {
+                    text += $(el).text().trim() + ' ';
+                } else if (el.tagName === 'br') {
+                    text += ' ';
+                }
             });
             return text.trim() || 'Não disponível';
         };
 
-        // Extraindo as características adicionais
-        const elemento = getTextAfterHeading('Elemento');
-        const regente = getTextAfterHeading('Regente');
-        const flor = getTextAfterHeading('Flor');
-        const metal = getTextAfterHeading('Metal');
-        const pedra = getTextAfterHeading('Pedra');
-        const amuletos = getTextAfterHeading('Amuletos');
-        const perfume = getTextAfterHeading('Perfume');
-        const anjo = getTextAfterHeading('Anjo');
-        const orixa = getTextAfterHeading('Orixá');
-        const santoProtetor = getTextAfterHeading('Santo Protetor');
+        // Extraindo as características individuais
+        const elemento = getTextFromHeading('Elemento');
+        const regente = getTextFromHeading('Regente');
+        const flor = getTextFromHeading('Flor');
+        const metal = getTextFromHeading('Metal');
+        const pedra = getTextFromHeading('Pedra');
+        const amuletos = getTextFromHeading('Amuletos');
+        const perfume = getTextFromHeading('Perfume');
+        const anjo = getTextFromHeading('Anjo');
+        const orixa = getTextFromHeading('Orixá');
+        const santoProtetor = getTextFromHeading('Santo Protetor');
 
         // Montando o resultado
         const resultado = {
@@ -423,6 +424,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 
 router.get('/letra', async (req, res) => {
