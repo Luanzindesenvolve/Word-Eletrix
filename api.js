@@ -358,6 +358,7 @@ router.get('/serie', async (req, res) => {
     }
 });
 
+
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -369,22 +370,24 @@ router.get('/horoscopo/:signo', async (req, res) => {
         // Extraindo o horóscopo principal
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
 
-        // Extraindo o palpite do dia
+        // Extraindo o palpite do dia e cor do dia
         const palpite = $('b:contains("Palpite do dia:")').next().text().trim();
-        
-        // Extraindo a cor do dia
         const cor = $('b:contains("Cor do dia:")').next().text().trim();
 
-        // Função para extrair o texto associado a um <h3>
+        // Função para extrair o texto após um <h3> específico
         const getTextAfterHeading = (label) => {
             const heading = $(`h3:contains("${label}:")`);
+            if (heading.length === 0) return 'Não disponível';
+            
             let text = '';
             heading.each((i, el) => {
-                text += $(el).nextUntil('h3').filter('br').prev().text().trim() + ' ';
+                const nextElements = $(el).nextUntil('h3');
+                text += nextElements.filter('br').prev().text().trim() + ' ';
             });
             return text.trim() || 'Não disponível';
         };
 
+        // Extraindo as características adicionais
         const elemento = getTextAfterHeading('Elemento');
         const regente = getTextAfterHeading('Regente');
         const flor = getTextAfterHeading('Flor');
@@ -420,6 +423,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
+
 
 router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
