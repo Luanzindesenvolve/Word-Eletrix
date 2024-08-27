@@ -105,69 +105,59 @@ router.get('/pinterestfoto', async (req, res) => {
   }
 }); 
 
-async function fetchHoroscope(signo) {
-  const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
-  try {
-    const response = await axios.get(url);
-    const html = response.data;
-    const $ = cheerio.load(html);
 
-    // Função auxiliar para encontrar o texto do próximo elemento após o título
-    const getNextText = (title) => {
-      let text = '';
-      $(title).each((i, elem) => {
-        const nextElem = $(elem).nextAll().first();
-        if (nextElem.is('br')) {
-          text = nextElem.next().text().trim();
-        } else {
-          text = nextElem.text().trim();
-        }
-      });
-      return text;
-    };
+app.get('/horoscopo/:signo', async (req, res) => {
+    const signo = req.params.signo.toLowerCase();
+    const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
-    const horoscope = $('div.zoxrel.left p').first().text().trim();
+    try {
+        // Fetch HTML
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
 
-    const result = {
-      signo: signo,
-      horoscopo: horoscope || "O que você está procurando?",
-      palpite: getNextText('b:contains("Palpite do dia:")') || "Não disponível",
-      cor: getNextText('b:contains("Cor do dia:")') || "Não disponível",
-      elemento: getNextText('h3:contains("Elemento:")') || "Não disponível",
-      regente: getNextText('h3:contains("Regente:")') || "Não disponível",
-      flor: getNextText('h3:contains("Flor:")') || "Não disponível",
-      metal: getNextText('h3:contains("Metal:")') || "Não disponível",
-      pedra: getNextText('h3:contains("Pedra:")') || "Não disponível",
-      amuletos: getNextText('h3:contains("Amuletos:")') || "Não disponível",
-      perfume: getNextText('h3:contains("Perfume:")') || "Não disponível",
-      anjo: getNextText('h3:contains("Anjo:")') || "Não disponível",
-      orixa: getNextText('h3:contains("Orixá:")') || "Não disponível",
-      santoProtetor: getNextText('h3:contains("Santo Protetor:")') || "Não disponível"
-    };
+        // Extract horoscope
+        const horoscopo = $('.zoxrel.left > p').text().trim();
+        const palpite = $('.zoxrel.left > b').first().next().text().trim();
+        const cor = $('.zoxrel.left > b').last().next().text().trim();
 
-    return result;
+        // Extract additional information
+        const elemento = $('h3').filter((i, el) => $(el).text().includes('Elemento')).next().text().trim();
+        const regente = $('h3').filter((i, el) => $(el).text().includes('Regente')).next().text().trim();
+        const flor = $('h3').filter((i, el) => $(el).text().includes('Flor')).next().text().trim();
+        const metal = $('h3').filter((i, el) => $(el).text().includes('Metal')).next().text().trim();
+        const pedra = $('h3').filter((i, el) => $(el).text().includes('Pedra')).next().text().trim();
+        const amuletos = $('h3').filter((i, el) => $(el).text().includes('Amuletos')).next().text().trim();
+        const perfume = $('h3').filter((i, el) => $(el).text().includes('Perfume')).next().text().trim();
+        const anjo = $('h3').filter((i, el) => $(el).text().includes('Anjo')).next().text().trim();
+        const orixa = $('h3').filter((i, el) => $(el).text().includes('Orixá')).next().text().trim();
+        const santoProtetor = $('h3').filter((i, el) => $(el).text().includes('Santo Protetor')).next().text().trim();
 
-  } catch (error) {
-    console.error(error);
-    return {
-      signo: signo,
-      horoscopo: "Erro ao obter o horóscopo",
-      palpite: "Não disponível",
-      cor: "Não disponível",
-      elemento: "Não disponível",
-      regente: "Não disponível",
-      flor: "Não disponível",
-      metal: "Não disponível",
-      pedra: "Não disponível",
-      amuletos: "Não disponível",
-      perfume: "Não disponível",
-      anjo: "Não disponível",
-      orixa: "Não disponível",
-      santoProtetor: "Não disponível"
-    };
-  }
-}
+        // Respond with JSON
+        res.json({
+            signo: signo,
+            horoscopo: horoscopo || "Não disponível",
+            palpite: palpite || "Não disponível",
+            cor: cor || "Não disponível",
+            elemento: elemento || "Não disponível",
+            regente: regente || "Não disponível",
+            flor: flor || "Não disponível",
+            metal: metal || "Não disponível",
+            pedra: pedra || "Não disponível",
+            amuletos: amuletos || "Não disponível",
+            perfume: perfume || "Não disponível",
+            anjo: anjo || "Não disponível",
+            orixa: orixa || "Não disponível",
+            santoProtetor: santoProtetor || "Não disponível"
+        });
+
+    } catch (error) {
+        console.error("Erro ao buscar informações do horóscopo:", error);
+        res.status(500).json({ error: "Erro ao buscar informações do horóscopo." });
+    }
+});
+
+
 
 router.get('/horoscopo/:signo', async (req, res) => {
   const signo = req.params.signo.toLowerCase();
