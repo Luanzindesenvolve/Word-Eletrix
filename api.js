@@ -358,8 +358,6 @@ router.get('/serie', async (req, res) => {
     }
 });
 
-
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -371,42 +369,48 @@ router.get('/horoscopo/:signo', async (req, res) => {
         // Extraindo o horóscopo principal
         const horoscopoTexto = $('div.zoxrel.left p').first().text().trim();
 
-        // Extraindo o palpite e cor do dia
+        // Extraindo o palpite do dia
         const palpite = $('b:contains("Palpite do dia:")').next().text().trim();
+        
+        // Extraindo a cor do dia
         const cor = $('b:contains("Cor do dia:")').next().text().trim();
 
-        // Função para extrair texto baseado em um título específico
-        const getCharacteristic = (label) => {
-            const header = $(`h3:contains("${label}:")`);
-            return header.nextUntil('h3').filter('br').prev().text().trim() || 'Não disponível';
+        // Função para extrair o texto associado a um <h3>
+        const getTextAfterHeading = (label) => {
+            const heading = $(`h3:contains("${label}:")`);
+            let text = '';
+            heading.each((i, el) => {
+                text += $(el).nextUntil('h3').filter('br').prev().text().trim() + ' ';
+            });
+            return text.trim() || 'Não disponível';
         };
 
-        const elemento = getCharacteristic('Elemento');
-        const regente = getCharacteristic('Regente');
-        const flor = getCharacteristic('Flor');
-        const metal = getCharacteristic('Metal');
-        const pedra = getCharacteristic('Pedra');
-        const amuletos = getCharacteristic('Amuletos');
-        const perfume = getCharacteristic('Perfume');
-        const anjo = getCharacteristic('Anjo');
-        const orixa = getCharacteristic('Orixá');
-        const santoProtetor = getCharacteristic('Santo Protetor') || 'Não disponível';
+        const elemento = getTextAfterHeading('Elemento');
+        const regente = getTextAfterHeading('Regente');
+        const flor = getTextAfterHeading('Flor');
+        const metal = getTextAfterHeading('Metal');
+        const pedra = getTextAfterHeading('Pedra');
+        const amuletos = getTextAfterHeading('Amuletos');
+        const perfume = getTextAfterHeading('Perfume');
+        const anjo = getTextAfterHeading('Anjo');
+        const orixa = getTextAfterHeading('Orixá');
+        const santoProtetor = getTextAfterHeading('Santo Protetor');
 
-        // Garantindo que os campos vazios não apareçam na resposta
+        // Montando o resultado
         const resultado = {
             signo: signo,
             horoscopo: horoscopoTexto || 'Não disponível',
             palpite: palpite || 'Não disponível',
             cor: cor || 'Não disponível',
-            elemento: elemento || 'Não disponível',
-            regente: regente || 'Não disponível',
-            flor: flor || 'Não disponível',
-            metal: metal || 'Não disponível',
-            pedra: pedra || 'Não disponível',
-            amuletos: amuletos || 'Não disponível',
-            perfume: perfume || 'Não disponível',
-            anjo: anjo || 'Não disponível',
-            orixa: orixa || 'Não disponível',
+            elemento: elemento,
+            regente: regente,
+            flor: flor,
+            metal: metal,
+            pedra: pedra,
+            amuletos: amuletos,
+            perfume: perfume,
+            anjo: anjo,
+            orixa: orixa,
             santoProtetor: santoProtetor
         };
 
@@ -416,8 +420,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: 'Erro ao extrair o horóscopo.' });
     }
 });
-
-
 
 router.get('/letra', async (req, res) => {
   const texto = req.query.texto;
