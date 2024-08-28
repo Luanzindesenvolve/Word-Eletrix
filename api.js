@@ -107,7 +107,8 @@ router.get('/pinterestfoto', async (req, res) => {
 
 
 
-// Rota GET para buscar a operadora
+
+
 router.get('/operadora/:numero', async (req, res) => {
     const numero = req.params.numero;
 
@@ -116,12 +117,19 @@ router.get('/operadora/:numero', async (req, res) => {
     }
 
     try {
-        // Substitua a URL e os parâmetros conforme necessário
-        const response = await axios.post('https://www.qualoperadora.net/', `telefone=${encodeURIComponent(numero)}`);
-        const $ = cheerio.load(response.data);
+        // Log da requisição
+        console.log(`Fazendo requisição para o número: ${numero}`);
 
-        // Ajuste o seletor para capturar a informação correta
-        const operadora = $('#resultado').text().trim(); // Ajuste conforme a estrutura da página
+        // Requisição POST para a URL
+        const response = await axios.post('https://www.qualoperadora.net/', `telefone=${encodeURIComponent(numero)}`);
+
+        // Log do status e do conteúdo da resposta
+        console.log(`Status da resposta: ${response.status}`);
+        console.log(`Conteúdo da resposta: ${response.data.substring(0, 500)}`); // Log apenas os primeiros 500 caracteres
+
+        // Processar a resposta com cheerio
+        const $ = cheerio.load(response.data);
+        const operadora = $('#resultado').text().trim(); // Ajuste conforme necessário
 
         if (!operadora) {
             return res.status(404).json({ error: 'Operadora não encontrada' });
@@ -129,10 +137,11 @@ router.get('/operadora/:numero', async (req, res) => {
 
         res.json({ numero, operadora });
     } catch (error) {
-        console.error(error);
+        console.error('Erro ao fazer a requisição:', error.message);
         res.status(500).json({ error: 'Erro ao buscar dados' });
     }
 });
+
 
 
 router.get('/horoscopo/:signo', async (req, res) => {
@@ -184,15 +193,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: "Erro ao buscar informações do horóscopo." });
     }
 });
-
-
-
-router.get('/horoscopo/:signo', async (req, res) => {
-  const signo = req.params.signo.toLowerCase();
-  const result = await fetchHoroscope(signo);
-  res.json(result);
-});
-
 
 router.get('/printsite', async (req, res) => {
     try {
