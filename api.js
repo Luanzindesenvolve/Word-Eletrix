@@ -233,7 +233,7 @@ router.get('/figu_flork2', async (req, res) => {
     }
 });
 
-router.get('/figu_aleatori', async (req, res) => {
+router.get('/figu_aleatorio', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 8051);
         const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/master/fig (${rnd}).webp`;
@@ -341,7 +341,7 @@ router.get('/figu_raiva', async (req, res) => {
     }
 });
 
-router.get('/sticker/figu_roblox', async (req, res) => {
+router.get('/figu_roblox', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 25);
         const imageUrl = `https://raw.githubusercontent.com/Scheyot2/sakura-botv6/master/FIGURINHAS/figurinha-roblox/${rnd}.webp`;
