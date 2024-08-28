@@ -107,6 +107,34 @@ router.get('/pinterestfoto', async (req, res) => {
 
 
 
+// Rota GET para buscar a operadora
+router.get('/operadora/:numero', async (req, res) => {
+    const numero = req.params.numero;
+
+    if (!numero) {
+        return res.status(400).json({ error: 'Número de telefone é necessário' });
+    }
+
+    try {
+        // Substitua a URL e os parâmetros conforme necessário
+        const response = await axios.post('https://www.qualoperadora.net/', `telefone=${encodeURIComponent(numero)}`);
+        const $ = cheerio.load(response.data);
+
+        // Ajuste o seletor para capturar a informação correta
+        const operadora = $('#resultado').text().trim(); // Ajuste conforme a estrutura da página
+
+        if (!operadora) {
+            return res.status(404).json({ error: 'Operadora não encontrada' });
+        }
+
+        res.json({ numero, operadora });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar dados' });
+    }
+});
+
+
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
