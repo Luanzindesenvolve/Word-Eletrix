@@ -105,10 +105,6 @@ router.get('/pinterestfoto', async (req, res) => {
   }
 }); 
 
-
-
-
-
 router.get('/operadora/:numero', async (req, res) => {
     const numero = req.params.numero;
 
@@ -117,19 +113,19 @@ router.get('/operadora/:numero', async (req, res) => {
     }
 
     try {
-        // Log da requisição
-        console.log(`Fazendo requisição para o número: ${numero}`);
+        // Fazer a requisição POST
+        const response = await axios.post('http://consultanumero$_telein.com.br/sistema/consulta_numero.php', null, {
+            params: {
+                chave: 'senhasite',
+                numero: numero
+            }
+        });
 
-        // Requisição POST para a URL
-        const response = await axios.post('https://www.qualoperadora.net/', `telefone=${encodeURIComponent(numero)}`);
-
-        // Log do status e do conteúdo da resposta
-        console.log(`Status da resposta: ${response.status}`);
-        console.log(`Conteúdo da resposta: ${response.data.substring(0, 500)}`); // Log apenas os primeiros 500 caracteres
-
-        // Processar a resposta com cheerio
+        // Processar a resposta HTML
         const $ = cheerio.load(response.data);
-        const operadora = $('#resultado').text().trim(); // Ajuste conforme necessário
+
+        // Extrair a operadora
+        const operadora = $('#resultado').text().trim();
 
         if (!operadora) {
             return res.status(404).json({ error: 'Operadora não encontrada' });
@@ -137,11 +133,10 @@ router.get('/operadora/:numero', async (req, res) => {
 
         res.json({ numero, operadora });
     } catch (error) {
-        console.error('Erro ao fazer a requisição:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar dados' });
+        console.error('Erro ao buscar dados:', error.message);
+        res.status(500).json({ error: 'Erro ao buscar dados: ' + error.message });
     }
 });
-
 
 
 router.get('/horoscopo/:signo', async (req, res) => {
