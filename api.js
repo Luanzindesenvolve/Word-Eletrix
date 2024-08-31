@@ -138,6 +138,18 @@ router.get('/operadora/:numero', async (req, res) => {
     }
 });
 
+
+// Função para obter o buffer da imagem
+async function getImageBuffer(url) {
+    try {
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+        return Buffer.from(response.data, 'binary');
+    } catch (error) {
+        throw new Error(`Erro ao obter buffer da imagem: ${error.message}`);
+    }
+}
+
+// Função para buscar wallpapers
 async function wallpaper3(query) {
     return new Promise((resolve, reject) => {
         axios.get('https://www.wallpaperflare.com/search?wallpaper=' + query, {
@@ -150,15 +162,46 @@ async function wallpaper3(query) {
             const $ = cheerio.load(data);
             const result = [];
             $('#gallery > li > figure > a').each(function (a, b) {
-                result.push($(b).find('img').attr('data-src'));
+                const imgSrc = $(b).find('img').attr('data-src');
+                if (imgSrc) {
+                    result.push(imgSrc);
+                }
             });
+            console.log(`Imagens encontradas: ${result.length}`);
             resolve(result);
         })
         .catch(error => {
+            console.error('Erro ao buscar wallpapers:', error);
             reject({ status: 'err', message: error.message });
         });
     });
 }
+
+// Rota para obter o wallpaper
+router.get('/foto', async (req, res) => {
+    const { query } = req.query;
+    if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
+
+    try {
+        console.log(`Buscando wallpapers para: ${query}`);
+        const result = await wallpaper3(query);
+
+        if (result.length === 0) {
+            console.log('Nenhum wallpaper encontrado.');
+            return res.status(404).json({ status: false, message: 'Nenhum wallpaper encontrado' });
+        }
+
+        const resultado1 = result[Math.floor(Math.random() * result.length)];
+        console.log(`URL do wallpaper selecionado: ${resultado1}`);
+
+        const imageBuffer = await getImageBuffer(resultado1);
+        res.type('png');
+        res.send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: 'Erro interno ao processar a solicitação.' });
+    }
+});
 
 
 // Função para buscar áudio no MyInstants
@@ -201,24 +244,7 @@ router.get('/audiomeme', async (req, res) => {
 });
 
 
-router.get('/foto', async (req, res) => {
-    var { query } = req.query;
-    if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
 
-    try {
-        const result = await wallpaper3(query); 
-        const resultado1 = result[Math.floor(Math.random() * result.length)];
-        const buffer = await getBuffer(resultado1);  // Assumindo que `getBuffer` é uma função definida em outro lugar
-        res.type('png');
-        res.send(buffer);
-    } catch (error) {
-        console.log(error);
-        res.status(500).send({
-            status: 500,
-            mensagem: 'Erro no Servidor Interno'
-        });
-    }
-});
 
 
 router.get('/horoscopo/:signo', async (req, res) => {
