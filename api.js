@@ -293,28 +293,36 @@ router.get('/horoscopo/:signo', async (req, res) => {
         });
     }
 });
+const axios = require('axios');
+const cheerio = require('cheerio');
+const express = require('express');
+const router = express.Router();
+
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
     try {
+        // Fetch HTML
         const { data } = await axios.get(url);
         const $ = cheerio.load(data);
 
-        // Extrai o horóscopo
+        // Extract horoscope
         const horoscopo = $('.zoxrel.left > p').first().text().trim();
 
-        // Extrai Palpite e Cor
-        const palpite = $('.zoxrel.left').text().match(/Palpite do dia: ([\d\s,]+)/)[1]?.trim() || "Não disponível";
-        const cor = $('.zoxrel.left').text().match(/Cor do dia: (\w+)/)[1]?.trim() || "Não disponível";
+        // Extract Palpite and Cor
+        const palpiteText = $('.zoxrel.left').text().match(/Palpite do dia: ([\d\s,]+)/);
+        const corText = $('.zoxrel.left').text().match(/Cor do dia: (\w+)/);
+        const palpite = palpiteText ? palpiteText[1].trim() : "Não disponível";
+        const cor = corText ? corText[1].trim() : "Não disponível";
 
-        // Função para extrair texto limpo por label
+        // Function to extract text by label
         const extractInfo = (label) => {
-            const text = $(`h3:contains(${label})`).next().text().trim();
+            const text = $(`h3:contains(${label})`).nextUntil('h3').text().trim();
             return text || "Não disponível";
         };
 
-        // Extrai informações adicionais
+        // Extract additional information
         const elemento = extractInfo('Elemento:');
         const regente = extractInfo('Regente:');
         const flor = extractInfo('Flor:');
@@ -326,10 +334,10 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const orixa = extractInfo('Orixá:');
         const santoProtetor = extractInfo('Santo Protetor:');
 
-        // Responde com o JSON
+        // Respond with JSON
         res.json({
-            signo,
-            horoscopo,
+            signo: signo,
+            horoscopo: horoscopo || "Não disponível",
             palpite,
             cor,
             elemento,
@@ -346,12 +354,16 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
     } catch (error) {
         console.error("Erro ao buscar informações do horóscopo:", error.message);
+
+        // Respond with a more detailed error message
         res.status(500).json({
             error: "Erro ao buscar informações do horóscopo.",
             details: error.message
         });
     }
 });
+
+
 router.get('/printsite', async (req, res) => {
     try {
         const { url } = req.query;
