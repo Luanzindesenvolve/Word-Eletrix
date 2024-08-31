@@ -233,6 +233,7 @@ router.get('/audiomeme', async (req, res) => {
         return res.status(500).json({ status: false, message: 'Erro no servidor interno.' });
     }
 });
+
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -245,18 +246,19 @@ router.get('/horoscopo/:signo', async (req, res) => {
         // Extract horoscope
         const horoscopo = $('.zoxrel.left > p').first().text().trim();
 
-        // Palpite and Cor
-        const palpiteText = $('.zoxrel.left').text().match(/Palpite do dia: (.+?)\s/);
-        const corText = $('.zoxrel.left').text().match(/Cor do dia: (.+?)\s/);
+        // Extract Palpite and Cor
+        const palpiteText = $('.zoxrel.left').text().match(/Palpite do dia: ([\d\s,]+)/);
+        const corText = $('.zoxrel.left').text().match(/Cor do dia: (\w+)/);
         const palpite = palpiteText ? palpiteText[1].trim() : "Não disponível";
         const cor = corText ? corText[1].trim() : "Não disponível";
 
-        // Extract additional information
+        // Function to extract text based on heading
         const extractInfo = (label) => {
-            const element = $(`h3:contains(${label})`).next().text().trim();
-            return element || "Não disponível";
+            const heading = $(`h3:contains(${label})`).next().text().trim();
+            return heading || "Não disponível";
         };
 
+        // Extract additional information
         const elemento = extractInfo('Elemento:');
         const regente = extractInfo('Regente:');
         const flor = extractInfo('Flor:');
@@ -296,7 +298,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         });
     }
 });
-
 router.get('/printsite', async (req, res) => {
     try {
         const { url } = req.query;
