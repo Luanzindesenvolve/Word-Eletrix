@@ -138,6 +138,47 @@ router.get('/operadora/:numero', async (req, res) => {
     }
 });
 
+async function wallpaper2(query) {
+    return new Promise((resolve, reject) => {
+        axios.get('https://www.wallpaperflare.com/search?wallpaper=' + query, {
+            headers: {
+                "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                "cookie": "_ga=GA1.2.863074474.1624987429; _gid=GA1.2.857771494.1624987429; __gads=ID=84d12a6ae82d0a63-2242b0820eca0058:T=1624987427:RT=1624987427:S=ALNI_MaJYaH0-_xRbokdDkQ0B49vSYgYcQ"
+            }
+        })
+        .then(({ data }) => {
+            const $ = cheerio.load(data);
+            const result = [];
+            $('#gallery > li > figure > a').each(function (a, b) {
+                result.push($(b).find('img').attr('data-src'));
+            });
+            resolve(result);
+        })
+        .catch(error => {
+            reject({ status: 'err', message: error.message });
+        });
+    });
+}
+
+router.get('/api/wallpaper', async (req, res) => {
+    var { query } = req.query;
+    if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
+
+    try {
+        const result = await wallpaper2(query); 
+        const resultado1 = result[Math.floor(Math.random() * result.length)];
+        const buffer = await getBuffer(resultado1);  // Assumindo que `getBuffer` é uma função definida em outro lugar
+        res.type('png');
+        res.send(buffer);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            status: 500,
+            mensagem: 'Erro no Servidor Interno'
+        });
+    }
+});
+
 
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
