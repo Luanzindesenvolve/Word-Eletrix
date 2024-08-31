@@ -254,8 +254,9 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Function to extract text after <h3>
         const extractInfo = (label) => {
-            const text = $(`h3:contains(${label})`).next().text().trim();
-            return text || "Não disponível";
+            const text = $(`h3:contains(${label})`).parent().html();
+            const extractedText = text ? text.split('</h3>')[1].trim().split('</br>')[0].trim() : "Não disponível";
+            return extractedText;
         };
 
         // Extract additional information
@@ -298,6 +299,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
         });
     }
 });
+        
 router.get('/printsite', async (req, res) => {
     try {
         const { url } = req.query;
