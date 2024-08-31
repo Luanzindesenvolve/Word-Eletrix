@@ -252,10 +252,10 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const palpite = palpiteText ? palpiteText[1].trim() : "Não disponível";
         const cor = corText ? corText[1].trim() : "Não disponível";
 
-        // Function to extract text based on heading
+        // Function to extract text after <h3>
         const extractInfo = (label) => {
-            const heading = $(`h3:contains(${label})`).nextUntil('h3').text().trim();
-            return heading || "Não disponível";
+            const text = $(`h3:contains(${label})`).next().text().trim();
+            return text || "Não disponível";
         };
 
         // Extract additional information
