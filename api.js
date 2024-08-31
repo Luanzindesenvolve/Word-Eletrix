@@ -138,7 +138,7 @@ router.get('/operadora/:numero', async (req, res) => {
     }
 });
 
-async function wallpaper2(query) {
+async function wallpaper3(query) {
     return new Promise((resolve, reject) => {
         axios.get('https://www.wallpaperflare.com/search?wallpaper=' + query, {
             headers: {
@@ -207,7 +207,7 @@ router.get('/api/wallpaper', async (req, res) => {
     if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
 
     try {
-        const result = await wallpaper2(query); 
+        const result = await wallpaper3(query); 
         const resultado1 = result[Math.floor(Math.random() * result.length)];
         const buffer = await getBuffer(resultado1);  // Assumindo que `getBuffer` é uma função definida em outro lugar
         res.type('png');
