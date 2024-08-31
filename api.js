@@ -160,6 +160,48 @@ async function wallpaper2(query) {
     });
 }
 
+
+// Função para buscar áudio no MyInstants
+async function myinstants(query) {
+    const user = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36';
+    const html = await axios.get('https://www.myinstants.com/pt/search/?name=' + encodeURIComponent(query), {
+        headers: {
+            'user-Agent': user,
+            'accept-language': "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
+        }
+    }).then(response => response.data);
+
+    const $ = cheerio.load(html);
+    const results = [];
+    $('#instants_container > .instants.result-page > .instant').each((i, elem) => {
+        const title = $(elem).find('button.small-button').attr('title').replace("Tocar o som de ", '');
+        const audio = "https://www.myinstants.com" + $(elem).find('button.small-button').attr('onclick').split("play('")[1].split("',")[0];
+        results.push({ title, audio });
+    });
+    return results;
+}
+
+// Cria o roteador Express
+const router = express.Router();
+
+// Define a rota para buscar áudios
+router.get('/api/audiomeme', async (req, res) => {
+    const { query } = req.query;
+    
+    if (!query) {
+        return res.status(400).json({ status: false, message: 'O parâmetro query é obrigatório.' });
+    }
+    
+    try {
+        const results = await myinstants(query);
+        return res.json({ status: true, results });
+    } catch (error) {
+        console.error('Erro ao buscar áudio:', error);
+        return res.status(500).json({ status: false, message: 'Erro no servidor interno.' });
+    }
+});
+
+
 router.get('/api/wallpaper', async (req, res) => {
     var { query } = req.query;
     if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
