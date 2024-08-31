@@ -254,7 +254,7 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Function to extract text based on heading
         const extractInfo = (label) => {
-            const heading = $(`h3:contains(${label})`).next().text().trim();
+            const heading = $(`h3:contains(${label})`).nextUntil('h3').text().trim();
             return heading || "Não disponível";
         };
 
