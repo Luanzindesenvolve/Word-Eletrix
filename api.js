@@ -181,8 +181,7 @@ async function myinstants(query) {
     return results;
 }
 
-// Cria o roteador Express
-const router = express.Router();
+
 
 // Define a rota para buscar áudios
 router.get('/api/audiomeme', async (req, res) => {
