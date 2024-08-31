@@ -233,15 +233,8 @@ router.get('/audiomeme', async (req, res) => {
         return res.status(500).json({ status: false, message: 'Erro no servidor interno.' });
     }
 });
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
-    const signosValidos = ['aries', 'touro', 'gemeos', 'cancer', 'leão', 'virgem', 'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes'];
-
-    if (!signosValidos.includes(signo)) {
-        return res.status(400).json({ error: 'Signo inválido.' });
-    }
-
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
     try {
@@ -250,35 +243,38 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const $ = cheerio.load(data);
 
         // Extract horoscope
-        const horoscopo = $('.zoxrel.left > p').text().trim();
-        const palpite = $('.zoxrel.left').text().match(/Palpite do dia: (.+?)\n/)?.[1].trim() || "Não disponível";
-        const cor = $('.zoxrel.left').text().match(/Cor do dia: (.+?)\n/)?.[1].trim() || "Não disponível";
+        const horoscopo = $('.zoxrel.left > p').first().text().trim();
+        const palpite = $('.zoxrel.left > p').filter((i, el) => $(el).text().includes('Palpite do dia')).text().replace('Palpite do dia:', '').trim();
+        const cor = $('.zoxrel.left > p').filter((i, el) => $(el).text().includes('Cor do dia')).text().replace('Cor do dia:', '').trim();
 
         // Extract additional information
-        const getElement = (label) => {
-            const header = $(`h3:contains(${label})`).first();
-            if (header.length > 0) {
-                let text = header.nextUntil('h3').text().replace(/<br>/g, '').trim();
-                return text || "Não disponível";
-            }
-            return "Não disponível";
-        };
+        const elemento = $('h3').filter((i, el) => $(el).text().includes('Elemento:')).next().text().trim();
+        const regente = $('h3').filter((i, el) => $(el).text().includes('Regente:')).next().text().trim();
+        const flor = $('h3').filter((i, el) => $(el).text().includes('Flor:')).next().text().trim();
+        const metal = $('h3').filter((i, el) => $(el).text().includes('Metal:')).next().text().trim();
+        const pedra = $('h3').filter((i, el) => $(el).text().includes('Pedra:')).next().text().trim();
+        const amuletos = $('h3').filter((i, el) => $(el).text().includes('Amuletos:')).next().text().trim();
+        const perfume = $('h3').filter((i, el) => $(el).text().includes('Perfume:')).next().text().trim();
+        const anjo = $('h3').filter((i, el) => $(el).text().includes('Anjo:')).next().text().trim();
+        const orixa = $('h3').filter((i, el) => $(el).text().includes('Orixá:')).next().text().trim();
+        const santoProtetor = $('h3').filter((i, el) => $(el).text().includes('Santo Protetor:')).next().text().trim();
 
+        // Respond with JSON
         res.json({
             signo: signo,
             horoscopo: horoscopo || "Não disponível",
             palpite: palpite || "Não disponível",
             cor: cor || "Não disponível",
-            elemento: getElement('Elemento'),
-            regente: getElement('Regente'),
-            flor: getElement('Flor'),
-            metal: getElement('Metal'),
-            pedra: getElement('Pedra'),
-            amuletos: getElement('Amuletos'),
-            perfume: getElement('Perfume'),
-            anjo: getElement('Anjo'),
-            orixa: getElement('Orixá'),
-            santoProtetor: getElement('Santo Protetor')
+            elemento: elemento || "Não disponível",
+            regente: regente || "Não disponível",
+            flor: flor || "Não disponível",
+            metal: metal || "Não disponível",
+            pedra: pedra || "Não disponível",
+            amuletos: amuletos || "Não disponível",
+            perfume: perfume || "Não disponível",
+            anjo: anjo || "Não disponível",
+            orixa: orixa || "Não disponível",
+            santoProtetor: santoProtetor || "Não disponível"
         });
 
     } catch (error) {
