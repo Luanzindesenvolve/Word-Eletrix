@@ -234,69 +234,7 @@ router.get('/audiomeme', async (req, res) => {
     }
 });
 
-router.get('/horoscopo/:signo', async (req, res) => {
-    const signo = req.params.signo.toLowerCase();
-    const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
 
-    try {
-        const { data } = await axios.get(url);
-        const $ = cheerio.load(data);
-
-        // Extrai o horóscopo
-        const horoscopo = $('.zoxrel.left > p').first().text().trim();
-
-        // Extrai Palpite e Cor
-        const palpite = $('.zoxrel.left').text().match(/Palpite do dia: ([\d\s,]+)/)[1]?.trim() || "Não disponível";
-        const cor = $('.zoxrel.left').text().match(/Cor do dia: (\w+)/)[1]?.trim() || "Não disponível";
-
-        // Função para extrair texto limpo por label
-        const extractInfo = (label) => {
-            const text = $(`h3:contains(${label})`).next().text().trim();
-            return text || "Não disponível";
-        };
-
-        // Extrai informações adicionais
-        const elemento = extractInfo('Elemento:');
-        const regente = extractInfo('Regente:');
-        const flor = extractInfo('Flor:');
-        const metal = extractInfo('Metal:');
-        const pedra = extractInfo('Pedra:');
-        const amuletos = extractInfo('Amuletos:');
-        const perfume = extractInfo('Perfume:');
-        const anjo = extractInfo('Anjo:');
-        const orixa = extractInfo('Orixá:');
-        const santoProtetor = extractInfo('Santo Protetor:');
-
-        // Responde com o JSON
-        res.json({
-            signo,
-            horoscopo,
-            palpite,
-            cor,
-            elemento,
-            regente,
-            flor,
-            metal,
-            pedra,
-            amuletos,
-            perfume,
-            anjo,
-            orixa,
-            santoProtetor
-        });
-
-    } catch (error) {
-        console.error("Erro ao buscar informações do horóscopo:", error.message);
-        res.status(500).json({
-            error: "Erro ao buscar informações do horóscopo.",
-            details: error.message
-        });
-    }
-});
-const axios = require('axios');
-const cheerio = require('cheerio');
-const express = require('express');
-const router = express.Router();
 
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
