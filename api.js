@@ -244,42 +244,56 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Extract horoscope
         const horoscopo = $('.zoxrel.left > p').first().text().trim();
-        const palpite = $('.zoxrel.left > p').filter((i, el) => $(el).text().includes('Palpite do dia')).text().replace('Palpite do dia:', '').trim();
-        const cor = $('.zoxrel.left > p').filter((i, el) => $(el).text().includes('Cor do dia')).text().replace('Cor do dia:', '').trim();
+
+        // Palpite and Cor
+        const palpiteText = $('.zoxrel.left').text().match(/Palpite do dia: (.+?)\s/);
+        const corText = $('.zoxrel.left').text().match(/Cor do dia: (.+?)\s/);
+        const palpite = palpiteText ? palpiteText[1].trim() : "Não disponível";
+        const cor = corText ? corText[1].trim() : "Não disponível";
 
         // Extract additional information
-        const elemento = $('h3').filter((i, el) => $(el).text().includes('Elemento:')).next().text().trim();
-        const regente = $('h3').filter((i, el) => $(el).text().includes('Regente:')).next().text().trim();
-        const flor = $('h3').filter((i, el) => $(el).text().includes('Flor:')).next().text().trim();
-        const metal = $('h3').filter((i, el) => $(el).text().includes('Metal:')).next().text().trim();
-        const pedra = $('h3').filter((i, el) => $(el).text().includes('Pedra:')).next().text().trim();
-        const amuletos = $('h3').filter((i, el) => $(el).text().includes('Amuletos:')).next().text().trim();
-        const perfume = $('h3').filter((i, el) => $(el).text().includes('Perfume:')).next().text().trim();
-        const anjo = $('h3').filter((i, el) => $(el).text().includes('Anjo:')).next().text().trim();
-        const orixa = $('h3').filter((i, el) => $(el).text().includes('Orixá:')).next().text().trim();
-        const santoProtetor = $('h3').filter((i, el) => $(el).text().includes('Santo Protetor:')).next().text().trim();
+        const extractInfo = (label) => {
+            const element = $(`h3:contains(${label})`).next().text().trim();
+            return element || "Não disponível";
+        };
+
+        const elemento = extractInfo('Elemento:');
+        const regente = extractInfo('Regente:');
+        const flor = extractInfo('Flor:');
+        const metal = extractInfo('Metal:');
+        const pedra = extractInfo('Pedra:');
+        const amuletos = extractInfo('Amuletos:');
+        const perfume = extractInfo('Perfume:');
+        const anjo = extractInfo('Anjo:');
+        const orixa = extractInfo('Orixá:');
+        const santoProtetor = extractInfo('Santo Protetor:');
 
         // Respond with JSON
         res.json({
             signo: signo,
             horoscopo: horoscopo || "Não disponível",
-            palpite: palpite || "Não disponível",
-            cor: cor || "Não disponível",
-            elemento: elemento || "Não disponível",
-            regente: regente || "Não disponível",
-            flor: flor || "Não disponível",
-            metal: metal || "Não disponível",
-            pedra: pedra || "Não disponível",
-            amuletos: amuletos || "Não disponível",
-            perfume: perfume || "Não disponível",
-            anjo: anjo || "Não disponível",
-            orixa: orixa || "Não disponível",
-            santoProtetor: santoProtetor || "Não disponível"
+            palpite,
+            cor,
+            elemento,
+            regente,
+            flor,
+            metal,
+            pedra,
+            amuletos,
+            perfume,
+            anjo,
+            orixa,
+            santoProtetor
         });
 
     } catch (error) {
-        console.error("Erro ao buscar informações do horóscopo:", error);
-        res.status(500).json({ error: "Erro ao buscar informações do horóscopo." });
+        console.error("Erro ao buscar informações do horóscopo:", error.message);
+
+        // Respond with a more detailed error message
+        res.status(500).json({
+            error: "Erro ao buscar informações do horóscopo.",
+            details: error.message
+        });
     }
 });
 
