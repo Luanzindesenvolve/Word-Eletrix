@@ -184,7 +184,7 @@ async function myinstants(query) {
 
 
 // Define a rota para buscar áudios
-router.get('/api/audiomeme', async (req, res) => {
+router.get('/audiomeme', async (req, res) => {
     const { query } = req.query;
     
     if (!query) {
