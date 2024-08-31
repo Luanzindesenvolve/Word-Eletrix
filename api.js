@@ -233,7 +233,6 @@ router.get('/audiomeme', async (req, res) => {
         return res.status(500).json({ status: false, message: 'Erro no servidor interno.' });
     }
 });
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -252,10 +251,10 @@ router.get('/horoscopo/:signo', async (req, res) => {
         const palpite = palpiteText ? palpiteText[1].trim() : "Não disponível";
         const cor = corText ? corText[1].trim() : "Não disponível";
 
-        // Function to extract text after <h3>, removing any HTML tags
+        // Function to extract text by label
         const extractInfo = (label) => {
-            const h3Element = $(`h3:contains(${label})`).next().text().trim();
-            return h3Element || "Não disponível";
+            const text = $(`h3:contains(${label})`).parent().text().replace(label, '').trim();
+            return text || "Não disponível";
         };
 
         // Extract additional information
