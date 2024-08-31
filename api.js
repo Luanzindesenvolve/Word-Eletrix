@@ -139,15 +139,6 @@ router.get('/operadora/:numero', async (req, res) => {
 });
 
 
-// Função para obter o buffer da imagem
-async function getImageBuffer(url) {
-    try {
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        return Buffer.from(response.data, 'binary');
-    } catch (error) {
-        throw new Error(`Erro ao obter buffer da imagem: ${error.message}`);
-    }
-}
 
 // Função para buscar wallpapers
 async function wallpaper3(query) {
