@@ -234,8 +234,6 @@ router.get('/audiomeme', async (req, res) => {
     }
 });
 
-
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const signosValidos = ['aries', 'touro', 'gemeos', 'cancer', 'leão', 'virgem', 'libra', 'escorpiao', 'sagitario', 'capricornio', 'aquario', 'peixes'];
@@ -253,14 +251,15 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Extract horoscope
         const horoscopo = $('.zoxrel.left > p').text().trim();
-        const palpite = $('.zoxrel.left > b').first().next().text().trim();
-        const cor = $('.zoxrel.left > b').last().next().text().trim();
+        const palpite = $('.zoxrel.left').text().match(/Palpite do dia: (.+?)\n/)?.[1].trim() || "Não disponível";
+        const cor = $('.zoxrel.left').text().match(/Cor do dia: (.+?)\n/)?.[1].trim() || "Não disponível";
 
         // Extract additional information
         const getElement = (label) => {
             const header = $(`h3:contains(${label})`).first();
             if (header.length > 0) {
-                return header.nextUntil('h3').text().replace(/<br>/g, '').trim() || "Não disponível";
+                let text = header.nextUntil('h3').text().replace(/<br>/g, '').trim();
+                return text || "Não disponível";
             }
             return "Não disponível";
         };
@@ -287,7 +286,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         res.status(500).json({ error: "Erro ao buscar informações do horóscopo." });
     }
 });
-
 
 router.get('/printsite', async (req, res) => {
     try {
