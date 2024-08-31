@@ -201,7 +201,7 @@ router.get('/api/audiomeme', async (req, res) => {
 });
 
 
-router.get('/api/wallpaper', async (req, res) => {
+router.get('/api/foto', async (req, res) => {
     var { query } = req.query;
     if (!query) return res.json({ status: false, message: 'Cadê o parâmetro: query' });
 
