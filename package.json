@@ -19,6 +19,7 @@
     "fs-extra": "",
     "ytdl-core": "",
     "cors": "",
-    "telegram": ""
+    "telegram": "",
+    "input": ""
   }
 }
