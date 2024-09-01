@@ -100,7 +100,7 @@ const {
   wallpaper,
   wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
-const apiId = 21844566;
+       const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
 const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu0mSdT/w1Z8wutxN0Yal8w4tqaMt3I4Fv1DGRIFX3snZFHPst6ZoRZ+2xW7HzRRa31IbP6neVGzzvZII7OSsVBeE94k17yORPmHXaaAXEG9nvED+1c5Vblvv8ZB1q4qud8v2u9ACIhmxBZzumoIAA1XUsjq1DQQ+z7sTf0SnZlzIL/WOh7fUjZoGY2sdfRXKYe3+hihbJkWeZtBNp1sen/1DQI2bifTCwS/bj/ZiNn36RcX5Lr/O/hs9yddK2FlPPFQDLkS/5OPO+ORAhPT2YF6Au5R1Ybady1T8JqQ7Yj+uGsyZKZu+Xs/G+yw/AagSXc6LI03vEJykfLJCrDrbNIo=');
 const grupoChatId = -1002208588695;
@@ -185,72 +185,61 @@ router.get('/consultas', async (req, res) => {
       console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type} ${query}`);
 
       const handleResponse = new Promise((resolve, reject) => {
-        const eventHandler = async (event) => {
-          try {
-            const message = event.message;
-            console.log('Nova mensagem recebida:', message);
+  const eventHandler = async (event) => {
+    try {
+      const message = event.message;
+      console.log('Nova mensagem recebida:', message);
 
-            if (message && message.replyMarkup && message.replyMarkup.rows) {
-              for (const row of message.replyMarkup.rows) {
-                for (const button of row.buttons) {
-                  const buttonText = button?.text?.toUpperCase();
-
-                  if (buttonText && buttonText.includes('NOME')) {
-                    console.log(`Botão encontrado com o texto: ${buttonText}`);
-                    resolve(message);
-                    client.removeEventHandler(eventHandler);
-                    return;
-                  }
-                }
-              }
-              console.log('Nenhum botão encontrado na mensagem.');
-            } else {
-              console.log('Nenhum botão encontrado na mensagem.');
+      if (message && message.message && !message.message.includes("Consultando")) {
+        // Remover o usuário da resposta e formatar os dados
+        const resposta = message.message
+          .replace(/° USUÁRIO:.*\n?/g, '') // Remove a linha do usuário
+          .split('\n') // Divide o texto em linhas
+          .filter(line => line.trim() !== '') // Remove linhas vazias
+          .map(line => line.replace(/^° /, '')) // Remove o símbolo "° " do início de cada linha
+          .reduce((resultado, line) => {
+            const [key, value] = line.split(':').map(part => part.trim());
+            if (key && value) {
+              resultado[key.toLowerCase()] = value;
             }
-          } catch (err) {
-            console.error('Erro ao processar nova mensagem:', err);
-          }
-        };
+            return resultado;
+          }, {});
 
-        client.addEventHandler(eventHandler, new NewMessage({}));
-
-        setTimeout(() => {
-          reject('Tempo de espera esgotado');
-          client.removeEventHandler(eventHandler);
-        }, 90000);
-      });
-
-      try {
-        const message = await handleResponse;
-        console.log('Resposta recebida antes do timeout:', message);
-        return res.json({ status: true, resultado: message.message });
-      } catch (error) {
-        console.error('Erro ao receber a resposta:', error);
-        return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
+        console.log('Resposta formatada:', resposta);
+        resolve(resposta);
+        client.removeEventHandler(eventHandler);
+        return;
       }
-    } catch (e) {
-      console.error('Erro ao enviar a mensagem de consulta ou processar a resposta:', e);
-      if (!res.headersSent) {
-        return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
-      }
+    } catch (err) {
+      console.error('Erro ao processar nova mensagem:', err);
     }
-  } catch (err) {
-    console.error('Erro na rota /consultas:', err);
-    return res.json({ status: false, resultado: 'Erro interno do servidor.' });
-  }
+  };
+
+  client.addEventHandler(eventHandler, new NewMessage({}));
+
+  setTimeout(() => {
+    reject('Tempo de espera esgotado');
+    client.removeEventHandler(eventHandler);
+  }, 90000);
 });
 
-// Rota para pinterest
-router.get('/pinterestfoto', async (req, res) => {
-  try {
-    const query = req.query.query;
-    if (!query) return res.status(400).send({ error: 'Query é necessária' });
-    const result = await pinterest(query);
-    res.json(result);
-  } catch (error) {
-    res.status(500).send({ error: error.message });
+try {
+  const resultado = await handleResponse;
+  console.log('Resposta recebida antes do timeout:', resultado);
+
+  if (db[type]) {
+    db[type][query] = resultado;
+    fs.writeFileSync('db.json', JSON.stringify(db));
   }
-}); 
+
+  return res.json({
+    status: true,
+    resultado: resultado
+  });
+} catch (error) {
+  console.error('Erro ao receber a resposta:', error);
+  return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
+}
 
 router.get('/operadora/:numero', async (req, res) => {
     const numero = req.params.numero;
