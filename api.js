@@ -239,7 +239,7 @@ try {
 } catch (error) {
   console.error('Erro ao receber a resposta:', error);
   return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
-}
+
 
 router.get('/operadora/:numero', async (req, res) => {
     const numero = req.params.numero;
