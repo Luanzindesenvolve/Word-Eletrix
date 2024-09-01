@@ -17,6 +17,7 @@
     "linkifyjs": "",
     "qs": "",
     "fs-extra": "",
-    "ytdl-core": ""
+    "ytdl-core": "",
+    "cors": ""
   }
 }
