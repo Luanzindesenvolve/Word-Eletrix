@@ -6,6 +6,13 @@ const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
 const criador = 'World Ecletix';
+const cors = require('cors');
+const { TelegramClient } = require('telegram');
+const { StringSession } = require('telegram/sessions');
+const readline = require('readline');
+const { Api } = require('telegram/tl');
+const { NewMessage, CallbackQuery } = require('telegram/events');
+const input = require('input');
 const router = express.Router();
 const getImageBuffer = async (url) => {
     try {
@@ -93,6 +100,146 @@ const {
   wallpaper,
   wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
+const apiId = 21844566;
+const apiHash = 'ff82e94bfed22534a083c3aee236761a';
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu0mSdT/w1Z8wutxN0Yal8w4tqaMt3I4Fv1DGRIFX3snZFHPst6ZoRZ+2xW7HzRRa31IbP6neVGzzvZII7OSsVBeE94k17yORPmHXaaAXEG9nvED+1c5Vblvv8ZB1q4qud8v2u9ACIhmxBZzumoIAA1XUsjq1DQQ+z7sTf0SnZlzIL/WOh7fUjZoGY2sdfRXKYe3+hihbJkWeZtBNp1sen/1DQI2bifTCwS/bj/ZiNn36RcX5Lr/O/hs9yddK2FlPPFQDLkS/5OPO+ORAhPT2YF6Au5R1Ybady1T8JqQ7Yj+uGsyZKZu+Xs/G+yw/AagSXc6LI03vEJykfLJCrDrbNIo=');
+const grupoChatId = -1002208588695;
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+let client;
+
+(async () => {
+  try {
+    console.log("Loading interactive example...");
+    client = new TelegramClient(stringSession, apiId, apiHash, {
+      connectionRetries: 5,
+    });
+
+    await client.start({
+      phoneNumber: async () =>
+        new Promise((resolve) =>
+          rl.question("Please enter your number: ", resolve)
+        ),
+      password: async () =>
+        new Promise((resolve) =>
+          rl.question("Please enter your password: ", resolve)
+        ),
+      phoneCode: async () =>
+        new Promise((resolve) =>
+          rl.question("Please enter the code you received: ", resolve)
+        ),
+      onError: (err) => console.log(err),
+    });
+    console.log("You should now be connected.");
+    console.log(client.session.save()); // Salve esta string para evitar logins futuros
+
+  } catch (err) {
+    console.error('Erro ao iniciar o cliente Telegram:', err);
+  }
+})();
+
+router.get('/consultas', async (req, res) => {
+  try {
+    const type = req.query.type;
+    if (!type) {
+      console.log('Parâmetro type ausente na consulta');
+      return res.json({ status: false, resultado: 'Cadê o parâmetro type?' });
+    }
+
+    const query = req.query.query;
+    if (!query) {
+      console.log('Parâmetro query ausente na consulta');
+      return res.json({ status: false, resultado: 'Cadê o parâmetro query?' });
+    }
+
+    // Carregar o banco de dados
+    let db;
+    try {
+      db = JSON.parse(fs.readFileSync('db.json'));
+      console.log('Banco de dados carregado com sucesso');
+    } catch (err) {
+      console.error('Erro ao ler o banco de dados:', err);
+      return res.json({ status: false, resultado: 'Erro ao ler o banco de dados' });
+    }
+
+    const validTypes = ['cpf', 'nome', 'telefone', 'placa', 'cep'];
+    if (!validTypes.includes(type)) {
+      console.log(`Tipo de consulta inválido: ${type}`);
+      return res.json({ status: false, resultado: 'Tipo de consulta inválido' });
+    }
+
+    console.log(`[CONSULTA]: ${type} = ${query}`);
+
+    if (db[type] && db[type][query]) {
+      console.log('Resultado encontrado no banco de dados:', db[type][query]);
+      return res.json({ status: true, resultado: db[type][query] });
+    }
+
+    try {
+      // Envia a mensagem para o grupo com o comando de consulta
+      await client.sendMessage(grupoChatId, { message: `/${type} ${query}` });
+      console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type} ${query}`);
+
+      const handleResponse = new Promise((resolve, reject) => {
+        const eventHandler = async (event) => {
+          try {
+            const message = event.message;
+            console.log('Nova mensagem recebida:', message);
+
+            if (message && message.replyMarkup && message.replyMarkup.rows) {
+              for (const row of message.replyMarkup.rows) {
+                for (const button of row.buttons) {
+                  const buttonText = button?.text?.toUpperCase();
+
+                  if (buttonText && buttonText.includes('NOME')) {
+                    console.log(`Botão encontrado com o texto: ${buttonText}`);
+                    resolve(message);
+                    client.removeEventHandler(eventHandler);
+                    return;
+                  }
+                }
+              }
+              console.log('Nenhum botão encontrado na mensagem.');
+            } else {
+              console.log('Nenhum botão encontrado na mensagem.');
+            }
+          } catch (err) {
+            console.error('Erro ao processar nova mensagem:', err);
+          }
+        };
+
+        client.addEventHandler(eventHandler, new NewMessage({}));
+
+        setTimeout(() => {
+          reject('Tempo de espera esgotado');
+          client.removeEventHandler(eventHandler);
+        }, 90000);
+      });
+
+      try {
+        const message = await handleResponse;
+        console.log('Resposta recebida antes do timeout:', message);
+        return res.json({ status: true, resultado: message.message });
+      } catch (error) {
+        console.error('Erro ao receber a resposta:', error);
+        return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
+      }
+    } catch (e) {
+      console.error('Erro ao enviar a mensagem de consulta ou processar a resposta:', e);
+      if (!res.headersSent) {
+        return res.json({ status: false, resultado: 'Não foi possível fazer a consulta.' });
+      }
+    }
+  } catch (err) {
+    console.error('Erro na rota /consultas:', err);
+    return res.json({ status: false, resultado: 'Erro interno do servidor.' });
+  }
+});
+
 // Rota para pinterest
 router.get('/pinterestfoto', async (req, res) => {
   try {
