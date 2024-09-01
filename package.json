@@ -18,6 +18,7 @@
     "qs": "",
     "fs-extra": "",
     "ytdl-core": "",
-    "cors": ""
+    "cors": "",
+    "telegram": ""
   }
 }
