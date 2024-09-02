@@ -402,8 +402,8 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Function to extract text by label
         const extractInfo = (label) => {
-            // Encontra o elemento <h3> correspondente ao label e extrai o texto diretamente após ele
-            const text = $(`h3:contains(${label})`).next().text().trim();
+            const labelElement = $(`h3:contains(${label}) b`);
+            const text = labelElement.length > 0 ? labelElement.parent()[0].nextSibling.nodeValue.trim() : "Não disponível";
             return text || "Não disponível";
         };
 
@@ -447,7 +447,6 @@ router.get('/horoscopo/:signo', async (req, res) => {
         });
     }
 });
-
 
 router.get('/printsite', async (req, res) => {
     try {
