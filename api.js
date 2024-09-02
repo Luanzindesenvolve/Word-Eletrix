@@ -382,8 +382,6 @@ router.get('/audiomeme', async (req, res) => {
     }
 });
 
-
-
 router.get('/horoscopo/:signo', async (req, res) => {
     const signo = req.params.signo.toLowerCase();
     const url = `https://joaobidu.com.br/horoscopo-do-dia/horoscopo-do-dia-para-${signo}/`;
@@ -404,7 +402,8 @@ router.get('/horoscopo/:signo', async (req, res) => {
 
         // Function to extract text by label
         const extractInfo = (label) => {
-            const text = $(`h3:contains(${label})`).nextUntil('h3').text().trim();
+            // Encontra o elemento <h3> correspondente ao label e extrai o texto diretamente após ele
+            const text = $(`h3:contains(${label})`).next().text().trim();
             return text || "Não disponível";
         };
 
