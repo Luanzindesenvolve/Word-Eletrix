@@ -100,7 +100,6 @@ const {
   wallpaper,
   wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
-       
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
 const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu0mSdT/w1Z8wutxN0Yal8w4tqaMt3I4Fv1DGRIFX3snZFHPst6ZoRZ+2xW7HzRRa31IbP6neVGzzvZII7OSsVBeE94k17yORPmHXaaAXEG9nvED+1c5Vblvv8ZB1q4qud8v2u9ACIhmxBZzumoIAA1XUsjq1DQQ+z7sTf0SnZlzIL/WOh7fUjZoGY2sdfRXKYe3+hihbJkWeZtBNp1sen/1DQI2bifTCwS/bj/ZiNn36RcX5Lr/O/hs9yddK2FlPPFQDLkS/5OPO+ORAhPT2YF6Au5R1Ybady1T8JqQ7Yj+uGsyZKZu+Xs/G+yw/AagSXc6LI03vEJykfLJCrDrbNIo=');
