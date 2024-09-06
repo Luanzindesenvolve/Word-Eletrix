@@ -143,7 +143,7 @@ let client;
   }
 })();
 
-router.get('/consultas', async (req, res) => {
+//router.get('/consultas', async (req, res) => {
   try {
     const type = req.query.type;
     if (!type) {
