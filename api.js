@@ -1687,8 +1687,6 @@ const formats = data.formats;
     res.status(500).json({ error: 'Erro ao baixar o vídeo do YouTube' });
   }
 });
-
-
 //play
 router.get('/play', async (req, res) => {
   const query = req.query.query;
@@ -1796,7 +1794,6 @@ router.get('/playvideo', async (req, res) => {
   }
 });
 //fim
-
 // Rota para consulta de CEP
 router.get('/consulta/cep/:cep', async (req, res) => {
     const cep = req.params.cep;
