@@ -185,43 +185,49 @@ router.get('/consultas', async (req, res) => {
       console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type} ${query}`);
 
       const handleResponse = new Promise((resolve, reject) => {
-        const eventHandler = async (event) => {
-          try {
-            const message = event.message;
-            console.log('Nova mensagem recebida:', message);
+  const eventHandler = async (event) => {
+    try {
+      const message = event.message;
+      console.log('Nova mensagem recebida:', message);
 
-            if (message && message.message && !message.message.includes("Consultando")) {
-              // Remover o usuário da resposta e formatar os dados
-              const resposta = message.message
-                .replace(/° USUÁRIO:.*\n?/g, '') // Remove a linha do usuário
-                .split('\n') // Divide o texto em linhas
-                .filter(line => line.trim() !== '') // Remove linhas vazias
-                .map(line => line.replace(/^° /, '')) // Remove o símbolo "° " do início de cada linha
-                .reduce((resultado, line) => {
-                  const [key, value] = line.split(':').map(part => part.trim());
-                  if (key && value) {
-                    resultado[key.toLowerCase()] = value;
-                  }
-                  return resultado;
-                }, {});
+      if (message && message.message && !message.message.includes("Consultando")) {
+        // Ignora a mensagem de comando desconhecido
+        if (message.message.includes("Comando desconhecido")) {
+          console.log('Mensagem ignorada:', message.message);
+          return;
+        }
 
-              console.log('Resposta formatada:', resposta);
-              resolve(resposta);
-              client.removeEventHandler(eventHandler);
-              return;
+        // Remover o usuário da resposta e formatar os dados
+        const resposta = message.message
+          .replace(/° USUÁRIO:.*\n?/g, '') // Remove a linha do usuário
+          .split('\n') // Divide o texto em linhas
+          .filter(line => line.trim() !== '') // Remove linhas vazias
+          .map(line => line.replace(/^° /, '')) // Remove o símbolo "° " do início de cada linha
+          .reduce((resultado, line) => {
+            const [key, value] = line.split(':').map(part => part.trim());
+            if (key && value) {
+              resultado[key.toLowerCase()] = value;
             }
-          } catch (err) {
-            console.error('Erro ao processar nova mensagem:', err);
-          }
-        };
+            return resultado;
+          }, {});
 
-        client.addEventHandler(eventHandler, new NewMessage({}));
+        console.log('Resposta formatada:', resposta);
+        resolve(resposta);
+        client.removeEventHandler(eventHandler);
+        return;
+      }
+    } catch (err) {
+      console.error('Erro ao processar nova mensagem:', err);
+    }
+  };
 
-        setTimeout(() => {
-          reject('Tempo de espera esgotado');
-          client.removeEventHandler(eventHandler);
-        }, 90000);
-      });
+  client.addEventHandler(eventHandler, new NewMessage({}));
+
+  setTimeout(() => {
+    reject('Tempo de espera esgotado');
+    client.removeEventHandler(eventHandler);
+  }, 90000);
+});
 
       try {
         const resultado = await handleResponse;
