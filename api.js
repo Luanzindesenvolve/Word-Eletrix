@@ -100,6 +100,52 @@ const {
   wallpaper,
   wikimedia
 } = require('./config.js'); // arquivo que ele puxa as funções 
+
+const downloadFile = async (url, filePath, res) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return res.status(response.status).send('Failed to fetch the resource');
+    }
+
+    const fileStream = fs.createWriteStream(filePath);
+    response.body.pipe(fileStream);
+    fileStream.on('finish', () => {
+      res.download(filePath, (err) => {
+        if (err) {
+          console.error('Download failed:', err);
+          res.status(500).send('Failed to download the file');
+        } else {
+          fs.unlink(filePath, () => {}); // Delete file after download
+        }
+      });
+    });
+  } catch (error) {
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+router.get('/pin/foto', (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).send('Missing url parameter');
+  }
+
+  const filePath = path.join(__dirname, 'downloaded.jpg');
+  downloadFile(url, filePath, res);
+});
+
+router.get('/pin/video', (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).send('Missing url parameter');
+  }
+
+  const filePath = path.join(__dirname, 'downloaded.mp4');
+  downloadFile(url, filePath, res);
+});
+
+
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
 const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBuwJituCYYSVCtcOdiVS/8v8aX5fUWeCBjsBqsaLnOPWDksVGFelyYFuhREFzFGImrWinAmV6T6lDf9RJJiCi+JAeRwk3Q/RUcLk1PWsIRpv+9NxQ46B2XWuZQn+KvQZvDPYY0VoRwSqxPQoWaaZqOPSdL70sVqyCFFVs9E/PDyqATXylJSTLRrv2G7GOgUERR6aUPbbUeZJSjklv/GWOZJHqXDvcXxTcCGO6kkXBDgJccItQT2FyoOQff0YwnVEQchVTrFhpkgLw5NrTSu9IYReMgOLyQ3T5bGZ6F5/mPj5WU/hVfwzihhjEiUTzkgXo7cia+0dg2LFr0F+VBXaY0qE=');
