@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        #maze { display: grid; grid-template-columns: repeat(10, 30px); grid-template-rows: repeat(10, 30px); gap: 1px; }
+        .cell { width: 30px; height: 30px; background-color: #fff; border: 1px solid #333; }
+        .wall { background-color: #333; }
+        .start { background-color: #00f; }
+        .end { background-color: #f00; }
+        .player { background-color: #0f0; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <h1>Labirinto</h1>
+    <div id="maze"></div>
+    <p id="message"></p>
+    <script>
+        const mazeElement = document.getElementById('maze');
+        const messageElement = document.getElementById('message');
+        const mazeSize = 10;
+        const start = { x: 0, y: 0 };
+        const end = { x: 9, y: 9 };
+        let player = { x: 0, y: 0 };
+
+        const maze = Array.from({ length: mazeSize }, () => Array(mazeSize).fill(0));
+        maze[start.y][start.x] = 1; // Start
+        maze[end.y][end.x] = 2; // End
+        // Simple walls
+        for (let i = 1; i < mazeSize - 1; i++) {
+            maze[i][Math.floor(Math.random() * (mazeSize - 2) + 1)] = 3;
+        }
+
+        function createMaze() {
+            mazeElement.innerHTML = '';
+            for (let y = 0; y < mazeSize; y++) {
+                for (let x = 0; x < mazeSize; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    if (maze[y][x] === 1) cell.classList.add('start');
+                    if (maze[y][x] === 2) cell.classList.add('end');
+                    if (maze[y][x] === 3) cell.classList.add('wall');
+                    mazeElement.appendChild(cell);
+                }
+            }
+            updatePlayer();
+        }
+
+        function updatePlayer() {
+            const cells = mazeElement.getElementsByClassName('cell');
+            Array.from(cells).forEach((cell, index) => {
+                if (index === player.y * mazeSize + player.x) {
+                    cell.classList.add('player');
+                } else {
+                    cell.classList.remove('player');
+                }
+            });
+
+            if (player.x === end.x && player.y === end.y) {
+                messageElement.textContent = 'Parabéns! Você chegou ao final!';
+                document.removeEventListener('keydown', handleKeydown);
+            }
+        }
+
+        function handleKeydown(event) {
+            switch (event.key) {
+                case 'ArrowUp': if (player.y > 0 && maze[player.y - 1][player.x] !== 3) player.y--; break;
+                case 'ArrowDown': if (player.y < mazeSize - 1 && maze[player.y + 1][player.x] !== 3) player.y++; break;
+                case 'ArrowLeft': if (player.x > 0 && maze[player.y][player.x - 1] !== 3) player.x--; break;
+                case 'ArrowRight': if (player.x < mazeSize - 1 && maze[player.y][player.x + 1] !== 3) player.x++; break;
+            }
+            updatePlayer();
+        }
+
+        createMaze();
+        document.addEventListener('keydown', handleKeydown);
+    </script>
+</body>
+</html>
