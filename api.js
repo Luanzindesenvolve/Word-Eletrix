@@ -98,9 +98,25 @@ const {
   hentaihome, 
   lojadomecanico,
   wallpaper,
-  wikimedia
+  wikimedia,
+  snapsave
 } = require('./config.js'); // arquivo que ele puxa as funções 
+// Definindo a rota com Router.get
+router.get("/insta", async (req, res) => {
+    const { url } = req.query; // A URL é passada como parâmetro de consulta (query)
 
+    if (!url) {
+        return res.status(400).json({ error: "URL do Instagram é obrigatória" });
+    }
+
+    try {
+        const result = await snapsave(url); // Chama sua função
+        return res.json({ success: true, data: result });
+    } catch (error) {
+        console.error("Erro ao baixar o conteúdo:", error);
+        return res.status(500).json({ success: false, error: "Erro ao processar a URL" });
+    }
+});
 const downloadFile = async (url, filePath, res) => {
   try {
     const response = await fetch(url);
