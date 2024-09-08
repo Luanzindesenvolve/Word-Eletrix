@@ -15,11 +15,14 @@
         #hint-button:hover, #restart-button:hover { background-color: #0056b3; }
         #hint-button { display: none; }
         #restart-button { display: none; }
+        #guess-input { font-size: 1.2em; padding: 5px 10px; }
     </style>
 </head>
 <body>
     <h1>Jogo da Forca</h1>
     <div id="word"></div>
+    <input type="text" id="guess-input" maxlength="1" placeholder="Digite uma letra">
+    <button id="submit-button">Enviar</button>
     <div id="message"></div>
     <button id="hint-button">Pedir Dica</button>
     <button id="restart-button">Jogar Novamente</button>
@@ -30,6 +33,8 @@
         const hintElement = document.getElementById('hint');
         const hintButton = document.getElementById('hint-button');
         const restartButton = document.getElementById('restart-button');
+        const guessInput = document.getElementById('guess-input');
+        const submitButton = document.getElementById('submit-button');
         let currentWord = '';
         let displayedWord = '';
         let wrongGuesses = [];
@@ -48,6 +53,8 @@
                 hintsRemaining = 3;
                 hintButton.style.display = 'block';
                 restartButton.style.display = 'none';
+                guessInput.value = '';
+                guessInput.focus();
             } catch (error) {
                 messageElement.textContent = 'Erro ao carregar a palavra.';
                 console.error(error);
@@ -83,20 +90,33 @@
             }
         }
 
-        function getHint() {
+        async function getHint() {
             if (hintsRemaining > 0) {
-                // Create a simple hint based on the word length
-                hintElement.textContent = `A palavra tem ${currentWord.length} letras.`;
-                hintsRemaining--;
+                try {
+                    // Create a simple hint based on the word length
+                    const response = await fetch(`https://api.datamuse.com/words?rel_syn=${currentWord}&max=1`);
+                    const data = await response.json();
+                    const hint = data[0]?.word || 'Sem dica disponível';
+                    hintElement.textContent = `Dica: ${hint}`;
+                    hintsRemaining--;
+                } catch (error) {
+                    messageElement.textContent = 'Erro ao carregar a dica.';
+                    console.error(error);
+                }
             } else {
                 hintElement.textContent = 'Sem dicas restantes!';
                 hintButton.style.display = 'none';
             }
         }
 
-        document.addEventListener('keydown', (event) => {
-            if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
-                handleGuess(event.key.toUpperCase());
+        submitButton.addEventListener('click', () => {
+            const letter = guessInput.value.toUpperCase();
+            if (letter.match(/[A-Z]/) && letter.length === 1) {
+                handleGuess(letter);
+                guessInput.value = '';
+                guessInput.focus();
+            } else {
+                messageElement.textContent = 'Por favor, digite uma única letra.';
             }
         });
 
