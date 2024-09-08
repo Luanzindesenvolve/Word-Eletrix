@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Memória</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        #board { display: grid; grid-template-columns: repeat(4, 100px); gap: 10px; }
+        .card { width: 100px; height: 100px; background-color: #ccc; border: 2px solid #333; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 2em; color: transparent; transition: background-color 0.3s; }
+        .card.flipped { background-color: #fff; color: #000; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <h1>Jogo de Memória</h1>
+    <div id="board"></div>
+    <p id="message"></p>
+    <script>
+        const board = document.getElementById('board');
+        const messageElement = document.getElementById('message');
+        const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FF5733', '#33FF57', '#3357FF', '#FF33A1'];
+        let flippedCards = [];
+        let matchedCards = 0;
+
+        function createCard(color) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.dataset.color = color;
+            card.addEventListener('click', () => flipCard(card));
+            return card;
+        }
+
+        function flipCard(card) {
+            if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                card.classList.add('flipped');
+                card.style.backgroundColor = card.dataset.color;
+                flippedCards.push(card);
+
+                if (flippedCards.length === 2) {
+                    checkMatch();
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.color === card2.dataset.color) {
+                matchedCards += 2;
+                messageElement.textContent = 'Correto!';
+                if (matchedCards === colors.length) {
+                    messageElement.textContent = 'Parabéns! Você encontrou todas as combinações!';
+                }
+                flippedCards = [];
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    card1.style.backgroundColor = '#ccc';
+                    card2.style.backgroundColor = '#ccc';
+                    messageElement.textContent = 'Tente novamente!';
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        function createBoard() {
+            board.innerHTML = '';
+            colors.forEach(color => {
+                board.appendChild(createCard(color));
+            });
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
