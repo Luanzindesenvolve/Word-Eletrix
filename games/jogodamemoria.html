@@ -7,12 +7,14 @@
     <style>
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
         h1 { margin-bottom: 20px; }
-        #game-board { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); width: 80vw; max-width: 600px; }
-        .card { width: 100%; height: 100px; background-color: #ddd; display: flex; align-items: center; justify-content: center; font-size: 2em; cursor: pointer; }
+        #game-board { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); width: 80vw; max-width: 800px; }
+        .card { width: 100%; height: 120px; background-color: #ccc; display: flex; align-items: center; justify-content: center; font-size: 1.5em; color: #333; cursor: pointer; transition: background-color 0.3s; position: relative; }
         .card img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .card.flipped { background-color: #fff; }
         .card.flipped img { display: block; }
+        .card:not(.flipped):hover { background-color: #e0e0e0; }
         #message { margin: 20px 0; font-size: 1.2em; }
-        #restart-button, #next-level-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; }
+        #restart-button, #next-level-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; margin-top: 10px; }
         #restart-button:hover, #next-level-button:hover { background-color: #0056b3; }
         #next-level-button { display: none; }
     </style>
@@ -34,27 +36,24 @@
         let secondCard = null;
         let level = 1;
 
-        const images = [
-            'https://example.com/animal1.jpg', // Substitua com URLs válidas
-            'https://example.com/animal2.jpg',
-            'https://example.com/object1.jpg',
-            'https://example.com/object2.jpg'
+        const colors = [
+            '#FF6347', '#3CB371', '#1E90FF', '#FFD700', '#FF69B4', '#6A5ACD', '#98FB98', '#FF4500'
         ];
 
-        function getRandomImages(num) {
-            const shuffledImages = [...images].sort(() => Math.random() - 0.5);
-            return shuffledImages.slice(0, num).concat(shuffledImages.slice(0, num)).sort(() => Math.random() - 0.5);
+        function getRandomColors(num) {
+            const shuffledColors = [...colors].sort(() => Math.random() - 0.5);
+            return shuffledColors.slice(0, num).concat(shuffledColors.slice(0, num)).sort(() => Math.random() - 0.5);
         }
 
         function createBoard(numCards) {
-            const imageUrls = getRandomImages(numCards / 2);
+            const colorValues = getRandomColors(numCards / 2);
             boardElement.innerHTML = '';
             cards = [];
-            imageUrls.forEach(url => {
+            colorValues.forEach(color => {
                 const cardElement = document.createElement('div');
                 cardElement.className = 'card';
-                cardElement.dataset.image = url;
-                cardElement.innerHTML = `<img src="${url}" alt="Image">`;
+                cardElement.dataset.color = color;
+                cardElement.innerHTML = `<div style="width: 100%; height: 100%; background-color: ${color};"></div>`;
                 cardElement.addEventListener('click', flipCard);
                 boardElement.appendChild(cardElement);
                 cards.push(cardElement);
@@ -74,7 +73,7 @@
         }
 
         function checkMatch() {
-            if (firstCard.dataset.image === secondCard.dataset.image) {
+            if (firstCard.dataset.color === secondCard.dataset.color) {
                 messageElement.textContent = 'Parabéns! Encontrou um par!';
                 firstCard = secondCard = null;
                 if (cards.every(card => card.classList.contains('flipped'))) {
