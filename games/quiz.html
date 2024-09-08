@@ -11,6 +11,8 @@
         .option { display: block; margin: 5px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
         .option:hover { background-color: #0056b3; }
         #message { margin-top: 20px; font-size: 1.2em; }
+        #restart-button { background-color: #007bff; color: #fff; border: none; display: none; padding: 10px 20px; font-size: 1em; cursor: pointer; margin-top: 20px; }
+        #restart-button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
@@ -18,14 +20,17 @@
     <div id="question" class="question"></div>
     <div id="options"></div>
     <p id="message"></p>
+    <button id="restart-button">Jogar Novamente</button>
     <script>
         const questionElement = document.getElementById('question');
         const optionsElement = document.getElementById('options');
         const messageElement = document.getElementById('message');
+        const restartButton = document.getElementById('restart-button');
+        let currentLevel = 0;
 
-        async function fetchQuestion() {
+        async function fetchQuestion(level) {
             try {
-                const response = await fetch('https://opentdb.com/api.php?amount=1&type=multiple');
+                const response = await fetch(`https://opentdb.com/api.php?amount=1&difficulty=${['easy', 'medium', 'hard'][level]}&type=multiple&lang=pt`);
                 const data = await response.json();
                 const questionData = data.results[0];
                 displayQuestion(questionData);
@@ -46,18 +51,31 @@
                 button.addEventListener('click', () => checkAnswer(option, data.correct_answer));
                 optionsElement.appendChild(button);
             });
+            restartButton.style.display = 'none'; // Hide the restart button initially
         }
 
         function checkAnswer(selected, correct) {
             if (selected === correct) {
                 messageElement.textContent = 'Correto! Parabéns!';
+                setTimeout(() => {
+                    currentLevel = Math.min(currentLevel + 1, 2); // Avançar para o próximo nível, até o nível 3
+                    fetchQuestion(currentLevel);
+                    restartButton.style.display = 'none';
+                }, 2000); // Exibe a mensagem por 2 segundos
             } else {
                 messageElement.textContent = `Incorreto! A resposta correta era: ${correct}`;
+                setTimeout(() => {
+                    restartButton.style.display = 'block'; // Exibir botão de reinício
+                }, 2000); // Exibe a mensagem por 2 segundos
             }
-            setTimeout(fetchQuestion, 2000); // Load new question after 2 seconds
         }
 
-        fetchQuestion();
+        restartButton.addEventListener('click', () => {
+            messageElement.textContent = '';
+            fetchQuestion(currentLevel); // Carregar uma nova pergunta no nível atual
+        });
+
+        fetchQuestion(currentLevel); // Iniciar o jogo no nível 0
     </script>
 </body>
 </html>
