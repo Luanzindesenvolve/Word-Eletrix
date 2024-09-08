@@ -7,58 +7,57 @@
     <style>
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
         h1 { margin-bottom: 20px; }
-        #question { font-size: 1.5em; margin-bottom: 20px; }
-        #answers button { display: block; margin: 5px 0; padding: 10px; font-size: 1em; background-color: #007bff; color: #fff; border: none; cursor: pointer; transition: background-color 0.3s; }
-        #answers button:hover { background-color: #0056b3; }
+        .question { font-size: 1.5em; margin-bottom: 20px; }
+        .option { display: block; margin: 5px; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .option:hover { background-color: #0056b3; }
         #message { margin-top: 20px; font-size: 1.2em; }
     </style>
 </head>
 <body>
     <h1>Quiz</h1>
-    <div id="question"></div>
-    <div id="answers"></div>
-    <p id="score">Pontuação: 0</p>
+    <div id="question" class="question"></div>
+    <div id="options"></div>
     <p id="message"></p>
     <script>
         const questionElement = document.getElementById('question');
-        const answersElement = document.getElementById('answers');
-        const scoreElement = document.getElementById('score');
+        const optionsElement = document.getElementById('options');
         const messageElement = document.getElementById('message');
 
-        const questions = [
-            { question: 'Qual a capital do Brasil?', answers: ['São Paulo', 'Rio de Janeiro', 'Brasília', 'Salvador'], correct: 2 },
-            { question: 'Qual é o maior planeta do sistema solar?', answers: ['Terra', 'Marte', 'Júpiter', 'Saturno'], correct: 2 }
-        ];
-
-        let currentQuestionIndex = 0;
-        let score = 0;
-
-        function displayQuestion() {
-            const currentQuestion = questions[currentQuestionIndex];
-            questionElement.textContent = currentQuestion.question;
-            answersElement.innerHTML = currentQuestion.answers.map((answer, index) =>
-                `<button onclick="checkAnswer(${index})">${answer}</button>`
-            ).join('');
-        }
-
-        function checkAnswer(index) {
-            if (index === questions[currentQuestionIndex].correct) {
-                score++;
-                scoreElement.textContent = `Pontuação: ${score}`;
-                messageElement.textContent = 'Resposta correta!';
-            } else {
-                messageElement.textContent = 'Resposta incorreta!';
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                displayQuestion();
-            } else {
-                questionElement.textContent = 'Quiz terminado!';
-                answersElement.innerHTML = '';
+        async function fetchQuestion() {
+            try {
+                const response = await fetch('https://opentdb.com/api.php?amount=1&type=multiple');
+                const data = await response.json();
+                const questionData = data.results[0];
+                displayQuestion(questionData);
+            } catch (error) {
+                messageElement.textContent = 'Erro ao carregar a pergunta.';
+                console.error(error);
             }
         }
 
-        displayQuestion();
+        function displayQuestion(data) {
+            questionElement.textContent = data.question;
+            const options = [...data.incorrect_answers, data.correct_answer].sort(() => Math.random() - 0.5);
+            optionsElement.innerHTML = '';
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'option';
+                button.addEventListener('click', () => checkAnswer(option, data.correct_answer));
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                messageElement.textContent = 'Correto! Parabéns!';
+            } else {
+                messageElement.textContent = `Incorreto! A resposta correta era: ${correct}`;
+            }
+            setTimeout(fetchQuestion, 2000); // Load new question after 2 seconds
+        }
+
+        fetchQuestion();
     </script>
 </body>
 </html>
