@@ -15,7 +15,6 @@ const useragent_1 = {
   "user-agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.136 Mobile Safari/537.36"
 };
 const got = require('got')
-const cheerio = require('cheerio')
 
 module.exports = snapsave = (url) => {
   return new Promise(async (resolve) => {
