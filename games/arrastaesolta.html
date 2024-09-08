@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrastar e Soltar</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        #container { width: 300px; height: 300px; border: 2px solid #333; position: relative; background-color: #fff; }
+        .draggable { width: 50px; height: 50px; background-color: #007bff; position: absolute; cursor: pointer; }
+        #dropzone { width: 100px; height: 100px; background-color: #28a745; position: absolute; top: 100px; left: 100px; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <h1>Arrastar e Soltar</h1>
+    <div id="container">
+        <div id="draggable" class="draggable"></div>
+        <div id="dropzone"></div>
+    </div>
+    <p id="message"></p>
+    <script>
+        const draggable = document.getElementById('draggable');
+        const dropzone = document.getElementById('dropzone');
+        const messageElement = document.getElementById('message');
+        let offsetX, offsetY;
+
+        function onMouseMove(e) {
+            draggable.style.left = `${e.clientX - offsetX}px`;
+            draggable.style.top = `${e.clientY - offsetY}px`;
+        }
+
+        function onMouseUp() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+
+            const dropzoneRect = dropzone.getBoundingClientRect();
+            const draggableRect = draggable.getBoundingClientRect();
+            if (draggableRect.left < dropzoneRect.right &&
+                draggableRect.right > dropzoneRect.left &&
+                draggableRect.top < dropzoneRect.bottom &&
+                draggableRect.bottom > dropzoneRect.top) {
+                messageElement.textContent = 'Parabéns! Você acertou o alvo!';
+            } else {
+                messageElement.textContent = 'Tente novamente!';
+            }
+        }
+
+        draggable.addEventListener('mousedown', (e) => {
+            offsetX = e.clientX - draggable.getBoundingClientRect().left;
+            offsetY = e.clientY - draggable.getBoundingClientRect().top;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    </script>
+</body>
+</html>
