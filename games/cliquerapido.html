@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Clique Rápido</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        #target { width: 50px; height: 50px; background-color: #007bff; position: absolute; cursor: pointer; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+        #score { font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <h1>Jogo de Clique Rápido</h1>
+    <div id="target"></div>
+    <p id="score">Pontuação: 0</p>
+    <p id="message"></p>
+    <script>
+        const target = document.getElementById('target');
+        const scoreElement = document.getElementById('score');
+        const messageElement = document.getElementById('message');
+        let score = 0;
+        let gameTime = 15; // Tempo do jogo em segundos
+        let timer;
+
+        function moveTarget() {
+            const x = Math.random() * (window.innerWidth - 50);
+            const y = Math.random() * (window.innerHeight - 50);
+            target.style.left = `${x}px`;
+            target.style.top = `${y}px`;
+        }
+
+        function increaseScore() {
+            score++;
+            scoreElement.textContent = `Pontuação: ${score}`;
+            moveTarget();
+        }
+
+        function startGame() {
+            messageElement.textContent = 'Jogo em andamento!';
+            score = 0;
+            scoreElement.textContent = `Pontuação: ${score}`;
+            moveTarget();
+
+            timer = setTimeout(() => {
+                messageElement.textContent = `Tempo esgotado! Sua pontuação final é ${score}.`;
+                target.removeEventListener('click', increaseScore);
+            }, gameTime * 1000);
+
+            target.addEventListener('click', increaseScore);
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
