@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Forca</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        .word { font-size: 2em; margin-bottom: 20px; }
+        .letter { display: inline-block; width: 30px; text-align: center; border-bottom: 2px solid #333; }
+        #guess { font-size: 1.2em; padding: 5px; margin-right: 10px; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <h1>Jogo da Forca</h1>
+    <div class="word" id="word"></div>
+    <input type="text" id="guess" maxlength="1">
+    <button onclick="makeGuess()">Adivinhar</button>
+    <p id="message"></p>
+    <script>
+        const wordElement = document.getElementById('word');
+        const guessInput = document.getElementById('guess');
+        const messageElement = document.getElementById('message');
+
+        const word = 'JAVASCRIPT';
+        let guessedWord = Array(word.length).fill('_');
+        let attempts = 6;
+
+        function updateWordDisplay() {
+            wordElement.innerHTML = guessedWord.map(letter => `<span class="letter">${letter}</span>`).join('');
+        }
+
+        function makeGuess() {
+            const guess = guessInput.value.toUpperCase();
+            if (guess && word.includes(guess)) {
+                word.split('').forEach((letter, index) => {
+                    if (letter === guess) {
+                        guessedWord[index] = guess;
+                    }
+                });
+                if (!guessedWord.includes('_')) {
+                    messageElement.textContent = 'Parabéns! Você ganhou!';
+                }
+            } else {
+                attempts--;
+                messageElement.textContent = `Tentativas restantes: ${attempts}`;
+                if (attempts === 0) {
+                    messageElement.textContent = `Você perdeu! A palavra era ${word}`;
+                }
+            }
+            updateWordDisplay();
+            guessInput.value = '';
+        }
+
+        updateWordDisplay();
+    </script>
+</body>
+</html>
