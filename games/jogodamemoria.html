@@ -36,6 +36,11 @@
         let matchedPairs = 0;
         let level = 1;
         
+        const baseColors = [
+            '#FF6347', '#3CB371', '#1E90FF', '#FFD700', '#FF69B4', '#6A5ACD', '#98FB98', '#FF4500',
+            '#ADD8E6', '#FF1493', '#00FF00', '#FF8C00', '#00CED1', '#DAA520', '#32CD32', '#D2691E'
+        ];
+
         function createCard(color) {
             const card = document.createElement('div');
             card.classList.add('card');
@@ -62,11 +67,11 @@
         }
 
         function getColorPairs(level) {
-            const baseColors = ['#FF6347', '#3CB371', '#1E90FF', '#FFD700', '#FF69B4', '#6A5ACD', '#98FB98', '#FF4500'];
-            const selectedColors = baseColors.slice(0, Math.min(level + 2, baseColors.length));
+            const uniqueColors = baseColors.slice(0, Math.min(level + 2, baseColors.length));
+            const shuffledColors = shuffle(uniqueColors);
             const colorPairs = [];
 
-            selectedColors.forEach(color => {
+            shuffledColors.forEach(color => {
                 colorPairs.push(color, color);
             });
 
