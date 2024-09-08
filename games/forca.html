@@ -8,14 +8,16 @@
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
         h1 { margin-bottom: 20px; }
         #word { font-size: 2em; margin-bottom: 20px; }
-        .letter { display: inline-block; width: 20px; text-align: center; }
+        .letter { display: inline-block; width: 30px; text-align: center; }
         #message { margin-top: 20px; font-size: 1.2em; }
         #hint { margin: 20px 0; font-size: 1.2em; }
-        #hint-button, #restart-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; }
+        #hint-button, #restart-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; margin-top: 10px; }
         #hint-button:hover, #restart-button:hover { background-color: #0056b3; }
         #hint-button { display: none; }
         #restart-button { display: none; }
         #guess-input { font-size: 1.2em; padding: 5px 10px; }
+        #submit-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; }
+        #submit-button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
@@ -40,25 +42,20 @@
         let wrongGuesses = [];
         let hintsRemaining = 3;
 
-        async function fetchWordAndHint() {
-            try {
-                const response = await fetch('https://api.datamuse.com/words?rel_jjb=noun&max=10');
-                const data = await response.json();
-                const words = data.map(item => item.word.toUpperCase());
-                currentWord = words[Math.floor(Math.random() * words.length)];
-                displayedWord = '_'.repeat(currentWord.length);
-                wordElement.innerHTML = displayedWord.split('').map(letter => `<span class="letter">${letter}</span>`).join('');
-                hintElement.textContent = '';
-                wrongGuesses = [];
-                hintsRemaining = 3;
-                hintButton.style.display = 'block';
-                restartButton.style.display = 'none';
-                guessInput.value = '';
-                guessInput.focus();
-            } catch (error) {
-                messageElement.textContent = 'Erro ao carregar a palavra.';
-                console.error(error);
-            }
+        // Lista com 100 palavras
+        const words = [
+            'ABACAXI', 'BANANA', 'CACHORRO', 'DADOS', 'ESPELHO', 'FERRAMENTA', 'GATO', 'HAMBURGUER', 'IGREJA', 'JANELA',
+            'LIVRO', 'MESA', 'NAVIO', 'OLHO', 'PEIXE', 'QUADRO', 'ROTO', 'SOL', 'TIGRE', 'URSO',
+            'VACA', 'WIFI', 'XAXIM', 'YATE', 'ZEBRA', 'ALMOFADA', 'BALANÇA', 'CAIXA', 'DENTE', 'ESCRIVANINHA',
+            'FLORES', 'GUITARRA', 'HELMET', 'INSTAGRAM', 'JARDIM', 'KIWI', 'LAMPADA', 'MOEDA', 'NOTBOOK', 'OVOS',
+            'PAPEL', 'QUINTAL', 'RATO', 'SABONETE', 'TINTA', 'UVA', 'VESTIDO', 'XICARA', 'YOGURTE', 'ZANGAO',
+            'ABACATE', 'BEBIDA', 'CAFE', 'DENTISTA', 'ESCOLA', 'FELIZ', 'GATO', 'HIGIENE', 'IMOVEL', 'JOVEM',
+            'KIOSQUE', 'LIVRO', 'MOTO', 'NUVEM', 'OITO', 'PENSAO', 'QUARTO', 'ROUPA', 'SABADO', 'TERRA',
+            'URINA', 'VIAGEM', 'XAXIM', 'YOGA', 'ZEBRA', 'APARELHO', 'BOMBA', 'CASA', 'DINO', 'ELEFANTE'
+        ];
+
+        function selectRandomWord() {
+            return words[Math.floor(Math.random() * words.length)];
         }
 
         function updateWordDisplay() {
@@ -90,23 +87,33 @@
             }
         }
 
-        async function getHint() {
+        function getHint() {
             if (hintsRemaining > 0) {
-                try {
-                    // Dica baseada em sinônimos
-                    const response = await fetch(`https://api.datamuse.com/words?rel_syn=${currentWord}&max=1`);
-                    const data = await response.json();
-                    const hint = data[0]?.word || 'Sem dica disponível';
-                    hintElement.textContent = `Dica: ${hint}`;
-                    hintsRemaining--;
-                } catch (error) {
-                    messageElement.textContent = 'Erro ao carregar a dica.';
-                    console.error(error);
+                // Dica baseada na posição das letras
+                const hint = `A palavra tem ${currentWord.length} letras e começa com "${currentWord[0]}"`;
+                hintElement.textContent = `Dica: ${hint}`;
+                hintsRemaining--;
+                if (hintsRemaining === 0) {
+                    hintButton.style.display = 'none';
                 }
             } else {
                 hintElement.textContent = 'Sem dicas restantes!';
                 hintButton.style.display = 'none';
             }
+        }
+
+        function startGame() {
+            currentWord = selectRandomWord();
+            displayedWord = '_'.repeat(currentWord.length);
+            updateWordDisplay();
+            wrongGuesses = [];
+            hintsRemaining = 3;
+            hintElement.textContent = '';
+            hintButton.style.display = 'block';
+            restartButton.style.display = 'none';
+            messageElement.textContent = '';
+            guessInput.value = '';
+            guessInput.focus();
         }
 
         submitButton.addEventListener('click', () => {
@@ -121,9 +128,9 @@
         });
 
         hintButton.addEventListener('click', getHint);
-        restartButton.addEventListener('click', fetchWordAndHint);
+        restartButton.addEventListener('click', startGame);
 
-        fetchWordAndHint(); // Iniciar o jogo
+        startGame(); // Iniciar o jogo
     </script>
 </body>
 </html>
