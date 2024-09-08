@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Forca</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        h1 { margin-bottom: 20px; }
+        #word { font-size: 2em; margin-bottom: 20px; }
+        .letter { display: inline-block; width: 20px; text-align: center; }
+        #message { margin-top: 20px; font-size: 1.2em; }
+        #hint { margin: 20px 0; font-size: 1.2em; }
+        #hint-button, #restart-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; }
+        #hint-button:hover, #restart-button:hover { background-color: #0056b3; }
+        #hint-button { display: none; }
+        #restart-button { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Jogo da Forca</h1>
+    <div id="word"></div>
+    <div id="message"></div>
+    <button id="hint-button">Pedir Dica</button>
+    <button id="restart-button">Jogar Novamente</button>
+    <p id="hint"></p>
+    <script>
+        const wordElement = document.getElementById('word');
+        const messageElement = document.getElementById('message');
+        const hintElement = document.getElementById('hint');
+        const hintButton = document.getElementById('hint-button');
+        const restartButton = document.getElementById('restart-button');
+        let currentWord = '';
+        let displayedWord = '';
+        let wrongGuesses = [];
+        let hintsRemaining = 3;
+
+        async function fetchWordAndHint() {
+            try {
+                // Fetch a random word from Datamuse API
+                const response = await fetch('https://api.datamuse.com/words?rel_jjb=noun&max=1');
+                const data = await response.json();
+                currentWord = data[0].word.toUpperCase();
+                displayedWord = '_'.repeat(currentWord.length);
+                wordElement.innerHTML = displayedWord.split('').map(letter => `<span class="letter">${letter}</span>`).join('');
+                hintElement.textContent = '';
+                wrongGuesses = [];
+                hintsRemaining = 3;
+                hintButton.style.display = 'block';
+                restartButton.style.display = 'none';
+            } catch (error) {
+                messageElement.textContent = 'Erro ao carregar a palavra.';
+                console.error(error);
+            }
+        }
+
+        function updateWordDisplay() {
+            wordElement.innerHTML = displayedWord.split('').map(letter => `<span class="letter">${letter}</span>`).join('');
+        }
+
+        function handleGuess(letter) {
+            if (currentWord.includes(letter)) {
+                let newDisplay = '';
+                for (let i = 0; i < currentWord.length; i++) {
+                    newDisplay += currentWord[i] === letter ? letter : displayedWord[i];
+                }
+                displayedWord = newDisplay;
+                updateWordDisplay();
+
+                if (!displayedWord.includes('_')) {
+                    messageElement.textContent = 'Parabéns! Você venceu!';
+                    hintButton.style.display = 'none';
+                    restartButton.style.display = 'block';
+                }
+            } else {
+                wrongGuesses.push(letter);
+                messageElement.textContent = `Erros: ${wrongGuesses.join(', ')}`;
+                if (wrongGuesses.length >= 6) { // Limite de erros
+                    messageElement.textContent = `Você perdeu! A palavra era: ${currentWord}`;
+                    hintButton.style.display = 'none';
+                    restartButton.style.display = 'block';
+                }
+            }
+        }
+
+        function getHint() {
+            if (hintsRemaining > 0) {
+                // Create a simple hint based on the word length
+                hintElement.textContent = `A palavra tem ${currentWord.length} letras.`;
+                hintsRemaining--;
+            } else {
+                hintElement.textContent = 'Sem dicas restantes!';
+                hintButton.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
+                handleGuess(event.key.toUpperCase());
+            }
+        });
+
+        hintButton.addEventListener('click', getHint);
+        restartButton.addEventListener('click', fetchWordAndHint);
+
+        fetchWordAndHint(); // Iniciar o jogo
+    </script>
+</body>
+</html>
