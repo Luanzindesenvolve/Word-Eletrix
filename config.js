@@ -2350,5 +2350,6 @@ module.exports = { geturl, pensador, styletext, getgrupos, gpwhatsapp, hentaistu
   wallpaper,
   wikimedia, 
   styletext,
- LetradaMusica
+ LetradaMusica,
+ snapsave
  };
