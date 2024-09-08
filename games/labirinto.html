@@ -7,105 +7,106 @@
     <style>
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
         h1 { margin-bottom: 20px; }
-        #instructions { margin-bottom: 20px; font-size: 1.2em; }
-        #maze { display: grid; grid-template-columns: repeat(10, 30px); grid-template-rows: repeat(10, 30px); gap: 1px; position: relative; }
-        .cell { width: 30px; height: 30px; background-color: #fff; border: 1px solid #ddd; }
+        #maze { position: relative; width: 400px; height: 400px; border: 2px solid #333; background-color: #eee; }
+        .cell { position: absolute; width: 20px; height: 20px; }
         .wall { background-color: #333; }
-        .start { background-color: #00f; }
-        .end { background-color: #f00; }
-        .player { background-color: #0f0; }
+        .path { background-color: #eee; }
+        .player { background-color: #007bff; }
         #message { margin-top: 20px; font-size: 1.2em; }
-        .controls { display: flex; margin-top: 20px; }
-        .control-button { width: 60px; height: 60px; font-size: 1.5em; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
-        .control-button:hover { background-color: #0056b3; }
+        #next-level-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; display: none; }
+        #next-level-button:hover { background-color: #0056b3; }
     </style>
 </head>
 <body>
     <h1>Labirinto</h1>
-    <p id="instructions">Use as setas do teclado ou os botões abaixo para mover o jogador (o quadrado verde) pelo labirinto e encontrar a saída (o quadrado vermelho).</p>
+    <p class="instructions">Use as teclas de seta para mover o jogador (azul) através do labirinto. Chegue à saída para avançar de nível.</p>
     <div id="maze"></div>
+    <button id="next-level-button">Avançar para o próximo nível</button>
     <p id="message"></p>
-    <div class="controls">
-        <button class="control-button" id="up">↑</button>
-        <div>
-            <button class="control-button" id="left">←</button>
-            <button class="control-button" id="right">→</button>
-        </div>
-        <button class="control-button" id="down">↓</button>
-    </div>
     <script>
         const mazeElement = document.getElementById('maze');
         const messageElement = document.getElementById('message');
-        const mazeSize = 10;
-        const start = { x: 0, y: 0 };
-        const end = { x: 9, y: 9 };
-        let player = { x: 0, y: 0 };
+        const nextLevelButton = document.getElementById('next-level-button');
+        const cellSize = 20;
+        let mazeSize = 10;
+        let playerPosition = { x: 1, y: 1 };
+        let goalPosition = { x: mazeSize - 2, y: mazeSize - 2 };
+        let maze = [];
 
-        // Create a simple maze with walls and start/end positions
-        const maze = Array.from({ length: mazeSize }, () => Array(mazeSize).fill(0));
-        maze[start.y][start.x] = 1; // Start
-        maze[end.y][end.x] = 2; // End
-        for (let i = 1; i < mazeSize - 1; i++) {
-            maze[i][Math.floor(Math.random() * (mazeSize - 2) + 1)] = 3;
+        function generateMaze(size, level) {
+            maze = Array(size).fill(null).map(() => Array(size).fill(0));
+            // Simple maze generation: add walls and a goal
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    if (Math.random() < (0.2 + 0.1 * level)) {
+                        maze[i][j] = 1; // Wall
+                    }
+                }
+            }
+            maze[1][1] = 0; // Start position
+            maze[goalPosition.y][goalPosition.x] = 0; // Goal position
         }
 
-        function createMaze() {
+        function drawMaze() {
             mazeElement.innerHTML = '';
-            for (let y = 0; y < mazeSize; y++) {
-                for (let x = 0; x < mazeSize; x++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    if (maze[y][x] === 1) cell.classList.add('start');
-                    if (maze[y][x] === 2) cell.classList.add('end');
-                    if (maze[y][x] === 3) cell.classList.add('wall');
-                    mazeElement.appendChild(cell);
-                }
-            }
-            updatePlayer();
-        }
-
-        function updatePlayer() {
-            const cells = mazeElement.getElementsByClassName('cell');
-            Array.from(cells).forEach((cell, index) => {
-                if (index === player.y * mazeSize + player.x) {
-                    cell.classList.add('player');
-                } else {
-                    cell.classList.remove('player');
-                }
+            maze.forEach((row, y) => {
+                row.forEach((cell, x) => {
+                    const div = document.createElement('div');
+                    div.className = 'cell';
+                    div.style.left = `${x * cellSize}px`;
+                    div.style.top = `${y * cellSize}px`;
+                    div.classList.add(cell === 1 ? 'wall' : 'path');
+                    if (x === playerPosition.x && y === playerPosition.y) {
+                        div.classList.add('player');
+                    }
+                    mazeElement.appendChild(div);
+                });
             });
+            messageElement.textContent = '';
+        }
 
-            if (player.x === end.x && player.y === end.y) {
-                messageElement.textContent = 'Parabéns! Você encontrou a saída!';
-                document.removeEventListener('keydown', handleKeydown);
+        function movePlayer(dx, dy) {
+            const newX = playerPosition.x + dx;
+            const newY = playerPosition.y + dy;
+            if (newX >= 0 && newX < mazeSize && newY >= 0 && newY < mazeSize && maze[newY][newX] === 0) {
+                playerPosition.x = newX;
+                playerPosition.y = newY;
+                if (playerPosition.x === goalPosition.x && playerPosition.y === goalPosition.y) {
+                    messageElement.textContent = 'Você chegou ao objetivo! Clique em "Avançar para o próximo nível" para continuar.';
+                    nextLevelButton.style.display = 'block';
+                }
+                drawMaze();
             }
         }
 
-        function movePlayer(direction) {
-            switch (direction) {
-                case 'up': if (player.y > 0 && maze[player.y - 1][player.x] !== 3) player.y--; break;
-                case 'down': if (player.y < mazeSize - 1 && maze[player.y + 1][player.x] !== 3) player.y++; break;
-                case 'left': if (player.x > 0 && maze[player.y][player.x - 1] !== 3) player.x--; break;
-                case 'right': if (player.x < mazeSize - 1 && maze[player.y][player.x + 1] !== 3) player.x++; break;
-            }
-            updatePlayer();
-        }
-
-        function handleKeydown(event) {
+        function handleKeyPress(event) {
             switch (event.key) {
-                case 'ArrowUp': movePlayer('up'); break;
-                case 'ArrowDown': movePlayer('down'); break;
-                case 'ArrowLeft': movePlayer('left'); break;
-                case 'ArrowRight': movePlayer('right'); break;
+                case 'ArrowUp': movePlayer(0, -1); break;
+                case 'ArrowDown': movePlayer(0, 1); break;
+                case 'ArrowLeft': movePlayer(-1, 0); break;
+                case 'ArrowRight': movePlayer(1, 0); break;
             }
         }
 
-        document.getElementById('up').addEventListener('click', () => movePlayer('up'));
-        document.getElementById('down').addEventListener('click', () => movePlayer('down'));
-        document.getElementById('left').addEventListener('click', () => movePlayer('left'));
-        document.getElementById('right').addEventListener('click', () => movePlayer('right'));
+        function startGame(level) {
+            mazeSize = 10 + level * 5; // Increase maze size with level
+            generateMaze(mazeSize, level);
+            drawMaze();
+            playerPosition = { x: 1, y: 1 };
+            goalPosition = { x: mazeSize - 2, y: mazeSize - 2 };
+            document.addEventListener('keydown', handleKeyPress);
+        }
 
-        createMaze();
-        document.addEventListener('keydown', handleKeydown);
+        function advanceLevel() {
+            nextLevelButton.style.display = 'none';
+            startGame(currentLevel + 1);
+            messageElement.textContent = `Nível ${currentLevel + 1}`;
+        }
+
+        nextLevelButton.addEventListener('click', advanceLevel);
+
+        let currentLevel = 0;
+        startGame(currentLevel);
     </script>
 </body>
 </html>
