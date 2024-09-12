@@ -7,20 +7,29 @@
     <style>
         body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; }
         h1 { margin-bottom: 20px; }
-        #target { width: 50px; height: 50px; background-color: #007bff; position: absolute; cursor: pointer; }
+        #target { width: 50px; height: 50px; background-color: #007bff; position: absolute; cursor: pointer; display: none; }
         #message { margin-top: 20px; font-size: 1.2em; }
         #score { font-size: 1.2em; }
+        #start, #restart { margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer; display: block; }
+        #start { display: block; }
+        #restart { display: none; }
     </style>
 </head>
 <body>
-    <h1>Jogo de Clique Rápido</h1>
+    <h1 id="title">Jogo de Clique Rápido</h1>
     <div id="target"></div>
     <p id="score">Pontuação: 0</p>
     <p id="message"></p>
+    <button id="start">Começar Jogo</button>
+    <button id="restart">Jogar Novamente</button>
     <script>
         const target = document.getElementById('target');
         const scoreElement = document.getElementById('score');
         const messageElement = document.getElementById('message');
+        const startButton = document.getElementById('start');
+        const restartButton = document.getElementById('restart');
+        const title = document.getElementById('title');
+
         let score = 0;
         let gameTime = 15; // Tempo do jogo em segundos
         let timer;
@@ -39,6 +48,9 @@
         }
 
         function startGame() {
+            title.style.display = 'none'; // Oculta o título
+            startButton.style.display = 'none'; // Oculta o botão de iniciar
+            target.style.display = 'block'; // Mostra o alvo
             messageElement.textContent = 'Jogo em andamento!';
             score = 0;
             scoreElement.textContent = `Pontuação: ${score}`;
@@ -46,13 +58,27 @@
 
             timer = setTimeout(() => {
                 messageElement.textContent = `Tempo esgotado! Sua pontuação final é ${score}.`;
-                target.removeEventListener('click', increaseScore);
+                target.style.display = 'none'; // Oculta o alvo
+                restartButton.style.display = 'block'; // Mostra o botão de reinício
             }, gameTime * 1000);
 
             target.addEventListener('click', increaseScore);
         }
 
-        startGame();
+        function restartGame() {
+            title.style.display = 'block'; // Mostra o título novamente
+            startButton.style.display = 'block'; // Mostra o botão de iniciar novamente
+            restartButton.style.display = 'none'; // Oculta o botão de reinício
+            target.style.display = 'none'; // Oculta o alvo
+            messageElement.textContent = '';
+            scoreElement.textContent = `Pontuação: 0`;
+        }
+
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', restartGame);
+
+        // Inicialização
+        restartGame(); // Configura a tela inicial
     </script>
 </body>
 </html>
