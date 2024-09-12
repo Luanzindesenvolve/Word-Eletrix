@@ -18,6 +18,7 @@
         #guess-input { font-size: 1.2em; padding: 5px 10px; }
         #submit-button { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; font-size: 1em; cursor: pointer; }
         #submit-button:hover { background-color: #0056b3; }
+        #guess-input[disabled], #submit-button[disabled] { background-color: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -42,17 +43,46 @@
         let wrongGuesses = [];
         let hintsRemaining = 3;
 
-        // Lista com 100 palavras
         const words = [
-            'ABACAXI', 'BANANA', 'CACHORRO', 'DADOS', 'ESPELHO', 'FERRAMENTA', 'GATO', 'HAMBURGUER', 'IGREJA', 'JANELA',
-            'LIVRO', 'MESA', 'NAVIO', 'OLHO', 'PEIXE', 'QUADRO', 'ROTO', 'SOL', 'TIGRE', 'URSO',
-            'VACA', 'WIFI', 'XAXIM', 'YATE', 'ZEBRA', 'ALMOFADA', 'BALANÇA', 'CAIXA', 'DENTE', 'ESCRIVANINHA',
-            'FLORES', 'GUITARRA', 'HELMET', 'INSTAGRAM', 'JARDIM', 'KIWI', 'LAMPADA', 'MOEDA', 'NOTBOOK', 'OVOS',
-            'PAPEL', 'QUINTAL', 'RATO', 'SABONETE', 'TINTA', 'UVA', 'VESTIDO', 'XICARA', 'YOGURTE', 'ZANGAO',
-            'ABACATE', 'BEBIDA', 'CAFE', 'DENTISTA', 'ESCOLA', 'FELIZ', 'GATO', 'HIGIENE', 'IMOVEL', 'JOVEM',
-            'KIOSQUE', 'LIVRO', 'MOTO', 'NUVEM', 'OITO', 'PENSAO', 'QUARTO', 'ROUPA', 'SABADO', 'TERRA',
-            'URINA', 'VIAGEM', 'XAXIM', 'YOGA', 'ZEBRA', 'APARELHO', 'BOMBA', 'CASA', 'DINO', 'ELEFANTE'
-        ];
+    'ABACAXI', 'BANANA', 'CACHORRO', 'DADOS', 'ESPELHO', 'FERRAMENTA', 'GATO', 'HAMBURGUER', 'IGREJA', 'JANELA',
+    'LIVRO', 'MESA', 'NAVIO', 'OLHO', 'PEIXE', 'QUADRO', 'ROTO', 'SOL', 'TIGRE', 'URSO',
+    'VACA', 'WIFI', 'XAXIM', 'YATE', 'ZEBRA', 'ALMOFADA', 'BALANÇA', 'CAIXA', 'DENTE', 'ESCRIVANINHA',
+    'FLORES', 'GUITARRA', 'HELMET', 'INSTAGRAM', 'JARDIM', 'KIWI', 'LAMPADA', 'MOEDA', 'NOTBOOK', 'OVOS',
+    'PAPEL', 'QUINTAL', 'RATO', 'SABONETE', 'TINTA', 'UVA', 'VESTIDO', 'XICARA', 'YOGURTE', 'ZANGAO',
+    'ABACATE', 'BEBIDA', 'CAFE', 'DENTISTA', 'ESCOLA', 'FELIZ', 'GATO', 'HIGIENE', 'IMOVEL', 'JOVEM',
+    'KIOSQUE', 'LIVRO', 'MOTO', 'NUVEM', 'OITO', 'PENSAO', 'QUARTO', 'ROUPA', 'SABADO', 'TERRA',
+    'URINA', 'VIAGEM', 'XAXIM', 'YOGA', 'ZEBRA', 'APARELHO', 'BOMBA', 'CASA', 'DINO', 'ELEFANTE',
+    'ABECEDARIO', 'AFETIVO', 'ALCOOL', 'ALUNO', 'AMARELO', 'AMIGA', 'ANIMAL', 'ARTE', 'AVIAO', 'BALDE',
+    'BOLSA', 'BRASIL', 'BRISA', 'BOMBA', 'CAMISA', 'CARRO', 'CASACO', 'CELULAR', 'CHAVE', 'CHUVA',
+    'COMIDA', 'CORPO', 'CRIANCA', 'DENTISTA', 'DEUSA', 'DINHEIRO', 'ESCOVA', 'ESPELHO', 'FESTA', 'FLORESTA',
+    'FRUTA', 'FUTEBOL', 'GALINHA', 'GARRAFA', 'GATINHO', 'GOLEIRO', 'HAMBURGER', 'HOSPEDAGEM', 'HORA', 'IDEIA',
+    'ILHA', 'INSETO', 'JOVEM', 'JOGO', 'JOVEM', 'KILOMETRO', 'LEITE', 'LIVRO', 'LOJA', 'MACHADO',
+    'MALA', 'MESA', 'MOTOR', 'NOME', 'PASTA', 'PEIXE', 'PIRAMIDE', 'PONTO', 'PORTA', 'QUADRO',
+    'RATO', 'RELOGIO', 'ROSA', 'ROUPA', 'SALARIO', 'SAPATO', 'SILVA', 'SONHO', 'TEMPO', 'TORRE',
+    'UNIVERSIDADE', 'URSO', 'VACINA', 'VESTIDO', 'VIDRO', 'VILA', 'VITAMINA', 'VOLUME', 'XAXIM', 'XICARA',
+    'YOGURTE', 'ZEBRA', 'ZINCO', 'ABRIL', 'ADIVINHA', 'AGUA', 'ALMOCO', 'AMOR', 'ARCO', 'AVENTURA',
+    'AZUL', 'BARCO', 'BELEZA', 'BOLO', 'CAMPEAO', 'CANETA', 'CHOCOLATE', 'CLUBE', 'COLUNA', 'CONTADOR',
+    'CRIME', 'CUPCAKE', 'DESENHO', 'DINAMITE', 'ESPADA', 'FELIZ', 'FESTIVAL', 'FRANCA', 'FUTURO', 'GARRAFA',
+    'GATO', 'GOL', 'INICIO', 'JANELA', 'JOVEM', 'LAMPADA', 'MERCADO', 'MILHO', 'MORANGO', 'MUSICA',
+    'NINJA', 'OBRA', 'PAIS', 'PASSARO', 'PEDRA', 'PENALTI', 'PERU', 'POESIA', 'RODA', 'SABOR',
+    'SANGUE', 'SECADOR', 'SERINGA', 'SIMPLES', 'SORVETE', 'TORNADO', 'TRILHA', 'TROCA', 'UNIFORME', 'USINA',
+    'VALOR', 'VESTIDO', 'VIDA', 'VINTAGE', 'VOO', 'ALFACE', 'ANDORINHA', 'BILHETE', 'BRINCO', 'BUNDA',
+    'CALCULO', 'CARRO', 'CLIMA', 'COLECAO', 'CORRIDA', 'CRUZ', 'CUPOM', 'DEDO', 'DESAFIO', 'DIA',
+    'FANTASMA', 'FESTIVAL', 'FIM', 'FRETE', 'FUMAÇA', 'GLOBO', 'GOSTO', 'GRANDE', 'GUITARRA', 'HEROI',
+    'HIPOPOTAMO', 'IMAGEM', 'JOVEM', 'LEITURA', 'LUZ', 'MAGIA', 'MAPA', 'NINHO', 'ORQUESTRA', 'PAISAGEM',
+    'PAREDE', 'PESCA', 'PONTE', 'PORTA', 'REI', 'RIQUEZA', 'RITMO', 'ROSTO', 'RUMOR', 'SAIDA',
+    'SAUDE', 'SEDE', 'SORRISO', 'TAÇA', 'TELHA', 'TIGRE', 'TRAJE', 'UNIVERSO', 'URINA', 'VIAJANTE',
+    'VIVIDO', 'VOO', 'ALPINISTA', 'ANJO', 'BALANCA', 'BICICLETA', 'CACHO', 'CALCADO', 'CHUVEIRO', 'DANCA',
+    'ENCANTADO', 'FALHA', 'FELIZ', 'FOGO', 'FRANGO', 'GARRAFA', 'GLASS', 'GOSTOSO', 'MORRO', 'NATAL',
+    'OBSTACULO', 'PASTA', 'PISCINA', 'POTE', 'RIBEIRA', 'ROPA', 'SALADA', 'SILENCIO', 'SOM', 'TABELA',
+    'TEATRO', 'TORNEIRA', 'URSO', 'VETERINARIO', 'VIRUS', 'VOLTA', 'YOGA', 'XAXIM', 'ZEBRA', 'ZINHO',
+    'ABELHA', 'AFONSO', 'AMIGOS', 'ANJO', 'BARBANTE', 'BELEZA', 'BICICLETA', 'BOMBA', 'CANELA', 'CAPACETE',
+    'CAVALO', 'CHAVEIRO', 'CINZA', 'COLUNA', 'CORPO', 'CUPOM', 'DESAFIO', 'DIA', 'DINO', 'DOCE',
+    'ELEFANTE', 'ESCOLA', 'FELIZ', 'FLORESTA', 'FUTEBOL', 'GAIVOTA', 'GASTAR', 'GOLD', 'GRAVATA', 'JOVEM',
+    'LANCHONETE', 'LIVRO', 'MADRUGADA', 'MALETA', 'MESA', 'MOTE', 'NOVA', 'OBSTACULO', 'PAIS', 'PAREDE',
+    'PEIXE', 'PORTO', 'QUADRO', 'RECEITA', 'ROPA', 'SAIDA', 'SALARIO', 'SILVA', 'SOL', 'SONHO',
+    'TERRA', 'TIGRE', 'UNIVERSO', 'VACA', 'VALENTE', 'VIAGEM', 'VIVO', 'VOO', 'XICARA', 'ZEBRA'
+];
 
         function selectRandomWord() {
             return words[Math.floor(Math.random() * words.length)];
@@ -72,24 +102,31 @@
                 updateWordDisplay();
 
                 if (!displayedWord.includes('_')) {
-                    messageElement.textContent = 'Parabéns! Você venceu!';
-                    hintButton.style.display = 'none';
-                    restartButton.style.display = 'block';
+                    endGame(true);
                 }
             } else {
                 wrongGuesses.push(letter);
                 messageElement.textContent = `Erros: ${wrongGuesses.join(', ')}`;
                 if (wrongGuesses.length >= 6) { // Limite de erros
-                    messageElement.textContent = `Você perdeu! A palavra era: ${currentWord}`;
-                    hintButton.style.display = 'none';
-                    restartButton.style.display = 'block';
+                    endGame(false);
                 }
             }
         }
 
+        function endGame(won) {
+            if (won) {
+                messageElement.textContent = 'Parabéns! Você venceu!';
+            } else {
+                messageElement.textContent = `Você perdeu! A palavra era: ${currentWord}`;
+            }
+            hintButton.style.display = 'none';
+            restartButton.style.display = 'block';
+            guessInput.disabled = true;
+            submitButton.disabled = true;
+        }
+
         function getHint() {
             if (hintsRemaining > 0) {
-                // Dica baseada na posição das letras
                 const hint = `A palavra tem ${currentWord.length} letras e começa com "${currentWord[0]}"`;
                 hintElement.textContent = `Dica: ${hint}`;
                 hintsRemaining--;
@@ -113,6 +150,8 @@
             restartButton.style.display = 'none';
             messageElement.textContent = '';
             guessInput.value = '';
+            guessInput.disabled = false;
+            submitButton.disabled = false;
             guessInput.focus();
         }
 
