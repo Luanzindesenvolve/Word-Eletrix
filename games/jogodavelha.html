@@ -11,18 +11,21 @@
         .cell { width: 100px; height: 100px; text-align: center; line-height: 100px; font-size: 2em; cursor: pointer; border: 2px solid #333; background-color: #fff; transition: background-color 0.3s; }
         .cell:hover { background-color: #e0e0e0; }
         #message { margin-top: 20px; font-size: 1.2em; }
+        button { margin-top: 20px; padding: 10px 20px; font-size: 1em; cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>Jogo da Velha</h1>
     <div class="board" id="board"></div>
     <p id="message"></p>
+    <button id="playAgainstBot">Jogar contra o Robô</button>
     <script>
         const board = document.getElementById('board');
         const messageElement = document.getElementById('message');
+        const playAgainstBotButton = document.getElementById('playAgainstBot');
         const cells = Array.from({ length: 9 }, () => '');
-
         let turn = 'X';
+        let isBotEnabled = false;
 
         function checkWinner() {
             const winPatterns = [
@@ -48,6 +51,9 @@
                     board.querySelectorAll('.cell').forEach(cell => cell.removeEventListener('click', handleCellClick));
                 } else {
                     turn = turn === 'X' ? 'O' : 'X';
+                    if (isBotEnabled && turn === 'O') {
+                        setTimeout(botMove, 500);
+                    }
                 }
             }
         }
@@ -55,6 +61,12 @@
         function handleCellClick(event) {
             const index = Array.from(board.children).indexOf(event.target);
             handleClick(index);
+        }
+
+        function botMove() {
+            const emptyCells = cells.map((cell, index) => cell === '' ? index : null).filter(index => index !== null);
+            const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            handleClick(randomIndex);
         }
 
         function createBoard() {
@@ -66,6 +78,20 @@
                 board.appendChild(cell);
             }
         }
+
+        function startNewGame() {
+            cells.fill('');
+            board.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+            messageElement.textContent = '';
+            turn = 'X';
+            board.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
+        }
+
+        playAgainstBotButton.addEventListener('click', () => {
+            isBotEnabled = !isBotEnabled;
+            startNewGame();
+            playAgainstBotButton.textContent = isBotEnabled ? 'Desativar Robô' : 'Jogar contra o Robô';
+        });
 
         createBoard();
     </script>
