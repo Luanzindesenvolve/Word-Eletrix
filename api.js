@@ -103,6 +103,50 @@ const {
   snapsave
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Definindo a rota com Router.get
+
+
+router.get('/play2', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
+  }
+
+  try {
+    const searchResult = await search(query);
+    const video = searchResult.videos[0];
+    if (!video) {
+      return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+    }
+
+    const url = video.url;
+    const timestamp = new Date().toISOString().replace(/:/g, '-');
+    const audioPath = path.join(__dirname, `audio-${timestamp}.mp3`);
+    const command = `yt-dlp -x --audio-format mp3 -o "${audioPath}" ${url}`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erro ao baixar o áudio: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao baixar o áudio.' });
+      }
+
+      console.log(`Áudio baixado com sucesso: ${audioPath}`);
+      res.download(audioPath, (err) => {
+        if (err) {
+          console.error(`Erro ao enviar o arquivo: ${err.message}`);
+          return res.status(500).json({ error: 'Erro ao enviar o arquivo.' });
+        }
+
+        fs.unlink(audioPath, err => {
+          if (err) console.error(`Erro ao excluir o arquivo: ${err.message}`);
+        });
+      });
+    });
+  } catch (error) {
+    console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
+  }
+});
 router.get("/insta", async (req, res) => {
     const { url } = req.query; // A URL é passada como parâmetro de consulta (query)
 
