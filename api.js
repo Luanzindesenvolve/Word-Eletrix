@@ -1688,71 +1688,78 @@ router.get('/pesquisayt', async (req, res) => {
 //ytmp3 pela ulr
 
 router.get('/ytmp3', async (req, res) => {
-  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+  const query = req.query.query;
 
-  if (!url) {
-    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
+  if (!query) {
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    const id = yt.getVideoID(url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-    const formats = data.formats;
-    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
+    // Crie um nome único para o arquivo de áudio usando a data e hora atuais
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const audioPath = path.join(__dirname, 'temp', `audio-${timestamp}.mp3`);
+    const command = `yt-dlp -x --audio-format mp3 -o "${audioPath}" ${query}`;
 
-    if (!audioFormat) {
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
-    }
+    // Executa o comando para baixar o áudio
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erro ao baixar o áudio: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao baixar o áudio.' });
+      }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: audioFormat.url
-    };
+      // Envia o arquivo de áudio
+      res.setHeader('Content-Type', 'audio/mp3');
+      fs.createReadStream(audioPath).pipe(res);
 
-    res.json({ criador: 'World Ecletix', result });
+      // Limpa o arquivo temporário após o envio
+      fs.unlink(audioPath, err => {
+        if (err) console.error(`Erro ao excluir o arquivo: ${err.message}`);
+      });
+    });
   } catch (error) {
-    console.error('Erro ao baixar o áudio do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao baixar o áudio do YouTube' });
+    console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
   }
-}); 
+});
+
+
 //ytmp4 pela ulr vídeo
 
 router.get('/ytmp4', async (req, res) => {
-  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+  const query = req.query.query;
 
-  if (!url) {
-    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
+  if (!query) {
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    const id = yt.getVideoID(url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-const formats = data.formats;
-    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
+    // Crie um nome único para o arquivo de vídeo usando a data e hora atuais
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const videoPath = path.join(__dirname, 'temp', `video-${timestamp}.mp4`);
+    const command = `yt-dlp -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]' -o "${videoPath}" ${query}`;
 
-    if (!videoFormat) {
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
-    }
+    // Executa o comando para baixar o vídeo
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erro ao baixar o vídeo: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao baixar o vídeo.' });
+      }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: videoFormat.url
-    };
+      // Envia o arquivo de vídeo
+      res.setHeader('Content-Type', 'video/mp4');
+      fs.createReadStream(videoPath).pipe(res);
 
-    res.json({ criador: 'World Ecletix', result });
+      // Limpa o arquivo temporário após o envio
+      fs.unlink(videoPath, err => {
+        if (err) console.error(`Erro ao excluir o arquivo: ${err.message}`);
+      });
+    });
   } catch (error) {
-    console.error('Erro ao baixar o vídeo do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao baixar o vídeo do YouTube' });
+    console.error('Erro ao buscar e baixar o vídeo do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar e baixar o vídeo do YouTube' });
   }
 });
+
 //play
 
 
