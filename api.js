@@ -6,10 +6,6 @@ const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
 const criador = 'World Ecletix';
-const tempDir = path.join(__dirname, 'temp');
-if (!fs.existsSync(tempDir)) {
-  fs.mkdirSync(tempDir);
-}
 const cors = require('cors');
 const { TelegramClient } = require('telegram');
 const { StringSession } = require('telegram/sessions');
