@@ -6,6 +6,10 @@ const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
 const criador = 'World Ecletix';
+const tempDir = path.join(__dirname, 'temp');
+if (!fs.existsSync(tempDir)) {
+  fs.mkdirSync(tempDir);
+}
 const cors = require('cors');
 const { TelegramClient } = require('telegram');
 const { StringSession } = require('telegram/sessions');
@@ -1750,10 +1754,18 @@ const formats = data.formats;
   }
 });
 //play
+
+
+// Função para gerar um nome de arquivo único usando a data e hora atual
+function gerarNomeArquivo(prefixo) {
+  const agora = new Date();
+  const dataFormatada = agora.toISOString().replace(/[:.]/g, '-'); // Substituir caracteres especiais
+  return `${prefixo}-${dataFormatada}.mp3`;
+}
+
+// Rota para baixar áudio
 router.get('/play', async (req, res) => {
   const query = req.query.query;
-
-  console.log(`Recebida consulta para MP3: ${query}`);
 
   if (!query) {
     console.error('Nenhuma consulta fornecida.');
@@ -1762,94 +1774,106 @@ router.get('/play', async (req, res) => {
 
   try {
     const searchResult = await search(query);
-    console.log('Resultados da pesquisa:', searchResult);
-
     const video = searchResult.videos[0];
     if (!video) {
       console.error('Nenhum vídeo encontrado para a consulta.');
       return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
     }
 
-    console.log(`Primeiro vídeo encontrado: ${video.url}`);
+    const url = video.url;
+    
+    // Gerar um nome de arquivo único
+    const nomeArquivo = gerarNomeArquivo('audio');
+    const audioPath = path.join(__dirname, 'temp', nomeArquivo);
 
-    const id = yt.getVideoID(video.url);
-    console.log(`ID do vídeo: ${id}`);
-
-    const data = await yt.getInfo(id);
-    console.log('Informações do vídeo:', data);
-
-    const audioFormat = data.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
-    console.log('Formato de áudio encontrado:', audioFormat);
-
-    if (!audioFormat) {
-      console.error('Formato de áudio não encontrado.');
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    // Verificar se o diretório existe
+    const tempDir = path.join(__dirname, 'temp');
+    if (!fs.existsSync(tempDir)) {
+      console.log(`Diretório ${tempDir} não existe. Criando...`);
+      fs.mkdirSync(tempDir);
     }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: audioFormat.url
-    };
+    // Baixar o áudio com yt-dlp
+    const command = `yt-dlp -x --audio-format mp3 -o "${audioPath}" ${url}`;
+    console.log(`Executando o comando: ${command}`);
 
-    console.log('Resultado final:', result);
-    res.json({ criador: 'World Ecletix', result });
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erro ao baixar o áudio: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao baixar o áudio.' });
+      }
+
+      if (stderr) {
+        console.error(`Erro do yt-dlp: ${stderr}`);
+      }
+
+      console.log(`Saída do yt-dlp: ${stdout}`);
+
+      // Verificar se o arquivo foi realmente criado
+      if (!fs.existsSync(audioPath)) {
+        console.error('O arquivo de áudio não foi criado.');
+        return res.status(500).json({ error: 'O arquivo de áudio não foi criado.' });
+      }
+
+      console.log(`Arquivo de áudio criado com sucesso: ${audioPath}`);
+
+      // Enviar o arquivo de áudio
+      res.setHeader('Content-Type', 'audio/mpeg');
+      
+      const readStream = fs.createReadStream(audioPath);
+      readStream.pipe(res);
+
+      // Após o término do envio do arquivo, ele será excluído
+      readStream.on('close', () => {
+        fs.unlink(audioPath, err => {
+          if (err) {
+            console.error(`Erro ao excluir o arquivo: ${err.message}`);
+          } else {
+            console.log('Arquivo de áudio excluído após o envio.');
+          }
+        });
+      });
+
+    });
   } catch (error) {
     console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
     res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
   }
 });
-
 router.get('/playvideo', async (req, res) => {
   const query = req.query.query;
 
-  console.log(`Recebida consulta para MP4: ${query}`);
-
   if (!query) {
-    console.error('Nenhuma consulta fornecida.');
     return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
   }
 
   try {
-    const searchResult = await search(query);
-    console.log('Resultados da pesquisa:', searchResult);
-
+    const searchResult = await search(query);  // Função de busca no YouTube
     const video = searchResult.videos[0];
+
     if (!video) {
-      console.error('Nenhum vídeo encontrado para a consulta.');
       return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
     }
 
-    console.log(`Primeiro vídeo encontrado: ${video.url}`);
-
     const id = yt.getVideoID(video.url);
-    console.log(`ID do vídeo: ${id}`);
-
     const data = await yt.getInfo(id);
-    console.log('Informações do vídeo:', data);
 
     const videoFormat = data.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
-    console.log('Formato de vídeo encontrado:', videoFormat);
 
     if (!videoFormat) {
-      console.error('Formato de vídeo MP4 não encontrado.');
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
+      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado.' });
     }
 
     const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
+      title: data.videoDetails.title,
+      thumbnail: data.videoDetails.thumbnails[0].url,
+      channel: data.videoDetails.author.name,
+      published: data.videoDetails.uploadDate,
+      views: data.videoDetails.viewCount,
       link: videoFormat.url
     };
 
-    console.log('Resultado final:', result);
-    res.json({ criador: 'World Ecletix', result });
+    res.json({ creator: 'World Ecletix', result });
   } catch (error) {
     console.error('Erro ao buscar e baixar o vídeo do YouTube:', error.message);
     res.status(500).json({ error: 'Erro ao buscar e baixar o vídeo do YouTube' });
