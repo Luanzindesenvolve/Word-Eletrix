@@ -5,6 +5,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('ytdl-core');
+const { exec } = require('child_process');
 const criador = 'World Ecletix';
 const cors = require('cors');
 const { TelegramClient } = require('telegram');
