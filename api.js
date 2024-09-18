@@ -1762,7 +1762,65 @@ router.get('/ytmp4', async (req, res) => {
 
 //play
 
+router.get('/musica', async (req, res) => {
+  const query = req.query.query;
 
+  if (!query) {
+    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
+  }
+
+  try {
+    const searchResult = await search(query);  // Realiza a busca no YouTube
+    const video = searchResult.videos[0];
+
+    if (!video) {
+      return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+    }
+
+    const url = video.url;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const audioPath = path.join(__dirname, 'temp', `audio-${timestamp}.mp3`);
+    const command = `yt-dlp -x --audio-format mp3 -o "${audioPath}" ${url}`;
+
+    exec(command, async (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erro ao baixar o áudio: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao baixar o áudio.' });
+      }
+
+      // Verificar se o arquivo realmente existe antes de tentar abrir
+      if (fs.existsSync(audioPath)) {
+        // Configura o cabeçalho para o download automático
+        res.setHeader('Content-Disposition', `attachment; filename="audio-${timestamp}.mp3"`);
+        res.setHeader('Content-Type', 'audio/mp3');
+        
+        const stream = fs.createReadStream(audioPath);
+        
+        // Enviar o arquivo e garantir que só exclua após o fim do stream
+        stream.pipe(res);
+
+        stream.on('end', () => {
+          // Excluir o arquivo temporário após o envio
+          fs.unlink(audioPath, err => {
+            if (err) console.error(`Erro ao excluir o arquivo: ${err.message}`);
+          });
+        });
+
+        stream.on('error', (err) => {
+          console.error(`Erro no streaming do arquivo: ${err.message}`);
+          res.status(500).json({ error: 'Erro ao enviar o arquivo de áudio.' });
+        });
+
+      } else {
+        console.error('Erro: O arquivo de áudio não foi encontrado.');
+        return res.status(500).json({ error: 'O arquivo de áudio não foi encontrado.' });
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
+  }
+});
 // Função para gerar um nome de arquivo único usando a data e hora atual
 function gerarNomeArquivo(prefixo) {
   const agora = new Date();
