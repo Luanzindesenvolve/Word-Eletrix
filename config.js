@@ -15,7 +15,100 @@ const useragent_1 = {
   "user-agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.136 Mobile Safari/537.36"
 };
 const got = require('got')
+// Definindo a rota com Router.get
+// Variáveis de ambiente para as credenciais do Spotify
+process.env['SPOTIFY_CLIENT_ID'] = '4c4fc8c3496243cbba99b39826e2841f';
+process.env['SPOTIFY_CLIENT_SECRET'] = 'd598f89aba0946e2b85fb8aefa9ae4c8';
 
+// Função para converter milissegundos em minutos:segundos
+async function convert(ms) {
+    var minutes = Math.floor(ms / 60000);
+    var seconds = ((ms % 60000) / 1000).toFixed(0);
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+
+// Função para obter credenciais do Spotify
+async function spotifyCreds() {
+    return new Promise(async resolve => {
+        try {
+            const json = await (await axios.post('https://accounts.spotify.com/api/token', 'grant_type=client_credentials', {
+                headers: {
+                    Authorization: 'Basic ' + Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')
+                }
+            })).data;
+            if (!json.access_token) return resolve({
+                status: false,
+                msg: 'Não foi possível gerar o token!'
+            });
+            resolve({
+                status: true,
+                data: json
+            });
+        } catch (e) {
+            resolve({
+                status: false,
+                msg: e.message
+            });
+        }
+    });
+}
+
+// Função para buscar músicas pelo nome
+async function searching(query, type = 'track', limit = 20) {
+    return new Promise(async resolve => {
+        try {
+            const creds = await spotifyCreds();
+            if (!creds.status) return resolve(creds);
+            const json = await (await axios.get(`https://api.spotify.com/v1/search?query=${query}&type=${type}&offset=0&limit=${limit}`, {
+                headers: {
+                    Authorization: 'Bearer ' + creds.data.access_token
+                }
+            })).data;
+            if (!json.tracks.items || json.tracks.items.length < 1) return resolve({
+                status: false,
+                msg: 'Música não encontrada!'
+            });
+            let data = [];
+            json.tracks.items.map(v => data.push({
+                title: v.album.artists[0].name + ' - ' + v.name,
+                duration: convert(v.duration_ms),
+                popularity: v.popularity + '%',
+                preview: v.preview_url,
+                url: v.external_urls.spotify
+            }));
+            resolve({
+                status: true,
+                data
+            });
+        } catch (e) {
+            resolve({
+                status: false,
+                msg: e.message
+            });
+        }
+    });
+}
+
+// Função para baixar música do Spotify
+async function spotifydl(url) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const yanzz = await axios.get(`https://api.fabdl.com/spotify/get?url=${encodeURIComponent(url)}`);
+            const yanz = await axios.get(`https://api.fabdl.com/spotify/mp3-convert-task/${yanzz.data.result.gid}/${yanzz.data.result.id}`);
+            const result = {
+                title: yanzz.data.result.name,
+                type: yanzz.data.result.type,
+                artis: yanzz.data.result.artists,
+                durasi: yanzz.data.result.duration_ms,
+                image: yanzz.data.result.image,
+                download: "https://api.fabdl.com" + yanz.data.result.download_url
+            };
+            resolve(result);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 module.exports = snapsave = (url) => {
   return new Promise(async (resolve) => {
     try {
@@ -2351,5 +2444,8 @@ module.exports = { geturl, pensador, styletext, getgrupos, gpwhatsapp, hentaistu
   wikimedia, 
   styletext,
  LetradaMusica,
- snapsave
+ snapsave,
+ searching, 
+ spotifydl
+ 
  };
