@@ -99,9 +99,41 @@ const {
   lojadomecanico,
   wallpaper,
   wikimedia,
-  snapsave
+  snapsave,
+  searching, 
+  spotifydl
 } = require('./config.js'); // arquivo que ele puxa as funções 
-// Definindo a rota com Router.get
+
+// rota para baixar música do spotify 
+router.get('/spotify', async (req, res) => {
+    try {
+        const { nome } = req.query;
+
+        if (!nome) {
+            return res.status(400).json({ status: false, message: "O nome da música é obrigatório!" });
+        }
+
+        // Busca a música pelo nome
+        const searchResult = await searching(nome);
+        if (!searchResult.status) {
+            return res.status(404).json(searchResult);
+        }
+
+        // Pega o primeiro resultado e gera o link de download
+        const trackUrl = searchResult.data[0].url;
+        const downloadResult = await spotifydl(trackUrl);
+
+        // Retorna as informações e o link de download
+        res.status(200).json({
+            status: true,
+            trackInfo: searchResult.data[0],
+            downloadLink: downloadResult.download
+        });
+    } catch (error) {
+        res.status(500).json({ status: false, message: error.message });
+    }
+});
+
 
 router.get("/insta", async (req, res) => {
     const { url } = req.query; // A URL é passada como parâmetro de consulta (query)
