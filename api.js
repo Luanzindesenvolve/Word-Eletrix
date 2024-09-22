@@ -107,6 +107,230 @@ const {
 const { Maker } = require('./modulos/imagemaker.js');
 // photooxyRouter.js
 
+router.get('/mascotegame', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-gaming-mascot-logo-free-560.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/mascoteavatar', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-logo-avatar-mascot-style-364.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/wingeffect', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/the-effect-of-galaxy-angel-wings-289.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/angelglx', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/wings-galaxy-206.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/gizquadro', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/writing-chalk-on-the-blackboard-30.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/blackpink', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-blackpink-neon-logo-text-effect-online-710.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/girlmascote', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-cute-girl-gamer-mascot-logo-online-687.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/logogame', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-logo-team-logo-gaming-assassin-style-574.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/romantico', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/fire', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/smoke', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/papel', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/angelwing', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-colorful-angel-wing-avatars-731.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
 router.get('/hackneon', async (req, res) => {
     const texto = req.query.texto;
 
