@@ -103,6 +103,27 @@ const {
   searching, 
   spotifydl
 } = require('./config.js'); // arquivo que ele puxa as funções 
+//Photooxy 
+const { Maker } = require('./modulos/imagemaker.js');
+// photooxyRouter.js
+
+router.get('/frozen', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-frozen-christmas-text-effect-online-792.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
 
 // rota para baixar música do spotify 
 router.get('/spotify', async (req, res) => {
