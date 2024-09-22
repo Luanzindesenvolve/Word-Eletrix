@@ -107,6 +107,183 @@ const {
 const { Maker } = require('./modulos/imagemaker.js');
 // photooxyRouter.js
 
+router.get('/hackneon', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-anonymous-hacker-avatars-cyan-neon-677.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/fpsmascote', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/free-gaming-logo-maker-for-fps-game-team-546.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/equipemascote', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/make-team-logo-online-free-432.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/txtquadrinhos', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/boom-text-comic-style-text-effect-675.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/3dsilver', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-glossy-silver-3d-text-effect-online-802.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/goldtext', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/gold-text-effect-158.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/starballons', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/beautiful-3d-foil-balloon-effects-for-holidays-and-birthday-803.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+app.get('/api/photooxy/ffbanner', async(req, res, next) => {
+texto = req.query.texto;
+texto2 = req.query.texto2;
+
+if(!texto) return res.json({message: "Cade o parametro texto"})
+if(!texto2) return res.json({message: "Cade o parametro texto2"})
+const { username, apikey } = req.query;
+if (!username || !apikey) {
+return res.status(400).json({ error: "Faltou o parâmetro 'username' ou 'key' na query" });}
+const users = readUsersFromFile();
+const user = users.find(user => user.username === username && user.key === apikey);
+if (!user) {return res.status(401).send('Acesso não autorizado.');}
+const resultadoDiminuicao = diminuirSaldo(username);
+if (!resultadoDiminuicao) {return res.status(400).json({ error: "Saldo insuficiente." });}
+new Maker().Ephoto360("https://en.ephoto360.com/make-your-own-free-fire-youtube-banner-online-free-562.html", [`${texto}`, `${texto2}`])
+.then((data) => { res.json({
+status: true,
+resultado: data
+})
+}).catch(e => {
+res.json({erro:'Erro no Servidor Interno'})
+})
+})
+router.get('/ffbanner', async (req, res) => {
+    const texto,texto2 = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/make-your-own-free-fire-youtube-banner-online-free-562.html", [`${texto}`,`${texto2}`}]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/ffavatar', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-free-fire-avatar-online-572.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
 router.get('/frozen', async (req, res) => {
     const texto = req.query.texto;
 
@@ -125,6 +302,7 @@ router.get('/frozen', async (req, res) => {
     }
 });
 
+//fim do photoxy
 // rota para baixar música do spotify 
 router.get('/spotify', async (req, res) => {
     try {
