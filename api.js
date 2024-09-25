@@ -104,6 +104,34 @@ const {
   spotifydl
 } = require('./config.js'); // arquivo que ele puxa as funções 
 //Photooxy 
+const KEY_FUT = 'live_fcf4c164846e93042456febc882849'; // Substitua pela sua chave
+
+// Rota para listar a tabela do Brasileirão
+router.get('/tabela', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela', {
+      headers: {
+        Authorization: `Bearer ${KEY_FUT}`
+      }
+    });
+
+    // Montar a tabela em um formato mais legível
+    let tabela = 'Time               | P  | J  | V  | S \n'; // Cabeçalho da tabela alinhado
+    tabela += '---------------------------------------\n'; // Linha de separação
+
+    response.data.forEach(time => {
+      // Adicionando os dados à tabela, formatando as colunas
+      tabela += `${time.time.nome_popular.padEnd(18)} | ${time.pontos.toString().padStart(2)} | ${time.jogos.toString().padStart(2)} | ${time.vitorias.toString().padStart(2)} | ${time.saldo_gols.toString().padStart(2)}\n`;
+    });
+
+    // Respondendo com a tabela formatada
+    res.set('Content-Type', 'text/plain');
+    res.send(tabela);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar dados da tabela' });
+  }
+});
 const { Maker } = require('./modulos/imagemaker.js');
 // photooxyRouter.js
 router.get('/googlesg', async (req, res) => {
