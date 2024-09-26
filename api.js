@@ -105,7 +105,44 @@ const {
 } = require('./config.js'); // arquivo que ele puxa as funções 
 //Photooxy 
 const KEY_FUT = 'live_fcf4c164846e93042456febc882849'; // Substitua pela sua chave
+// Rota para obter a artilharia do Brasileirão
+router.get('/artilheiro', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10/artilharia', {
+      headers: {
+        'Authorization': 'Bearer live_fcf4c164846e93042456febc882849' 
+      }
+    });
 
+    // Extrair dados da resposta
+    const dados = response.data;
+
+    // Função para formatar os dados em uma tabela
+    const formatarTabela = (dados) => {
+      let tabela = 'Time            | Gols | Atleta\n';
+      tabela += '---------------------------------\n';
+
+      dados.forEach(item => {
+        const time = item.time.nome_popular.padEnd(15, ' ');
+        const gols = item.gols.toString().padStart(4, ' ');
+        const atleta = item.atleta.nome_popular ? item.atleta.nome_popular : 'Desconhecido';
+        tabela += `${time} | ${gols} | ${atleta}\n`;
+      });
+
+      return tabela;
+    };
+
+    // Formatando a tabela
+    const tabelaFormatada = formatarTabela(dados);
+
+    // Enviando a resposta com a tabela formatada
+    res.type('text/plain');
+    res.send(tabelaFormatada);
+  } catch (error) {
+    console.error('Erro ao obter a artilharia:', error);
+    res.status(500).send('Erro ao obter a artilharia');
+  }
+});
 // Rota para listar a tabela do Brasileirão
 router.get('/tabela', async (req, res) => {
   try {
