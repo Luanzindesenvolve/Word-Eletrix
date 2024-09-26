@@ -179,7 +179,7 @@ router.get('/googlesg', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/make-google-suggestion-photos-238.html", [`${texto}`]);
+        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/make-google-suggestion-photos-238.html",  [texto, texto2, texto3]);
         res.json({
             status: true,
             resultado: data
@@ -196,7 +196,7 @@ router.get('/sweet-candy', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", [texto, texto2, texto3]);
+        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", [`${texto}`]);
         res.json({
             status: true,
             resultado: data
