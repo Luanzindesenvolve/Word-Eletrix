@@ -289,8 +289,6 @@ router.get('/plaq', async (req, res) => {
     const url = `https://raptibef.sirv.com/images%20(3).jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
     await sendImage(req, res, url, ' *Plaquinha feita*');
 });
-const express = require('express');
-const router = express.Router();
 
 // Rota 'anime1' para gerar imagem com texto personalizado
 router.get('/anime-texto', async (req, res) => {
