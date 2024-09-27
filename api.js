@@ -124,34 +124,45 @@ async function sendImage(req, res, url, caption) {
     }
 }
 
-// Rota para o comando 'aplaca'
-router.get('/aplaca', async (req, res) => {
-    const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}aplaca e digite o seu nome`);
-    if (text.length > 20) return res.status(400).send('O texto é longo, até 20 caracteres');
 
-    const url = `https://553555.sirv.com/Images/IMG-20231205-WA0153.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-34%25&text.0.position.y=-4%25&text.0.size=37&text.0.color=f00000`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+// Prefixo para mensagens de erro
+const prefix = '!';
+
+// Função auxiliar para gerar a URL da imagem
+function getImageUrl(type, text) {
+    switch (type) {
+        case 'aplaca':
+            return `https://553555.sirv.com/Images/IMG-20231205-WA0153.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-34%25&text.0.position.y=-4%25&text.0.size=37&text.0.color=f00000`;
+        case 'frankyplaq':
+            return `https://553555.sirv.com/Images/1200x675.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-72%25&text.0.position.y=-5%25&text.0.size=14&text.0.color=ffffff&text.0.font.family=Alice`;
+        case 'ata':
+            return `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2012.04.15.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-28%25&text.0.position.y=-75%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Monda&text.0.font.style=italic`;
+            throw new Error('Tipo de imagem não reconhecido');
+    }
+}
+
+// Rota para o comando 'aplaca'
+router.get('/aplaca', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 20) return res.status(400).send(`${prefix}aplaca e digite um texto válido (máx 20 caracteres)`);
+    const url = getImageUrl('aplaca', text);
+    res.json({ image: { url }, caption: ' *Plaquinha feita*' });
 });
 
 // Rota para o comando 'frankyplaq'
-router.get('/frankyplaq', async (req, res) => {
+router.get('/frankyplaq', (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}frankyplaq e digite o seu nome`);
-    if (text.length > 17) return res.status(400).send('O texto é longo, até 17 caracteres');
-
-    const url = `https://553555.sirv.com/Images/1200x675.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-72%25&text.0.position.y=-5%25&text.0.size=14&text.0.color=ffffff&text.0.font.family=Alice`;
-    await sendImage(req, res, url, ' *Plaquinha feita COM SUCESSO*');
+    if (!text || text.length > 17) return res.status(400).send(`${prefix}frankyplaq e digite um texto válido (máx 17 caracteres)`);
+    const url = getImageUrl('frankyplaq', text);
+    res.json({ image: { url }, caption: ' *Plaquinha feita COM SUCESSO*' });
 });
 
 // Rota para o comando 'ata'
-router.get('/ata', async (req, res) => {
+router.get('/ata', (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}ata e digite o seu nome`);
-    if (text.length > 18) return res.status(400).send('O texto é longo, até 18 caracteres');
-
-    const url = `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2012.04.15.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-28%25&text.0.position.y=-75%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Monda&text.0.font.style=italic`;
-    await sendImage(req, res, url, ' *Plaquinha feita COM SUCESSO*');
+    if (!text || text.length > 18) return res.status(400).send(`${prefix}ata e digite um texto válido (máx 18 caracteres)`);
+    const url = getImageUrl('ata', text);
+    res.json({ image: { url }, caption: ' *Plaquinha feita COM SUCESSO*' });
 });
 
 // Rota para o comando 'figurinhas'
@@ -171,6 +182,118 @@ router.get('/figurinhas', async (req, res) => {
     res.end();
 });
 
+
+// Função auxiliar para gerar a URL da imagem
+function getImageUrl(type, text) {
+    switch (type) {
+        case 'luffy':
+            return `https://553555.sirv.com/Images/IMG-20231207-WA0021.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-72%25&text.0.position.y=-42%25&text.0.size=17&text.0.color=000000&text.0.opacity=83&text.0.font.family=Ruda&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
+        case 'baratameme':
+            return `https://553555.sirv.com/Images/IMG-20231207-WA0041.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-45%25&text.0.position.y=-20%25&text.0.size=15&text.0.color=000000&text.0.font.family=Tinos&text.0.font.style=italic&text.0.background.opacity=42&text.0.outline.blur=33&text.0.outline.opacity=69`;
+        case 'lv':
+            return `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2013.19.09.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-42%25&text.0.position.y=-36%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Playfair%20Display%20SC&text.0.font.weight=600&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
+        case 'aplaca':
+            return `https://553555.sirv.com/Images/IMG-20231205-WA0153.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-34%25&text.0.position.y=-4%25&text.0.size=37&text.0.color=f00000`;
+        case 'frankyplaq':
+            return `https://553555.sirv.com/Images/1200x675.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-72%25&text.0.position.y=-5%25&text.0.size=14&text.0.color=ffffff&text.0.font.family=Alice`;
+        case 'ata':
+            return `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2012.04.15.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-28%25&text.0.position.y=-75%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Monda&text.0.font.style=italic`;
+        case 'plaqu':
+            return `https://raptibef.sirv.com/images%20(3).jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
+        case 'anime-texto':
+            return `https://lollityp.sirv.com/venom_apis2.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=1%25&text.0.position.y=16%25&text.0.size=80&text.0.color=ff2772&text.0.opacity=67&text.0.font.family=Bangers&text.0.font.style=italic&text.0.background.opacity=50&text.0.outline.width=6`;
+        case 'cria':
+            return `https://lollityp.sirv.com/venom_api.jpg?text.0.text=${encodeURIComponent(text)}&text.0.color=000000&text.0.font.family=Pacifico&text.0.font.weight=600&text.0.background.color=ffffff&text.0.outline.color=ffffff&text.0.outline.width=10&text.0.outline.blur=17`;
+        default:
+            throw new Error('Tipo de imagem não reconhecido');
+    }
+}
+
+// Rota para o comando 'luffy'
+router.get('/luffy', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('luffy', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'baratameme'
+router.get('/baratameme', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('baratameme', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'lv'
+router.get('/lv', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 17) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('lv', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'aplaca'
+router.get('/aplaca', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 20) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('aplaca', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'frankyplaq'
+router.get('/frankyplaq', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 17) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('frankyplaq', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'ata'
+router.get('/ata', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('ata', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'plaqu'
+router.get('/plaquinha', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 25) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('plaqu', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'anime-texto'
+router.get('/anime-texto', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('anime-texto', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Rota para o comando 'cria'
+router.get('/cria', (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
+    const url = getImageUrl('cria', text);
+    res.json({ image: url, caption: 'Plaquinha feita COM SUCESSO' });
+});
+
+// Middleware para lidar com tempo de resposta
+router.get('/ping', async (req, res) => {
+    const timestamp = Date.now();
+    const messageTimestamp = parseFloat(req.query.messageTimestamp);
+    if (isNaN(messageTimestamp)) return res.status(400).send('Timestamp inválido');
+    const responseTime = (timestamp / 1000) - messageTimestamp;
+    const uptime = process.uptime();
+    let picc;
+
+    try {
+        picc = await loli.profilePictureUrl(req.query.chat, "image");
+    } catch (e) {
+        picc = `https://ittkimse.sirv.com/images%20(4).jpeg?text.0.text=VELOC
 // Rota 'plaqu' para gerar imagem com texto personalizado
 router.get('/plaqu', async (req, res) => {
     const { text } = req.query;
@@ -190,96 +313,6 @@ router.get('/plaqu', async (req, res) => {
 });
 
 
-// Função auxiliar para gerar a URL da imagem
-function getImageUrl(type, text) {
-    switch (type) {
-        case 'luffy':
-            return `https://553555.sirv.com/Images/IMG-20231207-WA0021.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-72%25&text.0.position.y=-42%25&text.0.size=17&text.0.color=000000&text.0.opacity=83&text.0.font.family=Ruda&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
-        case 'baratameme':
-            return `https://553555.sirv.com/Images/IMG-20231207-WA0041.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-45%25&text.0.position.y=-20%25&text.0.size=15&text.0.color=000000&text.0.font.family=Tinos&text.0.font.style=italic&text.0.background.opacity=42&text.0.outline.blur=33&text.0.outline.opacity=69`;
-        case 'lv':
-            return `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2013.19.09.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-42%25&text.0.position.y=-36%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Playfair%20Display%20SC&text.0.font.weight=600&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
-        default:
-            throw new Error('Tipo de imagem não reconhecido');
-    }
-}
-
-// Rota para o comando 'luffy'
-router.get('/luffy', (req, res) => {
-    const text = req.query.text;
-    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
-    const url = getImageUrl('luffy', text);
-    res.json({ image: { url }, caption: ' *Plaquinha feita COM SUCESSO*' });
-});
-
-// Rota para o comando 'baratameme'
-router.get('/baratameme', (req, res) => {
-    const text = req.query.text;
-    if (!text || text.length > 18) return res.status(400).send('Texto inválido ou longo demais');
-    const url = getImageUrl('baratameme', text);
-    res.json({ image: { url }, caption: ' *Plaquinha feita COM SUCESSO*' });
-});
-
-// Rota para o comando 'lv'
-router.get('/lv', (req, res) => {
-    const text = req.query.text;
-    if (!text || text.length > 17) return res.status(400).send('Texto inválido ou longo demais');
-    const url = getImageUrl('lv', text);
-    res.json({ image: { url }, caption: ' *Plaquinha feita COM SUCESSO*' });
-});
-
-// Exemplo de middleware para lidar com tempo de resposta
-router.get('/ping', async (req, res) => {
-  let timestampe = Date.now();
-  let r = (Date.now() / 1000) - req.query.messageTimestamp;
-  let uptime = process.uptime();
-  let picc;
-
-  try {
-    picc = await loli.profilePictureUrl(req.query.chat, "image");
-  } catch (e) {
-    picc = `https://ittkimse.sirv.com/images%20(4).jpeg?text.0.text=VELOCIDADE%20DO%20BOT&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=40&text.0.font.family=Teko&text.0.font.weight=800&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${String(r.toFixed(3))}&text.1.position.gravity=center&text.1.size=30&text.1.color=ffffff&text.1.font.family=Teko&text.1.font.weight=800&text.1.background.opacity=100&text.1.outline.blur=100`;
-  }
-
-  let thumbInfo = `
-    ⏱️ *Velocidade de resposta:*  ${String(r.toFixed(3))}\n\n
-    ⏰ *Tempo online: ${Math.floor(uptime)}s*\n\n
-    💻 *Sistema operacional:* Linux\n
-    🌀 *Versão: 4.19.0-23-amd64*
-  `;
-
-  res.json({
-    image: picc,
-    info: thumbInfo
-  });
-});
-
-// Exemplo de rota para gerar imagem com texto
-router.get('/placaloli', async (req, res) => {
-  const { text } = req.query;
-  if (!text) return res.status(400).send("Texto não fornecido");
-
-  if (text.length > 18) return res.status(400).send("O texto é longo, máximo 18 caracteres");
-
-  const buffer = `https://nekobot.xyz/api/imagegen?type=kannagen&text=${text}`;
-  res.json({ image: buffer, caption: 'Plaquinha feita COM SUCESSO' });
-});
-
-// Exemplo de rota para enviar uma imagem do Luffy com texto personalizado
-router.get('/luffy', async (req, res) => {
-  const { text } = req.query;
-  if (!text) return res.status(400).send("Texto não fornecido");
-
-  if (text.length > 18) return res.status(400).send("O texto é longo, máximo 18 caracteres");
-
-  const buffer = `https://553555.sirv.com/Images/IMG-20231207-WA0021.jpg?text.0.text=${text}&text.0.position.x=-72%25&text.0.position.y=-42%25&text.0.size=17&text.0.color=000000&text.0.opacity=83&text.0.font.family=Ruda&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
-  res.json({ image: buffer, caption: 'Plaquinha feita COM SUCESSO' });
-});
-
-// Outras rotas podem ser configuradas de forma semelhante
-
-
-
 // Rota para o comando 'plaq'
 router.get('/plaq', async (req, res) => {
     const text = req.query.text;
@@ -288,34 +321,6 @@ router.get('/plaq', async (req, res) => {
 
     const url = `https://raptibef.sirv.com/images%20(3).jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
     await sendImage(req, res, url, ' *Plaquinha feita*');
-});
-
-// Rota 'anime1' para gerar imagem com texto personalizado
-router.get('/anime-texto', async (req, res) => {
-    const { text } = req.query;
-    if (!text) return res.status(400).send("Texto não fornecido");
-    if (text.length > 18) return res.status(400).send("O texto é longo, máximo 18 caracteres");
-
-    const buffer = `https://lollityp.sirv.com/venom_apis2.jpg?text.0.text=${text}&text.0.position.gravity=center&text.0.position.x=1%25&text.0.position.y=16%25&text.0.size=80&text.0.color=ff2772&text.0.opacity=67&text.0.font.family=Bangers&text.0.font.style=italic&text.0.background.opacity=50&text.0.outline.width=6`;
-    
-    res.json({
-        image: buffer,
-        caption: 'Plaquinha feita COM SUCESSO'
-    });
-});
-
-// Rota 'cria' para gerar imagem com texto personalizado
-router.get('/cria', async (req, res) => {
-    const { text } = req.query;
-    if (!text) return res.status(400).send("Texto não fornecido");
-    if (text.length > 18) return res.status(400).send("O texto é longo, máximo 18 caracteres");
-
-    const buffer = `https://lollityp.sirv.com/venom_api.jpg?text.0.text=${text}&text.0.color=000000&text.0.font.family=Pacifico&text.0.font.weight=600&text.0.background.color=ffffff&text.0.outline.color=ffffff&text.0.outline.width=10&text.0.outline.blur=17`;
-
-    res.json({
-        image: buffer,
-        caption: 'Plaquinha feita COM SUCESSO'
-    });
 });
 
 
