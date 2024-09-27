@@ -170,6 +170,36 @@ router.get('/ping', async (req, res) => {
     }
 });
 
+// Rota para o comando 'aplaca'
+router.get('/aplaca', async (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 20) return res.status(400).send('Texto inválido ou longo demais');
+
+    const imageUrl = `https://553555.sirv.com/Images/IMG-20231205-WA0153.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-34%25&text.0.position.y=-4%25&text.0.size=37&text.0.color=f00000`;
+
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        res.set('Content-Type', 'image/jpeg'); // Ajuste o tipo de conteúdo conforme necessário
+        res.send(response.data);
+    } catch (error) {
+        res.status(500).send('Erro ao gerar a imagem.');
+    }
+});
+// Rota para o comando 'lv'
+router.get('/lv', async (req, res) => {
+    const text = req.query.text;
+    if (!text || text.length > 17) return res.status(400).send('Texto inválido ou longo demais');
+
+    const imageUrl = `https://553555.sirv.com/Images/WhatsApp%20Image%202023-12-06%20at%2013.19.09.jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-42%25&text.0.position.y=-36%25&text.0.size=21&text.0.color=ffffff&text.0.font.family=Playfair%20Display%20SC&text.0.font.weight=600&text.0.font.style=italic&text.0.background.opacity=100&text.0.outline.blur=100`;
+
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        res.set('Content-Type', 'image/jpeg'); // Ajuste o tipo de conteúdo conforme necessário
+        res.send(response.data);
+    } catch (error) {
+        res.status(500).send('Erro ao gerar a imagem.');
+    }
+});
 // Rota para gerar imagem com texto personalizado '/placaloli'
 router.get('/placaloli', async (req, res) => {
     const text = req.query.text;
@@ -315,7 +345,7 @@ router.get('/plaq5', async (req, res) => {
     if (!text) return res.status(400).send(`${prefix}plaq5 e digite o seu nome`);
     if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
 
-    const url = `https://umethroo.sirv.com/9152e7a9-7d49-48ef-b8ac-2e6149fda0b2.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-70%25&text.0.position.y=-23%25&text.0.size=17&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=300`;
+    const url = `https://umethroo.sirv.com/9152e7a9-7d49-48ef-b8ac-2e6149fda0b2.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
     await sendImage(req, res, url, ' *Plaquinha feita*');
 });
 
