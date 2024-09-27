@@ -125,25 +125,16 @@ async function sendImage(req, res, url, caption) {
 }
 
 
-// Prefixo para mensagens de erro
-const prefix = '!';
-
-
-// Rota para o comando 'figurinhas'
-router.get('/figurinhas', async (req, res) => {
-    const quantity = parseInt(req.query.quantity, 10);
-    if (isNaN(quantity) || quantity <= 0) return res.status(400).send(`Digite a quantidade de figurinhas\nExemplo: ${prefix+command} 7`);
-    if (quantity >= 100) return res.status(400).send("Coloque abaixo de 100...");
-
-    // Simulando o envio de figurinhas (a lógica de envio pode precisar ser ajustada conforme sua implementação)
-    for (let i = 0; i < quantity; i++) {
-        const rnd = Math.floor(Math.random() * 8051);
-        const url = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig (${rnd}).webp`;
-        const buffer = await getBuffer(url);
-        res.write(buffer);
-        await new Promise(resolve => setTimeout(resolve, 680)); // Simulando atraso
+router.get('/figu_engracada', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
-    res.end();
 });
 
 // Middleware para lidar com tempo de resposta
