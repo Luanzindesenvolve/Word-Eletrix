@@ -125,7 +125,7 @@ async function sendImage(req, res, url, caption) {
 }
 
 
-router.get('/figu_engracada', async (req, res) => {
+router.get('/figurinhas', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 25);
         const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig/${rnd}.webp`;
@@ -136,7 +136,17 @@ router.get('/figu_engracada', async (req, res) => {
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
-
+router.get('/figurinhas2', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://github.com/badDevelopper/Testfigu/${rnd}.webp`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('webp').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
 // Middleware para lidar com tempo de resposta
 router.get('/ping', async (req, res) => {
     const timestamp = Date.now();
