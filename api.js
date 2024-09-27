@@ -123,8 +123,15 @@ async function sendImage(req, res, url, caption) {
         res.status(500).send('Erro ao gerar a imagem.');
     }
 }
+const axios = require('axios');
 
+// Função para obter o buffer da imagem
+async function getImageBuffer(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    return response.data;
+}
 
+// Rota para /figurinhas
 router.get('/figurinhas', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 25);
@@ -132,18 +139,20 @@ router.get('/figurinhas', async (req, res) => {
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
-        console.error('Erro no endpoint:', error);
+        console.error('Erro no endpoint /figurinhas:', error);
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
+
+// Rota para /figurinhas2
 router.get('/figurinhas2', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 25);
-        const imageUrl = `https://github.com/badDevelopper/Testfigu/${rnd}.webp`;
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/${rnd}.webp`; // Corrigido para usar raw.githubusercontent.com
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
-        console.error('Erro no endpoint:', error);
+        console.error('Erro no endpoint /figurinhas2:', error);
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
