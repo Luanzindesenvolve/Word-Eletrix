@@ -124,11 +124,7 @@ async function sendImage(req, res, url, caption) {
     }
 }
 
-// Função para obter o buffer da imagem
-async function getImageBuffer(url) {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    return response.data;
-}
+
 
 // Rota para /figurinhas
 router.get('/figurinhas', async (req, res) => {
