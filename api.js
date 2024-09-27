@@ -125,32 +125,30 @@ async function sendImage(req, res, url, caption) {
 }
 
 
-
-// Rota para /figurinhas
 router.get('/figurinhas', async (req, res) => {
     try {
-        const rnd = Math.floor(Math.random() * 25);
+        const rnd = Math.floor(Math.random() * 50);
         const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig/${rnd}.webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
-        console.error('Erro no endpoint /figurinhas:', error);
+        console.error('Erro no endpoint:', error);
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
 
-// Rota para /figurinhas2
 router.get('/figurinhas2', async (req, res) => {
     try {
-        const rnd = Math.floor(Math.random() * 25);
-        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/${rnd}.webp`; // Corrigido para usar raw.githubusercontent.com
+        const rnd = Math.floor(Math.random() * 50);
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu${rnd}.webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
-        console.error('Erro no endpoint /figurinhas2:', error);
+        console.error('Erro no endpoint:', error);
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
+
 // Middleware para lidar com tempo de resposta
 router.get('/ping', async (req, res) => {
     const timestamp = Date.now();
