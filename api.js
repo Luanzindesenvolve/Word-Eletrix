@@ -123,7 +123,6 @@ async function sendImage(req, res, url, caption) {
         res.status(500).send('Erro ao gerar a imagem.');
     }
 }
-const axios = require('axios');
 
 // Função para obter o buffer da imagem
 async function getImageBuffer(url) {
