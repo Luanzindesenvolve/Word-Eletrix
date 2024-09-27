@@ -128,7 +128,7 @@ async function sendImage(req, res, url, caption) {
 router.get('/figurinhas', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 50);
-        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig/${rnd}.webp`;
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig%20(${rnd}).webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
@@ -140,7 +140,7 @@ router.get('/figurinhas', async (req, res) => {
 router.get('/figurinhas2', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 50);
-        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu${rnd}.webp`;
+        const imageUrl = `https://raw.githubusercontent.com/badDevelopper/figus2/refs/heads/main/fig/f%20(${rnd}).webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
     } catch (error) {
