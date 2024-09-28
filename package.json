@@ -1,6 +1,6 @@
 {
-  "name": "site",
-  "version": "1.0.0",
+  "name": "world-ecletix",
+  "version": "2.0.0",
   "description": "gosto de comer cu",
   "main": "server.js",
   "scripts": {
@@ -23,9 +23,5 @@
     "input": "",
     "got": "^11.8.3",
     "cheerio": "~1.0.0-rc.5",
-    "@distube/ytdl-core": "^4.14.4",
-    "undici": "",
-    "tough-cookie": "",
-    "http-cookie-agent": ""    
   }
 }
