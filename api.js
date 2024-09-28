@@ -105,32 +105,22 @@ const {
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 // play e playvideo by luan vulgo come primas 
+
 const got = require('got');
 const ytsr = require('yt-search');
 
 // Cabeçalhos padrão
-const DEFAULT_HEADERS = {
-    // Adicione cabeçalhos necessários, se houver
-};
+const DEFAULT_HEADERS = {};
 
 // Função para buscar o ID do vídeo
 async function getVideoId(videoName) {
     const { videos } = await ytsr(videoName);
-
-    console.log(`Buscando ID do vídeo para: ${videoName}`);
-    console.log(`Vídeos encontrados: ${JSON.stringify(videos, null, 2)}`);
-
-    if (videos.length === 0) {
-        console.log('Nenhum vídeo encontrado');
-        return null;
-    }
-
+    if (videos.length === 0) return null;
     return videos[0]?.videoId; // Retorna o primeiro videoId encontrado
 }
 
 // Função para análise do vídeo
 async function youtubedl(url) {
-    console.log(`Analisando vídeo em: ${url}`);
     const form = {
         k_query: url,
         k_page: 'home',
@@ -138,58 +128,96 @@ async function youtubedl(url) {
         q_auto: 0
     };
 
-    try {
-        const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
-            headers: {
-                ...DEFAULT_HEADERS,
-                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.com'
-            },
-            form
-        }).json();
+    const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
+        headers: {
+            ...DEFAULT_HEADERS,
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+            origin: 'https://www.y2mate.com'
+        },
+        form
+    }).json();
 
-        console.log('Dados do vídeo analisado:', data);
-
-        return {
-            id: data.vid,
-            title: data.title,
-            thumbnail: `https://i.ytimg.com/vi/${data.vid}/0.jpg`,
-            links: data.links // Inclui os links para mp3 e mp4
-        };
-    } catch (error) {
-        console.error('Erro ao analisar vídeo:', error);
-        throw error; // Lança o erro para o tratamento na rota
-    }
+    return {
+        id: data.vid,
+        title: data.title,
+        thumbnail: `https://i.ytimg.com/vi/${data.vid}/0.jpg`,
+        links: data.links
+    };
 }
 
 // Função para converter o vídeo
 async function convert(vid, k) {
-    console.log(`Convertendo vídeo com ID: ${vid} e k: ${k}`);
-    const form = {
-        vid,
-        k
-    };
+    const form = { vid, k };
+    const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
+        headers: {
+            ...DEFAULT_HEADERS,
+            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+            origin: 'https://www.y2mate.com'
+        },
+        form
+    }).json();
 
-    try {
-        const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
-            headers: {
-                ...DEFAULT_HEADERS,
-                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.com'
-            },
-            form
-        }).json();
-
-        console.log('Link de download obtido:', data.dlink);
-        return data.dlink; // Retorna o link de download
-    } catch (error) {
-        console.error('Erro ao converter vídeo:', error);
-        throw error; // Lança o erro para o tratamento na rota
-    }
+    return data.dlink;
 }
 
+// Rota para buscar e baixar vídeo pelo nome (playvideo)
+router.get('/clipe', async (req, res) => {
+    const videoName = req.query.name;
+    try {
+        const videoId = await getVideoId(videoName);
+        if (!videoId) return res.status(404).send('Video not found');
+
+        const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
+        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
+        const downloadLink = await convert(videoData.id, k);
+
+        res.json({
+            title: videoData.title,
+            thumbnail: videoData.thumbnail,
+            downloadLink
+        });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Rota para baixar MP3 pelo link (ytmp3)
+router.get('/linkmp3', async (req, res) => {
+    const url = req.query.url;
+    try {
+        const videoData = await youtubedl(url);
+        const k = videoData.links.mp3['mp3128'].k;
+        const downloadLink = await convert(videoData.id, k);
+
+        res.json({
+            title: videoData.title,
+            thumbnail: videoData.thumbnail,
+            downloadLink
+        });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Rota para baixar MP4 pelo link (ytmp4)
+router.get('/linkmp3', async (req, res) => {
+    const url = req.query.url;
+    try {
+        const videoData = await youtubedl(url);
+        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
+        const downloadLink = await convert(videoData.id, k);
+
+        res.json({
+            title: videoData.title,
+            thumbnail: videoData.thumbnail,
+            downloadLink
+        });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
+});
 // Rota para buscar e converter vídeo
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
