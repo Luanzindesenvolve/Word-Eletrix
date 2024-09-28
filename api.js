@@ -3,9 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
-const ytSearch = require('yt-search');
 const search = require('yt-search');
-const ytdl = require('@distube/ytdl-core');
 const yt = require('ytdl-core');
 const criador = 'World Ecletix';
 const cors = require('cors');
@@ -107,122 +105,121 @@ const {
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 // play e playvideo by luan vulgo come primas 
+const got = require('got');
+const ytsr = require('yt-search');
 
-const { createWriteStream } = require('fs'); // Adicione esta linha
-// Carregar cookies
-let cookies = [];
-try {
-  const cookiesJson = JSON.parse(fs.readFileSync('cookies.json', 'utf8'));
-  cookies = cookiesJson.map(cookie => `${cookie.name}=${cookie.value}`);
-} catch (error) {
-  console.error('Erro ao ler ou analisar o arquivo JSON:', error);
-  process.exit(1);
+// Cabeçalhos padrão
+const DEFAULT_HEADERS = {
+    // Adicione cabeçalhos necessários, se houver
+};
+
+// Função para buscar o ID do vídeo
+async function getVideoId(videoName) {
+    const { videos } = await ytsr(videoName);
+
+    console.log(`Buscando ID do vídeo para: ${videoName}`);
+    console.log(`Vídeos encontrados: ${JSON.stringify(videos, null, 2)}`);
+
+    if (videos.length === 0) {
+        console.log('Nenhum vídeo encontrado');
+        return null;
+    }
+
+    return videos[0]?.videoId; // Retorna o primeiro videoId encontrado
 }
 
-// Função para converter array de cookies em string
-const cookiesString = cookies.join('; ');
+// Função para análise do vídeo
+async function youtubedl(url) {
+    console.log(`Analisando vídeo em: ${url}`);
+    const form = {
+        k_query: url,
+        k_page: 'home',
+        hl: 'en',
+        q_auto: 0
+    };
 
-// Rota GET para pesquisar músicas no YouTube e baixar o vídeo
-// Rota GET para pesquisar músicas no YouTube e baixar o áudio
-router.get('/musica', async (req, res) => {
     try {
-        const query = req.query.q;
-        if (!query) {
-            return res.status(400).send('Query parameter `q` is required');
-        }
+        const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
+            headers: {
+                ...DEFAULT_HEADERS,
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+                origin: 'https://www.y2mate.com'
+            },
+            form
+        }).json();
 
-        console.log(`Searching for music: ${query}`);
+        console.log('Dados do vídeo analisado:', data);
 
-        // Pesquisar músicas no YouTube usando yt-search
-        const results = await ytSearch(query);
-
-        if (results && results.videos.length > 0) {
-            const video = results.videos[0];
-            console.log(`Found music: ${video.title} (${video.url})`);
-
-            // Baixar a música usando ytdl-core
-            const videoUrl = video.url;
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15); // Formato YYYYMMDDHHMMSS
-            const output = `downloads/${timestamp}_music.mp3`; // Alterar para mp3
-            const stream = ytdl(videoUrl, { quality: 'highestaudio' }); // Baixar apenas o áudio
-
-            // Criar diretório se não existir
-            fs.mkdirSync('downloads', { recursive: true });
-
-            stream.pipe(createWriteStream(output))
-                .on('finish', () => {
-                    console.log('Download da música concluído');
-                    res.json({
-                        title: video.title,
-                        url: video.url,
-                        thumbnail: video.thumbnail,
-                        views: video.views,
-                        duration: video.duration.timestamp,
-                        file: output
-                    });
-                })
-                .on('error', (err) => {
-                    console.error('Erro ao baixar a música:', err);
-                    res.status(500).send('Erro ao baixar a música');
-                });
-        } else {
-            console.log('No results found for music');
-            res.status(404).send('No results found for music');
-        }
+        return {
+            id: data.vid,
+            title: data.title,
+            thumbnail: `https://i.ytimg.com/vi/${data.vid}/0.jpg`,
+            links: data.links // Inclui os links para mp3 e mp4
+        };
     } catch (error) {
-        console.error('Error searching for music:', error);
-        res.status(500).send('Error searching for music');
+        console.error('Erro ao analisar vídeo:', error);
+        throw error; // Lança o erro para o tratamento na rota
     }
-});
-// Rota GET para pesquisar vídeos no YouTube e baixar o vídeo
-router.get('/video', async (req, res) => {
+}
+
+// Função para converter o vídeo
+async function convert(vid, k) {
+    console.log(`Convertendo vídeo com ID: ${vid} e k: ${k}`);
+    const form = {
+        vid,
+        k
+    };
+
     try {
-        const query = req.query.q;
-        if (!query) {
-            return res.status(400).send('Query parameter `q` is required');
-        }
+        const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
+            headers: {
+                ...DEFAULT_HEADERS,
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+                origin: 'https://www.y2mate.com'
+            },
+            form
+        }).json();
 
-        console.log(`Searching for video: ${query}`);
-
-        // Pesquisar vídeos no YouTube usando yt-search
-        const results = await ytSearch(query);
-
-        if (results && results.videos.length > 0) {
-            const video = results.videos[0];
-            console.log(`Found video: ${video.title} (${video.url})`);
-
-            // Baixar o vídeo usando ytdl-core
-            const videoUrl = video.url;
-            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15); // Formato YYYYMMDDHHMMSS
-            const output = `downloads/${timestamp}_video.mp4`; // Caminho do arquivo de saída
-            const stream = ytdl(videoUrl, { quality: 'highest' });
-
-            // Criar diretório se não existir
-            fs.mkdirSync('downloads', { recursive: true });
-
-            stream.pipe(createWriteStream(output))
-                .on('finish', () => {
-                    console.log('Download do vídeo concluído');
-                    res.json({
-                        title: video.title,
-                        url: video.url,
-                        thumbnail: video.thumbnail,
-                        views: video.views,
-                        duration: video.duration.timestamp,
-                        file: output
-                    });
-                })
-                .on('error', (err) => {
-                    console.error('Erro ao baixar o vídeo:', err);
-                    res.status(500).send('Erro ao baixar o vídeo');
-                });
-        } else {
-            console.log('No results found for video');
-            res.status(404).send('No results found for video');
-        }
+        console.log('Link de download obtido:', data.dlink);
+        return data.dlink; // Retorna o link de download
     } catch (error) {
-        console.error('Error searching for video:', error);
-        res.status(500).send('Error searching for video');
+        console.error('Erro ao converter vídeo:', error);
+        throw error; // Lança o erro para o tratamento na rota
+    }
+}
+
+// Rota para buscar e converter vídeo
+router.get('/musica', async (req, res) => {
+    const videoName = req.query.name;
+
+    console.log(`Recebido pedido para download do vídeo: ${videoName}`);
+
+    try {
+        const videoId = await getVideoId(videoName);
+        if (!videoId) {
+            console.log('Vídeo não encontrado');
+            return res.status(404).send('Video not found');
+        }
+
+        const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
+        if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
+            console.log('Link de MP3 não encontrado');
+            return res.status(404).send('MP3 link not found');
+        }
+
+        const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
+        const downloadLink = await convert(videoData.id, k);
+
+        res.json({
+            title: videoData.title,
+            thumbnail: videoData.thumbnail,
+            downloadLink
+        });
+    } catch (error) {
+        console.error('Erro no fluxo de download:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
