@@ -1684,7 +1684,7 @@ router.get('/pin/video', (req, res) => {
 
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
-const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBuwJituCYYSVCtcOdiVS/8v8aX5fUWeCBjsBqsaLnOPWDksVGFelyYFuhREFzFGImrWinAmV6T6lDf9RJJiCi+JAeRwk3Q/RUcLk1PWsIRpv+9NxQ46B2XWuZQn+KvQZvDPYY0VoRwSqxPQoWaaZqOPSdL70sVqyCFFVs9E/PDyqATXylJSTLRrv2G7GOgUERR6aUPbbUeZJSjklv/GWOZJHqXDvcXxTcCGO6kkXBDgJccItQT2FyoOQff0YwnVEQchVTrFhpkgLw5NrTSu9IYReMgOLyQ3T5bGZ6F5/mPj5WU/hVfwzihhjEiUTzkgXo7cia+0dg2LFr0F+VBXaY0qE=');
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu3/ySPdHbrFuunmWWAIZFeiD7dxm1Td6rbyheNCQv1Q3/DlPa/NAKk+ZIK+UosQnnjeFagsmK50Rg/6mn/5CGIE1k/Pn3ANNmhvoknyTJAsb0iScT7nA+VCEf3oHl7YGwvTEiymiy111sy31HurPGv2V4z8GpBbmVI8Yfmkgu7J9nYjLBTzEMJFB7Xfiiiz1LIw1QRPDADeeBCgIvC96x72GHv7mKE3kj5/R6BeQ0CKDVLZuKbMz5UcG7ZKYEjjFdyFzqFrdzhgDhxE7JV4rI1vN9UcdimDB+AyesEmMchGzujBph5HB7+O3vc5YRtzA5MUAVdS1ZEe5d8P0GVMbPtg=');
 const grupoChatId = -1002208588695;
 
 const rl = readline.createInterface({
@@ -1704,19 +1704,19 @@ let client;
     await client.start({
       phoneNumber: async () =>
         new Promise((resolve) =>
-          rl.question("Please enter your number: ", resolve)
+          rl.question("por favor, me mande seu numero: ", resolve)
         ),
       password: async () =>
         new Promise((resolve) =>
-          rl.question("Please enter your password: ", resolve)
+          rl.question("por favor, me mande sua senha: ", resolve)
         ),
       phoneCode: async () =>
         new Promise((resolve) =>
-          rl.question("Please enter the code you received: ", resolve)
+          rl.question("por favor, me mande o codigo que chegou: ", resolve)
         ),
       onError: (err) => console.log(err),
     });
-    console.log("You should now be connected.");
+    console.log("foi conectado com sucesso");
     console.log(client.session.save()); // Salve esta string para evitar logins futuros
 
   } catch (err) {
