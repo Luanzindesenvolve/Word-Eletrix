@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
+const ytdl = require('@distube/ytdl-core');
 const yt = require('ytdl-core');
 const criador = 'World Ecletix';
 const cors = require('cors');
@@ -104,7 +105,127 @@ const {
   spotifydl
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
+// play e playvideo by luan vulgo come primas 
 
+const { createWriteStream } = require('fs'); // Adicione esta linha
+// Carregar cookies
+let cookies = [];
+try {
+  const cookiesJson = JSON.parse(fs.readFileSync('cookies.json', 'utf8'));
+  cookies = cookiesJson.map(cookie => `${cookie.name}=${cookie.value}`);
+} catch (error) {
+  console.error('Erro ao ler ou analisar o arquivo JSON:', error);
+  process.exit(1);
+}
+
+// Função para converter array de cookies em string
+const cookiesString = cookies.join('; ');
+
+// Rota GET para pesquisar músicas no YouTube e baixar o vídeo
+// Rota GET para pesquisar músicas no YouTube e baixar o áudio
+router.get('/musica', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.status(400).send('Query parameter `q` is required');
+        }
+
+        console.log(`Searching for music: ${query}`);
+
+        // Pesquisar músicas no YouTube usando yt-search
+        const results = await ytSearch(query);
+
+        if (results && results.videos.length > 0) {
+            const video = results.videos[0];
+            console.log(`Found music: ${video.title} (${video.url})`);
+
+            // Baixar a música usando ytdl-core
+            const videoUrl = video.url;
+            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15); // Formato YYYYMMDDHHMMSS
+            const output = `downloads/${timestamp}_music.mp3`; // Alterar para mp3
+            const stream = ytdl(videoUrl, { quality: 'highestaudio' }); // Baixar apenas o áudio
+
+            // Criar diretório se não existir
+            fs.mkdirSync('downloads', { recursive: true });
+
+            stream.pipe(createWriteStream(output))
+                .on('finish', () => {
+                    console.log('Download da música concluído');
+                    res.json({
+                        title: video.title,
+                        url: video.url,
+                        thumbnail: video.thumbnail,
+                        views: video.views,
+                        duration: video.duration.timestamp,
+                        file: output
+                    });
+                })
+                .on('error', (err) => {
+                    console.error('Erro ao baixar a música:', err);
+                    res.status(500).send('Erro ao baixar a música');
+                });
+        } else {
+            console.log('No results found for music');
+            res.status(404).send('No results found for music');
+        }
+    } catch (error) {
+        console.error('Error searching for music:', error);
+        res.status(500).send('Error searching for music');
+    }
+});
+// Rota GET para pesquisar vídeos no YouTube e baixar o vídeo
+router.get('/video', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) {
+            return res.status(400).send('Query parameter `q` is required');
+        }
+
+        console.log(`Searching for video: ${query}`);
+
+        // Pesquisar vídeos no YouTube usando yt-search
+        const results = await ytSearch(query);
+
+        if (results && results.videos.length > 0) {
+            const video = results.videos[0];
+            console.log(`Found video: ${video.title} (${video.url})`);
+
+            // Baixar o vídeo usando ytdl-core
+            const videoUrl = video.url;
+            const timestamp = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15); // Formato YYYYMMDDHHMMSS
+            const output = `downloads/${timestamp}_video.mp4`; // Caminho do arquivo de saída
+            const stream = ytdl(videoUrl, { quality: 'highest' });
+
+            // Criar diretório se não existir
+            fs.mkdirSync('downloads', { recursive: true });
+
+            stream.pipe(createWriteStream(output))
+                .on('finish', () => {
+                    console.log('Download do vídeo concluído');
+                    res.json({
+                        title: video.title,
+                        url: video.url,
+                        thumbnail: video.thumbnail,
+                        views: video.views,
+                        duration: video.duration.timestamp,
+                        file: output
+                    });
+                })
+                .on('error', (err) => {
+                    console.error('Erro ao baixar o vídeo:', err);
+                    res.status(500).send('Erro ao baixar o vídeo');
+                });
+        } else {
+            console.log('No results found for video');
+            res.status(404).send('No results found for video');
+        }
+    } catch (error) {
+        console.error('Error searching for video:', error);
+        res.status(500).send('Error searching for video');
+    }
+});
+
+//fim 
 // Função auxiliar para obter o buffer da imagem
 async function getBuffer(url) {
     const response = await axios.get(url, { responseType: 'arraybuffer' });
