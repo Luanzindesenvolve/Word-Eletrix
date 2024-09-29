@@ -202,7 +202,7 @@ router.get('/linkmp3', async (req, res) => {
 });
 
 // Rota para baixar MP4 pelo link (ytmp4)
-router.get('/linkmp3', async (req, res) => {
+router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
     try {
         const videoData = await youtubedl(url);
