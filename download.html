@@ -93,11 +93,10 @@
                     <option value="videoByLink">Pelo link</option>
                 </optgroup>
                 <optgroup label="Baixar vídeo do Instagram 🎥">
-                   <option value="instagramByLink">Baixar vídeo pelo link</option>
-                   <option value="instagramStoryByLink">Baixar story pelo link</option>
-                   <option value="instagramSearch">Pesquisar Instagram</option>
-                   <option value="instaByNewApi">Baixar vídeo</option> <!-- Adicionando nova opção -->
-                
+                    <option value="instagramByLink">Baixar vídeo pelo link</option>
+                    <option value="instagramStoryByLink">Baixar story pelo link</option>
+                    <option value="instagramSearch">Pesquisar Instagram</option>
+                    <option value="instaByNewApi">Baixar vídeo</option>
                 </optgroup>
                 <optgroup label="Baixar vídeo do Facebook 🎥">
                     <option value="facebookByLink1">Pelo link (API 1)</option>
@@ -132,61 +131,65 @@
             const option = formData.get('option');
             const query = formData.get('query');
             const resultElement = document.getElementById('result');
+            let apiUrl;
 
-            if (option === 'telegraphImage' || option === 'telegraphVideo') {
-                // Redireciona para o Telegra.ph para upload de arquivos
-                window.open('https://telegra.ph', '_blank');
-            } else if (option === 'pinterestVideo' || option === 'pinterestImage') {
-                let apiUrl;
-
-                if (option === 'pinterestVideo') {
-                    // Redireciona para a API do Pinterest para baixar vídeo
-                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/vid?url=${encodeURIComponent(query)}`;
-                } else if (option === 'pinterestImage') {
-                    // Redireciona para a API do Pinterest para baixar imagem
-                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/img?url=${encodeURIComponent(query)}`;
-                }
-
-                if (apiUrl) {
-                    window.open(apiUrl, '_blank');
-                } else {
-                    resultElement.textContent = 'Opção inválida ou não suportada';
-                }
-            } else {
-                // Para as outras opções, redireciona o usuário para a URL da API correspondente
-                let apiUrl;
-
-                if (option === 'instagramByLink') {
+            switch(option) {
+                case 'musicByName':
+                    apiUrl = `https://world-ecletix.onrender.com/api/musica?name=${encodeURIComponent(query)}`;
+                    break;
+                case 'musicByLink':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp3?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'videoByName':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'videoByLink':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instagramByLink':
                     apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
-                } else if (option === 'instagramStoryByLink') {
+                    break;
+                case 'instagramStoryByLink':
                     apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
-                } else if (option === 'instagramSearch') {
+                    break;
+                case 'instagramSearch':
                     apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
-                } else if (option === 'musicByName') {
-                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?name=${encodeURIComponent(query)}`;
-                } else if (option === 'musicByLink') {
-                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp3?url=${encodeURIComponent(query)}`;
-                } else if (option === 'videoByName') {
-                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?name=${encodeURIComponent(query)}`;
-                } else if (option === 'videoByLink') {
-                    apiUrl = `https://api-youtubi.onrender.com/api/download/mp4?url=${encodeURIComponent(query)}`;
-                } else if (option === 'facebookByLink1') {
+                    break;
+                case 'facebookByLink1':
                     apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
-                } else if (option === 'facebookByLink2') {
+                    break;
+                case 'facebookByLink2':
                     apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
-                } else if (option === 'tiktokByLinkVideo') {
+                    break;
+                case 'tiktokByLinkVideo':
                     apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
-                } else if (option === 'tiktokByLinkAudio') {
+                    break;
+                case 'tiktokByLinkAudio':
                     apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
-                }
-                else if (option === 'instaByNewApi') {
-                apiUrl = `https://api-instadow.onrender.com/Instagram/vídeo?url=${encodeURIComponent(query)}`;
-                }
-                if (apiUrl) {
-                    window.location.href = apiUrl;
-                } else {
+                    break;
+                case 'telegraphImage':
+                case 'telegraphVideo':
+                    // Redireciona para o Telegra.ph para upload de arquivos
+                    window.open('https://telegra.ph', '_blank');
+                    return;
+                case 'pinterestVideo':
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/vid2?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'pinterestImage':
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/img2?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instaByNewApi':
+                    apiUrl = `https://world-ecletix.onrender.com/api/insta?url=${encodeURIComponent(query)}`;
+                    break;
+                default:
                     resultElement.textContent = 'Opção inválida ou não suportada';
-                }
+                    return;
+            }
+
+            if (apiUrl) {
+                window.location.href = apiUrl; // Redireciona para a URL da API
+            } else {
+                resultElement.textContent = 'Opção inválida ou não suportada';
             }
         });
     </script>
@@ -195,4 +198,4 @@
         Seu navegador não suporta áudio HTML5.
     </audio>
 </body>
-</html
+</html>
