@@ -105,9 +105,10 @@ const {
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 // play e playvideo by luan vulgo come primas 
-
 const got = require('got');
 const ytsr = require('yt-search');
+
+
 
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
@@ -218,6 +219,7 @@ router.get('/linkmp4', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 // Rota para buscar e converter vídeo
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
@@ -250,6 +252,24 @@ router.get('/musica', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+
+// Rota para baixar MP4 pelo link (ytmp4)
+router.get('/linkmp4', async (req, res) => {
+    const url = req.query.url;
+    try {
+        const videoData = await youtubedl(url);
+        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
+        const downloadLink = await convert(videoData.id, k);
+
+        res.json({
+            title: videoData.title,
+            thumbnail: videoData.thumbnail,
+            downloadLink
+        });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+l
 
 //fim 
 // Função auxiliar para obter o buffer da imagem
