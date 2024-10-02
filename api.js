@@ -108,8 +108,6 @@ const {
 const got = require('got');
 const ytsr = require('yt-search');
 
-
-
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
 
@@ -269,7 +267,8 @@ router.get('/linkmp4', async (req, res) => {
         });
     } catch (error) {
         res.status(500).send('Internal Server Error');
-l
+    }
+});
 
 //fim 
 // Função auxiliar para obter o buffer da imagem
