@@ -161,7 +161,7 @@ async function convert(vid, k) {
     return data.dlink;
 }
 // Rota para buscar e converter vídeo para MP3 com buffer de download
-router.get('/play2', async (req, res) => {
+router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
@@ -197,7 +197,8 @@ router.get('/play2', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-// Rota para buscar e baixar vídeo pelo nome (playvideo)
+
+// Rota para buscar e baixar vídeo pelo nome (playvideo) com buffer de download
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
     try {
@@ -208,17 +209,22 @@ router.get('/clipe', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        res.json({
-            title: videoData.title,
-            thumbnail: videoData.thumbnail,
-            downloadLink
-        });
+        // Baixando o arquivo de vídeo usando got
+        const videoStream = got.stream(downloadLink);
+
+        // Configurando cabeçalhos de resposta
+        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp4"`);
+        res.setHeader('Content-Type', 'video/mp4');
+
+        // Enviando o arquivo como um stream para o cliente
+        videoStream.pipe(res);
+
     } catch (error) {
+        console.error('Erro ao baixar vídeo:', error);
         res.status(500).send('Internal Server Error');
     }
 });
-
-// Rota para baixar MP3 pelo link (ytmp3)
+// Rota para baixar MP3 pelo link (ytmp3) com buffer de download
 router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
     try {
@@ -226,17 +232,23 @@ router.get('/linkmp3', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k;
         const downloadLink = await convert(videoData.id, k);
 
-        res.json({
-            title: videoData.title,
-            thumbnail: videoData.thumbnail,
-            downloadLink
-        });
+        // Baixando o arquivo de áudio usando got
+        const audioStream = got.stream(downloadLink);
+
+        // Configurando cabeçalhos de resposta
+        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp3"`);
+        res.setHeader('Content-Type', 'audio/mpeg');
+
+        // Enviando o arquivo como um stream para o cliente
+        audioStream.pipe(res);
+
     } catch (error) {
+        console.error('Erro ao baixar MP3:', error);
         res.status(500).send('Internal Server Error');
     }
 });
 
-// Rota para baixar MP4 pelo link (ytmp4)
+// Rota para baixar MP4 pelo link (ytmp4) com buffer de download
 router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
     try {
@@ -244,68 +256,21 @@ router.get('/linkmp4', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        res.json({
-            title: videoData.title,
-            thumbnail: videoData.thumbnail,
-            downloadLink
-        });
+        // Baixando o arquivo de vídeo usando got
+        const videoStream = got.stream(downloadLink);
+
+        // Configurando cabeçalhos de resposta
+        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp4"`);
+        res.setHeader('Content-Type', 'video/mp4');
+
+        // Enviando o arquivo como um stream para o cliente
+        videoStream.pipe(res);
+
     } catch (error) {
+        console.error('Erro ao baixar MP4:', error);
         res.status(500).send('Internal Server Error');
     }
 });
-
-// Rota para buscar e converter vídeo
-router.get('/musica', async (req, res) => {
-    const videoName = req.query.name;
-
-    console.log(`Recebido pedido para download do vídeo: ${videoName}`);
-
-    try {
-        const videoId = await getVideoId(videoName);
-        if (!videoId) {
-            console.log('Vídeo não encontrado');
-            return res.status(404).send('Video not found');
-        }
-
-        const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
-        if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
-            console.log('Link de MP3 não encontrado');
-            return res.status(404).send('MP3 link not found');
-        }
-
-        const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
-        const downloadLink = await convert(videoData.id, k);
-
-        res.json({
-            title: videoData.title,
-            thumbnail: videoData.thumbnail,
-            downloadLink
-        });
-    } catch (error) {
-        console.error('Erro no fluxo de download:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-
-// Rota para baixar MP4 pelo link (ytmp4)
-router.get('/linkmp4', async (req, res) => {
-    const url = req.query.url;
-    try {
-        const videoData = await youtubedl(url);
-        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
-        const downloadLink = await convert(videoData.id, k);
-
-        res.json({
-            title: videoData.title,
-            thumbnail: videoData.thumbnail,
-            downloadLink
-        });
-    } catch (error) {
-        res.status(500).send('Internal Server Error');
-    }
-});
-
 //fim 
 // Função auxiliar para obter o buffer da imagem
 async function getBuffer(url) {
