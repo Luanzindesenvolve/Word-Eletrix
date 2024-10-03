@@ -107,7 +107,7 @@ const {
 // play e playvideo by luan vulgo come primas 
 const got = require('got');
 const ytsr = require('yt-search');
-
+const stream = require('stream');
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
 
@@ -160,7 +160,43 @@ async function convert(vid, k) {
 
     return data.dlink;
 }
+// Rota para buscar e converter vídeo para MP3 com buffer de download
+router.get('/play2', async (req, res) => {
+    const videoName = req.query.name;
 
+    console.log(`Recebido pedido para download do vídeo: ${videoName}`);
+
+    try {
+        const videoId = await getVideoId(videoName);
+        if (!videoId) {
+            console.log('Vídeo não encontrado');
+            return res.status(404).send('Video not found');
+        }
+
+        const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
+        if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
+            console.log('Link de MP3 não encontrado');
+            return res.status(404).send('MP3 link not found');
+        }
+
+        const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
+        const downloadLink = await convert(videoData.id, k);
+
+        // Baixando o arquivo de áudio usando got
+        const audioStream = got.stream(downloadLink);
+
+        // Configurando cabeçalhos de resposta
+        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp3"`);
+        res.setHeader('Content-Type', 'audio/mpeg');
+
+        // Enviando o arquivo como um stream para o cliente
+        audioStream.pipe(res);
+
+    } catch (error) {
+        console.error('Erro no fluxo de download:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 // Rota para buscar e baixar vídeo pelo nome (playvideo)
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
