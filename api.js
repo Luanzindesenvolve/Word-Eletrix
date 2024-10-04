@@ -106,7 +106,7 @@ const {
 //gerar imagem by luan 
 
 // Rota para gerar a imagem usando um parâmetro de consulta
-router.get('/gener-image', async (req, res) => {
+router.get('/gerar-imagem', async (req, res) => {
     const { texto } = req.query; // texto que será enviado para a API da Hugging Face
 
     if (!texto) {
