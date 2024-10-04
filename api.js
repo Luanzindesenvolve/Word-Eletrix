@@ -115,7 +115,7 @@ router.get('/gerar-imagem', async (req, res) => {
     
     try {
         const response = await axios.post(
-            'https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4',
+            'https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev',
             { inputs: texto },
             {
                 headers: {
