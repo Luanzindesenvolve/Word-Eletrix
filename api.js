@@ -103,6 +103,53 @@ const {
   searching, 
   spotifydl
 } = require('./config.js'); // arquivo que ele puxa as funções 
+//gerar imagem by luan 
+
+// Rota para gerar a imagem usando um parâmetro de consulta
+router.get('/gener-image', async (req, res) => {
+    const { texto } = req.query; // texto que será enviado para a API da Hugging Face
+
+    if (!texto) {
+        return res.status(400).json({ error: 'Texto é obrigatório.' });
+    }
+    
+    try {
+        const response = await axios.post(
+            'https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4',
+            { inputs: texto },
+            {
+                headers: {
+                    'Authorization': 'Bearer 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',
+                    'Content-Type': 'application/json'
+                },
+                responseType: 'arraybuffer' // Para obter a imagem como buffer
+            }
+        );
+
+        // Cria um nome para o arquivo e o caminho
+        const fileName = `imagem-${Date.now()}.png`;
+        const filePath = path.join(__dirname, fileName);
+
+        // Salva a imagem no servidor
+        fs.writeFileSync(filePath, response.data);
+
+        // Envia a imagem para o usuário
+        res.download(filePath, fileName, (err) => {
+            if (err) {
+                console.error('Erro ao enviar a imagem:', err);
+                res.status(500).json({ error: 'Erro ao enviar a imagem' });
+            }
+
+            // Remove a imagem do servidor após o download
+            fs.unlinkSync(filePath);
+        });
+    } catch (error) {
+        console.error('Erro ao chamar a API:', error.message);
+        res.status(500).json({ error: 'Erro ao gerar a imagem' });
+    }
+});
+
+//fim 
 
 // play e playvideo by luan vulgo come primas 
 const got = require('got');
