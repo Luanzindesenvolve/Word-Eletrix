@@ -640,13 +640,13 @@ router.get('/attp5', (req, res) => {
 
 
 //Photooxy 
-const KEY_FUT = 'live_fcf4c164846e93042456febc882849'; // Substitua pela sua chave
+const KEY_FUT = 'live_56c73242d991a238681e22a8866d11'; // Substitua pela sua chave
 // Rota para obter a artilharia do Brasileirão
 router.get('/artilheiro', async (req, res) => {
   try {
     const response = await axios.get('https://api.api-futebol.com.br/v1/campeonatos/10/artilharia', {
       headers: {
-        'Authorization': 'Bearer live_fcf4c164846e93042456febc882849' 
+        'Authorization': 'Bearer live_56c73242d991a238681e22a8866d11' 
       }
     });
 
