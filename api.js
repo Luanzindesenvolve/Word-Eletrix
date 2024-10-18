@@ -101,7 +101,8 @@ const {
   wikimedia,
   snapsave,
   searching, 
-  spotifydl
+  spotifydl,
+  photooxy
 } = require('./config.js'); // arquivo que ele puxa as funções 
 //gerar imagem by luan 
 
@@ -707,21 +708,22 @@ router.get('/tabela', async (req, res) => {
 });
 const { Maker } = require('./modulos/imagemaker.js');
 // photooxyRouter.js
+
 router.get('/googlesg', async (req, res) => {
-    const { texto, texto2, texto3 } = req.query; // Correção aqui
+    const { texto, texto2, texto3 } = req.query;
 
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/make-google-suggestion-photos-238.html",  [texto, texto2, texto3]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/make-google-suggestion-photos-238.html", [texto, texto2, texto3]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar imagem Google Suggest:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/sweet-candy', async (req, res) => {
@@ -732,13 +734,13 @@ router.get('/sweet-candy', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o texto doce:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/illuminated-metallic', async (req, res) => {
@@ -749,13 +751,13 @@ router.get('/illuminated-metallic', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito metálico iluminado:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/carved-wood', async (req, res) => {
@@ -766,13 +768,13 @@ router.get('/carved-wood', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.htm", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de madeira esculpida:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/night-sky', async (req, res) => {
@@ -783,13 +785,13 @@ router.get('/night-sky', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar texto no céu noturno:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/butterfly', async (req, res) => {
@@ -800,13 +802,13 @@ router.get('/butterfly', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar texto com efeito de borboleta:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/coffee-cup', async (req, res) => {
@@ -817,13 +819,13 @@ router.get('/coffee-cup', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", [texto]);
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar texto na xícara de café:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/picture-of-love', async (req, res) => {
@@ -834,13 +836,15 @@ router.get('/picture-of-love', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar a imagem de amor:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/flower-typography', async (req, res) => {
@@ -851,13 +855,15 @@ router.get('/flower-typography', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/art-effects/flower-typography-text-effect-164.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/art-effects/flower-typography-text-effect-164.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar a tipografia de flores:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/harry-potter', async (req, res) => {
@@ -868,13 +874,15 @@ router.get('/harry-potter', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o texto do Harry Potter:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/under-grass', async (req, res) => {
@@ -885,13 +893,15 @@ router.get('/under-grass', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar a citação sob a grama:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/pubg', async (req, res) => {
@@ -902,13 +912,15 @@ router.get('/pubg', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/battlegrounds/make-wallpaper-battlegrounds-logo-text-146.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/battlegrounds/make-wallpaper-battlegrounds-logo-text-146.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar a imagem do PUBG:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/naruto', async (req, res) => {
@@ -919,13 +931,15 @@ router.get('/naruto', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar a imagem do Naruto:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/metallic', async (req, res) => {
@@ -936,13 +950,15 @@ router.get('/metallic', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito metálico:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/shadow-sky', async (req, res) => {
@@ -953,13 +969,34 @@ router.get('/shadow-sky', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito sombra no céu:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
+    }
+});
+router.get('/shadow-sky', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
+        });
+    } catch (e) {
+        console.error("Erro ao gerar o efeito sombra no céu:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/flaming', async (req, res) => {
@@ -970,13 +1007,15 @@ router.get('/flaming', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito flaming:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/efeitoneon', async (req, res) => {
@@ -987,13 +1026,15 @@ router.get('/efeitoneon', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito neon:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/metalgold', async (req, res) => {
@@ -1004,13 +1045,15 @@ router.get('/metalgold', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito metal gold:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/cemiterio', async (req, res) => {
@@ -1021,13 +1064,15 @@ router.get('/cemiterio', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/text-on-scary-cemetery-gate-172.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/text-on-scary-cemetery-gate-172.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito cemitério:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/shadow', async (req, res) => {
@@ -1038,253 +1083,307 @@ router.get('/shadow', async (req, res) => {
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito sombra:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/txtborboleta', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de texto borboleta:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/cup', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-text-on-the-cup-387.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/put-text-on-the-cup-387.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito na caneca:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/harryp', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito Harry Potter:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/lobometal', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito lobo metal:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
-router.get('neon2', async (req, res) => {
+router.get('/neon2', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito neon:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/gameplay', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/8-bit-text-on-arcade-rift-175.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/8-bit-text-on-arcade-rift-175.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito gameplay:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/madeira', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito madeira:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/florwooden', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/writing-on-wooden-boards-368.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de madeira e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/writing-on-wooden-boards-368.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de madeira:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/coffecup2', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-your-text-on-a-coffee-cup--174.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito da caneca de café e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/put-your-text-on-a-coffee-cup--174.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito da caneca de café:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/coffecup', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de caneca de café e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito da caneca de café:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/lovemsg3', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/love-text-effect-372.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de mensagem de amor e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/love-text-effect-372.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de mensagem de amor:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/lovemsg2', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de grama e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de grama:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/lovemsg', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de mensagem de amor e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de mensagem de amor:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/narutologo', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de logo de Naruto e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o logo de Naruto:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/mascotegame', async (req, res) => {
     const texto = req.query.texto;
 
@@ -1426,70 +1525,114 @@ router.get('/logogame', async (req, res) => {
 router.get('/romantico', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito romântico e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito romântico:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
+router.get('/darkdragon', async (req, res) => {
+    const texto = req.query.texto;
+
+    // Verifica se o parâmetro 'texto' foi fornecido
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Chama a função 'photooxy' passando a URL do efeito dragão sombrio e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/other-design/create-dark-metal-text-with-special-logo-160.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
+        });
+    } catch (e) {
+        console.error("Erro ao gerar o efeito dragão sombrio:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
+    }
+});
+
 router.get('/fire', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
-        });
+        // Chama a função 'photooxy' passando a URL do efeito de fogo e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", texto);
+
+        // Verifica se a imagem foi gerada com sucesso
+        if (resultado.image) {
+            // Retorna apenas a imageUrl no formato desejado
+            return res.json({
+                imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
+            });
+        } else {
+            // Se não houver uma imagem, retorna um erro
+            return res.json({ erro: 'Falha ao gerar a imagem.' });
+        }
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de fogo:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
-
 router.get('/smoke', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de fumaça e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de fumaça:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/papel', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const data = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html", [`${texto}`]);
-        res.json({
-            status: true,
-            resultado: data
+        // Chama a função 'photooxy' passando a URL do efeito de papel queimado e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        res.json({ erro: 'Erro no Servidor Interno' });
+        console.error("Erro ao gerar o efeito de papel:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
 router.get('/angelwing', async (req, res) => {
@@ -1674,6 +1817,23 @@ router.get('/frozen', async (req, res) => {
 
     try {
         const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-frozen-christmas-text-effect-online-792.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/halloween', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/halloween-fire-text-effect-online-369.html", [`${texto}`]);
         res.json({
             status: true,
             resultado: data
