@@ -961,25 +961,7 @@ router.get('/metallic', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
-router.get('/shadow-sky', async (req, res) => {
-    const texto = req.query.texto;
 
-    if (!texto) {
-        return res.json({ message: "Cade o parametro texto" });
-    }
-
-    try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
-
-        // Retorna apenas a imageUrl no formato desejado
-        return res.json({
-            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
-        });
-    } catch (e) {
-        console.error("Erro ao gerar o efeito sombra no céu:", e);
-        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
-    }
-});
 router.get('/shadow-sky', async (req, res) => {
     const texto = req.query.texto;
 
