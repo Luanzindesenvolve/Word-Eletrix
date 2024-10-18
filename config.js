@@ -2548,6 +2548,7 @@ module.exports = { geturl, pensador, styletext, getgrupos, gpwhatsapp, hentaistu
  LetradaMusica,
  snapsave,
  searching, 
- spotifydl
+ spotifydl,
+ photooxy
  
  };
