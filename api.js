@@ -883,7 +883,417 @@ router.get('/picture-of-love', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+router.get('/steel', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
 
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/steel-text-effect-66.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/marvel', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-marvel-style-logo-419.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/america', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-cinematic-captain-america-text-effect-online-715.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/space', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/latest-space-3d-text-effect-online-559.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/deadpool', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-text-effects-in-the-style-of-the-deadpool-logo-818.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+router.get('/praia', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-summery-sand-writing-text-effect-577.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/typography', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-online-typography-art-effects-with-multiple-layers-811.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/dragon-ball', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-dragon-ball-style-text-effects-online-809.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/thor', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-thor-logo-style-text-effects-online-for-free-796.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/graffiti', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/cute-girl-painting-graffiti-text-effect-667.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/star-wars', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-star-wars-character-mascot-logo-online-707.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/glitch', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-digital-glitch-text-effects-online-767.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/royal', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/royal-text-effect-online-free-471.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/vingadores', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-logo-3d-style-avengers-online-427.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/cloud', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-cloud-text-effect-in-the-sky-618.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/birthday', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/colorful-birthday-foil-balloon-text-effects-620.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/natal', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/christmas-snow-text-effect-online-631.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/matirix', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/matrix-text-effect-154.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/galaxy', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/galaxy-text-effect-new-258.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/snow', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-a-snow-3d-text-effect-free-online-621.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/devil', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/neon-devil-wings-text-effect-online-683.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/anonymous', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-anonymous-hacker-avatars-cyan-neon-677.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+router.get('/boom', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/boom-text-comic-style-text-effect-675.html", [`${texto}`]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
 router.get('/flower-typography', async (req, res) => {
     const texto = req.query.texto;
 
