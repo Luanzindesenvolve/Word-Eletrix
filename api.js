@@ -708,16 +708,20 @@ router.get('/tabela', async (req, res) => {
 });
 const { Maker } = require('./modulos/imagemaker.js');
 // photooxyRouter.js
-
+// photooxyRouter.js
 router.get('/googlesg', async (req, res) => {
     const { texto, texto2, texto3 } = req.query;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/make-google-suggestion-photos-238.html", [texto, texto2, texto3]);
+        // Chama a função 'photooxy' passando a URL do efeito e os textos fornecidos
+        const resultado = await photooxy("https://photooxy.com/other-design/make-google-suggestion-photos-238.html", [texto, texto2, texto3]);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -726,15 +730,20 @@ router.get('/googlesg', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/sweet-candy', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/sweet-andy-text-online-168.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -743,15 +752,20 @@ router.get('/sweet-candy', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/illuminated-metallic', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -760,15 +774,20 @@ router.get('/illuminated-metallic', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/carved-wood', async (req, res) => {
     const texto = req.query.texto;
-
+ 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/carved-wood-effect-online-171.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -777,15 +796,20 @@ router.get('/carved-wood', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/night-sky', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -797,12 +821,16 @@ router.get('/night-sky', async (req, res) => {
 router.get('/butterfly', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito de borboleta e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/butterfly-text-with-reflection-effect-183.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -811,15 +839,20 @@ router.get('/butterfly', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/coffee-cup', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", [texto]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
@@ -828,15 +861,18 @@ router.get('/coffee-cup', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/picture-of-love', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -847,15 +883,18 @@ router.get('/picture-of-love', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/flower-typography', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/art-effects/flower-typography-text-effect-164.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/art-effects/flower-typography-text-effect-164.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -866,15 +905,18 @@ router.get('/flower-typography', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/harry-potter', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/create-harry-potter-text-on-horror-background-178.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -885,15 +927,18 @@ router.get('/harry-potter', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/under-grass', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -904,15 +949,18 @@ router.get('/under-grass', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/pubg', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/battlegrounds/make-wallpaper-battlegrounds-logo-text-146.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito do PUBG e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/battlegrounds/make-wallpaper-battlegrounds-logo-text-146.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -923,15 +971,18 @@ router.get('/pubg', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/naruto', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito do Naruto e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -942,15 +993,18 @@ router.get('/naruto', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/metallic', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito metálico e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -965,12 +1019,14 @@ router.get('/metallic', async (req, res) => {
 router.get('/shadow-sky', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito sombra no céu e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -984,12 +1040,14 @@ router.get('/shadow-sky', async (req, res) => {
 router.get('/flaming', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito flaming e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -1000,15 +1058,18 @@ router.get('/flaming', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/efeitoneon', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito neon e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -1019,15 +1080,18 @@ router.get('/efeitoneon', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/metalgold', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito metal gold e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/other-design/create-metallic-text-glow-online-188.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -1038,15 +1102,18 @@ router.get('/metalgold', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+
 router.get('/cemiterio', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/text-on-scary-cemetery-gate-172.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito cemitério e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/text-on-scary-cemetery-gate-172.html", texto);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
@@ -1057,26 +1124,34 @@ router.get('/cemiterio', async (req, res) => {
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
+    
 router.get('/shadow', async (req, res) => {
     const texto = req.query.texto;
 
+    // Verifica se o parâmetro 'texto' foi fornecido
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
     }
 
     try {
-        const resultado = await new Maker().Ephoto360("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", [`${texto}`]);
+        // Chama a função 'photooxy' passando a URL do efeito de fogo e o texto fornecido
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html", texto);
 
-        // Retorna apenas a imageUrl no formato desejado
-        return res.json({
-            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
-        });
+        // Verifica se a imagem foi gerada com sucesso
+        if (resultado.image) {
+            // Retorna apenas a imageUrl no formato desejado
+            return res.json({
+                imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
+            });
+        } else {
+            // Se não houver uma imagem, retorna um erro
+            return res.json({ erro: 'Falha ao gerar a imagem.' });
+        }
     } catch (e) {
-        console.error("Erro ao gerar o efeito sombra:", e);
+        console.error("Erro ao gerar o efeito de fogo:", e);
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
-});
-
+});       
 router.get('/txtborboleta', async (req, res) => {
     const texto = req.query.texto;
 
