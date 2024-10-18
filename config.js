@@ -1,4 +1,6 @@
 const axios = require("axios");
+const cookie = require("cookie");
+const FormData = require("form-data");
 const cheerio = require("cheerio");
 const request = require('request');
 const yts = require("yt-search")
@@ -8,8 +10,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const encodeUrl = require('encodeurl');
 const linkfy = require('linkifyjs')
 const randomIntFromInterval = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
+return Math.floor(Math.random() * (max - min + 1) + min)
 const removerAcentos = (s) => typeof s === 'string' ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
 const useragent_1 = {
   "user-agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.136 Mobile Safari/537.36"
@@ -52,7 +53,108 @@ async function spotifyCreds() {
         }
     });
 }
+async function photooxy(url, text) {
+    // Faz uma requisição GET para obter o token
+    const geturl = await fetch(url, {
+        method: "GET",
+        headers: {
+            "User-Agent": "GoogleBot",
+        },
+    });
 
+    const caritoken = await geturl.text();
+    let hasilcookie = geturl.headers
+        .get("set-cookie")
+        .split(",")
+        .map((v) => cookie.parse(v))
+        .reduce((a, c) => {
+            return { ...a, ...c };
+        }, {});
+
+    // Extrai os cookies necessários
+    hasilcookie = {
+        __cfduid: hasilcookie.__cfduid,
+        PHPSESSID: hasilcookie.PHPSESSID,
+    };
+
+    hasilcookie = Object.entries(hasilcookie)
+        .map(([name, value]) => cookie.serialize(name, value))
+        .join("; ");
+
+    const $ = cheerio.load(caritoken);
+    const token = $('input[name="token"]').attr("value");
+    const form = new FormData();
+
+    // Adiciona o texto ao formulário
+    if (typeof text === "string") text = [text];
+    for (let texts of text) form.append("text[]", texts);
+    form.append("submit", "Go");
+    form.append("token", token);
+    form.append("build_server", "https://e2.yotools.net");
+    form.append("build_server_id", 2);
+
+    // Faz uma requisição POST para gerar a imagem
+    const geturl2 = await fetch(url, {
+        method: "POST",
+        headers: {
+            Accept: "*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "User-Agent": "GoogleBot",
+            Cookie: hasilcookie,
+            ...form.getHeaders(),
+        },
+        body: form.getBuffer(),
+    });
+
+    const caritoken2 = await geturl2.text();
+    const $$ = cheerio.load(caritoken2);
+    const token2 = $$("#form_value").text();
+
+    if (!token2) throw new Error("Token Não Encontrado!");
+
+    const prosesimage = await post(
+        "https://photooxy.com/effect/create-image",
+        JSON.parse(token2),
+        hasilcookie
+    );
+
+    const hasil = await prosesimage.json();
+
+    // Retorna a URL da imagem
+    if (hasil.success && hasil.image) {
+        return {
+            image: `https://e2.yotools.net/${hasil.image}` // Retorna a URL da imagem
+        };
+    } else {
+        throw new Error("Falha ao gerar a imagem.");
+    }
+}
+
+// Função de postagem auxiliar
+async function post(url, formdata = {}, cookies) {
+    let encode = encodeURIComponent;
+    let body = Object.keys(formdata)
+        .map((key) => {
+            let vals = formdata[key];
+            let isArray = Array.isArray(vals);
+            let keys = encode(key + (isArray ? "[]" : ""));
+            if (!isArray) vals = [vals];
+            let out = [];
+            for (let valq of vals) out.push(keys + "=" + encode(valq));
+            return out.join("&");
+        })
+        .join("&");
+
+    return await fetch(`${url}?${body}`, {
+        method: "GET",
+        headers: {
+            Accept: "*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "User-Agent": "GoogleBot",
+            Cookie: cookies,
+        },
+    });
+	    }
 // Função para buscar músicas pelo nome
 async function searching(query, type = 'track', limit = 20) {
     return new Promise(async resolve => {
