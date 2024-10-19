@@ -1957,6 +1957,26 @@ router.get('/angelglx', async (req, res) => {
         res.json({ erro: 'Erro no Servidor Interno' });
     }
 });
+router.get('/lol', async (req, res) => {
+    const texto = req.query.texto;
+
+    // Verifica se o parâmetro 'texto' foi fornecido
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        const resultado = await photooxy("https://photooxy.com/league-of-kings/cool-league-of-kings-avatar-153.html", texto);
+
+        // Retorna apenas a imageUrl no formato desejado
+        return res.json({
+            imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
+        });
+    } catch (e) {
+        console.error("Erro ao gerar o efeito gameplay:", e);
+        return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
+    }
+});
 router.get('/gizquadro', async (req, res) => {
     const texto = req.query.texto;
 
