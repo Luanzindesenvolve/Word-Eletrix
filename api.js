@@ -1700,22 +1700,23 @@ router.get('/neon2', async (req, res) => {
     }
 });
 router.get('/gameplay', async (req, res) => {
-    const texto = req.query.texto;
+    const { texto, texto2 } = req.query; // Aceita apenas dois textos
 
     // Verifica se o parâmetro 'texto' foi fornecido
-    if (!texto) {
-        return res.json({ message: "Cade o parametro texto" });
+    if (!texto || !texto2) {
+        return res.json({ message: "Cadê os parâmetros texto e texto2?" });
     }
 
     try {
-        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/8-bit-text-on-arcade-rift-175.html", texto);
+        // Chama a função 'photooxy' passando a URL do efeito e os textos fornecidos
+        const resultado = await photooxy("https://photooxy.com/logo-and-text-effects/8-bit-text-on-arcade-rift-175.html", [texto, texto2]);
 
         // Retorna apenas a imageUrl no formato desejado
         return res.json({
             imageUrl: resultado.image // Use a URL da imagem retornada pela sua função
         });
     } catch (e) {
-        console.error("Erro ao gerar o efeito gameplay:", e);
+        console.error("Erro ao gerar imagem Gameplay:", e);
         return res.json({ erro: 'Erro no Servidor Interno', detalhes: e.message });
     }
 });
