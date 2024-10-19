@@ -82,26 +82,6 @@ async function post(url, formdata = {}, cookies) {
   let body = Object.keys(formdata)
     .map((key) => {
       let vals = formdata[key];
-      let isArray = Array.isArray(vals);
-      let keys = encode(key + (isArray ? "[]" : ""));
-      if (!isArray) vals = [vals];
-      let out = [];
-      for (let valq of vals) out.push(keys + "=" + encode(valq));
-      return out.join("&");
-    })
-    .join("&");
-  return await fetch(`${url}?${body}`, {
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-      "Accept-Language": "en-US,en;q=0.9",
-      "User-Agent": "GoogleBot",
-      Cookie: cookies,
-    },
-  });
-}
-
-
 async function photooxy(url, text) {
     // Faz uma requisição GET para obter o token
     const geturl = await fetch(url, {
@@ -169,15 +149,44 @@ async function photooxy(url, text) {
 
     const hasil = await prosesimage.json();
 
-    // Retorna a URL da imagem
+    // Gera um session_id dinamicamente usando o timestamp
+    const sessionId = Date.now(); // Pode ser substituído por UUID ou outro método
+
+    // Retorna a URL da imagem e o session_id
     if (hasil.success && hasil.image) {
         return {
-            image: `https://e2.yotools.net/${hasil.image}` // Retorna a URL da imagem
+            image: `https://e2.yotools.net/${hasil.image}`, // Retorna a URL da imagem
+            session_id: sessionId // Retorna o session_id
         };
     } else {
         throw new Error("Falha ao gerar a imagem.");
     }
+}      let isArray = Array.isArray(vals);
+      let keys = encode(key + (isArray ? "[]" : ""));
+      if (!isArray) vals = [vals];
+      let out = [];
+      for (let valq of vals) out.push(keys + "=" + encode(valq));
+      return out.join("&");
+    })
+    .join("&");
+  return await fetch(`${url}?${body}`, {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+      "Accept-Language": "en-US,en;q=0.9",
+      "User-Agent": "GoogleBot",
+      Cookie: cookies,
+    },
+  });
 }
+
+
+async function photooxy(url, text) {
+    // Faz uma requisição GET para obter o token
+    const geturl = await fetch(url, {
+        method: "GET",
+        headers: {
+
 
 // Função de postagem auxiliar
 async function post(url, formdata = {}, cookies) {
