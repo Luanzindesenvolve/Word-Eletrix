@@ -960,6 +960,43 @@ router.get('/space', async (req, res) => {
         res.json({ erro: 'Erro no Servidor Interno' });
     }
 });
+router.get('/pohub', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("router.get('/vingadores', async (req, res) => {
+    const { texto, texto2 } = req.query; // Correção aqui
+
+    if (!texto) {
+        return res.json({ message: "Cade o parametro texto" });
+    }
+
+    try {
+        // Verifique se `texto2` é opcional e trate isso conforme necessário
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-logo-3d-style-avengers-online-427.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adicionei um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
 router.get('/deadpool', async (req, res) => {
     const { texto, texto2 } = req.query; // Correção aqui
 
