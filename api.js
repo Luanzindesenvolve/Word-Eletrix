@@ -153,6 +153,7 @@ router.get('/gerar-imagem', async (req, res) => {
 //fim 
 
 // play e playvideo by luan vulgo come primas 
+
 const got = require('got');
 const ytsr = require('yt-search');
 
@@ -250,14 +251,27 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-// Rota para baixar MP4
+
+
+// Rota para baixar clipe (MP4) baseado no nome do vídeo
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
+
+    console.log(`Recebido pedido para download do clipe: ${videoName}`);
+
     try {
         const videoId = await getVideoId(videoName);
-        if (!videoId) return res.status(404).send('Vídeo não encontrado');
+        if (!videoId) {
+            console.log('Vídeo não encontrado');
+            return res.status(404).send('Vídeo não encontrado');
+        }
 
         const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
+        if (!videoData.links.mp4 || !videoData.links.mp4['135']) {
+            console.log('Link de MP4 não encontrado');
+            return res.status(404).send('Link de MP4 não encontrado');
+        }
+
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
@@ -273,8 +287,14 @@ router.get('/clipe', async (req, res) => {
 // Rota para baixar MP3 pelo link (ytmp3) com buffer de download
 router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
+
     try {
         const videoData = await youtubedl(url);
+        if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
+            console.log('Link de MP3 não encontrado');
+            return res.status(404).send('Link de MP3 não encontrado');
+        }
+
         const k = videoData.links.mp3['mp3128'].k;
         const downloadLink = await convert(videoData.id, k);
 
@@ -290,8 +310,14 @@ router.get('/linkmp3', async (req, res) => {
 // Rota para baixar MP4 pelo link (ytmp4) com buffer de download
 router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
+
     try {
         const videoData = await youtubedl(url);
+        if (!videoData.links.mp4 || !videoData.links.mp4['135']) {
+            console.log('Link de MP4 não encontrado');
+            return res.status(404).send('Link de MP4 não encontrado');
+        }
+
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
