@@ -155,6 +155,7 @@ router.get('/gerar-imagem', async (req, res) => {
 // play e playvideo by luan vulgo come primas 
 const got = require('got');
 const ytsr = require('yt-search');
+
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
 
@@ -218,7 +219,7 @@ async function convert(vid, k) {
     }
 }
 
-// Rota para buscar e converter vídeo para MP3 e enviar como buffer
+// Rota para buscar e converter vídeo para MP3 e redirecionar para o link de download
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
@@ -240,21 +241,8 @@ router.get('/musica', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
         const downloadLink = await convert(videoData.id, k);
 
-        // Baixando o arquivo de áudio usando got
-        const audioStream = got.stream(downloadLink);
-
-        // Configurando cabeçalhos de resposta para o download
-        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp3"`);
-        res.setHeader('Content-Type', 'audio/mpeg');
-
-        // Enviando o arquivo como um stream para o cliente
-        audioStream.pipe(res);
-
-        // Tratando erros do stream
-        audioStream.on('error', (error) => {
-            console.error('Erro ao baixar o arquivo:', error);
-            res.status(500).send('Erro ao baixar o arquivo.');
-        });
+        // Redirecionar o usuário para o link de download
+        res.redirect(downloadLink);
 
     } catch (error) {
         console.error('Erro no fluxo de download:', error);
