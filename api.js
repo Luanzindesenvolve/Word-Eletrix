@@ -155,8 +155,6 @@ router.get('/gerar-imagem', async (req, res) => {
 // play e playvideo by luan vulgo come primas 
 const got = require('got');
 const ytsr = require('yt-search');
-const router = express.Router(); // Certifique-se de inicializar o roteador
-
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
 
