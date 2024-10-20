@@ -155,7 +155,8 @@ router.get('/gerar-imagem', async (req, res) => {
 // play e playvideo by luan vulgo come primas 
 const got = require('got');
 const ytsr = require('yt-search');
-const stream = require('stream');
+const router = express.Router(); // Certifique-se de inicializar o roteador
+
 // Cabeçalhos padrão
 const DEFAULT_HEADERS = {};
 
@@ -175,40 +176,51 @@ async function youtubedl(url) {
         q_auto: 0
     };
 
-    const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
-        headers: {
-            ...DEFAULT_HEADERS,
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-            origin: 'https://www.y2mate.com'
-        },
-        form
-    }).json();
+    try {
+        const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
+            headers: {
+                ...DEFAULT_HEADERS,
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+                origin: 'https://www.y2mate.com'
+            },
+            form
+        }).json();
 
-    return {
-        id: data.vid,
-        title: data.title,
-        thumbnail: `https://i.ytimg.com/vi/${data.vid}/0.jpg`,
-        links: data.links
-    };
+        return {
+            id: data.vid,
+            title: data.title,
+            thumbnail: `https://i.ytimg.com/vi/${data.vid}/0.jpg`,
+            links: data.links
+        };
+    } catch (error) {
+        console.error('Erro ao analisar vídeo:', error);
+        throw new Error('Erro ao obter informações do vídeo.');
+    }
 }
 
 // Função para converter o vídeo
 async function convert(vid, k) {
     const form = { vid, k };
-    const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
-        headers: {
-            ...DEFAULT_HEADERS,
-            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-            origin: 'https://www.y2mate.com'
-        },
-        form
-    }).json();
+    try {
+        const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
+            headers: {
+                ...DEFAULT_HEADERS,
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
+                origin: 'https://www.y2mate.com'
+            },
+            form
+        }).json();
 
-    return data.dlink;
+        return data.dlink;
+    } catch (error) {
+        console.error('Erro ao converter vídeo:', error);
+        throw new Error('Erro ao converter o vídeo.');
+    }
 }
-// Rota para buscar e converter vídeo para MP3 com buffer de download
+
+// Rota para buscar e converter vídeo para MP3 e enviar como buffer
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
@@ -218,13 +230,13 @@ router.get('/musica', async (req, res) => {
         const videoId = await getVideoId(videoName);
         if (!videoId) {
             console.log('Vídeo não encontrado');
-            return res.status(404).send('Video not found');
+            return res.status(404).send('Vídeo não encontrado');
         }
 
         const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
         if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
             console.log('Link de MP3 não encontrado');
-            return res.status(404).send('MP3 link not found');
+            return res.status(404).send('Link de MP3 não encontrado');
         }
 
         const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
@@ -233,45 +245,45 @@ router.get('/musica', async (req, res) => {
         // Baixando o arquivo de áudio usando got
         const audioStream = got.stream(downloadLink);
 
-        // Configurando cabeçalhos de resposta
+        // Configurando cabeçalhos de resposta para o download
         res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp3"`);
         res.setHeader('Content-Type', 'audio/mpeg');
 
         // Enviando o arquivo como um stream para o cliente
         audioStream.pipe(res);
 
+        // Tratando erros do stream
+        audioStream.on('error', (error) => {
+            console.error('Erro ao baixar o arquivo:', error);
+            res.status(500).send('Erro ao baixar o arquivo.');
+        });
+
     } catch (error) {
         console.error('Erro no fluxo de download:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Erro interno do servidor');
     }
 });
 
-// Rota para buscar e baixar vídeo pelo nome (playvideo) com buffer de download
+// Rota para baixar MP4
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
     try {
         const videoId = await getVideoId(videoName);
-        if (!videoId) return res.status(404).send('Video not found');
+        if (!videoId) return res.status(404).send('Vídeo não encontrado');
 
         const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Baixando o arquivo de vídeo usando got
-        const videoStream = got.stream(downloadLink);
-
-        // Configurando cabeçalhos de resposta
-        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp4"`);
-        res.setHeader('Content-Type', 'video/mp4');
-
-        // Enviando o arquivo como um stream para o cliente
-        videoStream.pipe(res);
+        // Redireciona para o link de download
+        res.redirect(downloadLink);
 
     } catch (error) {
         console.error('Erro ao baixar vídeo:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Erro interno do servidor');
     }
 });
+
 // Rota para baixar MP3 pelo link (ytmp3) com buffer de download
 router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
@@ -280,19 +292,12 @@ router.get('/linkmp3', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k;
         const downloadLink = await convert(videoData.id, k);
 
-        // Baixando o arquivo de áudio usando got
-        const audioStream = got.stream(downloadLink);
-
-        // Configurando cabeçalhos de resposta
-        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp3"`);
-        res.setHeader('Content-Type', 'audio/mpeg');
-
-        // Enviando o arquivo como um stream para o cliente
-        audioStream.pipe(res);
+        // Redireciona para o link de download
+        res.redirect(downloadLink);
 
     } catch (error) {
         console.error('Erro ao baixar MP3:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Erro interno do servidor');
     }
 });
 
@@ -304,21 +309,15 @@ router.get('/linkmp4', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Baixando o arquivo de vídeo usando got
-        const videoStream = got.stream(downloadLink);
-
-        // Configurando cabeçalhos de resposta
-        res.setHeader('Content-Disposition', `attachment; filename="${videoData.title}.mp4"`);
-        res.setHeader('Content-Type', 'video/mp4');
-
-        // Enviando o arquivo como um stream para o cliente
-        videoStream.pipe(res);
+        // Redireciona para o link de download
+        res.redirect(downloadLink);
 
     } catch (error) {
         console.error('Erro ao baixar MP4:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Erro interno do servidor');
     }
 });
+
 //fim 
 // Função auxiliar para obter o buffer da imagem
 async function getBuffer(url) {
