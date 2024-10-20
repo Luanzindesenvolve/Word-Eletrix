@@ -957,8 +957,9 @@ router.get('/space', async (req, res) => {
         res.json({ erro: 'Erro no Servidor Interno' });
     }
 });
+// Rota para /pohub
 router.get('/pohub', async (req, res) => {
-    const { texto, texto2 } = req.query; // Correção aqui
+    const { texto, texto2 } = req.query; // Captura os parâmetros da query
 
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
@@ -966,8 +967,20 @@ router.get('/pohub', async (req, res) => {
 
     try {
         // Verifique se `texto2` é opcional e trate isso conforme necessário
-        const data = await new Maker().Ephoto360("router.get('/vingadores', async (req, res) => {
-    const { texto, texto2 } = req.query; // Correção aqui
+        const data = await new Maker().Ephoto360("https://en.ephoto360.com/create-logo-3d-style-pohub-online-427.html", [texto, texto2]);
+        res.json({
+            status: true,
+            resultado: data
+        });
+    } catch (e) {
+        console.error(e); // Adiciona um log para depuração
+        res.json({ erro: 'Erro no Servidor Interno' });
+    }
+});
+
+// Rota para /vingadores
+router.get('/vingadores', async (req, res) => {
+    const { texto, texto2 } = req.query; // Captura os parâmetros da query
 
     if (!texto) {
         return res.json({ message: "Cade o parametro texto" });
@@ -981,16 +994,7 @@ router.get('/pohub', async (req, res) => {
             resultado: data
         });
     } catch (e) {
-        console.error(e); // Adicionei um log para depuração
-        res.json({ erro: 'Erro no Servidor Interno' });
-    }
-});", [texto, texto2]);
-        res.json({
-            status: true,
-            resultado: data
-        });
-    } catch (e) {
-        console.error(e); // Adicionei um log para depuração
+        console.error(e); // Adiciona um log para depuração
         res.json({ erro: 'Erro no Servidor Interno' });
     }
 });
