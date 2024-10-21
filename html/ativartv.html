@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecionamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #00e5ff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .button-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .button-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button-list li span {
+            color: #ffffff;
+            font-size: 18px;
+        }
+        .button {
+            background-color: #00ff00;
+            color: #000000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button:hover {
+            background-color: #66ff66;
+            transform: translateY(-2px);
+        }
+        .button:active {
+            background-color: #33cc33;
+            transform: translateY(0);
+        }
+        /* Estilos para o vídeo de fundo */
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="video-background">
+        <source src="ativartv.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+    </video>
+    <h1>Ativação de Serviços de Streaming</h1>
+    <ul class="button-list">
+        <li><span>Netflix</span> <a href="https://www.netflix.com/tv2" class="button">Site</a></li>
+        <li><span>Prime Video</span> <a href="https://www.primevideo.com/mytv" class="button">Site</a></li>
+        <li><span>Globoplay</span> <a href="https://ativar.globo.com/" class="button">Site</a></li>
+        <li><span>Disney+</span> <a href="https://www.disneyplus.com/start" class="button">Site</a></li>
+        <li><span>HBO Max</span> <a href="https://max.com/signin" class="button">Site</a></li>
+        <li><span>Paramount+</span> <a href="https://www.paramountplus.com/br/tv/" class="button">Site</a></li>
+        <li><span>Star+</span> <a href="https://www.starplus.com/start" class="button">Site</a></li>
+        <li><span>Apple TV+</span> <a href="https://activate.apple.com" class="button">Site</a></li>
+        <li><span>Claro TV+</span> <a href="https://www.clarotvmais.com.br/ativar" class="button">Site</a></li>
+        <li><span>Sky</span> <a href="https://www.skymais.com.br/ativar" class="button">Site</a></li>
+        <li><span>Spotify</span> <a href="https://Spotify.com/pair" class="button">Site</a></li>
+        <li><span>Crunchyroll</span> <a href="https://www.crunchyroll.com/pt-br/activate" class="button">Site</a></li>
+        <li><span>Looke</span> <a href="https://www.looke.com.br/activate" class="button">Site</a></li>
+        <li><span>Telecine Play</span> <a href="https://www.telecineplay.com.br/activate" class="button">Site</a></li>
+        <li><span>YouTube</span> <a href="https://youtube.com/activate" class="button">Site</a></li>
+        <li><span>Twitch</span> <a href="https://www.twitch.tv/activate" class="button">Site</a></li>
+        <li><span>Plex</span> <a href="https://plex.tv/link" class="button">Site</a></li>
+        <li><span>Deezer</span> <a href="https://www.deezer.com/us/activate" class="button">Site</a></li>
+        <li><span>Dazn</span> <a href="https://www.dazn.com/pt-BR/help/articles/how-to-watch-dazn-on-tv" class="button">Site</a></li>
+        
+
+    </ul>
+    <audio autoplay loop>
+        <source src="ativartv.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+</html>
