@@ -220,8 +220,7 @@ async function convert(vid, k) {
     }
 }
 
-
-// Rota para buscar e converter vídeo para MP3 e redirecionar para o link de download com `+` no final
+// Rota para buscar e converter vídeo para MP3 e enviar como stream
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
@@ -243,8 +242,10 @@ router.get('/musica', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
         const downloadLink = await convert(videoData.id, k);
 
-        // Adiciona `+` ao final do link e redireciona
-        res.redirect(`${downloadLink}+`);
+        // Adiciona `+` ao final do link e realiza o download do MP3, enviando como stream
+        const response = await got.stream(`${downloadLink}+`);
+        res.setHeader('Content-Type', 'audio/mpeg'); // Ajuste o tipo de conteúdo conforme necessário
+        response.pipe(res);
 
     } catch (error) {
         console.error('Erro no fluxo de download:', error);
@@ -252,7 +253,7 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-// Rota para baixar clipe (MP4) baseado no nome do vídeo e redirecionar para o link de download com `+` no final
+// Rota para baixar clipe (MP4) baseado no nome do vídeo e enviar como stream
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
 
@@ -274,8 +275,10 @@ router.get('/clipe', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Adiciona `+` ao final do link e redireciona
-        res.redirect(`${downloadLink}+`);
+        // Adiciona `+` ao final do link e realiza o download do MP4, enviando como stream
+        const response = await got.stream(`${downloadLink}+`);
+        res.setHeader('Content-Type', 'video/mp4'); // Ajuste o tipo de conteúdo conforme necessário
+        response.pipe(res);
 
     } catch (error) {
         console.error('Erro ao baixar vídeo:', error);
