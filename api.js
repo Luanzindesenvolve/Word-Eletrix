@@ -220,7 +220,8 @@ async function convert(vid, k) {
     }
 }
 
-// Rota para buscar e converter vídeo para MP3 e exibir o link de download
+
+// Rota para buscar e converter vídeo para MP3 e redirecionar para o link de download com `+` no final
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
@@ -242,8 +243,8 @@ router.get('/musica', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
         const downloadLink = await convert(videoData.id, k);
 
-        // Retorna o link de download
-        res.send({ downloadLink });
+        // Adiciona `+` ao final do link e redireciona
+        res.redirect(`${downloadLink}+`);
 
     } catch (error) {
         console.error('Erro no fluxo de download:', error);
@@ -251,7 +252,7 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-// Rota para baixar clipe (MP4) baseado no nome do vídeo e exibir o link de download
+// Rota para baixar clipe (MP4) baseado no nome do vídeo e redirecionar para o link de download com `+` no final
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
 
@@ -273,8 +274,8 @@ router.get('/clipe', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Retorna o link de download
-        res.send({ downloadLink });
+        // Adiciona `+` ao final do link e redireciona
+        res.redirect(`${downloadLink}+`);
 
     } catch (error) {
         console.error('Erro ao baixar vídeo:', error);
