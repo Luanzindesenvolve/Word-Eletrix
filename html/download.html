@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download e Upload de Arquivos</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px;
+            width: 300px;
+            font-size: 1em;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop muted>
+        <source src="download.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
+
+    <div id="content">
+        <h1>Download e Upload de Arquivos</h1>
+        <form id="uploadForm">
+            <label for="option">Selecione uma opção:</label><br>
+            <select id="option" name="option">
+                <optgroup label="Baixar música 🎵">
+                    <option value="musicByName">Pelo nome</option>
+                    <option value="musicByLink">Pelo link</option>
+                </optgroup>
+                <optgroup label="Baixar vídeo 🎥">
+                    <option value="videoByName">Pelo nome</option>
+                    <option value="videoByLink">Pelo link</option>
+                </optgroup>
+                <optgroup label="Baixar vídeo do Instagram 🎥">
+                    <option value="instagramByLink">Baixar vídeo pelo link</option>
+                    <option value="instagramStoryByLink">Baixar story pelo link</option>
+                    <option value="instagramSearch">Pesquisar Instagram</option>
+                    <option value="instaByNewApi">Baixar vídeo</option>
+                </optgroup>
+                <optgroup label="Baixar vídeo do Facebook 🎥">
+                    <option value="facebookByLink1">Pelo link (API 1)</option>
+                    <option value="facebookByLink2">Pelo link (API 2)</option>
+                </optgroup>
+                <optgroup label="Baixar do TikTok 🎥">
+                    <option value="tiktokByLinkVideo">Vídeo</option>
+                    <option value="tiktokByLinkAudio">Áudio</option>
+                </optgroup>
+                <optgroup label="Telegra.ph 🌐">
+                    <option value="telegraphImage">Foto para link</option>
+                    <option value="telegraphVideo">Vídeo para link</option>
+                </optgroup>
+                <optgroup label="Pinterest 📌">
+                    <option value="pinterestVideo">Vídeo pelo link</option>
+                    <option value="pinterestImage">Imagem pelo link</option>
+                </optgroup>
+            </select><br><br>
+            <label for="query">Nome ou link:</label><br>
+            <input type="text" id="query" name="query"><br><br>
+            <input type="submit" value="Enviar">
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const option = formData.get('option');
+            const query = formData.get('query');
+            const resultElement = document.getElementById('result');
+            let apiUrl;
+
+            switch(option) {
+                case 'musicByName':
+                    apiUrl = `https://world-ecletix.onrender.com/api/musica?name=${encodeURIComponent(query)}`;
+                    break;
+                case 'musicByLink':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp3?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'videoByName':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'videoByLink':
+                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instagramByLink':
+                    apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instagramStoryByLink':
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instagramSearch':
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
+                    break;
+                case 'facebookByLink1':
+                    apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'facebookByLink2':
+                    apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'tiktokByLinkVideo':
+                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                    break;
+                case 'tiktokByLinkAudio':
+                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                    break;
+                case 'telegraphImage':
+                case 'telegraphVideo':
+                    // Redireciona para o Telegra.ph para upload de arquivos
+                    window.open('https://telegra.ph', '_blank');
+                    return;
+                case 'pinterestVideo':
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/vid2?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'pinterestImage':
+                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/img2?url=${encodeURIComponent(query)}`;
+                    break;
+                case 'instaByNewApi':
+                    apiUrl = `https://world-ecletix.onrender.com/api/insta?url=${encodeURIComponent(query)}`;
+                    break;
+                default:
+                    resultElement.textContent = 'Opção inválida ou não suportada';
+                    return;
+            }
+
+            if (apiUrl) {
+                window.location.href = apiUrl; // Redireciona para a URL da API
+            } else {
+                resultElement.textContent = 'Opção inválida ou não suportada';
+            }
+        });
+    </script>
+    <audio autoplay loop>
+        <source src="download.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+</html>

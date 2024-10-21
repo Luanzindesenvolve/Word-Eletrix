@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferramentas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('verde.jpg'); /* Adicione sua imagem de fundo aqui */
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column; /* Colocado o título acima dos botões */
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin: 10px 0; /* Reduzido o espaço acima e abaixo do título */
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: #2E8B57; /* Verde */
+            color: white;
+            transition: all 0.3s ease;
+            width: calc(33.33% - 20px);
+        }
+
+        .button:hover {
+            background-color: #3CB371; /* Verde mais claro ao passar o mouse */
+        }
+
+        @media only screen and (max-width: 600px) {
+            .button {
+                width: calc(50% - 20px);
+            }
+            .buttons {
+                margin-top: 50px; /* Ajuste para maior visibilidade no celular */
+            }
+        }
+
+        p {
+            text-align: center;
+            color: white;
+        }
+        .top-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+    padding: 10px 0;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #28a745; /* Verde */
+    border-radius: 5px 0 0 5px;
+    width: 200px;
+    background-color: #000000; /* Preto */
+    color: #ffffff; /* Texto branco para melhor visibilidade */
+}
+.search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    background-color: #000000; /* Preto */
+    color: #28a745; /* Verde */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.search-button:hover {
+    background-color: #333333; /* Preto mais claro ao passar o mouse */
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.highlight {
+    border: 2px solid #ff0000; /* Destacar com borda vermelha */
+    transform: scale(1.1); /* Zoom */
+    transition: transform 0.3s;
+}
+
+.error-message {
+    color: #ff0000; /* Cor da mensagem de erro */
+    font-size: 14px;
+    margin-top: 5px;
+}
+.title-container {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            
+            margin-top: 70px;  /* Espaçamento entre o botão de pesquisa e o título */
+    }
+.button {
+
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+    <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+        <button class="search-button" onclick="searchButton()">
+            <i class="fas fa-search icon"></i> Pesquisar
+        </button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+    </div>
+<div class="title-container">Ferramentas</div> <!-- Título abaixo do botão de pesquisa -->
+</div>
+    <div class="buttons">
+        <button class="button" onclick="window.location.href = 'https://www.myinstants.com/pt/index/br/';"><i class="fas fa-music"></i> Áudio de Memes</button>
+        <button class="button" onclick="window.location.href = 'https://www.veed.io/pt-BR/ferramentas/legendas-automaticas';"><i class="fas fa-closed-captioning"></i> Legenda Automática</button>
+        <button class="button" onclick="window.location.href = 'https://clideo.com/pt/cut-audio';"><i class="fas fa-edit"></i> Editor de Áudio</button>
+        <button class="button" onclick="window.location.href = 'https://br.qr-code-generator.com/';"><i class="fas fa-qrcode"></i> Gerador de QR Code</button>
+        <button class="button" onclick="window.location.href = 'https://github.com/jivoi/awesome-osint';"><i class="fas fa-search"></i> OSINT</button>
+        <button class="button" onclick="window.location.href = 'https://videoeffects.com/';"><i class="fas fa-video"></i> Video Effects</button>
+        <button class="button" onclick="window.location.href = 'https://www.presentationgpt.com/';"><i class="fas fa-file-powerpoint"></i> Presentation GPT</button>
+        <button class="button" onclick="window.location.href = 'https://github.com/hydralauncher/hydra';"><i class="fas fa-tint"></i> Hydra Launcher</button>
+        <button class="button" onclick="window.location.href = 'https://qrcodefacil.com/';"><i class="fas fa-qrcode"></i> QR Code Fácil</button>
+        <button class="button" onclick="window.location.href = 'https://me-qr.com/pt';"><i class="fas fa-qrcode"></i> ME QR</button>
+        <button class="button" onclick="window.location.href = 'https://www.mediafire.com/file_premium/br0p5e0hari3gpi/IPTV_Smarters_Pro_-_v4.0_Tekmods.com.apk/file';"><i class="fas fa-tv"></i> IPTV Smart</button>
+        <button class="button" onclick="window.location.href = 'https://f-droid.org/pt_BR/packages/com.termux/';"><i class="fas fa-terminal"></i> Termux</button>
+        <button class="button" onclick="window.location.href = 'https://github.com/simondankelmann/Bluetooth-LE-Spam/releases';"><i class="fab fa-bluetooth"></i> Bluetooth Spam</button>
+        <button class="button" onclick="window.location.href = 'https://meuguia.tv/';"><i class="fas fa-tv"></i> Guia de TV</button>
+        <button class="button" onclick="window.location.href = 'https://www.invertexto.com/texto-criptografado';">Criptografia</button>
+        <button class="button" onclick="window.location.href = 'https://www.virustotal.com/gui/home/upload';"><i class="fas fa-shield-alt"></i> Anti Vírus</button>
+        <button class="button" onclick="window.location.href = 'https://www.speedtest.net/';"><i class="fas fa-tachometer-alt"></i> Velocidade da Net</button>
+        <button class="button" onclick="window.location.href = 'https://grabify.link/';"><i class="fas fa-map-marker-alt"></i> Pegar IP</button>
+        <button class="button" onclick="window.location.href = 'https://www.meuenderecoip.com/descobrir-ip-do-site.php';"><i class="fas fa-globe"></i> Pegar de um Site</button>
+        <button class="button" onclick="window.location.href = 'https://www.freefiremania.com.br/como-colocar-espaco-invisivel-no-nick.html';"><i class="fas fa-user-secret"></i> Símbolo Invisível</button>
+        <button class="button" onclick="window.location.href = 'https://mobileverso.com.br/freefire/simbolos-para-nick';"><i class="fas fa-user"></i> Símbolo para Nick</button>
+        <button class="button" onclick="window.location.href = 'https://www.simbolosparanick.net/';"><i class="fas fa-user"></i> Símbolo</button>
+        <button class="button" onclick="window.location.href = 'https://mobileverso.com.br/freefire/id-e-nick-de-famosos';"><i class="fas fa-user-friends"></i> ID de Famosos</button>
+        <button class="button" onclick="window.location.href = 'https://pobreflix1.art/';"><i class="fas fa-film"></i> Pobreflix</button>
+        <button class="button" onclick="window.location.href = 'https://superflix.love/';"><i class="fas fa-film"></i> Superflix</button>
+        <button class="button" onclick="window.location.href = 'https://filmesxp.com/home/';"><i class="fas fa-film"></i> Filmesxp</button>
+        <button class="button" onclick="window.location.href = 'https://oneflix.vip/';"><i class="fas fa-film"></i> Oneflix</button>
+        <button class="button" onclick="window.location.href = 'https://mxtoolbox.com/';"><i class="fas fa-list"></i> IP Blacklist</button>
+        <button class="button" onclick="window.location.href = 'https://hetrixtools.com/blacklist-check/';"><i class="fas fa-list"></i> Blacklist</button>
+        <button class="button" onclick="window.location.href = 'https://dnschecker.org/ip-blacklist-checker.php';"><i class="fas fa-list"></i> IP Queimado</button>
+        <button class="button" onclick="window.location.href = 'https://takipcibase.com';"><i class="fab fa-instagram"></i> Seguidor</button>
+        <button class="button" onclick="window.location.href = 'https://instamoda.org/tools';"><i class="fab fa-instagram"></i> Seguidor 2</button>
+        <button class="button" onclick="window.location.href = 'https://fastfollow.in/tools/';"><i class="fab fa-instagram"></i> Seguidor 3</button>
+        <button class="button" onclick="window.location.href = 'https://takipcitime.com/';"><i class="fab fa-instagram"></i> Seguidor 4</button>
+        <button class="button" onclick="window.location.href = 'https://takipcikrali.com/';"><i class="fab fa-instagram"></i> Seguidor 5</button>
+        <button class="button" onclick="window.location.href = 'https://birtakipci.com/';"><i class="fab fa-instagram"></i> Seguidor 6</button>
+        <button class="button" onclick="window.location.href = 'https://medyahizmeti.com/';"><i class="fab fa-instagram"></i> Seguidor 7</button>
+        <button class="button" onclick="window.location.href = 'https://takipcimax.com/';"><i class="fab fa-instagram"></i> Seguidor 8</button>
+        <button class="button" onclick="window.location.href = 'https://canlitakipci.com/';"><i class="fab fa-instagram"></i> Seguidor 9</button>
+        <button class="button" onclick="window.location.href = 'https://takipcigir.com/';"><i class="fab fa-instagram"></i> Seguidor 10</button>
+        <button class="button" onclick="window.location.href = 'https://www.takipcifox.com/';"><i class="fab fa-instagram"></i> Seguidor 11</button>
+        <button class="button" onclick="window.location.href = 'https://takipcimx.net/index.amp.html';"><i class="fab fa-instagram"></i> Seguidor 12</button>
+        <button class="button" onclick="window.location.href = 'https://takipciking.net/tag/instagram-takipci-max';"><i class="fab fa-instagram"></i> Seguidor 13</button>
+        <button class="button" onclick="window.location.href = 'https://mixtakip.com/tag/instagram-takipci-hilesi-max';"><i class="fab fa-instagram"></i> Seguidor 14</button>
+        <button class="button" onclick="window.location.href = 'https://takipcikutusu.com/tags/instagram-takipci-max';"><i class="fab fa-instagram"></i> Seguidor 15</button>
+        <button class="button" onclick="window.location.href = 'https://www.hepsitakipci.com/';"><i class="fab fa-instagram"></i> Seguidor 16</button>
+        <button class="button" onclick="window.location.href = 'https://www.bigtakip.net/tag/takipci-max';"><i class="fab fa-instagram"></i> Seguidor 17</button>
+        <button class="button" onclick="window.location.href = 'https://takipcivar.net/';"><i class="fab fa-instagram"></i> Seguidor 18</button>
+        <button class="button" onclick="window.location.href = 'https://takipcizen.com/tools/send-follower/6887835530';"><i class="fab fa-instagram"></i> Seguidor 19</button>
+        <button class="button" onclick="window.location.href = 'https://www.takipciking.com/';"><i class="fab fa-instagram"></i> Seguidor 20</button>
+    </div>
+    <p>Desenvolvido por Luanzin Dev</p>
+    <script>
+        function searchButton() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const buttons = document.querySelectorAll('.button');
+    let found = false;
+
+    buttons.forEach(button => {
+        button.classList.remove('highlight');
+        if (button.textContent.toLowerCase().includes(query)) {
+            button.classList.add('highlight');
+            button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            found = true;
+        }
+    });
+
+    const errorMessage = document.getElementById('error-message');
+    if (!found) {
+        errorMessage.textContent = 'Botão não encontrado.';
+    } else {
+        errorMessage.textContent = '';
+    }
+        }
+    </script>
+    <audio autoplay loop>
+        <source src="verde.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+
+</html>

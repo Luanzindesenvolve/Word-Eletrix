@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - contato</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="favicon-32x32.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('azul.jpg');
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #contatos {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            margin-bottom: 30px; /* aumentando a distância do título aos botões */
+            margin-top: 50px; /* ajustando a posição do título para cima */
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background-color: #007bff; /* Azul */
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+        }
+
+        .icon {
+            margin-right: 10px;
+        }
+        .top-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+    padding: 10px 0;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #007bff; /* azul */
+    border-radius: 5px 0 0 5px;
+    width: 200px;
+    background-color: #000000; /* Preto */
+    color: #ffffff; /* Texto branco para melhor visibilidade */
+}
+
+.search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    background-color: #000000; /* Preto */
+    color: #007bff; /* azul */
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.search-button:hover {
+    background-color: #333333; /* Preto mais claro ao passar o mouse */
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.highlight {
+    border: 2px solid #ff0000; /* Destacar com borda vermelha */
+    transform: scale(1.1); /* Zoom */
+    transition: transform 0.3s;
+}
+
+.error-message {
+    color: #ff0000; /* Cor da mensagem de erro */
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.button {
+    p
+    </style>
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+        <button class="search-button" onclick="searchButton()">
+            <i class="fas fa-search icon"></i> Pesquisar
+        </button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+  </div>
+    <div id="contatos">Contatos</div>
+    <div class="buttons">
+        <button class="button" onclick="window.location.href = 'https://www.instagram.com/comedor_di_primas';">
+            <i class="fab fa-instagram icon"></i> Instagram
+        </button>
+        <button class="button" onclick="window.location.href = 'https://abre.bio/come-primas';">
+            <i class="fas fa-globe icon"></i> Meu Site
+        </button>
+        <button class="button" onclick="window.location.href = 'https://wa.me/+1347695-3415?text=Luanzin+amassa+muito+kkkkkk';">
+            <i class="fab fa-whatsapp icon"></i> Bot do Zap
+        </button>
+        <button class="button" onclick="window.location.href = 'https://t.me/CpxConsultas_bot';">
+            <i class="fab fa-telegram icon"></i> Bot do Telegram
+        </button>
+        <button class="button" onclick="window.location.href = 'https://music.youtube.com/playlist?list=PLSNu8uNimDXdUXPoO6GzhojxqVqv9PMcY';">
+            <i class="fas fa-music icon"></i> Playlist
+        </button>
+        <button class="button" onclick="window.location.href = 'consultas';">
+            <i class="fas fa-search icon"></i> Consultas
+        </button>
+        <button class="button" onclick="window.location.href = 'contas';">
+            <i class="fas fa-user-secret icon"></i> Contas Grátis
+        </button>
+        <button class="button" onclick="window.location.href = 'download';">
+            <i class="fas fa-download icon"></i> Menu Download
+        </button>
+    </div>
+    <p> desenvolvido pelo luanzin dev🖥️ </p>
+<script>
+function searchButton() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const buttons = document.querySelectorAll('.button');
+    let found = false;
+
+    buttons.forEach(button => {
+        button.classList.remove('highlight');
+        if (button.textContent.toLowerCase().includes(query)) {
+            button.classList.add('highlight');
+            button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            found = true;
+        }
+    });
+
+    const errorMessage = document.getElementById('error-message');
+    if (!found) {
+        errorMessage.textContent = 'Botão não encontrado.';
+    } else {
+        errorMessage.textContent = '';
+    }
+    }
+</script>
+    <!-- Música de fundo -->
+    <audio autoplay loop>
+        <source src="azul.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>
+
+</html>

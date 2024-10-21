@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Valorização</title>
+    <style>
+        /* Estilo para o vídeo de fundo */
+        video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        
+        /* Estilo para o conteúdo da página */
+        body {
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .link-list {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .link-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .link-item button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function calcularValorizacao() {
+            // Obter o valor inserido pelo usuário
+            var valor = parseFloat(document.getElementById('valor-jogador').value);
+            
+            // Verificar se o valor é um número válido
+            if (isNaN(valor) || valor <= 0) {
+                alert('Por favor, insira um valor válido.');
+                return;
+            }
+            
+            // Calcular a multiplicação por 0.45
+            var valorNecessario = valor * 0.45;
+            
+            // Exibir a mensagem com o valor calculado
+            document.getElementById('resultado').innerText = 'Esse jogador precisa de R$ ' + valorNecessario.toFixed(2) + ' para valorizar.';
+        }
+    </script>
+</head>
+<body>
+    <video autoplay loop muted>
+        <source src="valorizar.mp4" type="video/mp4">
+        Seu navegador não suporta a tag de vídeo.
+    </video>
+    
+    <h1>Valorização do Jogador</h1>
+    <form onsubmit="event.preventDefault(); calcularValorizacao();">
+        <label for="valor-jogador">Qual o valor do jogador? (R$):</label>
+        <input type="number" id="valor-jogador" step="0.01" required>
+        <button type="submit">Calcular</button>
+    </form>
+    <p id="resultado"></p>
+
+    <div class="link-list">
+        <div class="link-item">
+            <a href="https://www.cartolafc10.com.br/pontuacao-minima-para-valorizar/" target="_blank">Cartola FC 10</a>
+            <button onclick="window.open('https://www.cartolafc10.com.br/pontuacao-minima-para-valorizar/', '_blank')">Ver</button>
+        </div>
+        <div class="link-item">
+            <a href="https://dicasdarodada.com/valorizacao-app/" target="_blank">Dicas da Rodada</a>
+            <button onclick="window.open('https://dicasdarodada.com/valorizacao-app/', '_blank')">Ver</button>
+        </div>
+        <div class="link-item">
+            <a href="https://www.cartolafcbrasil.com.br/scouts" target="_blank">Cartola FC Brasil</a>
+            <button onclick="window.open('https://www.cartolafcbrasil.com.br/scouts', '_blank')">Ver</button>
+        </div>
+        <div class="link-item">
+            <a href="https://gatomestre.ge.globo.com/cartola/gato-mestre/noticia/o-que-e-minimo-para-valorizar-do-cartola-como-ganhar-cartoletas-gato-mestre-explica.ghtml" target="_blank">Gato Mestre</a>
+            <button onclick="window.open('https://gatomestre.ge.globo.com/cartola/gato-mestre/noticia/o-que-e-minimo-para-valorizar-do-cartola-como-ganhar-cartoletas-gato-mestre-explica.ghtml', '_blank')">Ver</button>
+        </div>
+        <div class="link-item">
+            <a href="https://gurudocartola.com/selecao-guru-cartola" target="_blank">Guru do Cartola</a>
+            <button onclick="window.open('https://gurudocartola.com/selecao-guru-cartola', '_blank')">Ver</button>
+        </div>
+    </div>
+</body>
+</html

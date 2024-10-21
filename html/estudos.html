@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudar</title>
+    <!-- Inclua a biblioteca Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('roxo.jpg');
+            background-color: #f0f0f0;
+            display: grid;
+            place-items: center;
+            height: 100vh;
+        }
+
+        html {
+            zoom: 1;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            background-color: #8A2BE2;
+            color: white;
+            transition: all 0.3s ease;
+            width: calc(33.33% - 20px);
+        
+        }
+
+        p {
+            text-align: center;
+            color: white;
+        }
+        .button:hover {
+            background-color: #800080;
+        }
+
+        .button i {
+            margin-right: 10px;
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Barra semi-transparente */
+            padding: 10px 0;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #8A2BE2; /* roxo */
+            border-radius: 5px 0 0 5px;
+            width: 200px;
+            background-color: #000000; /* Preto */
+            color: #ffffff; /* Texto branco para melhor visibilidade */
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            background-color: #000000; /* Preto */
+            color: #8A2BE2; /* roxo */
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-button:hover {
+            background-color: #333333; /* Preto mais claro ao passar o mouse */
+        }
+
+        .icon {
+            margin-right: 5px;
+        }
+
+        .highlight {
+            border: 2px solid #ff0000; /* Destacar com borda vermelha */
+            transform: scale(1.1); /* Zoom */
+            transition: transform 0.3s;
+        }
+
+        .error-message {
+            color: #ff0000; /* Cor da mensagem de erro */
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .title-container {
+            color: white;
+            font-size: 32px; /* aumentando o tamanho do texto */
+            margin-top: 70px;  /* Espaçamento entre o botão de pesquisa e o título */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="search-input" placeholder="Pesquisar botão">
+            <button class="search-button" onclick="searchButton()">
+                <i class="fas fa-search icon"></i> Pesquisar
+            </button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+    <div class="title-container">
+        <div class="title">Conhecimento nunca é demais</div> <!-- Título abaixo do botão de pesquisa -->
+    </div>
+    <div class="container">
+        <a class="button" href="https://t.me/Brasil_Cursos2"><i class="fas fa-book"></i> Cursos VIP</a>
+        <a class="button" href="https://sebrae.com.br/sites/PortalSebrae/cursosonline"><i class="fas fa-graduation-cap"></i> Curso SEBRAE</a>
+        <a class="button" href="https://certificadocursosonline.com/"><i class="fas fa-certificate"></i> Certificado de Cursos Online</a>
+        <a class="button" href="https://catracalivre.com.br/educacao/20-sites-com-cursos-gratuitos-para-voce-turbinar-o-curriculo/"><i class="fas fa-globe"></i> 20 Sites de Curso</a>
+        <a class="button" href="https://t.me/livrosEpubPdfx"><i class="fas fa-book-open"></i> Livros</a>
+        <a class="button" href="https://www.baixelivros.com.br/"><i class="fas fa-bookmark"></i> Livros Site</a>
+        <a class="button" href="https://www.kobo.com/br/pt/p/livros-gratis"><i class="fas fa-file"></i> Ebook</a>
+        <a class="button" href="https://blog.mettzer.com/livros-gratis/"><i class="fas fa-book-reader"></i> 10 Sites de Livros</a>
+        <a class="button" href="https://pt.ifixit.com/"><i class="fas fa-tools"></i> Tutoriais</a>
+        <a class="button" href="https://elevenlabs.io"><i class="fas fa-microphone"></i> Elevenlab</a>
+        <a class="button" href="https://pt.khanacademy.org/"><i class="fas fa-graduation-cap"></i> Khan Academy</a>
+        <a class="button" href="https://exercism.org/"><i class="fas fa-laptop-code"></i> Programação</a>
+        <a class="button" href="https://www.estudegratis.com.br/#escolha"><i class="fas fa-book"></i> Estude Mais</a>
+        <a class="button" href="https://estude.org/"><i class="fas fa-graduation-cap"></i> Estude.org</a>
+        <a class="button" href="https://www.classcentral.com/"><i class="fas fa-chalkboard"></i> Central de Cursos</a>
+        <a class="button" href="https://news.microsoft.com/pt-br/capacitacao-gratuita-para-alavancar-sua-carreira/"><i class="fab fa-microsoft"></i> Cursos da Microsoft</a>
+        <a class="button" href="https://play.senai.br/videos"><i class="fas fa-play"></i> Play Senai</a>
+        <a class="button" href="https://m.youtube.com/channel/UCrWvhVmt0Qac3HgsjQK62FQ"><i class="fab fa-youtube"></i> Curso em Vídeo</a>
+        <a class="button" href="https://sabervirtual.ciee.org.br/"><i class="fas fa-graduation-cap"></i> Saber Virtual (CIEE)</a>
+    </div>
+    <p> desenvolvido pelo luanzin dev🖥️ </p> 
+    <script>
+        function searchButton() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const buttons = document.querySelectorAll('.button');
+            let found = false;
+
+            buttons.forEach(button => {
+                button.classList.remove('highlight');
+                if (button.textContent.toLowerCase().includes(query)) {
+                    button.classList.add('highlight');
+                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    found = true;
+                }
+            });
+
+            const errorMessage = document.getElementById('error-message');
+            if (!found) {
+                errorMessage.textContent = 'Botão não encontrado.';
+            } else {
+                errorMessage.textContent = '';
+            }
+        }
+    </script>
+    <audio autoplay loop>
+        <source src="roxo.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio HTML5.
+    </audio>
+</body>                               
+</html>
