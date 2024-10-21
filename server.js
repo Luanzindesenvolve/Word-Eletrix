@@ -13,17 +13,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './html/index.html'));
 });
 
-// Rota dinâmica para servir arquivos HTML e TXT sem a extensão
 app.get('/:page', (req, res) => {
   const page = req.params.page;
-  const filePathHtml = path.join(__dirname, `${page}.html`);
-  const filePathTxt = path.join(__dirname, `${page}.txt`);
+  const filePathHtml = path.join(__dirname, 'html', `${page}.html`);
+  const filePathTxt = path.join(__dirname, 'html', `${page}.txt`);
 
   res.sendFile(filePathHtml, (err) => {
     if (err) {
       res.sendFile(filePathTxt, (err) => {
         if (err) {
-          res.status(404).sendFile(path.join(__dirname, './html/404.html'));
+          res.status(404).sendFile(path.join(__dirname, 'html', '404.html'));
         }
       });
     }
