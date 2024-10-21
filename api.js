@@ -220,7 +220,7 @@ async function convert(vid, k) {
     }
 }
 
-// Rota para buscar e converter vídeo para MP3 e redirecionar para o link de download
+// Rota para buscar e converter vídeo para MP3 e exibir o link de download
 router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
@@ -242,8 +242,8 @@ router.get('/musica', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k; // Captura a chave 'k' para a conversão
         const downloadLink = await convert(videoData.id, k);
 
-        // Redirecionar o usuário para o link de download
-        res.redirect(downloadLink);
+        // Retorna o link de download
+        res.send({ downloadLink });
 
     } catch (error) {
         console.error('Erro no fluxo de download:', error);
@@ -251,9 +251,7 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-
-
-// Rota para baixar clipe (MP4) baseado no nome do vídeo
+// Rota para baixar clipe (MP4) baseado no nome do vídeo e exibir o link de download
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
 
@@ -275,8 +273,8 @@ router.get('/clipe', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Redireciona para o link de download
-        res.redirect(downloadLink);
+        // Retorna o link de download
+        res.send({ downloadLink });
 
     } catch (error) {
         console.error('Erro ao baixar vídeo:', error);
@@ -284,7 +282,7 @@ router.get('/clipe', async (req, res) => {
     }
 });
 
-// Rota para baixar MP3 pelo link (ytmp3) com buffer de download
+// Rota para baixar MP3 pelo link (ytmp3) com buffer de download e exibir o link de download
 router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
 
@@ -298,8 +296,8 @@ router.get('/linkmp3', async (req, res) => {
         const k = videoData.links.mp3['mp3128'].k;
         const downloadLink = await convert(videoData.id, k);
 
-        // Redireciona para o link de download
-        res.redirect(downloadLink);
+        // Retorna o link de download
+        res.send({ downloadLink });
 
     } catch (error) {
         console.error('Erro ao baixar MP3:', error);
@@ -307,7 +305,7 @@ router.get('/linkmp3', async (req, res) => {
     }
 });
 
-// Rota para baixar MP4 pelo link (ytmp4) com buffer de download
+// Rota para baixar MP4 pelo link (ytmp4) com buffer de download e exibir o link de download
 router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
 
@@ -321,15 +319,14 @@ router.get('/linkmp4', async (req, res) => {
         const k = videoData.links.mp4['135'].k; // Exemplo de 480p
         const downloadLink = await convert(videoData.id, k);
 
-        // Redireciona para o link de download
-        res.redirect(downloadLink);
+        // Retorna o link de download
+        res.send({ downloadLink });
 
     } catch (error) {
         console.error('Erro ao baixar MP4:', error);
         res.status(500).send('Erro interno do servidor');
     }
 });
-
 //fim 
 // Função auxiliar para obter o buffer da imagem
 async function getBuffer(url) {
