@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname)));
 
 // Rota para servir o arquivo index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, './html/index.html'));
 });
 
 // Rota dinâmica para servir arquivos HTML e TXT sem a extensão
@@ -23,7 +23,7 @@ app.get('/:page', (req, res) => {
     if (err) {
       res.sendFile(filePathTxt, (err) => {
         if (err) {
-          res.status(404).sendFile(path.join(__dirname, '404.html'));
+          res.status(404).sendFile(path.join(__dirname, './html/404.html'));
         }
       });
     }
@@ -35,7 +35,7 @@ app.use('/api', apiRoutes);
 
 // Rota para lidar com erros 404 e enviar a página de erro personalizada
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, '404.html'));
+  res.status(404).sendFile(path.join(__dirname, './html/404.html'));
 });
 
 // Inicia o servidor
