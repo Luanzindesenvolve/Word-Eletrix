@@ -1,12 +1,12 @@
 {
-  "name": "site",
+  "name": "Word-Eletrix",
   "version": "2.0.0",
-  "description": "gosto de comer cu",
+  "description": "site com objetivos de espalhar conhecimento!",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
-  "author": "luan dev",
+  "author": "luanzin dev",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
