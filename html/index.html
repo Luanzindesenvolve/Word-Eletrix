@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World ecletix</title>
+    <title>World Ecletix</title>
     <!-- Adicionando link para Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Adicionando referências para favicons de diferentes tamanhos e tipos -->
-    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16">
-    <link rel="icon" href="/android-chrome-192x192.png" type="image/png" sizes="192x192">
-    <link rel="icon" href="/android-chrome-512x512.png" type="image/png" sizes="512x512">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="./icones/favicon-32x32.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="./icones/favicon-16x16.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="./icones/android-chrome-192x192.png" type="image/png" sizes="192x192">
+    <link rel="icon" href="./icones/android-chrome-512x512.png" type="image/png" sizes="512x512">
+    <link rel="apple-touch-icon" href="./icones/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
 
 <style>
 
@@ -24,7 +24,7 @@
     /* Adicionando a fonte Road Rage */
         @font-face {
             font-family: 'Road Rage';
-            src: url('Road_Rage.otf') format('opentype');
+            src: url('./Road_Rage.otf') format('opentype');
         }
 
 /* Estilos para texto em negrito */
@@ -305,7 +305,7 @@ thead th {
     top: 0;
     left: 0;
     /* Alterando o fundo para a imagem 4.jpg */
-    background-image: url('4.jpg');
+    background-image: url('/fundos/4.jpg');
     background-size: cover;
     overflow-x: hidden;
     transition: 0.5s;
@@ -379,14 +379,14 @@ thead th {
 <body>
 
     <!-- Imagem de fallback para navegadores que não suportam vídeo HTML5 -->
-    <img src="1.jpg" alt="Imagem de fallback" style="position: fixed; z-index: -101; width: 100%; height: 100%; object-fit: cover;">
+    <img src="./fundos/1.jpg" alt="Imagem de fallback" style="position: fixed; z-index: -101; width: 100%; height: 100%; object-fit: cover;">
     <video autoplay muted loop id="video-background">
-        <source src="V.mp4" type="video/mp4">
+        <source src="./videos/V.mp4" type="video/mp4">
         Seu navegador não suporta vídeos HTML5.
     </video>
    <header>
     <video class="logo-video" autoplay loop muted>
-        <source src="logo.mp4" type="video/mp4">
+        <source src="./videos/logo.mp4" type="video/mp4">
         Seu navegador não suporta o vídeo.
     </video>
     <!-- Outros elementos do cabeçalho, como menu, etc. -->
@@ -715,7 +715,7 @@ generateCalendar(currentMonth, currentYear);
     <p>Desenvolvido por Luanzin Dev</p>
     <!-- Música de fundo -->
     <audio autoplay loop>
-        <source src="m.mp3" type="audio/mpeg">
+        <source src="./musicas/m.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio HTML5.
     </audio>
 </body>   
