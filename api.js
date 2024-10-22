@@ -219,9 +219,35 @@ async function convert(vid, k) {
         throw new Error('Erro ao converter o vídeo.');
     }
 }
-
-// Rota para buscar e converter vídeo para MP3 e enviar como stream
 router.get('/musica', async (req, res) => {
+    try {
+        const { name } = req.query;
+
+        if (!name) {
+            return res.status(400).json({ status: false, message: "O nome da música é obrigatório!" });
+        }
+
+        // Busca a música pelo nome
+        const searchResult = await searching(name);
+        if (!searchResult.status) {
+            return res.status(404).json(searchResult);
+        }
+
+        // Pega o primeiro resultado e gera o link de download
+        const trackUrl = searchResult.data[0].url;
+        const downloadResult = await spotifydl(trackUrl);
+
+        // Força o download do áudio
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Content-Disposition', `attachment; filename="${name}.mp3"`);
+        res.redirect(downloadResult.download); // Redireciona o usuário para o link de download direto
+
+    } catch (error) {
+        res.status(500).json({ status: false, message: error.message });
+    }
+});
+// Rota para buscar e converter vídeo para MP3 e enviar como stream
+router.get('/musica2', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
