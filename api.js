@@ -104,6 +104,19 @@ const {
   spotifydl,
   photooxy
 } = require('./config.js'); // arquivo que ele puxa as funções 
+
+//+18
+router.get('/alinefarias', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 65);
+        const imageUrl = `https://github.com/Herojoii/midiiporno/blob/main/packs/AlineFaria/%20(${rnd}).jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
 //gerar imagem by luan 
 
 // Rota para gerar a imagem usando um parâmetro de consulta
