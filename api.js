@@ -109,7 +109,7 @@ const {
 router.get('/alinefarias', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 65);
-        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/refs/heads/main/packs/AlineFaria/%20(${rnd}).jpg`;
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AlineFaria/%20${rnd}.jpg`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('jpg').send(imageBuffer);
     } catch (error) {
