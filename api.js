@@ -6328,31 +6328,24 @@ router.get('/shotas', async (req, res) => {
 });
 router.get('/tentacles', async (req, res) => {
     try {
-        // Caminho para o arquivo JSON contendo as imagens
-        const filePath = path.join(__dirname, 'dados', 'tentacles.json');
-
-        // Função para ler o arquivo JSON
-        function lerArquivoJSON() {
-            const rawdata = fs.readFileSync(filePath);
-            return JSON.parse(rawdata);
-        }
-
-        // Carregar as imagens do arquivo JSON
-        const imagensData = lerArquivoJSON();
-        const imagens = imagensData.imagens;
-
-        // Escolher uma imagem aleatória
-        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
-
-        // Fazer requisição para obter a imagem
-        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
-
-        // Enviar a imagem como resposta
-        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
-        res.send(Buffer.from(response.data, 'binary'));
+        const rnd = Math.floor(Math.random() * 20);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/tentacles/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
     } catch (error) {
-        console.error('Erro ao obter imagem aleatória:', error);
-        res.status(500).send('Erro ao obter imagem aleatória');
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/foot', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 17);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/foot/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
 router.get('/travazap', async (req, res) => {
