@@ -6329,7 +6329,7 @@ router.get('/shotas', async (req, res) => {
 router.get('/tentacles', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 20);
-        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/tentacles/%20${rnd}.gif`;
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/tentacles/%20${rnd}.gif`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('gif').send(imageBuffer);
     } catch (error) {
@@ -6340,7 +6340,7 @@ router.get('/tentacles', async (req, res) => {
 router.get('/foot', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 17);
-        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/foot/%20${rnd}.gif`;
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/foot/%20${rnd}.gif`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('gif').send(imageBuffer);
     } catch (error) {
