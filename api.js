@@ -324,7 +324,7 @@ router.get('/marinamui', async (req, res) => {
         res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
     }
 });
-router.get('/MaruKarv', async (req, res) => {
+router.get('/marukarv', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 40);
         const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/MaruKarv/%20${rnd}.jpg`;
