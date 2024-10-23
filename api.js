@@ -106,10 +106,372 @@ const {
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 //+18
+router.get('/amadorvideo', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 41);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AmadorVideo/${rnd}.mp4`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('.mp4').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/egrilvideo', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 14);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/EgrilVideo/%20${rnd}.mp4`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('mp4').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
 router.get('/alinefarias', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 65);
         const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AlineFaria/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/alineFox', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 60);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AlineFox/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/alyciaribeiro', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 28);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AlyciaRibeiro/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/amiichan', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/Amiichan/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/aninhalopes', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AninhaLopes/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/babymatoso', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 36);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/BabyMatoso/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/belledelphine', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 31);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/BelleDelphine/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/brendatrindade', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/BrendaTrindade/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/camibrito', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/CamiBrito/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/cclowniac', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 29);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/Cclowniac/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/fehgalvao', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 32);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/FehGalvao/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/giovanna', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 34);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/GiovannaCampomar/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/isadora', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/ISADORA%20MARTINEZ/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/Isawaifu', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 21);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/IsaWaifu/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/laynuniz', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 25);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/LayNuniz/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/leticiashirayuki', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 28);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/LeticiaShirayuki/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/marinamui', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 27);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/MarinaMui/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/MaruKarv', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 40);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/MaruKarv/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+
+router.get('/mcprincesa', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 32);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/McPrincesa/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/me1adinha', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 33);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/Me1adinha/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/nath', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 23);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/NathBisterço/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/negabarbie', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 21);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/NegaBarbie/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/onlyfansvideo', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 47);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/OnlyfansVideo/%20${rnd}.mp4`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('mp4').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/polonesa', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 28);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/PolonesaDoHype/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/pornofoto', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 42);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/PornoFoto/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/pornovideo', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 45);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/AlineFaria/${rnd}.mp4`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('mp4').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/ruterocha', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/RuteRocha/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/vitacelestine', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/VitaCelestine/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/carniello', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 29);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/carniello/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/egril', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 36);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/egril/%20${rnd}.jpg`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('jpg').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/netersg', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 30);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/packs/netersg/%20${rnd}.jpg`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('jpg').send(imageBuffer);
     } catch (error) {
