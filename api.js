@@ -5903,6 +5903,62 @@ router.get('/onepiece', async (req, res) => {
         res.status(500).send('Erro ao obter imagem aleatória');
     }
 });
+
+router.get('/bsdm', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 22);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/bsdm/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/blowjob', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 2);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/blowjob/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/gangbang', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 20);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/gangbang/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/glasses', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 20);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/glasses/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
+router.get('/panties', async (req, res) => {
+    try {
+        const rnd = Math.floor(Math.random() * 20);
+        const imageUrl = `https://raw.githubusercontent.com/Herojoii/midiiporno/main/nsfw/gif/panties/%20${rnd}.gif`;
+        const imageBuffer = await getImageBuffer(imageUrl);
+        res.type('gif').send(imageBuffer);
+    } catch (error) {
+        console.error('Erro no endpoint:', error);
+        res.status(500).json({ status: false, mensagem: "Erro interno ao processar a solicitação." });
+    }
+});
 router.get('/orgy', async (req, res) => {
     try {
         const rnd = Math.floor(Math.random() * 19);
