@@ -755,7 +755,7 @@ async function sendImage(req, res, url, caption) {
 
 router.get('/figurinhas', async (req, res) => {
     try {
-        const rnd = Math.floor(Math.random() * 50);
+        const rnd = Math.floor(Math.random() * 1899);
         const imageUrl = `https://raw.githubusercontent.com/badDevelopper/Testfigu/main/fig%20(${rnd}).webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
@@ -767,7 +767,7 @@ router.get('/figurinhas', async (req, res) => {
 
 router.get('/figurinhas2', async (req, res) => {
     try {
-        const rnd = Math.floor(Math.random() * 50);
+        const rnd = Math.floor(Math.random() * 99);
         const imageUrl = `https://raw.githubusercontent.com/badDevelopper/figus2/refs/heads/main/fig/f%20(${rnd}).webp`;
         const imageBuffer = await getImageBuffer(imageUrl);
         res.type('webp').send(imageBuffer);
@@ -5758,6 +5758,535 @@ router.get('/neko2', async (req, res) => {
         res.status(500).send('Erro ao obter imagem aleatória');
     }
 });
+router.get('/akiyama', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'akiyama.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/ana', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'ana.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+router.get('/anjing', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'anjing.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/asuna', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'asuna.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/ayuzawa', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'ayuzawa.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/blackpink', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'blackpink.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/bdsm2', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'bdsm.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/blowjob2', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'blowjob.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/cecan', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'cecan.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+router.get('/chiho', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'chiho.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/chitoge', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'chitoge.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/cogan', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'cogan.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/cuckold', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'cuckold.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+router.get('/doraemom', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'doraemom.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+router.get('/eba', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'eba.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+
+router.get('/gangbang2', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'gangbang.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+router.get('/gremory', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'gremory.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        res.set('Content-Type', 'image/jpeg'); // Define o tipo de conteúdo como imagem JPEG
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter imagem aleatória:', error);
+        res.status(500).send('Erro ao obter imagem aleatória');
+    }
+});
+
+router.get('/hekel', async (req, res) => {
+    try {
+        // Caminho para o arquivo JSON contendo as imagens
+        const filePath = path.join(__dirname, 'dados', 'hekel.json');
+
+        // Função para ler o arquivo JSON
+        function lerArquivoJSON() {
+            const rawdata = fs.readFileSync(filePath);
+            return JSON.parse(rawdata);
+        }
+
+        // Carregar as imagens do arquivo JSON
+        const imagensData = lerArquivoJSON();
+        const imagens = imagensData.imagens;
+
+        // Escolher uma imagem aleatória
+        const imagemAleatoria = imagens[Math.floor(Math.random() * imagens.length)];
+
+        // Fazer requisição para obter a imagem
+        const response = await axios.get(imagemAleatoria, { responseType: 'arraybuffer' });
+
+        // Enviar a imagem como resposta
+        
 router.get('/nezuko', async (req, res) => {
     try {
         // Caminho para o arquivo JSON contendo as imagens
