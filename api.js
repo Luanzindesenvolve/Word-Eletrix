@@ -2972,6 +2972,24 @@ router.get('/consultas', async (req, res) => {
         if (message.message.includes("Comando desconhecido")) {
           console.log('Mensagem ignorada:', message.message);
           return;
+        const handleResponse = new Promise((resolve, reject) => {
+  const eventHandler = async (event) => {
+    try {
+      const message = event.message;
+      console.log('Nova mensagem recebida:', message);
+
+      if (message && message.message && !message.message.includes("Consultando")) {
+        // Ignora mensagens específicas
+        if (
+          message.message.includes("Comando desconhecido") ||
+          message.message.includes("Obrigado por consultar") ||
+          message.message.includes("lembre-se que as consultas") ||
+          message.message.includes("Pague somente pelo pv admin") ||
+          message.message.includes("as consultas completas") ||
+          message.message.includes("completar a sua pesquisa de CPF")
+        ) {
+          console.log('Mensagem ignorada:', message.message);
+          return;
         }
 
         // Remover o usuário da resposta e formatar os dados
