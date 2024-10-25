@@ -2961,17 +2961,6 @@ router.get('/consultas', async (req, res) => {
       await client.sendMessage(grupoChatId, { message: `/${type} ${query}` });
       console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type} ${query}`);
 
-      const handleResponse = new Promise((resolve, reject) => {
-  const eventHandler = async (event) => {
-    try {
-      const message = event.message;
-      console.log('Nova mensagem recebida:', message);
-
-      if (message && message.message && !message.message.includes("Consultando")) {
-        // Ignora a mensagem de comando desconhecido
-        if (message.message.includes("Comando desconhecido")) {
-          console.log('Mensagem ignorada:', message.message);
-          return;
         const handleResponse = new Promise((resolve, reject) => {
   const eventHandler = async (event) => {
     try {
@@ -2979,14 +2968,14 @@ router.get('/consultas', async (req, res) => {
       console.log('Nova mensagem recebida:', message);
 
       if (message && message.message && !message.message.includes("Consultando")) {
-        // Ignora mensagens específicas
+        // Ignora a mensagem de comando desconhecido
         if (
           message.message.includes("Comando desconhecido") ||
           message.message.includes("Obrigado por consultar") ||
-          message.message.includes("lembre-se que as consultas") ||
-          message.message.includes("Pague somente pelo pv admin") ||
-          message.message.includes("as consultas completas") ||
-          message.message.includes("completar a sua pesquisa de CPF")
+          message.message.includes("Lembre-se que as consultas completas estão no site") ||
+          message.message.includes("Pague somente pelo pv admin deste grupo") ||
+          message.message.includes("as consultas completas estão apenas no melhor site") ||
+          message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF")
         ) {
           console.log('Mensagem ignorada:', message.message);
           return;
