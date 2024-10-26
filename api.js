@@ -2964,20 +2964,24 @@ router.get('/consultas', async (req, res) => {
         const handleResponse = new Promise((resolve, reject) => {
   const eventHandler = async (event) => {
     try {
-      const message = event.message;
-      console.log('Nova mensagem recebida:', message);
+        const message = event.message;
+        console.log('Nova mensagem recebida:', message);
 
-      if (message && message.message && !message.message.includes("Consultando")) {
-        // Ignora a mensagem de comando desconhecido
-        if (
-          message.message.includes("Comando desconhecido") ||
-          message.message.includes("Obrigado por consultar") ||
-          message.message.includes("Lembre-se que as consultas completas estão no site") ||
-          message.message.includes("Pague somente pelo pv admin deste grupo") ||
-          message.message.includes("as consultas completas estão apenas no melhor site") ||
-          message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF") ||
-          message.message.includes("as consultas completas estão apenas no melhor site")
-        ) {
+        if (message && message.message && !message.message.includes("Consultando")) {
+            // Ignora a mensagem de comando desconhecido
+            if (
+                message.message.includes("Comando desconhecido") ||
+                message.message.includes("Obrigado por consultar") ||
+                message.message.includes("Lembre-se que as consultas completas estão no site") ||
+                message.message.includes("Pague somente pelo pv admin deste grupo") ||
+                message.message.includes("as consultas completas estão apenas no melhor site") ||
+                message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF") ||
+                message.message.includes("as consultas completas estão apenas no melhor site") ||
+                message.message.includes("As consultas completas estão apenas no melhor site: buscardados.com.br!") || // Nova mensagem a ignorar
+                message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF.") // Nova mensagem a ignorar
+            ) {
+
+                
           console.log('Mensagem ignorada:', message.message);
           return;
         }
