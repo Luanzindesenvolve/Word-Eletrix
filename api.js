@@ -2975,7 +2975,8 @@ router.get('/consultas', async (req, res) => {
           message.message.includes("Lembre-se que as consultas completas estão no site") ||
           message.message.includes("Pague somente pelo pv admin deste grupo") ||
           message.message.includes("as consultas completas estão apenas no melhor site") ||
-          message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF")
+          message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF") ||
+          message.message.includes("as consultas completas estão apenas no melhor site")
         ) {
           console.log('Mensagem ignorada:', message.message);
           return;
