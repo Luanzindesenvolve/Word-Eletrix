@@ -17,6 +17,7 @@
     "linkifyjs": "",
     "qs": "",
     "fs-extra": "",
+    "@distube/ytdl-core": "https://github.com/distubejs/ytdl-core.git",
     "http-cookie-agent": "",
     "undici": "",
     "cors": "",
