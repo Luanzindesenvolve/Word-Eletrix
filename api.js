@@ -4479,7 +4479,6 @@ const formats = data.formats;
 //play
 router.get('/play', async (req, res) => {
   const query = req.query.query;
-
   console.log(`Recebida consulta para MP3: ${query}`);
 
   if (!query) {
@@ -4513,23 +4512,13 @@ router.get('/play', async (req, res) => {
       return res.status(404).json({ error: 'Formato de áudio não encontrado' });
     }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: audioFormat.url
-    };
-
-    console.log('Resultado final:', result);
-    res.json({ criador: 'World Ecletix', result });
+    console.log('Redirecionando para o link de download:', audioFormat.url);
+    res.redirect(audioFormat.url); // Redireciona diretamente para o link de download do áudio
   } catch (error) {
     console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
     res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
   }
 });
-
 router.get('/playvideo', async (req, res) => {
   const query = req.query.query;
 
