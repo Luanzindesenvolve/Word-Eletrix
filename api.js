@@ -105,7 +105,6 @@ const {
   photooxy,
   tiktok2, 
   FacebookMp4,
-  twitter,
   ChatGpt,
  getNoticiasEsporte
 } = require('./config.js'); // arquivo que ele puxa as funções 
@@ -158,15 +157,6 @@ router.get('/facebook', async (req, res) => {
   }
 });
 
-router.get('/twitter', async (req, res) => {
-  const link = req.query.link;
-  try {
-    const result = await twitter(link);
-    res.json(result);
-  } catch (error) {
-    res.status(500).send('Error fetching Twitter data');
-  }
-});
 
 //+18
 router.get('/amadorvideo', async (req, res) => {
