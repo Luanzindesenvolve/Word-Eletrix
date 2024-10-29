@@ -102,8 +102,71 @@ const {
   snapsave,
   searching, 
   spotifydl,
-  photooxy
+  photooxy,
+  tiktok2, 
+  FacebookMp4,
+  twitter,
+  ChatGpt,
+ getNoticiasEsporte
 } = require('./config.js'); // arquivo que ele puxa as funções 
+// Rota para retornar notícias esportivas
+router.get('/genoticias', async (req, res) => {
+  const termo = req.query.termo || ''; // parâmetro opcional para definir o tipo de notícia
+  try {
+    const noticias = await getNoticiasEsporte(termo);
+    res.json({ sucesso: true, dados: noticias });
+  } catch (error) {
+    res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
+  }
+});
+
+router.get('/tiktok', async (req, res) => {
+  const query = req.query.query;
+  try {
+    const result = await tiktok2(query);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send('Error fetching TikTok data');
+  }
+});
+
+// Rota para ChatGPT 
+router.get('/chatgpt', async (req, res) => {
+  const you_qus = req.query.texto; // Esperando um parâmetro de consulta com 'texto'
+  
+  if (!you_qus) {
+    return res.status(400).json({ error: 'Texto não fornecido' });
+  }
+  
+  console.log('Recebido pedido para ChatGPT com texto:', you_qus); // Log do texto recebido
+  
+  try {
+    const result = await ChatGpt(you_qus);
+    res.json(result); // Retorna o resultado como JSON
+  } catch (error) {
+    console.error(error); // Log do erro para depuração
+    res.status(500).json({ error: 'Erro ao buscar dados do ChatGPT' });
+  }
+});
+router.get('/facebook', async (req, res) => {
+  const link = req.query.link;
+  try {
+    const result = await FacebookMp4(link);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send('Error fetching Facebook data');
+  }
+});
+
+router.get('/twitter', async (req, res) => {
+  const link = req.query.link;
+  try {
+    const result = await twitter(link);
+    res.json(result);
+  } catch (error) {
+    res.status(500).send('Error fetching Twitter data');
+  }
+});
 
 //+18
 router.get('/amadorvideo', async (req, res) => {
