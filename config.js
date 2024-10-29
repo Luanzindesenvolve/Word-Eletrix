@@ -76,7 +76,189 @@ async function getBuffer(url, options){
 		return err
 	}
 }
+// Função para obter notícias de esportes
+async function getNoticiasEsporte(termo = '') {
+    const urlBase = 'https://ge.globo.com/';
+    const motor = 'https://ge.globo.com/motor/';
 
+    const esportes = [
+        'futebol', 'basquete', 'volei', 'tenis', 'atletismo', 'natacao',
+        'ciclismo', 'boxe', 'beisebol', 'judo', 'ginastica-artistica', 
+        'futebol-americano', 'futsal', 'golfe', 'surfe', 'skate'
+    ];
+    const eSports = {
+        'esports': 'esports', 'cod': 'call-of-duty', 'csgo': 'csgo', 
+        'fifa': 'fifa', 'fortnite': 'fortnite', 'freefire': 'free-fire', 
+        'gamexp': 'gamexp', 'lol': 'lol', 'pcgamer': 'pc-gamer-e-consoles', 
+        'pes': 'pes', 'pokemon': 'pokemon', 'premio-esports': 'premio-esports-brasil', 
+        'rainbow-6': 'rainbow-6', 'valorant': 'valorant', 'tcg': 'tcg'
+    };
+
+    let url;
+    const termoLowerCase = termo.toLowerCase();
+    if (termoLowerCase === 'motor') {
+        url = motor;
+    } else if (termoLowerCase === 'formula-1') {
+        url = `${motor}formula-1/`;
+    } else if (esportes.includes(termoLowerCase)) {
+        url = `${urlBase}${termoLowerCase}/`;
+    } else if (termoLowerCase in eSports) {
+        url = `${urlBase}esports/${eSports[termoLowerCase]}/`;
+    } else {
+        url = `${urlBase}futebol/times/${termoLowerCase}/`;
+    }
+
+    try {
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/57.3',
+            },
+        });
+        const $ = cheerio.load(data);
+        const noticias = [];
+
+        $('.feed-post').each((i, element) => {
+            const titulo = $(element).find('h2').text().trim();
+            const trechoManchete = $(element).find('.feed-post-body-resumo').text().trim();
+            const horarioPostagem = $(element).find('span.feed-post-datetime').text().trim();
+            const linkImagem = $(element).find('img.bstn-fd-picture-image').attr('src');
+            const linkNoticia = $(element).find('a.feed-post-link').attr('href');
+
+            if (titulo && linkNoticia) {
+                noticias.push({ titulo, trechoManchete, horarioPostagem, linkImagem, linkNoticia });
+            }
+        });
+
+        return noticias.length > 0 ? noticias : null; // Retorna as notícias ou null se não houver
+
+    } catch (error) {
+        console.error('Erro ao obter notícias de esportes:', error);
+        throw error;
+    }
+}
+
+
+async function tiktok2(query) {
+  let response = await axios("https://lovetik.com/api/ajax/search", {
+    method: "POST",
+    data: new URLSearchParams(Object.entries({ query })),
+  });
+
+  const clean = (data) => {
+    let regex = /(<([^>]+)>)/gi;
+    data = data.replace(/(<br?\s?\/>)/gi, " \n");
+    return data.replace(regex, "");
+  };
+
+  async function shortener(url) {
+    return url;
+  }
+
+  let result = {};
+  result.legenda = clean(response.data.desc);
+  result.author = clean(response.data.author);
+  result.videoSemWt = await shortener(
+    (response.data.links[0].a || "").replace("https", "http")
+  );
+  result.videoOriginal = await shortener(
+    (response.data.links[1].a || "").replace("https", "http")
+  );
+  result.audio = await shortener(
+    (response.data.links[2].a || "").replace("https", "http")
+  );
+  result.thumb = await shortener(response.data.cover);
+  return result;
+}
+
+async function ChatGpt(you_qus) {
+  let baseURL = "https://free-api.cveoy.top/";
+  try {
+    const response = await fetch(baseURL + "v3/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "origin": "https://ai1.chagpt.fun",
+        "Referer": baseURL
+      },
+      body: JSON.stringify({
+        prompt: you_qus
+      })
+    });
+
+    // Tenta verificar se a resposta é JSON
+    const contentType = response.headers.get("content-type");
+    
+    // Se não for JSON, tenta obter o texto diretamente
+    let responseText;
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      responseText = data.response; // Supondo que a resposta JSON tenha uma propriedade chamada 'response'
+    } else {
+      // Caso a resposta não seja JSON
+      responseText = await response.text();
+      console.error('Resposta não é JSON:', responseText);
+    }
+
+    // Limpar a resposta para retornar apenas o texto desejado
+    const cleanText = responseText.replace(/<br\s*\/?>/g, "\n").replace(/欢迎使用 公益站! 站长合作邮箱：wxgpt@qq.com/g, ""); // Remover conteúdo indesejado
+    return { response: cleanText.trim() }; // Retornar a resposta limpa
+  } catch (error) {
+    console.error('Erro na chamada para ChatGPT:', error);
+    throw error; // Lança o erro para ser tratado na rota
+  }
+	}
+
+function FacebookMp4(link) {
+  return new Promise((resolve, reject) => {
+    let config = {
+      'url': link
+    };
+    axios('https://www.getfvid.com/downloader', {
+      method: 'POST',
+      data: new URLSearchParams(Object.entries(config)),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      }
+    })
+      .then(async ({ data }) => {
+        const $ = cheerio.load(data);
+        const resultado = [];
+        resultado.push({
+          videoOriginal: $('div.col-md-4.btns-download > p:nth-child(2) > a').attr('href'),
+          video_HD: $('div.col-md-4.btns-download > p:nth-child(1) > a').attr('href'),
+          audio: $('div.col-md-4.btns-download > p:nth-child(3) > a').attr('href')
+        });
+        resolve(resultado);
+      })
+      .catch(reject);
+  });
+}
+
+function twitter(link) {
+  return new Promise((resolve, reject) => {
+    let config = {
+      'URL': link
+    };
+    axios.post('https://twdown.net/download.php', qs.stringify(config), {
+      headers: {
+        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      }
+    })
+      .then(({ data }) => {
+        const $ = cheerio.load(data);
+        resolve({
+          descrição: $('div:nth-child(1) > div:nth-child(2) > p').text().trim(),
+          imagem: $('div:nth-child(1) > img').attr('src'),
+          videoEmHD: $('tbody > tr:nth-child(1) > td:nth-child(4) > a').attr('href'),
+          videoEmSD: $('tr:nth-child(2) > td:nth-child(4) > a').attr('href'),
+          audio: 'https://twdown.net/' + $('tr:nth-child(4) > td:nth-child(4) > a').attr('href')
+        });
+      })
+      .catch(reject);
+  });
+}
 async function post(url, formdata = {}, cookies) {
   let encode = encodeURIComponent;
   let body = Object.keys(formdata)
@@ -2653,6 +2835,11 @@ module.exports = { geturl, pensador, styletext, getgrupos, gpwhatsapp, hentaistu
  snapsave,
  searching, 
  spotifydl,
- photooxy
+ photooxy,
+getNoticiasEsporte,
+tiktok2,
+ FacebookMp4,
+ twitter,
+ ChatGpt		  
  
  };
