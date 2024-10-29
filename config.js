@@ -235,30 +235,7 @@ function FacebookMp4(link) {
   });
 }
 
-function twitter(link) {
-  return new Promise((resolve, reject) => {
-    let config = {
-      'URL': link
-    };
-    axios.post('https://twdown.net/download.php', qs.stringify(config), {
-      headers: {
-        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-      }
-    })
-      .then(({ data }) => {
-        const $ = cheerio.load(data);
-        resolve({
-          descrição: $('div:nth-child(1) > div:nth-child(2) > p').text().trim(),
-          imagem: $('div:nth-child(1) > img').attr('src'),
-          videoEmHD: $('tbody > tr:nth-child(1) > td:nth-child(4) > a').attr('href'),
-          videoEmSD: $('tr:nth-child(2) > td:nth-child(4) > a').attr('href'),
-          audio: 'https://twdown.net/' + $('tr:nth-child(4) > td:nth-child(4) > a').attr('href')
-        });
-      })
-      .catch(reject);
-  });
-}
+
 async function post(url, formdata = {}, cookies) {
   let encode = encodeURIComponent;
   let body = Object.keys(formdata)
