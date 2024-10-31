@@ -1115,7 +1115,118 @@ router.get('/plaq16', async (req, res, next) => {
     res.type('jpg');
     res.send(bala);
 });
+router.get('/bateria', async (req, res) => {
+    const texto = req.query.texto;
+    const porcentagem = req.query.porcentagem;
+    
+    if (!texto || !porcentagem) {
+        return res.status(404).send({
+            status: 404,
+            message: 'Insira o parâmetro texto & porcentagem'
+        });
+    }
+    
+    var result = await imageToBase64(`https://eruakorl.sirv.com/Bot%20dudinha/images%20(1).jpeg?text.0.text=BATERIA&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=24&text.0.color=ffffff&text.0.font.family=Teko&text.0.font.weight=600&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${porcentagem}%&text.1.position.gravity=center&text.1.size=22&text.1.color=2aff00&text.1.font.family=Teko&text.1.font.weight=600&text.1.background.opacity=100&text.1.outline.blur=100&text.2.text=${texto}&text.2.position.gravity=center&text.2.position.y=26%25&text.2.size=24&text.2.color=ffffff&text.2.font.family=Teko&text.2.font.weight=600&text.2.background.opacity=100&text.2.outline.blur=100`)
+    var hasil = Buffer.from(result, 'base64');
+    await fs.writeFileSync(GleysonDevs + '/tmp/bateria.png', hasil);
+    res.sendFile(GleysonDevs + '/tmp/bateria.png');
+});
 
+router.get('/ttp', async (req, res) => {
+    const texto = req.query.texto;
+    
+    if (!texto) {
+        return res.status(404).send({
+            status: 404,
+            message: 'Insira o parâmetro texto'
+        });
+    }
+    
+    const ttplink = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${texto}&text.0.outline.blur=0&text.0.outline.opacity=0&text.0.font.family=Passion%20One`;
+    const figuresultado = await sticker(ttplink);
+    await fs.writeFileSync(GleysonDevs + '/tmp/ttp.webp', figuresultado);
+    res.sendFile(GleysonDevs + '/tmp/ttp.webp');
+});
+
+router.get('/ttp2', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({
+            status: false,
+            message: 'Cade o parâmetro texto??'
+        });
+    }
+    
+    const cor = ["f702ff", "ff0202", "00ff2e", "efff00", "00ecff", "3100ff", "ffb400", "ff00b0", "00ff95", "efff00"];
+    const fonte = ["Days%20One", "Domine", "Exo", "Fredoka%20One", "Gentium%20Basic", "Gloria%20Hallelujah", "Great%20Vibes", "Orbitron", "PT%20Serif", "Pacifico"];
+    const cores = cor[Math.floor(Math.random() * cor.length)];
+    const fontes = fonte[Math.floor(Math.random() * fonte.length)];
+    const sitee = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${texto}&text.0.outline.color=000000&text.0.outline.blur=0&text.0.outline.opacity=55&text.0.color=${cores}&text.0.font.family=${fontes}&text.0.background.color=ff0000`;
+    
+    res.type('jpg');
+    res.send(await getBuffer(sitee));
+});
+
+router.get('/ttp3', async (req, res) => {
+    const texto = req.query.texto;
+
+    if (!texto) {
+        return res.json({
+            status: false,
+            message: 'Cade o parâmetro texto??'
+        });
+    }
+    
+    const hasil = await getBuffer(`https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${encodeURIComponent(texto)}&text.0.color=ffffff&text.0.background.color=0000ff&text.0.font.family=Changa%20One&&text.0.outline.color=0000`);
+    res.set({'Content-Type': 'image/png'});
+    res.send(hasil);
+});
+router.get('/emojimix', async (req, res) => {
+    const emoji1 = req.query.emoji1;
+    const emoji2 = req.query.emoji2;
+
+    if (!emoji1) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji1" });
+    if (!emoji2) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji2" });
+
+    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+    res.json({
+        status: true,
+        Criador: `${creator}`,
+        resultado: data.results
+    });
+});
+
+router.get('/emojimix2', async (req, res) => {
+    const emoji1 = req.query.emoji;
+
+    if (!emoji1) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji" });
+
+    let emojii = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}`);
+    res.json({
+        status: true,
+        Criador: `${creator}`,
+        resultado: emojii.results
+    });
+});
+
+router.get('/emojimix3', async (req, res) => {
+    const emoji1 = req.query.emoji1;
+    const emoji2 = req.query.emoji2;
+
+    if (!emoji1) return res.json({ status: false, mensagem: "[!] parâmetros de entrada emoji1" });
+    if (!emoji2) return res.json({ status: false, mensagem: "[!] parâmetros de entrada emoji2" });
+
+    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+    let jadi = data.results[Math.floor(Math.random() * data.results.length)];
+
+    if (!jadi) return res.json({ erro: "Erro no Servidor Interno." });
+    for (let ress of data.results) {
+        let resul = await getBuffer(ress.url);
+        res.set({ 'Content-Type': 'image/png' });
+        return res.send(resul);
+    }
+});
 //attp
 
 // Função auxiliar para gerar a URL da figurinha
