@@ -1053,7 +1053,68 @@ router.get('/plaq7', async (req, res) => {
     await sendImage(req, res, url, ' *Plaquinha feita*');
 });
 
+router.get('/plaq8', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://umethroo.sirv.com/Torcedora-da-sele%C3%A7%C3%A3o-brasileira-nua-mostrando-a-bunda-236x300.jpg?text.0.text=${textoo}&text.0.position.x=-64%25&text.0.position.y=-39%25&text.0.size=25&text.0.color=1b1a1a&text.0.font.family=Architects%20Daughter`);
+    res.type('jpg');
+    res.send(bala);
+});
 
+router.get('/plaq9', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://raptibef.sirv.com/images%20(1).jpeg?profile=Zanga%202.0&text.0.text=${textoo}`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq10', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://raptibef.sirv.com/images.jpeg?profile=Zanga%203.0&text.0.text=${textoo}&text.0.outline.blur=63`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq11', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://umethroo.sirv.com/peito1.jpg?text.0.text=${textoo}&text.0.position.x=-4%25&text.0.position.y=-6%25&text.0.size=14&text.0.color=000000&text.0.font.family=Shadows%20Into%20Light&text.0.font.weight=700`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq12', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://clutamac.sirv.com/1011b781-bab1-49e3-89db-ee2c064868fa%20(1).jpg?text.0.text=${textoo}&text.0.position.gravity=northwest&text.0.position.x=22%25&text.0.position.y=60%25&text.0.size=12&text.0.color=000000&text.0.opacity=47&text.0.font.family=Roboto%20Mono&text.0.font.style=italic`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq13', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://umethroo.sirv.com/Torcedora-da-sele%C3%A7%C3%A3o-brasileira-nua-mostrando-a-bunda-236x300.jpg?text.0.text=${textoo}&text.0.position.x=-64%25&text.0.position.y=-39%25&text.0.size=25&text.0.color=1b1a1a&text.0.font.family=Architects%20Daughter`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq14', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://blackzin.sirv.com/Plaq18/20220212_213215.jpg?text.0.text=${textoo}&text.0.position.gravity=northwest&text.0.position.x=43%25&text.0.position.y=18%25&text.0.size=15&text.0.color=000000&text.0.opacity=57&text.0.font.family=Vollkorn&text.0.font.weight=800&text.0.font.style=italic&text.0.background.color=000000&text.0.outline.blur=32&text.0.outline.opacity=46&text.1.text=Dark Domina bb%3F&text.1.position.gravity=center&text.1.position.x=10%25&text.1.position.y=30%25&text.1.size=20&text.1.color=000000&text.1.opacity=59&text.1.font.family=Playball&text.1.font.weight=700&text.1.outline.opacity=0`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq15', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://ubbornag.sirv.com/Screenshot_20210513-151821.png?text.0.text=${textoo}&text.0.position.x=-40%25&text.0.position.y=-65%25&text.0.size=30&text.0.color=000000&text.0.opacity=53&text.0.font.family=Shadows%20Into%20Light20Two&text.0.outline.blur=15`);
+    res.type('jpg');
+    res.send(bala);
+});
+
+router.get('/plaq16', async (req, res, next) => {
+    const textoo = req.query.texto;
+    const bala = await getBuffer(`https://lculitas.sirv.com/ETw3FRnXgAI3Up_.jpg?text.0.text=${textoo}&text.0.position.gravity=center&text.0.align=left&text.0.size=46&text.0.color=221b1b&text.0.opacity=47&text.0.font.family=Architects%20Daughter&text.0.background.color=783852&text.0.background.opacity=5&text.0.outline.blur=58`);
+    res.type('jpg');
+    res.send(bala);
+});
 
 //attp
 
