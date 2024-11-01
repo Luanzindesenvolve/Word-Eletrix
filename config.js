@@ -136,7 +136,411 @@ async function getNoticiasEsporte(termo = '') {
         throw error;
     }
 }
+const default_criador = '@World-Ecletix'; 
 
+const unescapeHtml = (text) => typeof text === 'string' ? text
+  .replace(/&amp;/g, '&')
+  .replace(/&quot;/g, '"')
+  .replace(/&gt;/g, '>')
+  .replace(/&#39;/g, "'")
+  .replace(/lt;/g, '<')
+  .replace(/&#8216;/g, '‘')
+  .replace(/&#8217;/g, '’')
+  .trim() : undefined;
+
+
+
+Array.prototype.shuffle = function() {
+  var i = this.length,
+    j, temp;
+  if (i === 0) return this;
+  while (--i) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = this[i];
+    this[i] = this[j];
+    this[j] = temp;
+  }
+  return this;
+};
+
+// Função auxiliar para realizar requisições e extrair dados
+const fetchData = async (url, selector, transformFunc) => {
+  try {
+    const res = await axios.get(url, { headers: { ...useragent_1 } });
+    const $ = cheerio.load(res.data);
+    const dados = [];
+
+    $(selector).each((i, e) => {
+      dados.push(transformFunc($, e));
+    });
+
+    return {
+      status: res.status,
+      fonte: url,
+      criador: default_criador,
+      resultado: dados
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+//==========> Funções de Scraping <==========\\
+
+const Vasco = () => fetchData('https://vasco.com.br/noticias/', 
+  '#page-content > div:nth-child(3) > div > div > div > div', 
+  ($, e) => ({
+    noticia: $(e).find('div > div > div:nth-child(2) > a > div > h2').text()?.trim(),
+    imagem: $(e).find('div > a > div > img').attr('data-src') || '',
+    desc: $(e).find('div > div > div:nth-child(2) > div > a > p').text()?.trim() || '',
+    link: $(e).find('a:first').attr('href'),
+  })
+);
+
+const G1 = () => fetchData('https://g1.globo.com/', 
+  '.type-materia', 
+  ($, e) => ({
+    noticia: $(e).find('a:first').text(),
+    imagem: $(e).find('img').attr('src') || '',
+    desc: $(e).find('.feed-post-body-resumo:first').text() || '',
+    categoria: $(e).find('.feed-post-metadata-section:first').text()?.trim(),
+    link: $(e).find('a:first').attr('href'),
+    postado: $(e).find('span.feed-post-datetime:first').text()
+  })
+);
+
+async function fetchFortalezaNews() {
+    const url = 'https://fortaleza1918.com.br/central-de-midia/'; // URL do site das notícias
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        const newsItems = [];
+
+        // Selecione os elementos de notícias conforme o HTML que você forneceu
+        $('.elementor-post').each((index, element) => {
+            const title = $(element).find('.elementor-post__title a').text().trim();
+            const link = $(element).find('.elementor-post__title a').attr('href');
+            const date = $(element).find('.elementor-post-date').text().trim();
+            const time = $(element).find('.elementor-post-time').text().trim();
+
+            newsItems.push({
+                title,
+                link,
+                date,
+                time
+            });
+        });
+
+        return newsItems;
+    } catch (error) {
+        console.error('Erro ao buscar notícias:', error);
+        throw error; // Re-throw error for further handling if necessary
+    }
+}
+
+async function fetchCorinthiansNews() {
+    const url = 'https://www.corinthians.com.br/noticias'; // URL do site das notícias
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        const newsItems = [];
+
+        // Selecione os elementos de notícias conforme o HTML fornecido
+        $('.ct-news-list-item').each((index, element) => {
+            const title = $(element).find('h4').text().trim();
+            const link = $(element).find('a').attr('href');
+            const date = $(element).find('strong').text().trim();
+            const time = date.split(' - ')[1] || ''; // Captura o horário, se disponível
+
+            newsItems.push({
+                title,
+                link,
+                date,
+                time
+            });
+        });
+
+        return newsItems;
+    } catch (error) {
+        console.error('Erro ao buscar notícias do Corinthians:', error);
+        throw error; // Re-throw error for further handling if necessary
+    }
+}
+
+
+async function buscarNoticiasFlamengo() {
+    try {
+        const url = 'https://www.flamengo.com.br/noticias/futebol';
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+
+        $('li').each((index, element) => {
+            const titulo = $(element).find('h4.title-secondary').text().trim();
+            const link = $(element).find('a.text-decoration-none').attr('href');
+            const autor = $(element).find('.destaque-span').text().match(/-\s*(.*)/)[1].trim();
+            const dataPublicacao = $(element).find('.destaque-span').text().match(/(\d{1,2}\/\d{1,2}\/\d{4} \d{2}:\d{2})/)[0];
+
+            if (titulo && link) {
+                noticias.push({
+                    titulo,
+                    link: link.startsWith('http') ? link : `https://www.flamengo.com.br${link}`,
+                    autor,
+                    dataPublicacao,
+                });
+            }
+        });
+
+        return noticias;
+    } catch (error) {
+        console.error('Erro ao buscar notícias do Flamengo:', error);
+        return [];
+    }
+}
+
+
+// Função para buscar notícias do São Paulo FC
+async function fetchSaoPauloNews() {
+    try {
+        const response = await axios.get('https://www.saopaulofc.net/noticias/');
+        const html = response.data;
+        const $ = cheerio.load(html);
+        const news = [];
+
+        // Seleciona cada artigo no HTML
+        $('article.blog_box').each((index, element) => {
+            const title = $(element).find('h2').text();
+            const summary = $(element).find('p').text();
+            const imageUrl = $(element).find('img').attr('src');
+            const link = $(element).find('a.btn_padrao').attr('href');
+
+            news.push({
+                title,
+                summary,
+                imageUrl: `https://www.saopaulofc.net/${imageUrl}`, // A URL da imagem pode precisar de um domínio completo
+                link
+            });
+        });
+
+        return news;
+    } catch (error) {
+        console.error('Erro ao buscar notícias do São Paulo FC:', error);
+        throw error;
+    }
+}
+
+async function buscarNoticiasSantos() {
+    try {
+        // Faz a requisição para a página do Santos FC
+        const response = await axios.get('https://www.santosfc.com.br/artigos/');
+        const data = response.data;
+
+        // Carrega o HTML com o cheerio
+        const $ = cheerio.load(data);
+        const noticias = [];
+
+        // Seleciona os artigos de notícias
+        $('.elementor-post').each((index, element) => {
+            const titulo = $(element).find('.elementor-post__title a').text().trim();
+            const link = $(element).find('.elementor-post__title a').attr('href');
+            const dataPublicacao = $(element).find('.elementor-post-date').text().trim();
+
+            // Adiciona as informações ao array de notícias
+            noticias.push({
+                titulo,
+                link,
+                dataPublicacao
+            });
+        });
+
+        return noticias;
+    } catch (error) {
+        console.error('Erro ao buscar notícias:', error);
+        throw new Error('Erro ao buscar notícias');
+    }
+}
+
+
+async function buscarNoticiasFluminense() {
+    try {
+        // Faz a requisição para a página do Fluminense
+        const response = await axios.get('https://www.netflu.com.br/category/noticias/');
+        const data = response.data;
+
+        // Carrega o HTML com o cheerio
+        const $ = cheerio.load(data);
+        const noticias = [];
+
+        // Seleciona os artigos de notícias
+        $('.entry-title').each((index, element) => {
+            const titulo = $(element).text().trim();
+            const link = $(element).find('a').attr('href');
+            const autor = $(element).closest('.td-module-image').siblings('.td-module-meta-info').find('.td-post-author-name a').text().trim();
+            const dataPublicacao = $(element).closest('.td-module-meta-info').find('.td-post-date time').attr('datetime');
+
+            // Adiciona as informações ao array de notícias
+            noticias.push({
+                titulo,
+                link,
+                autor,
+                dataPublicacao
+            });
+        });
+
+        return noticias;
+    } catch (error) {
+        console.error('Erro ao buscar notícias do Fluminense:', error);
+        throw new Error('Erro ao buscar notícias do Fluminense');
+    }
+}
+
+
+
+const Poder360 = () => fetchData('https://www.poder360.com.br/', 
+  '.box-news-list__news', 
+  ($, e) => ({
+    noticia: $(e).find('h2 > a').text(),
+    imagem: $(e).find('img').attr('srcset') || $(e).find('img').attr('src'),
+    link: $(e).find('h2 > a').attr('href')
+  })
+);
+
+const JovemPan = () => fetchData('https://jovempan.com.br/', 
+  'div.featured-news, div.news-small, a.item', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('p.title').text()?.trim() || $(e).find('p.title-edicase').text()),
+    imagem: $(e).find('img').attr('src'),
+    categoria: $(e).find('h6.category').text()?.trim() || $(e).find('h6.category-edicase').text()?.trim(),
+    link: $(e).find('a').attr('href')
+  })
+);
+
+const Uol = () => fetchData('https://www.uol.com.br/', 
+  'li.accordion__item', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a').attr('title')),
+    imagem: $(e).find('img').attr('src'),
+    link: $(e).find('a').attr('href')
+  })
+);
+
+const CNNBrasil = () => fetchData('https://www.cnnbrasil.com.br/', 
+  'li.new__editorias__list__item', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a').attr('title')),
+    imagem: $(e).find('img').attr('src'),
+    categoria: $(e).find('span.home__title__label').text(),
+    link: $(e).find('a').attr('href')
+  })
+);
+
+const Estadao = () => fetchData('https://www.estadao.com.br/', 
+  'div.noticia-single-block', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a:first').attr('title')),
+    imagem: 'https://www.estadao.com.br' + $(e).find('img').attr('src'),
+    desc: $(e).find('div.subheadline').text(),
+    link: $(e).find('.chapeu > a').attr('href')
+  })
+);
+
+const Terra = () => fetchData('https://www.terra.com.br/noticias/', 
+  'div.card.card-news.card-h-small.card-has-image', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a.card-news__text--title').text()),
+    imagem: $(e).find('img').attr('src'),
+    link: $(e).find('a.card-news__text--title').attr('href')
+  })
+);
+
+const Exame = () => fetchData('https://exame.com/', 
+  '.cgVWlJ', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a:first').text()),
+    imagem: $(e).find('noscript > img').attr('src'),
+    postado: $(e).find('.hxwSvx').text()?.split('•')[0]?.trim(),
+    categoria: $(e).find('.giGgyy').text(),
+    link: 'https://exame.com' + $(e).find('a:first').attr('href')
+  })
+);
+
+const NoticiasAoMinuto = () => fetchData('https://www.noticiasaominuto.com.br/', 
+  'div.menu-thumb.cursor-pointer', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('p').text()),
+    imagem: $(e).find('img').attr('src'),
+    postado: $(e).find('.menu-thumb-date').text(),
+    categoria: $(e).find('.nm-custom-label-category').text(),
+    link: $(e).find('a:first').attr('href')
+  })
+);
+
+const VejaAbril = () => fetchData('https://veja.abril.com.br/', 
+  'a.card.a', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('.title').text()),
+    imagem: $(e).find('img').attr('data-src') || 'https://telegra.ph/file/2003e814c68cf402903cf.jpg',
+    categoria: $(e).find('.category:first').text(),
+    link: $(e).attr('href')
+  })
+);
+
+const AGazeta = () => fetchData('https://www.agazeta.com.br/brasil', 
+  '#resultList > article', 
+  ($, e) => ({
+    noticia: unescapeHtml($(e).find('a > header > div').text()),
+    desc: unescapeHtml($(e).find('a > header > p').text()),
+    imagem: $(e).find('a > figure > img').attr('data-cfsrc'),
+    categoria: $(e).find('a > header > label:first').text(),
+    link: $(e).find('a').attr('href')
+  })
+);
+
+const BBC = () => fetchData('https://www.bbc.com/portuguese', 
+  'script', 
+  ($, e) => {
+    if ($(e).text().includes('window.SIMORGH_DATA=')) {
+      const json = JSON.parse($(e).text().replace('window.SIMORGH_DATA=', ''));
+      const dados = [];
+
+      json.pageData.content.groups.forEach((group) => {
+        group.items.forEach((item) => {
+          if (!item.headline) return;
+          dados.push({
+            noticia: unescapeHtml(item.headline),
+            imagem: item.image ? item.image.url : '',
+            link: item.url,
+            categoria: item.contentType || '',
+            postado: item.firstPublished || ''
+          });
+        });
+      });
+
+      return {
+        status: 200,
+        fonte: 'https://www.bbc.com/portuguese',
+        criador: default_criador,
+        resultado: dados
+      };
+    }
+  }
+);
+const TodaNoticias = () => new Promise((resolve, reject) => {
+  Promise.all([G1(), Poder360(), JovemPan(), Uol(), CNNBrasil(), Estadao(), Terra(), Exame(), NoticiasAoMinuto(), VejaAbril(), BBC(), AGazeta()])
+    .then((data) => {
+      const dados = [];
+      for (const a of data.map((a) => a.resultado.slice(0, 20))) dados.push(...a);
+      resolve({
+        status: (dados && dados.length >= 0),
+        criador: default_criador,
+        resultado: dados.shuffle()
+      });
+    })
+    .catch((e) => {
+      reject(e)
+    });
+});
 
 async function tiktok2(query) {
   let response = await axios("https://lovetik.com/api/ajax/search", {
@@ -2817,6 +3221,26 @@ getNoticiasEsporte,
 tiktok2,
  FacebookMp4,
  twitter,
- ChatGpt		  
+ ChatGpt,
+ BBC,
+  CNNBrasil,
+  Estadao,
+  Exame,
+  G1,
+  JovemPan,
+  NoticiasAoMinuto,
+  Poder360,
+  Terra,
+  Uol,
+  VejaAbril,
+  Vasco,
+  AGazeta,
+ TodaNoticias,
+ fetchFortalezaNews,
+ fetchCorinthiansNews,
+ fetchSaoPauloNews,
+ buscarNoticiasSantos,
+ buscarNoticiasFluminense,
+ buscarNoticiasFlamengo
  
  };
