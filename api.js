@@ -5253,20 +5253,13 @@ router.get('/play', async (req, res) => {
 
         if (response.data.status) {
             const audioUrl = response.data.data.audio; // URL do áudio
-            
-            // Fazer uma nova requisição para obter o áudio
-            const audioResponse = await axios.get(audioUrl, {
-                responseType: 'stream' // Configuração para receber o áudio como stream
-            });
 
-            // Configurar o cabeçalho da resposta para o tipo de áudio
-            res.set({
-                'Content-Type': 'audio/mpeg', // ou 'audio/mp4', dependendo do formato
-                'Content-Disposition': `attachment; filename="${response.data.data.title}.mp3"` // Nome do arquivo para download
+            // Retornar a URL do áudio e outras informações
+            return res.json({
+                title: response.data.data.title,
+                audioUrl: audioUrl,
+                thumb: response.data.data.thumb,
             });
-
-            // Enviar o stream de áudio para o cliente
-            audioResponse.data.pipe(res);
         } else {
             return res.status(500).json({ error: 'Erro ao baixar a música' });
         }
