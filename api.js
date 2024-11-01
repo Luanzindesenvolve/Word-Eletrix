@@ -5159,78 +5159,80 @@ router.get('/pesquisayt', async (req, res) => {
 
 //ytmp3 pela ulr
 
+// Endpoint para baixar áudio a partir de uma URL
 router.get('/ytmp3', async (req, res) => {
-  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+    const { query } = req; // A URL da música será passada como parâmetro de consulta
+    const audioUrl = query.url; // Exemplo: /ytmp3?url=https://youtu.be/nome_do_audio
 
-  if (!url) {
-    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
-  }
-
-  try {
-    const id = yt.getVideoID(url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-    const formats = data.formats;
-    const audioFormat = formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
-
-    if (!audioFormat) {
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+    if (!audioUrl) {
+        return res.status(400).json({ error: 'A URL do áudio é obrigatória' });
     }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: audioFormat.url
-    };
+    try {
+        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=${encodeURIComponent(audioUrl)}`;
+        
+        // Requisição à API para baixar o áudio
+        const response = await axios.get(apiUrl);
 
-    res.json({ criador: 'World Ecletix', result });
-  } catch (error) {
-    console.error('Erro ao baixar o áudio do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao baixar o áudio do YouTube' });
-  }
-}); 
+        if (response.data.status) {
+            const audioDownloadUrl = response.data.data.audio; // URL do áudio
+
+            // Retornar a URL do áudio e outras informações
+            return res.json({
+                title: response.data.data.title,
+                audioUrl: audioDownloadUrl,
+                thumb: response.data.data.thumb,
+            });
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o áudio' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
 //ytmp4 pela ulr vídeo
 
+// Endpoint para baixar vídeo a partir de uma URL
 router.get('/ytmp4', async (req, res) => {
-  const url = req.query.url; // URL do vídeo do YouTube enviada como query parameter
+    const { query } = req; // A URL da música será passada como parâmetro de consulta
+    const videoUrl = query.url; // Exemplo: /ytmp4?url=https://youtu.be/nome_do_video
 
-  if (!url) {
-    return res.status(400).json({ error: 'É necessário fornecer uma URL.' });
-  }
-
-  try {
-    const id = yt.getVideoID(url);
-    const data = await yt.getInfo(`https://www.youtube.com/watch?v=${id}`);
-const formats = data.formats;
-    const videoFormat = formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
-
-    if (!videoFormat) {
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
+    if (!videoUrl) {
+        return res.status(400).json({ error: 'A URL do vídeo é obrigatória' });
     }
 
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: videoFormat.url
-    };
+    try {
+        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=${encodeURIComponent(videoUrl)}`;
+        
+        // Requisição à API para baixar o vídeo
+        const response = await axios.get(apiUrl);
 
-    res.json({ criador: 'World Ecletix', result });
-  } catch (error) {
-    console.error('Erro ao baixar o vídeo do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao baixar o vídeo do YouTube' });
-  }
+        if (response.data.status) {
+            const videoDownloadUrl = response.data.data.video; // URL do vídeo
+
+            // Retornar a URL do vídeo e outras informações
+            return res.json({
+                title: response.data.data.title,
+                videoUrl: videoDownloadUrl,
+                thumb: response.data.data.thumb,
+                quality: response.data.data.quality,
+                desc: response.data.data.desc,
+            });
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
 });
 //play
 
 // Endpoint para pesquisar e baixar áudio
 router.get('/play', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
-    const musicName = query.name; // Exemplo: /download?name=nome_da_musica
+    const musicName = query.nome; // Exemplo: /download?name=nome_da_musica
 
     if (!musicName) {
         return res.status(400).json({ error: 'Nome da música é obrigatório' });
@@ -5270,57 +5272,48 @@ router.get('/play', async (req, res) => {
 });
 
 
+// Endpoint para pesquisar e baixar vídeo
 router.get('/playvideo', async (req, res) => {
-  const query = req.query.query;
+    const { query } = req; // O nome da música será passado como parâmetro de consulta
+    const musicName = query.nome; // Exemplo: /playvideo?nome=nome_da_musica
 
-  console.log(`Recebida consulta para MP4: ${query}`);
-
-  if (!query) {
-    console.error('Nenhuma consulta fornecida.');
-    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
-  }
-
-  try {
-    const searchResult = await search(query);
-    console.log('Resultados da pesquisa:', searchResult);
-
-    const video = searchResult.videos[0];
-    if (!video) {
-      console.error('Nenhum vídeo encontrado para a consulta.');
-      return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
     }
 
-    console.log(`Primeiro vídeo encontrado: ${video.url}`);
+    try {
+        // Buscar o vídeo no YouTube pelo nome da música
+        const searchResults = await search(musicName);
+        
+        if (!searchResults || searchResults.videos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
+        }
 
-    const id = yt.getVideoID(video.url);
-    console.log(`ID do vídeo: ${id}`);
+        // Pegar o primeiro vídeo da lista de resultados
+        const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
+        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=https://youtu.be/${videoId}`;
+        
+        // Requisição à API para baixar o vídeo
+        const response = await axios.get(apiUrl);
 
-    const data = await yt.getInfo(id);
-    console.log('Informações do vídeo:', data);
+        if (response.data.status) {
+            const videoUrl = response.data.data.video; // URL do vídeo
 
-    const videoFormat = data.formats.find(format => format.container === 'mp4' && format.hasVideo && format.hasAudio);
-    console.log('Formato de vídeo encontrado:', videoFormat);
-
-    if (!videoFormat) {
-      console.error('Formato de vídeo MP4 não encontrado.');
-      return res.status(404).json({ error: 'Formato de vídeo MP4 não encontrado' });
+            // Retornar a URL do vídeo e outras informações
+            return res.json({
+                title: response.data.data.title,
+                videoUrl: videoUrl,
+                thumb: response.data.data.thumb,
+                quality: response.data.data.quality,
+                desc: response.data.data.desc,
+            });
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
-
-    const result = {
-      título: data.videoDetails.title,
-      thumb: data.videoDetails.thumbnails[0].url,
-      canal: data.videoDetails.author.name,
-      publicado: data.videoDetails.uploadDate,
-      visualizações: data.videoDetails.viewCount,
-      link: videoFormat.url
-    };
-
-    console.log('Resultado final:', result);
-    res.json({ criador: 'World Ecletix', result });
-  } catch (error) {
-    console.error('Erro ao buscar e baixar o vídeo do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar e baixar o vídeo do YouTube' });
-  }
 });
 //fim
 // Rota para consulta de CEP
