@@ -138,6 +138,28 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
+
+// Rota para buscar o HTML
+router.get('/verhtml', async (req, res) => {
+    const url = req.query.url;
+
+    if (!url) {
+        return res.status(400).json({ error: 'A URL é necessária.' });
+    }
+
+    try {
+        console.log(`Buscando HTML da URL: ${url}`);
+        const response = await axios.get(url);
+        const html = response.data;
+
+        console.log(`HTML obtido com sucesso da URL: ${url}`);
+        return res.json({ html });
+    } catch (error) {
+        console.error(`Erro ao buscar HTML: ${error.message}`);
+        return res.status(500).json({ error: 'Erro ao buscar o HTML.' });
+    }
+});
+
 // Rota para obter notícias do Fortaleza
 router.get('/fortaleza', async (req, res) => {
     try {
