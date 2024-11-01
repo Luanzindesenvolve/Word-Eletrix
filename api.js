@@ -5226,48 +5226,57 @@ const formats = data.formats;
   }
 });
 //play
+
+// Endpoint para pesquisar e baixar áudio
 router.get('/play', async (req, res) => {
-  const query = req.query.query;
-  console.log(`Recebida consulta para MP3: ${query}`);
+    const { query } = req; // O nome da música será passado como parâmetro de consulta
+    const musicName = query.name; // Exemplo: /download?name=nome_da_musica
 
-  if (!query) {
-    console.error('Nenhuma consulta fornecida.');
-    return res.status(400).json({ error: 'É necessário fornecer uma consulta.' });
-  }
-
-  try {
-    const searchResult = await search(query);
-    console.log('Resultados da pesquisa:', searchResult);
-
-    const video = searchResult.videos[0];
-    if (!video) {
-      console.error('Nenhum vídeo encontrado para a consulta.');
-      return res.status(404).json({ error: 'Nenhum vídeo encontrado.' });
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
     }
 
-    console.log(`Primeiro vídeo encontrado: ${video.url}`);
+    try {
+        // Buscar o vídeo no YouTube pelo nome da música
+        const searchResults = await search(musicName);
+        
+        if (!searchResults || searchResults.videos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
+        }
 
-    const id = yt.getVideoID(video.url);
-    console.log(`ID do vídeo: ${id}`);
+        // Pegar o primeiro vídeo da lista de resultados
+        const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
+        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=https://youtu.be/${videoId}`;
+        
+        // Requisição à API para baixar o áudio
+        const response = await axios.get(apiUrl);
 
-    const data = await yt.getInfo(id);
-    console.log('Informações do vídeo:', data);
+        if (response.data.status) {
+            const audioUrl = response.data.data.audio; // URL do áudio
+            
+            // Fazer uma nova requisição para obter o áudio
+            const audioResponse = await axios.get(audioUrl, {
+                responseType: 'stream' // Configuração para receber o áudio como stream
+            });
 
-    const audioFormat = data.formats.find(format => format.mimeType === 'audio/webm; codecs="opus"');
-    console.log('Formato de áudio encontrado:', audioFormat);
+            // Configurar o cabeçalho da resposta para o tipo de áudio
+            res.set({
+                'Content-Type': 'audio/mpeg', // ou 'audio/mp4', dependendo do formato
+                'Content-Disposition': `attachment; filename="${response.data.data.title}.mp3"` // Nome do arquivo para download
+            });
 
-    if (!audioFormat) {
-      console.error('Formato de áudio não encontrado.');
-      return res.status(404).json({ error: 'Formato de áudio não encontrado' });
+            // Enviar o stream de áudio para o cliente
+            audioResponse.data.pipe(res);
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar a música' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
-
-    console.log('Redirecionando para o link de download:', audioFormat.url);
-    res.redirect(audioFormat.url); // Redireciona diretamente para o link de download do áudio
-  } catch (error) {
-    console.error('Erro ao buscar e baixar o áudio do YouTube:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar e baixar o áudio do YouTube' });
-  }
 });
+
+
 router.get('/playvideo', async (req, res) => {
   const query = req.query.query;
 
