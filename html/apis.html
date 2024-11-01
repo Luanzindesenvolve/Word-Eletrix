@@ -219,7 +219,7 @@
                 <div class="submenu-item"><a href="https://api-aswin-sparky.koyeb.app/api/downloader/story?url=">story</a></div>
                 <div class="submenu-item"><a href="https://api-aswin-sparky.koyeb.app/api/search/ig?search=">igstalk</a></div>
                 <div class="submenu-item"><a href="/api/facebook?link=">Facebook</a></div>
-                <div class="submenu-item"><a href="/api/tiktok?link=">tiktok</a></div>
+                <div class="submenu-item"><a href="/api/tiktok?query=">tiktok</a></div>
                 <div class="submenu-item"><a href="/api/spotify?nome=<">Spotify</a></div>
                 <div class="submenu-item"><a href="api/dafontdow?link=">dafont</a></div>
                 <div class="submenu-item"><a href="/api/baixarhentai?link=">baixar hentai</a></div>
@@ -258,8 +258,6 @@
                     <div class="submenu-item"><a href="/api/significadodonome?nome=">significadodonome</a></div>
                     <div class="submenu-item"><a href="/api/sambaporno?query=">sambaporno</a></div>
                     <div class="submenu-item"><a href="/api/y2mate?query=">y2mate</a></div>
-                    <div class="submenu-item"><a href="/api/ultimasnoticias">ultimasnoticias</a></div>
-                    <div class="submenu-item"><a href="/api/genoticiss?termo=">ge noticias</a></div>
                     <div class="submenu-item"><a href="/api/animesbr?query=">animesbr</a></div>
                     <div class="submenu-item"><a href="/api/hentaiimg?title=">hentaiimg</a></div>
                     <div class="submenu-item"><a href="/api/hentaistube?termo=">hentai tube</a></div>
@@ -269,6 +267,45 @@
                     <div class="submenu-item"><a href="/api/nerding?termo=">nerding</a></div>
                 </div>
             </div>
+            <div class="menu-item" onclick="toggleSubmenu(this)">
+  <span><i class="fas fa-newspaper icon"></i>Notícias<span class="arrow">&#9660;</span></span>
+  <div class="submenu">
+    <!-- Notícias Gerais -->
+    <div class="submenu-item"><a href="/api/genoticias?termo=">Ge Notícias</a></div>
+    <div class="submenu-item"><a href="/api/g1">G1</a></div>
+    <div class="submenu-item"><a href="/api/poder360">Poder360</a></div>
+    <div class="submenu-item"><a href="/api/jovempan">Jovem Pan</a></div>
+    <div class="submenu-item"><a href="/api/uol">UOL</a></div>
+    <div class="submenu-item"><a href="/api/cnnbrasil">CNN Brasil</a></div>
+    <div class="submenu-item"><a href="/api/estadao">Estadão</a></div>
+    <div class="submenu-item"><a href="/api/terra">Terra</a></div>
+    <div class="submenu-item"><a href="/api/exame">Exame</a></div>
+    <div class="submenu-item"><a href="/api/noticias-aominuto">ao Minuto</a></div>
+    <div class="submenu-item"><a href="/api/vejaabril">Veja Abril</a></div>
+    <div class="submenu-item"><a href="/api/bbc">BBC</a></div>
+    <div class="submenu-item"><a href="/api/agazeta">A Gazeta</a></div>
+    <div class="submenu-item"><a href="/api/ultimasnoticias">Ultimas Noticias</a></div>
+    <div class="submenu-item"><a href="/api/todas-noticias">Mais Notícias</a></div>
+    
+    <!-- Notícias sobre Times -->
+    <div class="submenu-item"><strong>Notícias esportiva</strong></div>
+    <div class="submenu-item"><a href="/api/times?clube=">Notícias de Times</a></div>
+    <div class="submenu-item"><a href="/api/fortaleza">Fortaleza</a></div>
+    <div class="submenu-item"><a href="/api/fluminense">Fluminense</a></div>
+    <div class="submenu-item"><a href="/api/botafogo">Botafogo</a></div>
+    <div class="submenu-item"><a href="/api/corinthians">Corinthians</a></div>
+    <div class="submenu-item"><a href="/api/ceara">Ceará</a></div>
+    <div class="submenu-item"><a href="/api/flamengo">Flamengo</a></div>
+    <div class="submenu-item"><a href="/api/santos">Santos</a></div>
+    <div class="submenu-item"><a href="/api/saopaulo">São Paulo FC</a></div>
+    <div class="submenu-item"><a href="/api/palmeiras">Palmeiras</a></div>
+    <div class="submenu-item"><a href="/api/vasco">Vasco</a></div>
+    <div class="submenu-item"><a href="/api/internacional">Internacional</a></div>
+    <div class="submenu-item"><a href="/api/gremio">Grêmio</a></div>
+    <div class="submenu-item"><a href="/api/atleticomg">Atlético mg</a></div>
+    <div class="submenu-item"><a href="/api/cruzeiro">Cruzeiro</a></div>
+  </div>
+     </div>
             <div class="menu-item" onclick="toggleSubmenu(this)">
                 <span><i class="fas fa-tools icon"></i> Ferramentas <span class="arrow">&#9660;</span></span>
                 <div class="submenu">
@@ -280,7 +317,6 @@
                     <div class="submenu-item"><a href="/api/ff?termo=">ff</a></div>
                     <div class="submenu-item"><a href="/api/memesdroid">memesdroid</a></div>
                     <div class="submenu-item"><a href="/api/ifunny">ifunny</a></div>
-                    <div class="submenu-item"><a href="/api/ultimasnoticias">ultimasnoticias</a></div>
                     <div class="submenu-item"><a href="/api/mediafire?link=">mediafire</a></div>
                     <div class="submenu-item"><a href="/api/letra?texto=">letra da música</a></div>
                     <div class="submenu-item"><a href="https://api.openweathermap.org/data/2.5/weather?q=CIDADE&appid=f5c0840c2457fbb64188a6d4be05618f&units=metric&lang=pt_br">clima</a></div>
@@ -295,11 +331,10 @@
                     <div class="submenu-item"><a href="api/audiomeme?query=">audio memes</a></div>
                     <div class="submenu-item"><a href="https://api.popcat.xyz/imdb?q=">imdb filme/serie</a></div>
                     <div class="submenu-item"><a href="https://api.popcat.xyz/pickuplines">frases aleatórias</a></div>
-                    <div class="submenu-item"><a href="http://br2.bronxyshost.com:4109/api/transcrever?link=https://e.top4top.io/m_3067808xg0.mp3&apikey=aGQ8xn0L&username=comefemea">transcrever</a></div>
-                    <div class="submenu-item"><a href="http://br2.bronxyshost.com:4109/api/gtts?ling=pt&text=word%20ecletix%20a%20melhor%20que%20tem%20heheh&apikey=aGQ8xn0L&username=comefemea">gts</a></div>
                     <div class="submenu-item"><a href="/api/pintsite?url=">print site</a></div>
                     <div class="submenu-item"><a href="/api/tabela">tabela do br</a></div>
                     <div class="submenu-item"><a href="/api/artilheiro">artilheiro do br</a></div>
+                    <div class="submenu-item"><a href="/api/verhtml?url=">ver html</a></div>
                     
                 </div>
             </div>
