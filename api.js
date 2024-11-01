@@ -106,7 +106,27 @@ const {
   tiktok2, 
   FacebookMp4,
   ChatGpt,
- getNoticiasEsporte
+  getNoticiasEsporte,
+  BBC,
+  CNNBrasil,
+  Estadao,
+  Exame,
+  G1,
+  JovemPan,
+  NoticiasAoMinuto,
+  Poder360,
+  Terra,
+  Uol,
+  VejaAbril,
+  Vasco,
+  AGazeta,
+  TodaNoticias,
+  fetchFortalezaNews,
+  fetchCorinthiansNews,
+  fetchSaoPauloNews,
+  buscarNoticiasSantos,
+  buscarNoticiasFluminense,
+  buscarNoticiasFlamengo
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Rota para retornar notícias esportivas
 router.get('/genoticias', async (req, res) => {
@@ -118,7 +138,489 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
+// Rota para obter notícias do Fortaleza
+router.get('/fortaleza', async (req, res) => {
+    try {
+        const news = await fetchFortalezaNews();
+        res.json(news);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar notícias.' });
+    }
+});
 
+router.get('/fluminense', async (req, res) => {
+    try {
+        const noticias = await buscarNoticiasFluminense();
+        res.json(noticias);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/ceara', async (req, res) => {
+    const url = 'https://www.cearasc.com/noticia/';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+        
+        // Seleciona cada notícia e extrai as informações
+        $('.noticia-item').each((index, element) => {
+            const titulo = $(element).find('.titulo-noticia').text().trim();
+            const link = 'https://www.cearasc.com' + $(element).attr('href');
+            const dataNoticia = $(element).find('.data-noticia').text().trim();
+            const categoria = $(element).find('.categoria-noticia').text().trim();
+            const chamada = $(element).find('.chamada-lead').text().trim();
+            const imgSrc = $(element).find('img').attr('src');
+
+            noticias.push({
+                titulo,
+                link,
+                dataNoticia,
+                categoria,
+                chamada,
+                imgSrc: imgSrc ? `https://www.cearasc.com/${imgSrc}` : null
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Ceará.' });
+    }
+});
+
+router.get('/gremio', async (req, res) => {
+    const url = 'https://gremio.net/noticias';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+
+        // Seleciona a notícia principal
+        $('.noticia-grande').each((index, element) => {
+            const titulo = $(element).find('h1').text().trim();
+            const descricao = $(element).find('h2').text().trim();
+            const dataNoticia = $(element).find('small').text().trim();
+            const link = $(element).find('a.btn-primary').attr('href');
+            const imgBackground = $(element).find('.col-md-5 div').css('background-image');
+
+            const imgUrl = imgBackground
+                ? imgBackground.slice(5, -2) // Remove 'url(' e ')'
+                : null;
+
+            noticias.push({
+                titulo,
+                descricao,
+                dataNoticia,
+                link: link ? `https://gremio.net${link}` : null,
+                imgUrl: imgUrl ? `https://gremio.net/${imgUrl}` : null,
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Grêmio.' });
+    }
+});
+
+
+router.get('/internacional', async (req, res) => {
+    const url = 'https://www.internacional.com.br/noticias';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+
+        // Seleciona as notícias da página
+        $('li a.cards__BaseCard-l4vh3g-0').each((index, element) => {
+            const titulo = $(element).find('h2.cards__Title-l4vh3g-1').text().trim();
+            const categoria = $(element).find('span.cards__Tag-l4vh3g-2').text().trim();
+            const dataNoticia = $(element).find('small.cards__Caption-l4vh3g-3 time').text().trim();
+            const link = $(element).attr('href');
+            const imgUrl = $(element).find('figure.cards__Thumb-l4vh3g-5').attr('src');
+
+            noticias.push({
+                titulo,
+                categoria,
+                dataNoticia,
+                link: link ? `https://www.internacional.com.br${link}` : null,
+                imgUrl: imgUrl || null,
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Internacional.' });
+    }
+});
+
+router.get('/atleticomg', async (req, res) => {
+    const url = 'https://atletico.com.br/noticias/futebol/';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+
+        // Seleciona as notícias da página
+        $('.arquivo-noticias-noticia a.noticia-card').each((index, element) => {
+            const titulo = $(element).find('h2.noticia-card-titulo').text().trim();
+            const categoria = $(element).find('span.noticia-card-versal').text().trim();
+            const descricao = $(element).find('h3.noticia-card-chamada').text().trim();
+            const link = $(element).attr('href');
+            const imgUrl = $(element).find('div.noticia-card-thumb img').attr('src');
+
+            noticias.push({
+                titulo,
+                categoria,
+                descricao,
+                link: link ? link.startsWith('http') ? link : `https://atletico.com.br${link}` : null,
+                imgUrl: imgUrl ? `https://atletico.com.br/${imgUrl}` : null,
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Atlético Mineiro.' });
+    }
+});
+
+
+router.get('/times', async (req, res) => {
+    const clube = req.query.clube; // Obtém o nome do clube da consulta
+    if (!clube) {
+        return res.status(400).json({ error: 'O parâmetro clube é obrigatório.' });
+    }
+
+    const url = `https://www.uol.com.br/esporte/futebol/times/${clube}/`;
+    
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        
+        // Extraindo informações (ajuste conforme necessário)
+        const newsItems = [];
+        $('.thumbnails-item').each((index, element) => {
+            const title = $(element).find('.thumb-title').text();
+            const link = $(element).find('a').attr('href');
+            const date = $(element).find('.thumb-date').text();
+            const imgSrc = $(element).find('img').attr('data-src');
+
+            newsItems.push({ title, link, date, imgSrc });
+        });
+
+        return res.json(newsItems);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao buscar informações do clube.' });
+    }
+});
+
+
+router.get('/botafogo', async (req, res) => {
+    const url = 'https://www.uol.com.br/esporte/futebol/times/botafogo/';
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        
+        const news = [];
+
+        $('.thumbnails-item').each((index, element) => {
+            const title = $(element).find('.thumb-title').text().trim();
+            const date = $(element).find('.thumb-date').text().trim();
+            const link = $(element).find('a').attr('href');
+            const imageUrl = $(element).find('img').data('src');
+
+            news.push({ title, date, link, imageUrl });
+        });
+
+        res.json(news); // Retorna as notícias em formato JSON
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        res.status(500).json({ error: 'Failed to fetch news' }); // Retorna um erro 500 em caso de falha
+    }
+});
+
+router.get('/cruzeiro', async (req, res) => {
+    const url = 'https://www.uol.com.br/esporte/futebol/times/cruzeiro/';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+
+        // Seleciona as notícias da página
+        $('.thumbnails-item .thumbnails-wrapper a').each((index, element) => {
+            const titulo = $(element).find('h3.thumb-title').text().trim();
+            const data = $(element).find('time.thumb-date').text().trim();
+            const link = $(element).attr('href');
+            const imgUrl = $(element).find('.thumb-image img').data('src');
+
+            noticias.push({
+                titulo,
+                data,
+                link: link ? link.startsWith('http') ? link : `https://www.uol.com.br${link}` : null,
+                imgUrl: imgUrl ? imgUrl : null,
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Cruzeiro.' });
+    }
+});
+
+
+// Rota GET para obter notícias do Corinthians
+router.get('/corinthians', async (req, res) => {
+    try {
+        const noticias = await fetchCorinthiansNews(); // Chama a função para buscar as notícias
+        res.json(noticias); // Retorna as notícias como resposta JSON
+    } catch (error) {
+        console.error('Erro ao buscar notícias do Corinthians:', error);
+        res.status(500).json({ message: 'Erro ao buscar notícias do Corinthians' }); // Retorna um erro se ocorrer
+    }
+});
+
+
+router.get('/ceara', async (req, res) => {
+    const url = 'https://www.cearasc.com/noticia/';
+
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const noticias = [];
+        
+        // Seleciona cada notícia e extrai as informações
+        $('.noticia-item').each((index, element) => {
+            const titulo = $(element).find('.titulo-noticia').text().trim();
+            const link = 'https://www.cearasc.com' + $(element).attr('href');
+            const dataNoticia = $(element).find('.data-noticia').text().trim();
+            const categoria = $(element).find('.categoria-noticia').text().trim();
+            const chamada = $(element).find('.chamada-lead').text().trim();
+            const imgSrc = $(element).find('img').attr('src');
+
+            noticias.push({
+                titulo,
+                link,
+                dataNoticia,
+                categoria,
+                chamada,
+                imgSrc: imgSrc ? `https://www.cearasc.com/${imgSrc}` : null
+            });
+        });
+
+        res.json(noticias);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar notícias do Ceará.' });
+    }
+});
+
+
+// Rota GET para buscar notícias do Flamengo
+router.get('/flamengo', async (req, res) => {
+    try {
+        const noticias = await buscarNoticiasFlamengo();
+        res.json(noticias); // Retorna as notícias em formato JSON
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar notícias do Flamengo' });
+    }
+});
+
+router.get('/santos', async (req, res) => {
+    try {
+        const noticias = await buscarNoticiasSantos();
+        res.json(noticias);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+// Rota GET para buscar notícias do São Paulo FC
+router.get('/saopaulo', async (req, res) => {
+    try {
+        const noticias = await fetchSaoPauloNews();
+        res.json(noticias);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar notícias' });
+    }
+});
+
+
+// Rota para obter o HTML de um site
+router.get('/verhtml', async (req, res) => {
+    const url = 'https://fortaleza1918.com.br/central-de-midia/';
+
+    try {
+        console.log(`Buscando HTML da URL: ${url}`);
+        const response = await axios.get(url);
+        const html = response.data;
+
+        console.log(`HTML obtido com sucesso da URL: ${url}`);
+        
+        // Retornando o HTML como JSON
+        res.json({ html });
+    } catch (error) {
+        console.error(`Erro ao buscar HTML da URL: ${url}`, error);
+        res.status(500).json({ error: 'Erro ao buscar HTML' });
+    }
+});
+
+// Rota para obter notícias do G1
+router.get('/g1', async (req, res) => {
+  try {
+    const response = await G1();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do G1' });
+  }
+});
+
+// Rota para obter notícias do Poder360
+router.get('/poder360', async (req, res) => {
+  try {
+    const response = await Poder360();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do Poder360' });
+  }
+});
+
+// Rota para obter notícias da Jovem Pan
+router.get('/jovempan', async (req, res) => {
+  try {
+    const response = await JovemPan();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da Jovem Pan' });
+  }
+});
+
+// Rota para obter notícias do UOL
+router.get('/uol', async (req, res) => {
+  try {
+    const response = await Uol();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do UOL' });
+  }
+});
+
+// Rota para obter notícias da CNN Brasil
+router.get('/cnnbrasil', async (req, res) => {
+  try {
+    const response = await CNNBrasil();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da CNN Brasil' });
+  }
+});
+
+// Rota para obter notícias do Estadão
+router.get('/estadao', async (req, res) => {
+  try {
+    const response = await Estadao();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do Estadão' });
+  }
+});
+
+// Rota para obter notícias do Terra
+router.get('/terra', async (req, res) => {
+  try {
+    const response = await Terra();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do Terra' });
+  }
+});
+
+// Rota para obter notícias da Exame
+router.get('/exame', async (req, res) => {
+  try {
+    const response = await Exame();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da Exame' });
+  }
+});
+
+// Rota para obter notícias do Notícias ao Minuto
+router.get('/aominuto', async (req, res) => {
+  try {
+    const response = await NoticiasAoMinuto();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do Notícias ao Minuto' });
+  }
+});
+
+// Rota para obter notícias da Veja Abril
+router.get('/vejaabril', async (req, res) => {
+  try {
+    const response = await VejaAbril();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da Veja Abril' });
+  }
+});
+
+// Rota para obter notícias da BBC
+router.get('/bbc', async (req, res) => {
+  try {
+    const response = await BBC();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da BBC' });
+  }
+});
+
+// Rota para obter notícias da A Gazeta
+router.get('/agazeta', async (req, res) => {
+  try {
+    const response = await AGazeta();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias da A Gazeta' });
+  }
+});
+
+// Rota para obter notícias do Vasco
+router.get('/vasco', async (req, res) => {
+  try {
+    const response = await Vasco();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar notícias do Vasco' });
+  }
+});
+
+// Rota para obter todas as notícias
+router.get('/todas-noticias', async (req, res) => {
+  try {
+    const response = await TodaNoticias();
+    res.status(200).json(response);
+  } catch (error) {
+    res.status(500).json({ status: false, error: 'Erro ao buscar todas as notícias' });
+  }
+});
 router.get('/tiktok', async (req, res) => {
   const query = req.query.query;
   try {
@@ -3104,7 +3606,7 @@ router.get('/pin/video', (req, res) => {
 
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
-const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu7DO8zrq/eWmm40NubDSuLOq9S+f/8uRHMdmCQu9JcyUslkkQ+pDcZb7FI6XKqLyE+TZSQO9xXFz0g+fxhYndmF/07xzlSnvyWr56lfyxyWJ/CtRgc6zfWoGYJTYhLyK128ucu2RWKNzAc8Vc6iWtfxvDlx+7mdXC53lg6SmO2kSZXQnqnghT/iWXJHl7N/0l5BHcJyFuQ44SUsgD8Ux1HPJJvKOZKnJ3c3pgL/VdM8JzKhEIVzV9Sa6VHOhcQljwL9/XKdcbmaPfCUxSOzUQlHgUO9dpz0mB0e4YPX6VtP8IKEAiCmgXAuXFeDnFwjPt6PgViw98ieXL1gy+g5mM/w=');
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu1K6pI3Dez2mpyEWTTn2C8sxijrB9ABzmivE6cWIslR4Q9JXHvnx5AjbsjuqDrPC/aeCfvZp7idmaXbpx+v93rHqAA8gsxhBCuthhlFSidDkj2PygEfTtYXWbx9WkLGBn5JXwQ2acKoyjrT4xo/tPQNRWlUTmKTiE+2P/GXG4N0JuWfG3KBIR3G3KevEUOgwlf7WK5c5H6gAPKaft+kwoMLJ+OwJ3Vuo2yqar46pEOcFXpY6dRqA2KEKqf/BuztlNDJJamEm2pCRUl6d0G64JULMhfb/PSofMpZk/gz1uuuI+Y6R9b3gG6vQMC5ifjzLT8Csn3IabQH0fCXLeTFUvIY=');
 const grupoChatId = -1002208588695;
 
 const rl = readline.createInterface({
