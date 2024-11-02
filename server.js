@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './html/index.html'));
 });
-app.use('/storage', express.static(path.join(__dirname, 'storage')));
+
 app.get('/:page', (req, res) => {
   const page = req.params.page;
   const filePathHtml = path.join(__dirname, 'html', `${page}.html`);
