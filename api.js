@@ -138,6 +138,56 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
+router.get('/luan', async (req, res) => {
+    const { query } = req;
+    const musicName = query.nome;
+
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
+    }
+
+    try {
+        // Buscar o vídeo no YouTube pelo nome da música
+        const searchResults = await search(musicName);
+
+        if (!searchResults || searchResults.videos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
+        }
+
+        // Pegar o primeiro vídeo da lista de resultados
+        const videoId = searchResults.videos[0].videoId;
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+        
+        // Pasta para salvar as músicas
+        const storageDir = path.join(__dirname, './storage');
+        if (!fs.existsSync(storageDir)) {
+            fs.mkdirSync(storageDir);
+        }
+
+        // Caminho do arquivo onde o áudio será salvo
+        const filePath = path.join(storageDir, `${musicName}.mp3`);
+        
+        // Baixar e salvar o áudio localmente
+        const stream = await yt(videoUrl, { filter: 'audioonly' });
+        const writeStream = fs.createWriteStream(filePath);
+
+        stream.pipe(writeStream);
+
+        // Espera o término do download para responder
+        writeStream.on('finish', () => {
+            const fileUrl = `/storage/${musicName}.mp3`;
+            res.json({ link: fileUrl });
+        });
+
+        writeStream.on('error', (err) => {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao salvar o áudio' });
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
 // Endpoint para baixar imagem do Pinterest
 router.get('/pinimg', async (req, res) => {
     const { url } = req.query;
