@@ -142,7 +142,7 @@ router.get('/genoticias', async (req, res) => {
 const cookies = JSON.parse(fs.readFileSync('cookies.json'));
 const agent = ytdl.createAgent(cookies);
 
-router.get('/luan', async (req, res) => {
+router.get('/play2', async (req, res) => {
     const { query } = req;
     const musicName = query.nome;
 
@@ -192,7 +192,99 @@ router.get('/luan', async (req, res) => {
         res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
 });
+router.get('/site/:domain', async (req, res) => {
+    const domain = req.params.domain; // Captura o domínio da URL
+    const apiKey = 'at_pMBw3G9ao2Etc4sUrlr68fNoS8amb'; // Sua chave de API
+    const url = `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${apiKey}&domainName=${domain}&outputFormat=JSON`;
 
+    try {
+        const response = await axios.get(url);
+        const whoisData = response.data;
+
+        // Envia a resposta JSON com os dados do Whois
+        res.json(whoisData);
+    } catch (error) {
+        console.error('Erro ao buscar dados do Whois:', error);
+        res.status(500).json({ error: 'Erro ao buscar dados do Whois.' });
+    }
+});
+
+
+
+router.get('/operadora', async (req, res) => {
+    const { numero } = req.query;
+
+    console.log('Requisição recebida para número:', numero);
+
+    // Validação do formato do número
+    if (!numero || !/^\d{2}\d{5}-\d{4}$/.test(numero)) {
+        console.error('Erro: Formato de número inválido');
+        return res.status(400).json({ error: 'Formato de número inválido. Use o formato: 8599860-3654' });
+    }
+
+    // Extrai o DDD e o prefixo
+    const ddd = numero.slice(0, 2);
+    const prefixo = numero.slice(2, 7);
+    console.log('DDD extraído:', ddd);
+    console.log('Prefixo extraído:', prefixo);
+
+    const url = `https://www.qualoperadora.org/prefixo/celular/${prefixo}`;
+    console.log('URL gerada para consulta:', url);
+
+    try {
+        // Faz a requisição para o site e obtém o HTML
+        const response = await axios.get(url);
+        const html = response.data;
+        console.log('Resposta HTML recebida com sucesso.');
+
+        // Extrai a lista de operadoras dentro do <ul> usando regex para capturar bloco <ul>...</ul>
+        const listRegex = /<ul>(.*?)<\/ul>/s;
+        const listMatch = html.match(listRegex);
+        
+        if (listMatch && listMatch[1]) {
+            const listContent = listMatch[1];
+            console.log('Conteúdo da lista extraído com sucesso.');
+
+            // Quebra a lista em itens de <li>
+            const items = listContent.split('<li>');
+            let operadoraEncontrada = null;
+
+            items.forEach((item) => {
+                if (item.includes(`(${ddd}) ${prefixo}`)) {
+                    const operadoraRegex = /operadora\s(.*?)\scelular/i;
+                    const operadoraMatch = item.match(operadoraRegex);
+                    if (operadoraMatch && operadoraMatch[1]) {
+                        operadoraEncontrada = operadoraMatch[1].trim();
+                        console.log('Operadora encontrada:', operadoraEncontrada);
+                    }
+                }
+            });
+
+            if (operadoraEncontrada) {
+                return res.json({ mensagem: `O número é da operadora ${operadoraEncontrada}` });
+            } else {
+                console.warn('Operadora não encontrada para o DDD e prefixo fornecidos.');
+                return res.status(404).json({ error: 'Operadora não encontrada para o DDD e prefixo fornecidos.' });
+            }
+        } else {
+            console.error('Erro: Estrutura de lista <ul> não encontrada no HTML.');
+            return res.status(500).json({ error: 'Estrutura de resposta inesperada. Verifique o formato do HTML retornado.' });
+        }
+    } catch (error) {
+        console.error('Erro ao consultar a operadora:', error.message);
+        
+        if (error.response) {
+            console.error('Erro na resposta da requisição:', error.response.status);
+            return res.status(500).json({ error: 'Erro ao consultar o site da operadora. Por favor, tente novamente mais tarde.' });
+        } else if (error.request) {
+            console.error('Erro na requisição, sem resposta:', error.request);
+            return res.status(500).json({ error: 'Erro ao enviar a requisição para o site. Verifique a conexão de rede.' });
+        } else {
+            console.error('Erro desconhecido:', error.message);
+            return res.status(500).json({ error: 'Erro inesperado ao consultar a operadora.' });
+        }
+    }
+});
 // Endpoint para baixar imagem do Pinterest
 router.get('/pinimg', async (req, res) => {
     const { url } = req.query;
@@ -3992,39 +4084,6 @@ router.get('/consultas', async (req, res) => {
     return res.json({ status: false, resultado: 'Erro interno do servidor.' });
   }
 });
-router.get('/operadora/:numero', async (req, res) => {
-    const numero = req.params.numero;
-
-    if (!numero) {
-        return res.status(400).json({ error: 'Número de telefone é necessário' });
-    }
-
-    try {
-        // Fazer a requisição POST
-        const response = await axios.post('http://consultanumero$_telein.com.br/sistema/consulta_numero.php', null, {
-            params: {
-                chave: 'senhasite',
-                numero: numero
-            }
-        });
-
-        // Processar a resposta HTML
-        const $ = cheerio.load(response.data);
-
-        // Extrair a operadora
-        const operadora = $('#resultado').text().trim();
-
-        if (!operadora) {
-            return res.status(404).json({ error: 'Operadora não encontrada' });
-        }
-
-        res.json({ numero, operadora });
-    } catch (error) {
-        console.error('Erro ao buscar dados:', error.message);
-        res.status(500).json({ error: 'Erro ao buscar dados: ' + error.message });
-    }
-});
-
 
 
 // Função para buscar wallpapers
