@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
-const ytdl = require('@distube/ytdl-core');
+const yt = require('@distube/ytdl-core');
 const criador = 'World Ecletix';
 const cors = require('cors');
 const { TelegramClient } = require('telegram');
@@ -138,61 +138,8 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
-// Carregar cookies do arquivo JSON
-const cookies = JSON.parse(fs.readFileSync('cookies.json'));
-const agent = ytdl.createAgent(cookies);
 
-router.get('/play2', async (req, res) => {
-    const { query } = req;
-    const musicName = query.nome;
-
-    if (!musicName) {
-        return res.status(400).json({ error: 'Nome da música é obrigatório' });
-    }
-
-    try {
-        // Buscar o vídeo no YouTube pelo nome da música
-        const searchResults = await search(musicName);
-
-        if (!searchResults || searchResults.videos.length === 0) {
-            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
-        }
-
-        // Pegar o primeiro vídeo da lista de resultados
-        const videoId = searchResults.videos[0].videoId;
-        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-
-        // Pasta para salvar as músicas
-        const storageDir = path.join(__dirname, './storage');
-        if (!fs.existsSync(storageDir)) {
-            fs.mkdirSync(storageDir);
-        }
-
-        // Caminho do arquivo onde o áudio será salvo
-        const filePath = path.join(storageDir, `${musicName}.mp3`);
-
-        // Baixar e salvar o áudio localmente usando cookies
-        const stream = await ytdl(videoUrl, { filter: 'audioonly', agent });
-        const writeStream = fs.createWriteStream(filePath);
-
-        stream.pipe(writeStream);
-
-        // Espera o término do download para responder
-        writeStream.on('finish', () => {
-            const fileUrl = `/storage/${musicName}.mp3`;
-            res.json({ link: fileUrl });
-        });
-
-        writeStream.on('error', (err) => {
-            console.error(err);
-            res.status(500).json({ error: 'Erro ao salvar o áudio' });
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao processar a solicitação' });
-    }
-});
-router.get('/site/:domain', async (req, res) => {
+router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
     const apiKey = 'at_pMBw3G9ao2Etc4sUrlr68fNoS8amb'; // Sua chave de API
     const url = `https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=${apiKey}&domainName=${domain}&outputFormat=JSON`;
@@ -208,8 +155,6 @@ router.get('/site/:domain', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar dados do Whois.' });
     }
 });
-
-
 
 router.get('/operadora', async (req, res) => {
     const { numero } = req.query;
