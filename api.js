@@ -219,7 +219,7 @@ router.get('/operadora', async (req, res) => {
     // Validação do formato do número
     if (!numero || !/^\d{2}\d{5}-\d{4}$/.test(numero)) {
         console.error('Erro: Formato de número inválido');
-        return res.status(400).json({ error: 'Formato de número inválido. Use o formato: 8599860-3654' });
+        return res.status(400).json({ error: 'Formato de número inválido. Use o formato: 1199867-3120' });
     }
 
     // Extrai o DDD e o prefixo
