@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
-const yt = require('@distube/ytdl-core');
+const ytdl = require('@distube/ytdl-core');
 const criador = 'World Ecletix';
 const cors = require('cors');
 const { TelegramClient } = require('telegram');
@@ -138,6 +138,10 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
+// Carregar cookies do arquivo JSON
+const cookies = JSON.parse(fs.readFileSync('cookies.json'));
+const agent = ytdl.createAgent(cookies);
+
 router.get('/luan', async (req, res) => {
     const { query } = req;
     const musicName = query.nome;
@@ -157,7 +161,7 @@ router.get('/luan', async (req, res) => {
         // Pegar o primeiro vídeo da lista de resultados
         const videoId = searchResults.videos[0].videoId;
         const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-        
+
         // Pasta para salvar as músicas
         const storageDir = path.join(__dirname, './storage');
         if (!fs.existsSync(storageDir)) {
@@ -166,9 +170,9 @@ router.get('/luan', async (req, res) => {
 
         // Caminho do arquivo onde o áudio será salvo
         const filePath = path.join(storageDir, `${musicName}.mp3`);
-        
-        // Baixar e salvar o áudio localmente
-        const stream = await yt(videoUrl, { filter: 'audioonly' });
+
+        // Baixar e salvar o áudio localmente usando cookies
+        const stream = await ytdl(videoUrl, { filter: 'audioonly', agent });
         const writeStream = fs.createWriteStream(filePath);
 
         stream.pipe(writeStream);
@@ -188,6 +192,7 @@ router.get('/luan', async (req, res) => {
         res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
 });
+
 // Endpoint para baixar imagem do Pinterest
 router.get('/pinimg', async (req, res) => {
     const { url } = req.query;
