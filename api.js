@@ -138,7 +138,149 @@ router.get('/genoticias', async (req, res) => {
     res.status(500).json({ sucesso: false, mensagem: 'Erro ao obter notícias', erro: error.message });
   }
 });
+// Endpoint para baixar imagem do Pinterest
+router.get('/pinimg', async (req, res) => {
+    const { url } = req.query;
 
+    if (!url) {
+        return res.status(400).json({ error: 'A URL do Pinterest é obrigatória' });
+    }
+
+    try {
+        const response = await axios.get(url);
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+        // Extraindo a URL da imagem (ajuste conforme necessário)
+        const imageUrl = $('img[src$=".jpg"]').attr('src');
+
+        if (!imageUrl) {
+            return res.status(404).json({ error: 'Imagem não encontrada' });
+        }
+
+        return res.json({
+            imageUrl,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+// Endpoint para baixar vídeo do Pinterest
+router.get('/pinvid', async (req, res) => {
+    const { url } = req.query;
+
+    if (!url) {
+        return res.status(400).json({ error: 'A URL do Pinterest é obrigatória' });
+    }
+
+    try {
+        console.log(`Requisitando a URL: ${url}`);
+        const response = await axios.get(url);
+        console.log('Requisição bem-sucedida, status:', response.status);
+
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+        // Tentar extrair a URL do vídeo .m3u8
+        const videoM3U8Url = $('video').attr('src');
+        console.log('Tentando encontrar a URL do vídeo .m3u8...');
+
+        if (!videoM3U8Url) {
+            console.error('Vídeo .m3u8 não encontrado na página');
+            return res.status(404).json({ error: 'Vídeo não encontrado' });
+        }
+
+        console.log('URL do vídeo .m3u8 encontrada:', videoM3U8Url);
+
+        // Aqui, você pode usar a URL .m3u8 para streamar ou baixar o vídeo.
+        // Para simplificação, você pode retornar a URL
+        return res.json({
+            videoM3U8Url,
+        });
+    } catch (error) {
+        console.error('Erro ao processar a solicitação:', error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+
+
+// Endpoint para baixar imagem do Pinterest
+router.get('/pinimagem', async (req, res) => {
+    const { url } = req.query;
+
+    if (!url) {
+        return res.status(400).json({ error: 'A URL do Pinterest é obrigatória' });
+    }
+
+    try {
+        console.log(`Requisitando a URL: ${url}`);
+        const response = await axios.get(url);
+        console.log('Requisição bem-sucedida, status:', response.status);
+
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+        // Extraindo a URL da imagem
+        const pinImageUrl = $('img').attr('src');
+        console.log('Tentando encontrar a URL da imagem...');
+
+        if (!pinImageUrl) {
+            console.error('Imagem não encontrada na página');
+            return res.status(404).json({ error: 'Imagem não encontrada' });
+        }
+
+        console.log('URL da imagem encontrada:', pinImageUrl);
+
+        // Enviando a imagem diretamente
+        const imageResponse = await axios.get(pinImageUrl, { responseType: 'arraybuffer' });
+        res.set('Content-Type', 'image/jpeg'); // Defina o tipo de conteúdo conforme necessário
+        return res.send(imageResponse.data); // Enviando a imagem
+
+    } catch (error) {
+        console.error('Erro ao processar a solicitação:', error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+
+// Endpoint para redirecionar para o vídeo do Pinterest
+router.get('/pinvideo', async (req, res) => {
+    const { url } = req.query;
+
+    if (!url) {
+        return res.status(400).json({ error: 'A URL do Pinterest é obrigatória' });
+    }
+
+    try {
+        console.log(`Requisitando a URL: ${url}`);
+        const response = await axios.get(url);
+        console.log('Requisição bem-sucedida, status:', response.status);
+
+        const html = response.data;
+        const $ = cheerio.load(html);
+
+        // Extraindo a URL do vídeo .m3u8
+        const pinVideoUrl = $('video').attr('src');
+        console.log('Tentando encontrar a URL do vídeo .m3u8...');
+
+        if (!pinVideoUrl) {
+            console.error('Vídeo .m3u8 não encontrado na página');
+            return res.status(404).json({ error: 'Vídeo não encontrado' });
+        }
+
+        console.log('URL do vídeo .m3u8 encontrada:', pinVideoUrl);
+
+        // Redirecionando para a URL do vídeo .m3u8
+        return res.redirect(pinVideoUrl);
+
+    } catch (error) {
+        console.error('Erro ao processar a solicitação:', error.message);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
 // Rota para buscar o HTML
 router.get('/verhtml', async (req, res) => {
     const url = req.query.url;
