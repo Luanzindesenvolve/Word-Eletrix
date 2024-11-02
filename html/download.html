@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,19 +96,19 @@
                     <option value="instagramByLink">Baixar vídeo pelo link</option>
                     <option value="instagramStoryByLink">Baixar story pelo link</option>
                     <option value="instagramSearch">Pesquisar Instagram</option>
-                    <option value="instaByNewApi">Baixar vídeo</option>
+                    <option value="instaByNewApi">Baixar reels</option>
                 </optgroup>
                 <optgroup label="Baixar vídeo do Facebook 🎥">
-                    <option value="facebookByLink1">Pelo link (API 1)</option>
-                    <option value="facebookByLink2">Pelo link (API 2)</option>
+                    <option value="facebookByLink1">audio/video/foto v1</option>
+                    <option value="facebookByLink2">audio/video/foto v2</option>
                 </optgroup>
                 <optgroup label="Baixar do TikTok 🎥">
-                    <option value="tiktokByLinkVideo">Vídeo</option>
-                    <option value="tiktokByLinkAudio">Áudio</option>
+                    <option value="tiktokByLinkVideo">audio/video v1</option>
+                    <option value="tiktokByLinkAudio">audio/video v2</option>
                 </optgroup>
-                <optgroup label="Telegra.ph 🌐">
-                    <option value="telegraphImage">Foto para link</option>
-                    <option value="telegraphVideo">Vídeo para link</option>
+                <optgroup label="imgur 🌐">
+                    <option value="imgurImage">Foto para link</option>
+                    <option value="imgurVideo">Vídeo para link</option>
                 </optgroup>
                 <optgroup label="Pinterest 📌">
                     <option value="pinterestVideo">Vídeo pelo link</option>
@@ -135,19 +135,19 @@
 
             switch(option) {
                 case 'musicByName':
-                    apiUrl = `https://world-ecletix.onrender.com/api/musica?name=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/play?name=${encodeURIComponent(query)}`;
                     break;
                 case 'musicByLink':
-                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp3?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/ytmp3?url=${encodeURIComponent(query)}`;
                     break;
                 case 'videoByName':
-                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/ytmp4?url=${encodeURIComponent(query)}`;
                     break;
                 case 'videoByLink':
-                    apiUrl = `https://world-ecletix.onrender.com/api/linkmp4?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/ytmp4?url=${encodeURIComponent(query)}`;
                     break;
                 case 'instagramByLink':
-                    apiUrl = `https://www.guruapi.tech/api/igdlv1?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/insta?url=${encodeURIComponent(query)}`;
                     break;
                 case 'instagramStoryByLink':
                     apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/story?url=${encodeURIComponent(query)}`;
@@ -156,30 +156,30 @@
                     apiUrl = `https://api-aswin-sparky.koyeb.app/api/search/ig?search=${encodeURIComponent(query)}`;
                     break;
                 case 'facebookByLink1':
-                    apiUrl = `https://api.maher-zubair.tech/download/fb?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/facebook?link=${encodeURIComponent(query)}`;
                     break;
                 case 'facebookByLink2':
-                    apiUrl = `https://api-smd.vercel.app/api/fb?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/fbdl?url=${encodeURIComponent(query)}`;
                     break;
                 case 'tiktokByLinkVideo':
-                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/tiktok?query=${encodeURIComponent(query)}`;
                     break;
                 case 'tiktokByLinkAudio':
-                    apiUrl = `https://rest-api.akuari.my.id/downloader/tiktok4?link=${encodeURIComponent(query)}`;
+                    apiUrl = `https://clover-t-bot-r0wt.onrender.com/download/tiktok?url=${encodeURIComponent(query)}`;
                     break;
-                case 'telegraphImage':
-                case 'telegraphVideo':
+                case 'imgurImage':
+                case 'imgurVideo':
                     // Redireciona para o Telegra.ph para upload de arquivos
-                    window.open('https://telegra.ph', '_blank');
+                    window.open('https://imgur.com/', '_blank');
                     return;
                 case 'pinterestVideo':
-                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/vid2?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/pinvideo?url=${encodeURIComponent(query)}`;
                     break;
                 case 'pinterestImage':
-                    apiUrl = `https://api-pinterest-y7jx.onrender.com/api/img2?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://world-ecletix.onrender.com/api/pinimagem?url=${encodeURIComponent(query)}`;
                     break;
                 case 'instaByNewApi':
-                    apiUrl = `https://world-ecletix.onrender.com/api/insta?url=${encodeURIComponent(query)}`;
+                    apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${encodeURIComponent(query)}`;
                     break;
                 default:
                     resultElement.textContent = 'Opção inválida ou não suportada';
