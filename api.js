@@ -222,7 +222,276 @@ router.get('/rgb', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+router.get('/editsfeminina', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'editsfeminina.json');
 
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/chainsaw', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'chainsaw.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/hunterx', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'hunterx.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/bleach', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'bleach.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/jujutsu', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'jujutsu.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/aleatorios', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'aleatoriosmp4.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/narutomp4', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'narutomp4.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/dragonball', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'dragonball.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
+router.get('/kimetsu', async (req, res) => {
+    // Caminho para o arquivo JSON
+    const loliFilePath = path.join(__dirname, 'dados', 'kimetsu.json');
+
+    // Função para ler o arquivo JSON
+    function lerArquivoJSON() {
+        const rawdata = fs.readFileSync(loliFilePath);
+        return JSON.parse(rawdata);
+    }
+
+    try {
+        // Carregar os vídeos do arquivo JSON
+        const loliData = lerArquivoJSON();
+        const videos = loliData.videos; // Alterado para 'videos'
+
+        // Escolher um vídeo aleatório
+        const randomIndex = Math.floor(Math.random() * videos.length);
+        const randomVideoUrl = videos[randomIndex];
+
+        // Fazer requisição para obter o vídeo
+        const response = await axios.get(randomVideoUrl, { responseType: 'arraybuffer' });
+
+        // Enviar o vídeo como resposta
+        res.set('Content-Type', 'video/mp4'); // Define o tipo de conteúdo como vídeo MP4
+        res.send(Buffer.from(response.data, 'binary'));
+    } catch (error) {
+        console.error('Erro ao obter o vídeo aleatório:', error);
+        res.status(500).send('Erro ao obter o vídeo aleatório');
+    }
+});
 
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
