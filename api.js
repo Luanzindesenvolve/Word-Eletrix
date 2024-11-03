@@ -143,7 +143,7 @@ const { createCanvas } = require('canvas');
 const GIFEncoder = require('gifencoder');
 
 router.get('/rgb', (req, res) => {
-    const texto = req.query.texto || 'Figurinha';
+    const texto = req.query.texto || 'World Ecletix';
     const largura = 300;
     const altura = 300;
     const frames = 10;  // Número de frames no GIF
@@ -170,7 +170,7 @@ router.get('/rgb', (req, res) => {
         ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 
         // Adiciona o texto no centro do frame
-        ctx.font = 'bold 30px sans-serif';
+        ctx.font = 'bold 40px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(texto, largura / 2, altura / 2);
