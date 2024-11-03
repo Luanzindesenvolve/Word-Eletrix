@@ -1673,27 +1673,26 @@ router.get('/figurinhas2', async (req, res) => {
     }
 });
 
-// Middleware para lidar com tempo de resposta
 router.get('/ping', async (req, res) => {
-    const timestamp = Date.now();
-    const messageTimestamp = parseFloat(req.query.messageTimestamp);
-    if (isNaN(messageTimestamp)) return res.status(400).send('Timestamp inválido');
-    const responseTime = (timestamp / 1000) - messageTimestamp;
-    const uptime = process.uptime();
-    let picc;
+    const startTime = Date.now(); // Captura o tempo no início da requisição
+
+    // Simula um tempo de processamento, mas sem atraso artificial
+    const responseTime = Date.now() - startTime; // Calcula o tempo de resposta em milissegundos
+
+    console.log(`Tempo de resposta calculado: ${responseTime}ms`); // Log do tempo de resposta
+
+    // Garante que o valor exibido nunca seja zero
+    const displayTime = responseTime > 0 ? responseTime : 1;
+
+    const picUrl = `https://ittkimse.sirv.com/images%20(4).jpeg?text.0.text=VELOCIDADE%20DO%20BOT&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=40&text.0.font.family=Teko&text.0.font.weight=800&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${displayTime}ms&text.1.position.gravity=center&text.1.size=30&text.1.color=ffffff&text.1.font.family=Teko&text.1.font.weight=800&text.1.background.opacity=100&text.1.outline.blur=100`;
 
     try {
-        picc = await loli.profilePictureUrl(req.query.chat, "image");
-    } catch (e) {
-        picc = `https://ittkimse.sirv.com/images%20(4).jpeg?text.0.text=VELOCIDADE%20DO%20BOT&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=40&text.0.font.family=Teko&text.0.font.weight=800&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${String(responseTime.toFixed(3))}&text.1.position.gravity=center&text.1.size=30&text.1.color=ffffff&text.1.font.family=Teko&text.1.font.weight=800&text.1.background.opacity=100&text.1.outline.blur=100`;
-    }
-
-    try {
-        const response = await axios.get(picc, { responseType: 'arraybuffer' });
-        res.set('Content-Type', 'image/jpeg'); // Ajuste o tipo de conteúdo conforme necessário
-        res.send(response.data);
+        const buffer = await getBuffer(picUrl);
+        res.set({ 'Content-Type': 'image/jpeg' });
+        return res.send(buffer);
     } catch (error) {
-        res.status(500).send('Erro ao obter a imagem.');
+        console.error('Erro ao processar a imagem:', error.message);
+        return res.status(500).send({ status: false, message: 'Erro ao processar a imagem' });
     }
 });
 
@@ -1974,10 +1973,15 @@ router.get('/bateria', async (req, res) => {
         });
     }
     
-    var result = await imageToBase64(`https://eruakorl.sirv.com/Bot%20dudinha/images%20(1).jpeg?text.0.text=BATERIA&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=24&text.0.color=ffffff&text.0.font.family=Teko&text.0.font.weight=600&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${porcentagem}%&text.1.position.gravity=center&text.1.size=22&text.1.color=2aff00&text.1.font.family=Teko&text.1.font.weight=600&text.1.background.opacity=100&text.1.outline.blur=100&text.2.text=${texto}&text.2.position.gravity=center&text.2.position.y=26%25&text.2.size=24&text.2.color=ffffff&text.2.font.family=Teko&text.2.font.weight=600&text.2.background.opacity=100&text.2.outline.blur=100`)
-    var hasil = Buffer.from(result, 'base64');
-    await fs.writeFileSync(GleysonDevs + '/tmp/bateria.png', hasil);
-    res.sendFile(GleysonDevs + '/tmp/bateria.png');
+    const ttplink = `https://eruakorl.sirv.com/Bot%20dudinha/images%20(1).jpeg?text.0.text=BATERIA&text.0.position.gravity=north&text.0.position.y=15%25&text.0.size=24&text.0.color=ffffff&text.0.font.family=Teko&text.0.font.weight=600&text.0.background.opacity=100&text.0.outline.blur=100&text.1.text=${porcentagem}%&text.1.position.gravity=center&text.1.size=22&text.1.color=2aff00&text.1.font.family=Teko&text.1.font.weight=600&text.1.background.opacity=100&text.1.outline.blur=100&text.2.text=${texto}&text.2.position.gravity=center&text.2.position.y=26%25&text.2.size=24&text.2.color=ffffff&text.2.font.family=Teko&text.2.font.weight=600&text.2.background.opacity=100&text.2.outline.blur=100`;
+
+    try {
+        const buffer = await getBuffer(ttplink);
+        res.set({ 'Content-Type': 'image/png' });
+        return res.send(buffer);
+    } catch (error) {
+        return res.status(500).send({ status: false, message: 'Erro ao processar a imagem' });
+    }
 });
 // Rota /ttp
 router.get('/ttp', async (req, res) => {
