@@ -139,26 +139,10 @@ router.get('/genoticias', async (req, res) => {
   }
 });
 
-const { createCanvas } = require('canvas');
-const GIFEncoder = require('gifencoder');
-
-router.get('/rgb', (req, res) => {
-    const texto = req.query.texto || 'Figurinha';
-    const largura = 300;
-    const altura = 300;
-    const frames = 10;  // Número de frames no GIF
-    const delay = 100;  // Delay entre os frames em ms
-    const maxWidth = largura * 0.8; // Largura máxima para o texto
-
-    // Cria o encoder GIF e define a configuração do GIF
-    const encoder = new GIFEncoder(largura, altura);
-    encoder.start();
-    encoder.setRepeat(0);  // 0 para loop infinito
-    encoder.setDelay(delay);
-    encoder.setTransparent();
-
 const { createCanvas, registerFont } = require('canvas');
 const GIFEncoder = require('gifencoder');
+
+
 // Registre a fonte Arial Narrow 7 a partir do arquivo .ttf
 registerFont('./arial_narrow_7.ttf', { family: 'Arial Narrow' });
 
@@ -229,6 +213,8 @@ router.get('/rgb', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+
+
 
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
