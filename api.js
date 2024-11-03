@@ -140,59 +140,51 @@ router.get('/genoticias', async (req, res) => {
 });
 
 const { createCanvas } = require('canvas');
+const GIFEncoder = require('gifencoder');
 
-// Função para criar uma imagem RGB que muda de cor
-function gerarFigurinhaRGB(texto) {
-    const largura = 300;
-    const altura = 300;
-    const canvas = createCanvas(largura, altura);
-    const ctx = canvas.getContext('2d');
-
-    // Desenhar o fundo com cores aleatórias e texto no centro
-    const mudarCor = () => {
-        ctx.fillStyle = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-        ctx.fillRect(0, 0, largura, altura);
-
-        ctx.font = 'bold 20px Arial';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(texto, largura / 2, altura / 2);
-    };
-
-    // Atualizar a cor em intervalos
-    setInterval(mudarCor, 500); // Muda a cor a cada 500ms
-
-    return canvas;
-}
-// Rota GET para retornar a figurinha
 router.get('/rgb', (req, res) => {
     const texto = req.query.texto || 'Figurinha';
     const largura = 300;
     const altura = 300;
+    const frames = 10;  // Número de frames no GIF
+    const delay = 100;  // Delay entre os frames em ms
+
+    // Cria o encoder GIF e define a configuração do GIF
+    const encoder = new GIFEncoder(largura, altura);
+    encoder.start();
+    encoder.setRepeat(0);  // 0 para loop infinito
+    encoder.setDelay(delay);
+    encoder.setTransparent();
+
     const canvas = createCanvas(largura, altura);
     const ctx = canvas.getContext('2d');
 
-    // Gera uma cor RGB aleatória
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-    ctx.fillRect(0, 0, largura, altura);
+    // Gera cada frame do GIF
+    for (let i = 0; i < frames; i++) {
+        ctx.clearRect(0, 0, largura, altura);  // Limpa o frame para o fundo transparente
 
-    // Adiciona o texto no centro da figurinha
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 30px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(texto, largura / 2, altura / 2);
+        // Define uma cor aleatória para o texto em cada frame
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 
-    // Define o cabeçalho e envia a imagem
-    res.setHeader('Content-Type', 'image/png');
-    canvas.pngStream().pipe(res);
+        // Adiciona o texto no centro do frame
+        ctx.font = 'bold 30px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(texto, largura / 2, altura / 2);
+
+        // Adiciona o frame ao encoder GIF
+        encoder.addFrame(ctx);
+    }
+
+    encoder.finish();
+
+    // Define o cabeçalho e envia o GIF
+    res.setHeader('Content-Type', 'image/gif');
+    res.send(encoder.out.getData());
 });
-
-
 
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
