@@ -141,8 +141,6 @@ router.get('/genoticias', async (req, res) => {
 
 const { createCanvas, registerFont } = require('canvas');
 const GIFEncoder = require('gifencoder');
-
-
 // Registre a fonte Arial Narrow 7 a partir do arquivo .ttf
 registerFont('./arial_narrow_7.ttf', { family: 'Arial Narrow' });
 
@@ -205,12 +203,12 @@ router.get('/rgb', (req, res) => {
         ctx.textBaseline = 'middle';
 
         // Chama a função para quebrar o texto em linhas e obter a altura total
-        const totalHeight = wrapText(ctx, texto, largura / 2, altura / 2 - 10, maxWidth, 60);
+        const totalHeight = wrapText(ctx, texto, largura / 2, altura / 2, maxWidth, 60);
 
         // Recalcula a posição vertical para centralizar
-        const verticalCenter = (altura - totalHeight) / 2;
+        const verticalCenter = (altura - totalHeight) / 2 + (totalHeight / 2); // Centraliza corretamente
 
-        // Gera cada frame novamente com a nova posição
+        // Limpa o canvas e desenha o texto centralizado
         ctx.clearRect(0, 0, largura, altura); // Limpa o frame
         wrapText(ctx, texto, largura / 2, verticalCenter, maxWidth, 60);
 
@@ -224,6 +222,7 @@ router.get('/rgb', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+
 
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
