@@ -21,6 +21,7 @@
     "http-cookie-agent": "",
     "undici": "",
     "cors": "",
+    "canvas": "",
     "telegram": "",
     "input": "",
     "got": "^11.8.3",
