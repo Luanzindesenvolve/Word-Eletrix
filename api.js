@@ -164,10 +164,11 @@ router.get('/rgb', (req, res) => {
     const canvas = createCanvas(largura, altura);
     const ctx = canvas.getContext('2d');
 
-    // Função para dividir o texto em linhas
+    // Função para dividir o texto em linhas e retornar a altura total do texto
     function wrapText(context, text, x, y, maxWidth, lineHeight) {
         const words = text.split(' ');
         let line = '';
+        let totalHeight = 0; // Altura total ocupada pelo texto
 
         for (let n = 0; n < words.length; n++) {
             const testLine = line + words[n] + ' ';
@@ -178,11 +179,14 @@ router.get('/rgb', (req, res) => {
                 context.fillText(line, x, y);
                 line = words[n] + ' ';
                 y += lineHeight;
+                totalHeight += lineHeight; // Adiciona à altura total
             } else {
                 line = testLine;
             }
         }
         context.fillText(line, x, y);
+        totalHeight += lineHeight; // Adiciona a última linha à altura total
+        return totalHeight; // Retorna a altura total ocupada pelo texto
     }
 
     // Gera cada frame do GIF
@@ -200,8 +204,15 @@ router.get('/rgb', (req, res) => {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // Chama a função para quebrar o texto em linhas
-        wrapText(ctx, texto, largura / 2, altura / 2 - 10, maxWidth, 60);
+        // Chama a função para quebrar o texto em linhas e obter a altura total
+        const totalHeight = wrapText(ctx, texto, largura / 2, altura / 2 - 10, maxWidth, 60);
+
+        // Recalcula a posição vertical para centralizar
+        const verticalCenter = (altura - totalHeight) / 2;
+
+        // Gera cada frame novamente com a nova posição
+        ctx.clearRect(0, 0, largura, altura); // Limpa o frame
+        wrapText(ctx, texto, largura / 2, verticalCenter, maxWidth, 60);
 
         // Adiciona o frame ao encoder GIF
         encoder.addFrame(ctx);
@@ -213,8 +224,6 @@ router.get('/rgb', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
-
-
 
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
