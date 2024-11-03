@@ -143,11 +143,32 @@ const { createCanvas } = require('canvas');
 const GIFEncoder = require('gifencoder');
 
 router.get('/rgb', (req, res) => {
-    const texto = req.query.texto || 'World Ecletix';
+    const texto = req.query.texto || 'Figurinha';
     const largura = 300;
     const altura = 300;
     const frames = 10;  // Número de frames no GIF
     const delay = 100;  // Delay entre os frames em ms
+    const maxWidth = largura * 0.8; // Largura máxima para o texto
+
+    // Cria o encoder GIF e define a configuração do GIF
+    const encoder = new GIFEncoder(largura, altura);
+    encoder.start();
+    encoder.setRepeat(0);  // 0 para loop infinito
+    encoder.setDelay(delay);
+    encoder.setTransparent();
+
+const { createCanvas, registerFont } = require('canvas');
+const GIFEncoder = require('gifencoder');
+// Registre a fonte Arial Narrow 7 a partir do arquivo .ttf
+registerFont('./arial_narrow_7.ttf', { family: 'Arial Narrow' });
+
+router.get('/rgb', (req, res) => {
+    const texto = req.query.texto || 'Figurinha';
+    const largura = 300;
+    const altura = 300;
+    const frames = 10;  // Número de frames no GIF
+    const delay = 100;  // Delay entre os frames em ms
+    const maxWidth = largura * 0.8; // Largura máxima para o texto
 
     // Cria o encoder GIF e define a configuração do GIF
     const encoder = new GIFEncoder(largura, altura);
@@ -159,6 +180,27 @@ router.get('/rgb', (req, res) => {
     const canvas = createCanvas(largura, altura);
     const ctx = canvas.getContext('2d');
 
+    // Função para dividir o texto em linhas
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = context.measureText(testLine);
+            const testWidth = metrics.width;
+
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+    }
+
     // Gera cada frame do GIF
     for (let i = 0; i < frames; i++) {
         ctx.clearRect(0, 0, largura, altura);  // Limpa o frame para o fundo transparente
@@ -169,11 +211,13 @@ router.get('/rgb', (req, res) => {
         const b = Math.floor(Math.random() * 256);
         ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 
-        // Adiciona o texto no centro do frame
-        ctx.font = 'bold 40px sans-serif';
+        // Usa a fonte Arial Narrow 7
+        ctx.font = 'bold 50px "Arial Narrow"'; // Fonte ajustada para Arial Narrow 7
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(texto, largura / 2, altura / 2);
+
+        // Chama a função para quebrar o texto em linhas
+        wrapText(ctx, texto, largura / 2, altura / 2 - 10, maxWidth, 60);
 
         // Adiciona o frame ao encoder GIF
         encoder.addFrame(ctx);
