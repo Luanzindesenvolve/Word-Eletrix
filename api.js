@@ -139,6 +139,61 @@ router.get('/genoticias', async (req, res) => {
   }
 });
 
+const { createCanvas } = require('canvas');
+
+// Função para criar uma imagem RGB que muda de cor
+function gerarFigurinhaRGB(texto) {
+    const largura = 300;
+    const altura = 300;
+    const canvas = createCanvas(largura, altura);
+    const ctx = canvas.getContext('2d');
+
+    // Desenhar o fundo com cores aleatórias e texto no centro
+    const mudarCor = () => {
+        ctx.fillStyle = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+        ctx.fillRect(0, 0, largura, altura);
+
+        ctx.font = 'bold 20px Arial';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(texto, largura / 2, altura / 2);
+    };
+
+    // Atualizar a cor em intervalos
+    setInterval(mudarCor, 500); // Muda a cor a cada 500ms
+
+    return canvas;
+}
+// Rota GET para retornar a figurinha
+router.get('/rgb', (req, res) => {
+    const texto = req.query.texto || 'Figurinha';
+    const largura = 300;
+    const altura = 300;
+    const canvas = createCanvas(largura, altura);
+    const ctx = canvas.getContext('2d');
+
+    // Gera uma cor RGB aleatória
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+    ctx.fillRect(0, 0, largura, altura);
+
+    // Adiciona o texto no centro da figurinha
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 30px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(texto, largura / 2, altura / 2);
+
+    // Define o cabeçalho e envia a imagem
+    res.setHeader('Content-Type', 'image/png');
+    canvas.pngStream().pipe(res);
+});
+
+
+
 router.get('/whois/:domain', async (req, res) => {
     const domain = req.params.domain; // Captura o domínio da URL
     const apiKey = 'at_pMBw3G9ao2Etc4sUrlr68fNoS8amb'; // Sua chave de API
