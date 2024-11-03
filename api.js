@@ -1739,76 +1739,81 @@ router.get('/ata', async (req, res) => {
         res.status(500).send('Erro ao gerar a imagem.');
     }
 });
-
 // Rota para o comando 'plaq'
 router.get('/plaq', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://raptibef.sirv.com/images%20(3).jpeg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
-
 
 // Rota para o comando 'plaq2'
 router.get('/plaq2', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq2 e digite o seu nome`);
-    if (text.length > 10) return res.status(400).send('O texto é longo, até 10 caracteres');
+    if (!text || text.length > 10) return res.status(400).send('Texto inválido. Max 10 caracteres.');
 
     const url = `https://umethroo.sirv.com/BUNDA1.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-20%25&text.0.position.y=-20%25&text.0.size=18&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=700&text.0.background.opacity=65`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 // Rota para o comando 'plaq3'
 router.get('/plaq3', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq3 e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://umethroo.sirv.com/bunda3.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=-25%25&text.0.position.y=-17%25&text.0.size=17&text.0.color=000000&text.0.font.family=Architects%20Daughter&text.0.font.weight=700&text.0.font.style=italic`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 // Rota para o comando 'plaq4'
 router.get('/plaq4', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq4 e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://umethroo.sirv.com/peito1.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-48%25&text.0.position.y=-68%25&text.0.size=14&text.0.color=000000&text.0.font.family=Shadows%20Into%20Light&text.0.font.weight=700`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 // Rota para o comando 'plaq5'
 router.get('/plaq5', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq5 e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://umethroo.sirv.com/9152e7a9-7d49-48ef-b8ac-2e6149fda0b2.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=center&text.0.position.x=19%25&text.0.size=45&text.0.color=000000&text.0.opacity=55&text.0.font.family=Crimson%20Text&text.0.font.weight=300&text.0.font.style=italic&text.0.outline.opacity=21`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 // Rota para o comando 'plaq6'
 router.get('/plaq6', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq6 e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://clutamac.sirv.com/1011b781-bab1-49e3-89db-ee2c064868fa%20(1).jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.gravity=northwest&text.0.position.x=22%25&text.0.position.y=60%25&text.0.size=12&text.0.color=000000&text.0.opacity=47&text.0.font.family=Roboto%20Mono&text.0.font.style=italic`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 // Rota para o comando 'plaq7'
 router.get('/plaq7', async (req, res) => {
     const text = req.query.text;
-    if (!text) return res.status(400).send(`${prefix}plaq7 e digite o seu nome`);
-    if (text.length > 15) return res.status(400).send('O texto é longo, até 15 caracteres');
+    if (!text || text.length > 15) return res.status(400).send('Texto inválido. Max 15 caracteres.');
 
     const url = `https://umethroo.sirv.com/Torcedora-da-sele%C3%A7%C3%A3o-brasileira-nua-mostrando-a-bunda-236x300.jpg?text.0.text=${encodeURIComponent(text)}&text.0.position.x=-64%25&text.0.position.y=-39%25&text.0.size=25&text.0.color=1b1a1a&text.0.font.family=Architects%20Daughter`;
-    await sendImage(req, res, url, ' *Plaquinha feita*');
+    const imageBuffer = await getBuffer(url);
+    res.type('jpg');
+    res.send(imageBuffer);
 });
 
 router.get('/plaq8', async (req, res, next) => {
