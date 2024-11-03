@@ -1889,23 +1889,29 @@ router.get('/bateria', async (req, res) => {
     await fs.writeFileSync(GleysonDevs + '/tmp/bateria.png', hasil);
     res.sendFile(GleysonDevs + '/tmp/bateria.png');
 });
-
+// Rota /ttp
 router.get('/ttp', async (req, res) => {
     const texto = req.query.texto;
-    
+
     if (!texto) {
         return res.status(404).send({
             status: 404,
             message: 'Insira o parâmetro texto'
         });
     }
+
+    const ttplink = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${encodeURIComponent(texto)}&text.0.outline.blur=0&text.0.outline.opacity=0&text.0.font.family=Passion%20One`;
     
-    const ttplink = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${texto}&text.0.outline.blur=0&text.0.outline.opacity=0&text.0.font.family=Passion%20One`;
-    const figuresultado = await sticker(ttplink);
-    await fs.writeFileSync(GleysonDevs + '/tmp/ttp.webp', figuresultado);
-    res.sendFile(GleysonDevs + '/tmp/ttp.webp');
+    try {
+        const buffer = await getBuffer(ttplink);
+        res.set({ 'Content-Type': 'image/webp' });
+        return res.send(buffer);
+    } catch (error) {
+        return res.status(500).send({ status: false, message: 'Erro ao processar a imagem' });
+    }
 });
 
+// Rota /ttp2
 router.get('/ttp2', async (req, res) => {
     const texto = req.query.texto;
 
@@ -1915,17 +1921,24 @@ router.get('/ttp2', async (req, res) => {
             message: 'Cade o parâmetro texto??'
         });
     }
-    
-    const cor = ["f702ff", "ff0202", "00ff2e", "efff00", "00ecff", "3100ff", "ffb400", "ff00b0", "00ff95", "efff00"];
-    const fonte = ["Days%20One", "Domine", "Exo", "Fredoka%20One", "Gentium%20Basic", "Gloria%20Hallelujah", "Great%20Vibes", "Orbitron", "PT%20Serif", "Pacifico"];
-    const cores = cor[Math.floor(Math.random() * cor.length)];
-    const fontes = fonte[Math.floor(Math.random() * fonte.length)];
-    const sitee = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${texto}&text.0.outline.color=000000&text.0.outline.blur=0&text.0.outline.opacity=55&text.0.color=${cores}&text.0.font.family=${fontes}&text.0.background.color=ff0000`;
-    
-    res.type('jpg');
-    res.send(await getBuffer(sitee));
+
+    const cores = ["f702ff", "ff0202", "00ff2e", "efff00", "00ecff", "3100ff", "ffb400", "ff00b0", "00ff95", "efff00"];
+    const fontes = ["Days%20One", "Domine", "Exo", "Fredoka%20One", "Gentium%20Basic", "Gloria%20Hallelujah", "Great%20Vibes", "Orbitron", "PT%20Serif", "Pacifico"];
+    const cor = cores[Math.floor(Math.random() * cores.length)];
+    const fonte = fontes[Math.floor(Math.random() * fontes.length)];
+
+    const sitee = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${encodeURIComponent(texto)}&text.0.outline.color=000000&text.0.outline.blur=0&text.0.outline.opacity=55&text.0.color=${cor}&text.0.font.family=${fonte}&text.0.background.color=ff0000`;
+
+    try {
+        const buffer = await getBuffer(sitee);
+        res.set({ 'Content-Type': 'image/jpeg' });
+        return res.send(buffer);
+    } catch (error) {
+        return res.status(500).send({ status: false, message: 'Erro ao processar a imagem' });
+    }
 });
 
+// Rota /ttp3
 router.get('/ttp3', async (req, res) => {
     const texto = req.query.texto;
 
@@ -1935,22 +1948,32 @@ router.get('/ttp3', async (req, res) => {
             message: 'Cade o parâmetro texto??'
         });
     }
-    
-    const hasil = await getBuffer(`https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${encodeURIComponent(texto)}&text.0.color=ffffff&text.0.background.color=0000ff&text.0.font.family=Changa%20One&&text.0.outline.color=0000`);
-    res.set({'Content-Type': 'image/png'});
-    res.send(hasil);
+
+    const url = `https://huratera.sirv.com/PicsArt_08-01-10.00.42.png?profile=Example-Text&text.0.text=${encodeURIComponent(texto)}&text.0.color=ffffff&text.0.background.color=0000ff&text.0.font.family=Changa%20One&text.0.outline.color=0000`;
+
+    try {
+        const buffer = await getBuffer(url);
+        res.set({ 'Content-Type': 'image/png' });
+        return res.send(buffer);
+    } catch (error) {
+        return res.status(500).send({ status: false, message: 'Erro ao processar a imagem' });
+    }
 });
+
+async function fetchJson(url) {
+    const response = await axios.get(url);
+    return response.data; // Retorna os dados da resposta
+}
 router.get('/emojimix', async (req, res) => {
     const emoji1 = req.query.emoji1;
     const emoji2 = req.query.emoji2;
 
-    if (!emoji1) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji1" });
-    if (!emoji2) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji2" });
+    if (!emoji1) return res.json({ status: false, message: "[!] parâmetros de entrada emoji1" });
+    if (!emoji2) return res.json({ status: false, message: "[!] parâmetros de entrada emoji2" });
 
-    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
     res.json({
         status: true,
-        Criador: `${creator}`,
         resultado: data.results
     });
 });
@@ -1958,12 +1981,11 @@ router.get('/emojimix', async (req, res) => {
 router.get('/emojimix2', async (req, res) => {
     const emoji1 = req.query.emoji;
 
-    if (!emoji1) return res.json({ status: false, Criador: `${creator}`, message: "[!] parâmetros de entrada emoji" });
+    if (!emoji1) return res.json({ status: false, message: "[!] parâmetros de entrada emoji" });
 
-    let emojii = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}`);
+    let emojii = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}`);
     res.json({
         status: true,
-        Criador: `${creator}`,
         resultado: emojii.results
     });
 });
@@ -1975,7 +1997,7 @@ router.get('/emojimix3', async (req, res) => {
     if (!emoji1) return res.json({ status: false, mensagem: "[!] parâmetros de entrada emoji1" });
     if (!emoji2) return res.json({ status: false, mensagem: "[!] parâmetros de entrada emoji2" });
 
-    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=YOUR_GOOGLE_API_KEY&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
+    let data = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`);
     let jadi = data.results[Math.floor(Math.random() * data.results.length)];
 
     if (!jadi) return res.json({ erro: "Erro no Servidor Interno." });
