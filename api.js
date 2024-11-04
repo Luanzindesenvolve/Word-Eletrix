@@ -1136,6 +1136,59 @@ router.get('/folha', async (req, res) => {
 });
 
 
+router.get('/transcrever', async (req, res) => {
+    const apiKey = '46343532cb9a48aba921a1404a81cfe6'; // Sua chave API da AssemblyAI
+    const audioUrl = req.query.url; // Obtém a URL do áudio a partir dos parâmetros da query
+
+    if (!audioUrl) {
+        return res.status(400).json({ error: 'A URL do áudio é necessária como parâmetro.' });
+    }
+
+    try {
+        // Fazer a requisição para transcrição
+        const transcriptResponse = await axios.post('https://api.assemblyai.com/v2/transcript', {
+            audio_url: audioUrl
+        }, {
+            headers: {
+                'authorization': apiKey
+            }
+        });
+
+        const transcriptId = transcriptResponse.data.id;
+
+        // Verificando o status da transcrição
+        let isCompleted = false;
+        let transcriptText = '';
+
+        // Loop até que a transcrição esteja completa
+        while (!isCompleted) {
+            // Esperar um segundo antes de verificar novamente
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Verificar o status da transcrição
+            const statusResponse = await axios.get(`https://api.assemblyai.com/v2/transcript/${transcriptId}`, {
+                headers: {
+                    'authorization': apiKey
+                }
+            });
+
+            if (statusResponse.data.status === 'completed') {
+                isCompleted = true;
+                transcriptText = statusResponse.data.text;
+            } else if (statusResponse.data.status === 'failed') {
+                return res.status(500).send('Erro na transcrição do áudio.');
+            }
+        }
+
+        // Retornar o texto transcrito
+        res.send(transcriptText);
+
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao transcrever o áudio.' });
+    }
+});
+
+
 router.get('/oglobo', async (req, res) => {
     const url = 'https://oglobo.globo.com/';
     try {
