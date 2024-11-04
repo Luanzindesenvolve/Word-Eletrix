@@ -1101,6 +1101,107 @@ router.get('/g1', async (req, res) => {
     res.status(500).json({ status: false, error: 'Erro ao buscar notícias do G1' });
   }
 });
+router.get('/folha', async (req, res) => {
+    const url = 'https://www1.folha.uol.com.br/';
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        
+        const news = [];
+
+        // Captura as notícias mais lidas
+        $('.c-most-read__list li').each((index, element) => {
+            const link = $(element).find('a').attr('href');
+            const title = $(element).text().trim();
+
+            news.push({ title, link });
+        });
+
+        // Captura as notícias de cultura
+        $('.c-section-title').each((index, element) => {
+            const category = $(element).text().trim();
+            $(element).nextAll('.c-headline').each((_, newsElement) => {
+                const newsLink = $(newsElement).find('a').attr('href');
+                const newsTitle = $(newsElement).find('.c-headline__title').text().trim();
+
+                news.push({ title: newsTitle, link: newsLink, category });
+            });
+        });
+
+        res.json(news); // Retorna as notícias em formato JSON
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        res.status(500).json({ error: 'Failed to fetch news' }); // Retorna um erro 500 em caso de falha
+    }
+});
+
+
+router.get('/oglobo', async (req, res) => {
+    const url = 'https://oglobo.globo.com/';
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        
+        const news = [];
+
+        // Captura as colunas
+        $('.franja-colunistas__item').each((index, element) => {
+            const title = $(element).find('.franja-colunistas__title a').text().trim();
+            const link = $(element).find('.franja-colunistas__title a').attr('href');
+            const author = $(element).find('.franja-colunistas__hat').text().trim();
+
+            news.push({ title, link, author });
+        });
+
+        // Captura as manchetes principais
+        $('.container-sete-destaques__manchete-principal-content').each((index, element) => {
+            const title = $(element).find('.container-sete-destaques__title').text().trim();
+            const link = $(element).find('.container-sete-destaques__url').attr('href');
+            const subtitle = $(element).find('.container-sete-destaques__subtitle').text().trim();
+
+            news.push({ title, link, subtitle });
+        });
+
+        res.json(news); // Retorna as notícias em formato JSON
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        res.status(500).json({ error: 'Failed to fetch news' }); // Retorna um erro 500 em caso de falha
+    }
+});
+
+
+router.get('/metropoles', async (req, res) => {
+    const url = 'https://www.metropoles.com/';
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        
+        const news = [];
+
+        // Seleciona as notícias principais
+        $('.NoticiaWrapper__Article-sc-1vgx9gu-1').each((index, element) => {
+            const title = $(element).find('h4.noticia__titulo a').text().trim();
+            const link = $(element).find('h4.noticia__titulo a').attr('href');
+            const imageUrl = $(element).find('img.bloco-noticia__figure-imagem').attr('src');
+            const category = $(element).find('.noticia__categoria a').text().trim();
+
+            news.push({ title, link, imageUrl, category });
+        });
+
+        // Para as notícias relacionadas (se houver)
+        $('.item-noticiaRelacionada').each((index, element) => {
+            const relatedTitle = $(element).find('h3.eFqcJE a').text().trim();
+            const relatedLink = $(element).find('h3.eFqcJE a').attr('href');
+
+            news.push({ title: relatedTitle, link: relatedLink });
+        });
+
+        res.json(news); // Retorna as notícias em formato JSON
+    } catch (error) {
+        console.error('Error fetching news:', error);
+        res.status(500).json({ error: 'Failed to fetch news' }); // Retorna um erro 500 em caso de falha
+    }
+});
 
 // Rota para obter notícias do Poder360
 router.get('/poder360', async (req, res) => {
