@@ -502,35 +502,48 @@ const AGazeta = () => fetchData('https://www.agazeta.com.br/brasil',
   })
 );
 
-const BBC = () => fetchData('https://www.bbc.com/portuguese', 
-  'script', 
-  ($, e) => {
-    if ($(e).text().includes('window.SIMORGH_DATA=')) {
-      const json = JSON.parse($(e).text().replace('window.SIMORGH_DATA=', ''));
-      const dados = [];
+const BBC = async () => {
+  try {
+    const { data } = await axios.get('https://www.bbc.com/portuguese');
+    const $ = cheerio.load(data);
+    const dados = [];
 
-      json.pageData.content.groups.forEach((group) => {
-        group.items.forEach((item) => {
-          if (!item.headline) return;
-          dados.push({
-            noticia: unescapeHtml(item.headline),
-            imagem: item.image ? item.image.url : '',
-            link: item.url,
-            categoria: item.contentType || '',
-            postado: item.firstPublished || ''
-          });
+    // Selecionando cada item de promoção
+    $('.bbc-jw2yjd').each((index, element) => {
+      const titleElement = $(element).find('.promo-text h3 a');
+      const title = titleElement.text().trim();
+      const link = titleElement.attr('href');
+      const imageUrl = $(element).find('.promo-image img').attr('src');
+
+      // Captura a data de postagem
+      const postedTime = $(element).find('.promo-timestamp').attr('datetime');
+
+      // Adiciona ao array se houver título e link
+      if (title && link) {
+        dados.push({
+          noticia: title,
+          imagem: imageUrl ? `https://www.bbc.com${imageUrl}` : '',
+          link: link.startsWith('http') ? link : `https://www.bbc.com${link}`, // Garantindo que o link seja absoluto
+          postado: postedTime || '',
         });
-      });
+      }
+    });
 
-      return {
-        status: 200,
-        fonte: 'https://www.bbc.com/portuguese',
-        criador: default_criador,
-        resultado: dados
-      };
-    }
+    return {
+      status: 200,
+      fonte: 'https://www.bbc.com/portuguese',
+      criador: 'default_criador', // Coloque o criador correto aqui
+      resultado: dados,
+    };
+  } catch (error) {
+    console.error('Erro ao acessar a BBC:', error);
+    return {
+      status: 500,
+      mensagem: 'Erro ao acessar os dados da BBC.',
+      erro: error.message,
+    };
   }
-);
+};
 const TodaNoticias = () => new Promise((resolve, reject) => {
   Promise.all([G1(), Poder360(), JovemPan(), Uol(), CNNBrasil(), Estadao(), Terra(), Exame(), NoticiasAoMinuto(), VejaAbril(), BBC(), AGazeta()])
     .then((data) => {
