@@ -2472,7 +2472,7 @@ async function ultimasNoticias() {
        link: $$('div[class="m2L3rb eLNT1d"]').find('a').attr('href')
      })
    }
-   resolve({status: 200, autor: '+55 94 9147-2796', resultado: dados2})
+   resolve({status: 200, autor: 'World Ecletix', resultado: dados2})
   })
    .catch(e => {
      reject(e)
@@ -2494,7 +2494,7 @@ async function uptodownsrc(query) {
           link: $(e).find('a').attr('href').split("uptodown.com/")[0]+"uptodown.com/"
         });
       });
-      resolve({status: 200, autor: '+55 94 9147-2796', resultado: dados})
+      resolve({status: 200, autor: 'World Ecletix', resultado: dados})
     })
     .catch(e => {
       reject(e)
@@ -2598,7 +2598,7 @@ async function mercadoLivreSearch(q) {
         }
         if(json.preco && json.imagem && json.link) dados.push(json);
       });
-      resolve({status: res.status, criador: '🔥 WORLD ECLETIX 🔥', resultado: dados})
+      resolve({status: res.status, criador: 'WORLD ECLETIX', resultado: dados})
     })
     .catch(e => {
       reject(e)
@@ -2675,7 +2675,7 @@ async function hentaivid() {
             const random = hasil[Math.floor(Math.random() * hasil.length)]
             resolve({
                 status: data.status,
-                admin: 'wa.me/5582988279194',
+                admin: 'World Ecletix',
                 resultado: random
             })
         })
@@ -2758,7 +2758,7 @@ async function animesBrSearch(q) {
           estrelas: $(e).find('.rating').text().trim()
         });
       });
-      resolve({status: res.status, criador: '+55 94 9147-2796', resultado: dados})
+      resolve({status: res.status, criador: 'Wordl Ecletix', resultado: dados})
     })
     .catch(e => reject(e))
   });
@@ -2892,7 +2892,7 @@ async function iFunny() {
         json.imagem && dados.push(json);
         json2.video && json2.video.toLowerCase().includes("mp4") && dados2.push(json2);
       });
-      resolve({status: res.status, autor: '+55 94 9147-2796', imagens: dados, videos: dados2})
+      resolve({status: res.status, autor: 'World Ecletix', imagens: dados, videos: dados2})
     })
     .catch(e => {
       reject(e)
@@ -2943,7 +2943,7 @@ async function animesGoyabu(q) {
           link: $(e).find('a').attr('href')
         });
       });
-      resolve({status: res.status, criador: '+55 94 9147-2796', resultado: dados})
+      resolve({status: res.status, criador: 'World ecletix', resultado: dados})
     })
     .catch(e => reject(e))
   });
@@ -2967,7 +2967,7 @@ async function animesGoyabu2(url) {
       });
       resolve({
         status: res.status,
-        criador: '+55 94 9147-2796',
+        criador: 'World Ecletix',
         titulo: $('.anime-title > h1').text(),
         imagem: $('.anime-bg2').find('img').attr('data-cfsrc'),
         sinopse: $('.anime-description').text().trim(),
@@ -3039,7 +3039,7 @@ async function gruposZap(url = `https://www.gruposdewhatss.com.br/grupos-de-what
           dados2.push({titulo: dados[i].titulo, imagem: dados[i].imagem, link: $$('a[class="btn btn-success w-100 mt-4 mb-4"]').attr('href')})
         } catch (e) { console.log(e) }
       }
-      resolve({status: res.status, autor: '+55 94 9147-2706', resultado: dados2})
+      resolve({status: res.status, autor: 'World Ecletix', resultado: dados2})
     })
     .catch(e => {
       reject(e)
@@ -3064,7 +3064,7 @@ async function partidoLiberal() {
           link: $(e).find('a:first').attr('href')
         });
       });
-      resolve({status: res.status, autor: '+55 94 9147-2706', resultado: dados})
+      resolve({status: res.status, autor: 'World Ecletix', resultado: dados})
     })
     .catch(e => {
       reject(e)
@@ -3115,7 +3115,7 @@ async function amazonSearch(query) {
           link: 'https://www.amazon.com.br' + $(e).find('a:first').attr('href')
         });
       });
-      resolve({status: res.status, autor: '+55 94 9147-2796', resultado: dados})
+      resolve({status: res.status, autor: 'World Ecletix', resultado: dados})
     })
     .catch(e => {
       reject(e)
@@ -3162,7 +3162,7 @@ const playStoreSearch = (query) => new Promise((resolve, reject) => {
         link: 'https://play.google.com' + $(e).find('a:first').attr('href')
       })
     })
-    resolve({status: res.status, autor: '+55 94 9147-2796', resultado: dados})
+    resolve({status: res.status, autor: 'Wordl Ecletix', resultado: dados})
   })
   .catch(e => reject(e))
 })
@@ -3185,7 +3185,7 @@ const sambaPornoSearch = (q) => new Promise((resolve, reject) => {
         link: 'https://www.sambaporno.com' + $(e).find('a:first').attr('href')
       })
     })
-    resolve({status: res.status, autor: '+55 94 9147-2796', resultado: dados})
+    resolve({status: res.status, autor: 'World Ecletix', resultado: dados})
   })
   .catch(e => {
     reject(e)
