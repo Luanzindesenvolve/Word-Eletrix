@@ -426,12 +426,11 @@ const Uol = () => fetchData('https://www.uol.com.br/',
 );
 
 const CNNBrasil = () => fetchData('https://www.cnnbrasil.com.br/', 
-  'li.new__editorias__list__item', 
+  'li.block__news__item', 
   ($, e) => ({
-    noticia: unescapeHtml($(e).find('a').attr('title')),
-    imagem: $(e).find('img').attr('src'),
-    categoria: $(e).find('span.home__title__label').text(),
-    link: $(e).find('a').attr('href')
+    noticia: unescapeHtml($(e).find('h3.block__news__title').text()), // Extraindo o título da notícia
+    imagem: $(e).find('img.block--manchetes__image').attr('src'), // Extraindo a imagem
+    link: $(e).find('a.block--manchetes__image__encapsulator').attr('href') // Extraindo o link
   })
 );
 
@@ -455,14 +454,20 @@ const Terra = () => fetchData('https://www.terra.com.br/noticias/',
 );
 
 const Exame = () => fetchData('https://exame.com/', 
-  '.cgVWlJ', 
-  ($, e) => ({
-    noticia: unescapeHtml($(e).find('a:first').text()),
-    imagem: $(e).find('noscript > img').attr('src'),
-    postado: $(e).find('.hxwSvx').text()?.split('•')[0]?.trim(),
-    categoria: $(e).find('.giGgyy').text(),
-    link: 'https://exame.com' + $(e).find('a:first').attr('href')
-  })
+  '.swiper-slide.highlight-single-carousel', 
+  ($, e) => {
+    const titulo = unescapeHtml($(e).find('h3').text()); // Extrai o texto do título
+    const imagem = $(e).find('img.object-cover').attr('src'); // Extrai a imagem
+    const link = 'https://exame.com' + $(e).find('a').attr('href'); // Extrai o link
+
+    return {
+      noticia: titulo || 'Título não encontrado', // Se o título não for encontrado
+      imagem: imagem || '', // Se a imagem não for encontrada
+      link: link || '', // Se o link não for encontrado
+      postado: '', // Adicione se houver data de postagem
+      categoria: '' // Adicione se houver categoria
+    };
+  }
 );
 
 const NoticiasAoMinuto = () => fetchData('https://www.noticiasaominuto.com.br/', 
