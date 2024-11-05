@@ -2656,7 +2656,7 @@ router.get('/attp5', (req, res) => {
 
 
 //Photooxy 
-const KEY_FUT = 'live_56c73242d991a238681e22a8866d11'; // Substitua pela sua chave
+const KEY_FUT = 'live_571515d2dc252f3cd644521ba9be2d'; // Substitua pela sua chave
 // Rota para obter a artilharia do Brasileirão
 router.get('/artilheiro', async (req, res) => {
   try {
