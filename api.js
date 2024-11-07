@@ -302,6 +302,7 @@ router.get('/rgb2', (req, res) => {
     res.send(encoder.out.getData());
 });
 
+
 router.get('/rgb3', (req, res) => {
     const texto = req.query.texto || 'Figurinha';
     const largura = 300;
@@ -315,6 +316,7 @@ router.get('/rgb3', (req, res) => {
     encoder.start();
     encoder.setRepeat(0);  // 0 para loop infinito
     encoder.setDelay(delay);
+    encoder.setTransparent(0); // Define a transparência (0 significa cor transparente)
 
     const canvas = createCanvas(largura, altura);
     const ctx = canvas.getContext('2d');
@@ -346,8 +348,8 @@ router.get('/rgb3', (req, res) => {
 
     // Gera cada frame do GIF
     for (let i = 0; i < frames; i++) {
-        // Limpa o canvas para garantir que o fundo seja transparente
-        ctx.clearRect(0, 0, largura, altura);  // Garantir que o fundo é transparente
+        // Limpa o canvas e preserva a transparência
+        ctx.clearRect(0, 0, largura, altura); // Limpa a tela, mantendo a transparência
 
         // Define uma cor aleatória para o texto em cada frame
         const r = Math.floor(Math.random() * 256);
@@ -367,7 +369,7 @@ router.get('/rgb3', (req, res) => {
         const verticalCenter = (altura - totalHeight) / 2 + (totalHeight / 2); // Centraliza corretamente
 
         // Limpa o canvas e desenha o texto centralizado
-        ctx.clearRect(0, 0, largura, altura); // Limpa o frame, garantindo transparência
+        ctx.clearRect(0, 0, largura, altura); // Limpa o frame novamente
         wrapText(ctx, texto, largura / 2, verticalCenter, maxWidth, 60);
 
         // Adiciona o frame ao encoder GIF
