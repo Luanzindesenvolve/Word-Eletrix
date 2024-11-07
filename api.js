@@ -2053,7 +2053,6 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-// Rota para baixar clipe (MP4) baseado no nome do vídeo e enviar como stream
 router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
 
@@ -2067,12 +2066,18 @@ router.get('/clipe', async (req, res) => {
         }
 
         const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
-        if (!videoData.links.mp4 || !videoData.links.mp4['135']) {
+        
+        // Verifica se há algum link MP4 disponível
+        if (!videoData.links.mp4 || Object.keys(videoData.links.mp4).length === 0) {
             console.log('Link de MP4 não encontrado');
             return res.status(404).send('Link de MP4 não encontrado');
         }
 
-        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
+        // Encontra a maior qualidade de vídeo disponível
+        const melhoresQualidades = Object.keys(videoData.links.mp4).map(Number).sort((a, b) => b - a);
+        const melhorQualidade = melhoresQualidades[0];
+        const k = videoData.links.mp4[melhorQualidade].k; // Captura a chave 'k' para a conversão
+
         const downloadLink = await convert(videoData.id, k);
 
         // Adiciona `+` ao final do link e realiza o download do MP4, enviando como stream
