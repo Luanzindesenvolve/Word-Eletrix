@@ -1993,7 +1993,7 @@ async function convert(vid, k) {
         throw new Error('Erro ao converter o vídeo.');
     }
 }
-router.get('/musica', async (req, res) => {
+router.get('/spotify2', async (req, res) => {
     try {
         const { name } = req.query;
 
@@ -2021,7 +2021,7 @@ router.get('/musica', async (req, res) => {
     }
 });
 // Rota para buscar e converter vídeo para MP3 e enviar como stream
-router.get('/musica2', async (req, res) => {
+router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
