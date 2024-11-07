@@ -301,6 +301,7 @@ router.get('/rgb2', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+
 router.get('/rgb3', (req, res) => {
     const texto = req.query.texto || 'Figurinha';
     const largura = 300;
@@ -345,7 +346,8 @@ router.get('/rgb3', (req, res) => {
 
     // Gera cada frame do GIF
     for (let i = 0; i < frames; i++) {
-        // Não definimos cor de fundo aqui, para que o fundo seja transparente
+        // Limpa o canvas para garantir que o fundo seja transparente
+        ctx.clearRect(0, 0, largura, altura);  // Garantir que o fundo é transparente
 
         // Define uma cor aleatória para o texto em cada frame
         const r = Math.floor(Math.random() * 256);
@@ -365,7 +367,7 @@ router.get('/rgb3', (req, res) => {
         const verticalCenter = (altura - totalHeight) / 2 + (totalHeight / 2); // Centraliza corretamente
 
         // Limpa o canvas e desenha o texto centralizado
-        ctx.clearRect(0, 0, largura, altura); // Limpa o frame
+        ctx.clearRect(0, 0, largura, altura); // Limpa o frame, garantindo transparência
         wrapText(ctx, texto, largura / 2, verticalCenter, maxWidth, 60);
 
         // Adiciona o frame ao encoder GIF
@@ -378,6 +380,8 @@ router.get('/rgb3', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+
+
 router.get('/editsfeminina', async (req, res) => {
     // Caminho para o arquivo JSON
     const loliFilePath = path.join(__dirname, 'dados', 'editsfeminina.json');
