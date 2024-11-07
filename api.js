@@ -301,7 +301,83 @@ router.get('/rgb2', (req, res) => {
     res.setHeader('Content-Type', 'image/gif');
     res.send(encoder.out.getData());
 });
+router.get('/rgb3', (req, res) => {
+    const texto = req.query.texto || 'Figurinha';
+    const largura = 300;
+    const altura = 300;
+    const frames = 10;  // Número de frames no GIF
+    const delay = 100;  // Delay entre os frames em ms
+    const maxWidth = largura * 0.8; // Largura máxima para o texto
 
+    // Cria o encoder GIF e define a configuração do GIF
+    const encoder = new GIFEncoder(largura, altura);
+    encoder.start();
+    encoder.setRepeat(0);  // 0 para loop infinito
+    encoder.setDelay(delay);
+
+    const canvas = createCanvas(largura, altura);
+    const ctx = canvas.getContext('2d');
+
+    // Função para dividir o texto em linhas e retornar a altura total do texto
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let totalHeight = 0; // Altura total ocupada pelo texto
+
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = context.measureText(testLine);
+            const testWidth = metrics.width;
+
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+                totalHeight += lineHeight; // Adiciona à altura total
+            } else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+        totalHeight += lineHeight; // Adiciona a última linha à altura total
+        return totalHeight; // Retorna a altura total ocupada pelo texto
+    }
+
+    // Gera cada frame do GIF
+    for (let i = 0; i < frames; i++) {
+        // Não definimos cor de fundo aqui, para que o fundo seja transparente
+
+        // Define uma cor aleatória para o texto em cada frame
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+
+        // Usa a fonte Arial Narrow 7
+        ctx.font = 'bold 50px "Arial Narrow"'; // Fonte ajustada para Arial Narrow 7
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Chama a função para quebrar o texto em linhas e obter a altura total
+        const totalHeight = wrapText(ctx, texto, largura / 2, altura / 2, maxWidth, 60);
+
+        // Recalcula a posição vertical para centralizar
+        const verticalCenter = (altura - totalHeight) / 2 + (totalHeight / 2); // Centraliza corretamente
+
+        // Limpa o canvas e desenha o texto centralizado
+        ctx.clearRect(0, 0, largura, altura); // Limpa o frame
+        wrapText(ctx, texto, largura / 2, verticalCenter, maxWidth, 60);
+
+        // Adiciona o frame ao encoder GIF
+        encoder.addFrame(ctx);
+    }
+
+    encoder.finish();
+
+    // Define o cabeçalho e envia o GIF
+    res.setHeader('Content-Type', 'image/gif');
+    res.send(encoder.out.getData());
+});
 router.get('/editsfeminina', async (req, res) => {
     // Caminho para o arquivo JSON
     const loliFilePath = path.join(__dirname, 'dados', 'editsfeminina.json');
