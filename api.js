@@ -2065,20 +2065,35 @@ router.get('/clipe', async (req, res) => {
             return res.status(404).send('Vídeo não encontrado');
         }
 
+        console.log(`ID do vídeo encontrado: ${videoId}`);
         const videoData = await youtubedl(`https://www.youtube.com/watch?v=${videoId}`);
         
-        // Verifica se há algum link MP4 disponível
-        if (!videoData.links.mp4 || Object.keys(videoData.links.mp4).length === 0) {
-            console.log('Link de MP4 não encontrado');
-            return res.status(404).send('Link de MP4 não encontrado');
+        console.log('Dados do vídeo:', videoData);
+        const mp4Links = videoData.links.mp4;
+
+        // Verifica os links MP4 e tenta encontrar a melhor qualidade com chave 'k'
+        const melhoresQualidades = Object.keys(mp4Links).filter(key => mp4Links[key].k).map(Number).sort((a, b) => b - a);
+        let selectedQuality = melhoresQualidades[0];
+
+        // Caso a melhor qualidade não tenha chave 'k', tenta a segunda melhor ou usa o 'auto'
+        if (!selectedQuality || !mp4Links[selectedQuality].k) {
+            console.log('Melhor qualidade não tem chave "k", tentando a segunda melhor qualidade...');
+            const secondBestQuality = melhoresQualidades[1] || 'auto'; // Se não houver segunda qualidade, vai para "auto"
+            selectedQuality = secondBestQuality;
         }
 
-        // Encontra a maior qualidade de vídeo disponível
-        const melhoresQualidades = Object.keys(videoData.links.mp4).map(Number).sort((a, b) => b - a);
-        const melhorQualidade = melhoresQualidades[0];
-        const k = videoData.links.mp4[melhorQualidade].k; // Captura a chave 'k' para a conversão
+        console.log(`Melhor qualidade selecionada: ${selectedQuality} - k: ${mp4Links[selectedQuality].k}`);
+
+        // Obtém o link de conversão
+        const k = mp4Links[selectedQuality].k;
+        if (!k) {
+            console.log('Chave de conversão não encontrada');
+            return res.status(404).send('Chave de conversão não encontrada');
+        }
 
         const downloadLink = await convert(videoData.id, k);
+
+        console.log('Link de download:', downloadLink);
 
         // Adiciona `+` ao final do link e realiza o download do MP4, enviando como stream
         const response = await got.stream(`${downloadLink}+`);
@@ -2091,22 +2106,48 @@ router.get('/clipe', async (req, res) => {
     }
 });
 
-// Rota para baixar MP3 pelo link (ytmp3) com buffer de download e exibir o link de download
+
+// Rota para baixar MP3 com qualidade automática (melhor disponível) e enviar o arquivo
 router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
 
     try {
         const videoData = await youtubedl(url);
-        if (!videoData.links.mp3 || !videoData.links.mp3['mp3128']) {
+        if (!videoData.links.mp3 || Object.keys(videoData.links.mp3).length === 0) {
             console.log('Link de MP3 não encontrado');
             return res.status(404).send('Link de MP3 não encontrado');
         }
 
-        const k = videoData.links.mp3['mp3128'].k;
+        console.log('Links MP3 encontrados:', videoData.links.mp3);
+        
+        // Verifica os links MP3 e tenta encontrar a melhor qualidade com chave 'k'
+        const melhoresQualidades = Object.keys(videoData.links.mp3).filter(key => videoData.links.mp3[key].k).map(Number).sort((a, b) => b - a);
+        let selectedQuality = melhoresQualidades[0];
+
+        // Caso a melhor qualidade não tenha chave 'k', tenta a segunda melhor ou usa 'auto'
+        if (!selectedQuality || !videoData.links.mp3[selectedQuality].k) {
+            console.log('Melhor qualidade não tem chave "k", tentando a segunda melhor qualidade...');
+            const secondBestQuality = melhoresQualidades[1] || 'auto'; // Se não houver segunda qualidade, vai para "auto"
+            selectedQuality = secondBestQuality;
+        }
+
+        console.log(`Qualidade selecionada: ${selectedQuality} - k: ${videoData.links.mp3[selectedQuality].k}`);
+
+        // Obtém o link de conversão
+        const k = videoData.links.mp3[selectedQuality].k;
+        if (!k) {
+            console.log('Chave de conversão não encontrada');
+            return res.status(404).send('Chave de conversão não encontrada');
+        }
+
         const downloadLink = await convert(videoData.id, k);
 
-        // Retorna o link de download
-        res.send({ downloadLink });
+        console.log('Link de download:', downloadLink);
+
+        // Realiza o download do MP3 e envia como stream
+        const response = await got.stream(`${downloadLink}+`);
+        res.setHeader('Content-Type', 'audio/mp3'); // Ajuste o tipo de conteúdo para MP3
+        response.pipe(res);
 
     } catch (error) {
         console.error('Erro ao baixar MP3:', error);
@@ -2114,28 +2155,54 @@ router.get('/linkmp3', async (req, res) => {
     }
 });
 
-// Rota para baixar MP4 pelo link (ytmp4) com buffer de download e exibir o link de download
+// Rota para baixar MP4 com qualidade automática (melhor disponível)
 router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
 
     try {
         const videoData = await youtubedl(url);
-        if (!videoData.links.mp4 || !videoData.links.mp4['135']) {
+        if (!videoData.links.mp4 || Object.keys(videoData.links.mp4).length === 0) {
             console.log('Link de MP4 não encontrado');
             return res.status(404).send('Link de MP4 não encontrado');
         }
 
-        const k = videoData.links.mp4['135'].k; // Exemplo de 480p
+        console.log('Links MP4 encontrados:', videoData.links.mp4);
+
+        // Verifica os links MP4 e tenta encontrar a melhor qualidade com chave 'k'
+        const melhoresQualidades = Object.keys(videoData.links.mp4).filter(key => videoData.links.mp4[key].k).map(Number).sort((a, b) => b - a);
+        let selectedQuality = melhoresQualidades[0];
+
+        // Caso a melhor qualidade não tenha chave 'k', tenta a segunda melhor ou usa 'auto'
+        if (!selectedQuality || !videoData.links.mp4[selectedQuality].k) {
+            console.log('Melhor qualidade não tem chave "k", tentando a segunda melhor qualidade...');
+            const secondBestQuality = melhoresQualidades[1] || 'auto'; // Se não houver segunda qualidade, vai para "auto"
+            selectedQuality = secondBestQuality;
+        }
+
+        console.log(`Qualidade selecionada: ${selectedQuality} - k: ${videoData.links.mp4[selectedQuality].k}`);
+
+        // Obtém o link de conversão
+        const k = videoData.links.mp4[selectedQuality].k;
+        if (!k) {
+            console.log('Chave de conversão não encontrada');
+            return res.status(404).send('Chave de conversão não encontrada');
+        }
+
         const downloadLink = await convert(videoData.id, k);
 
-        // Retorna o link de download
-        res.send({ downloadLink });
+        console.log('Link de download:', downloadLink);
+
+        // Adiciona `+` ao final do link e realiza o download do MP4, enviando como stream
+        const response = await got.stream(`${downloadLink}+`);
+        res.setHeader('Content-Type', 'video/mp4'); // Ajuste o tipo de conteúdo conforme necessário
+        response.pipe(res);
 
     } catch (error) {
         console.error('Erro ao baixar MP4:', error);
         res.status(500).send('Erro interno do servidor');
     }
 });
+
 //fim 
 // Função auxiliar para obter o buffer da imagem
 async function getBuffer(url) {
