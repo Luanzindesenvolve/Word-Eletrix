@@ -2183,7 +2183,7 @@ router.get('/spotify2', async (req, res) => {
     }
 });
 // Rota para buscar e converter vídeo para MP3 e enviar como stream
-router.get('/musica', async (req, res) => {
+router.get('/musica2', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
@@ -2215,7 +2215,7 @@ router.get('/musica', async (req, res) => {
     }
 });
 
-router.get('/clipe', async (req, res) => {
+router.get('/clipe2', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do clipe: ${videoName}`);
