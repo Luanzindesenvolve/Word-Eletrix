@@ -131,56 +131,38 @@ const {
   audiodl
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
-// Função para buscar o arquivo e retornar como buffer
-async function fetchFileBuffer(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Falha ao baixar o arquivo');
-  }
-  return await response.buffer();  // Retorna o conteúdo como buffer
-}
-
 // Rota para baixar áudio
-router.get('/musica2', async (req, res) => {
-  const { url } = req.query;
+router.get('/linkmp3', async (req, res) => {
+  const { url } = req.query;  // Obtém o URL da query string
 
   if (!url) {
     return res.status(400).json({ error: 'URL do vídeo é necessária' });
   }
 
   try {
-    const audioUrl = await audiodl(url);  // Obtém a URL do áudio
-    const audioBuffer = await fetchFileBuffer(audioUrl);  // Obtém o áudio como buffer
-    
-    // Envia o arquivo como resposta com o tipo de conteúdo correto
-    res.setHeader('Content-Type', 'audio/mp3');  // Ajuste o tipo de mídia conforme necessário
-    res.setHeader('Content-Disposition', 'attachment; filename="audio.mp3"');  // Nome do arquivo
-    res.send(audioBuffer);  // Envia o buffer do áudio
+    const audioUrl = await audiodl(url);  // Chama a função audiodl para obter o áudio
+    res.redirect(audioUrl);  // Redireciona para a URL de download do áudio
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // Rota para baixar vídeo
-router.get('/clipe2', async (req, res) => {
-  const { url } = req.query;
+router.get('/linkmp4', async (req, res) => {
+  const { url } = req.query;  // Obtém o URL da query string
 
   if (!url) {
     return res.status(400).json({ error: 'URL do vídeo é necessária' });
   }
 
   try {
-    const videoUrl = await videodl(url);  // Obtém a URL do vídeo
-    const videoBuffer = await fetchFileBuffer(videoUrl);  // Obtém o vídeo como buffer
-    
-    // Envia o vídeo como resposta com o tipo de conteúdo correto
-    res.setHeader('Content-Type', 'video/mp4');  // Ajuste o tipo de mídia conforme necessário
-    res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');  // Nome do arquivo
-    res.send(videoBuffer);  // Envia o buffer do vídeo
+    const videoUrl = await videodl(url);  // Chama a função videodl para obter o vídeo
+    res.redirect(videoUrl);  // Redireciona para a URL de download do vídeo
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Rota para retornar notícias esportivas
 router.get('/genoticias', async (req, res) => {
@@ -2244,7 +2226,7 @@ router.get('/clipe', async (req, res) => {
 
 
 // Rota para baixar MP3 com qualidade automática (melhor disponível) e enviar o arquivo
-router.get('/linkmp3', async (req, res) => {
+router.get('/linkmp33', async (req, res) => {
     const url = req.query.url;
 
     try {
@@ -2292,7 +2274,7 @@ router.get('/linkmp3', async (req, res) => {
 });
 
 // Rota para baixar MP4 com qualidade automática (melhor disponível)
-router.get('/linkmp4', async (req, res) => {
+router.get('/linkmp44', async (req, res) => {
     const url = req.query.url;
 
     try {
@@ -4689,7 +4671,7 @@ router.get('/pin/video', (req, res) => {
 
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
-const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu1K6pI3Dez2mpyEWTTn2C8sxijrB9ABzmivE6cWIslR4Q9JXHvnx5AjbsjuqDrPC/aeCfvZp7idmaXbpx+v93rHqAA8gsxhBCuthhlFSidDkj2PygEfTtYXWbx9WkLGBn5JXwQ2acKoyjrT4xo/tPQNRWlUTmKTiE+2P/GXG4N0JuWfG3KBIR3G3KevEUOgwlf7WK5c5H6gAPKaft+kwoMLJ+OwJ3Vuo2yqar46pEOcFXpY6dRqA2KEKqf/BuztlNDJJamEm2pCRUl6d0G64JULMhfb/PSofMpZk/gz1uuuI+Y6R9b3gG6vQMC5ifjzLT8Csn3IabQH0fCXLeTFUvIY=');
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu7zJ2YwFlK0GfsszUSHAll/YCcHCiX6Yy7NBjAdRawX6+d+3GkC0Wj6UmIPNJyK9O7i+fvObWGp0rpW2ylbGfudVSQxytS0JJigyd4v+xR9ZAfhFrtkxYjIOvMZ53MYd3AtbX/XaJqMpQLVVSE4cQuY7if6jJjbH/GPJjhqSZ6iZf0n3HMDQ03tBeBfq2cBLIYEh8c9mHs7X+nVfWzq7cY351sc+iul+hy2O7QUomKPFwgcIlhP4gxRWgiZ0zCaO7djithV5maTS0+J7ak6ii98rQpzIjYYnl2vWN5fptJHgLrcH0LQsAb3j279JvJo/PvH6Mgj0rKd9vsuUel3T4To=');
 const grupoChatId = -1002208588695;
 
 const rl = readline.createInterface({
