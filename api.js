@@ -133,7 +133,7 @@ const {
 
 // Função para buscar o vídeo pelo nome usando yt-search
 async function searchVideoByName(name) {
-  const result = await yt(name);  // Busca o vídeo pelo nome
+  const result = await search(name);  // Busca o vídeo pelo nome
   if (result && result.videos.length > 0) {
     return result.videos[0].url;  // Retorna a URL do primeiro vídeo encontrado
   }
