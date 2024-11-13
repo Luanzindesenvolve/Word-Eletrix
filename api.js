@@ -131,17 +131,31 @@ const {
   audiodl
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
+// Função para buscar o arquivo e retornar como buffer
+async function fetchFileBuffer(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error('Falha ao baixar o arquivo');
+  }
+  return await response.buffer();  // Retorna o conteúdo como buffer
+}
+
 // Rota para baixar áudio
 router.get('/musica2', async (req, res) => {
-  const { url } = req.query;  // Obtém o URL da query string
+  const { url } = req.query;
 
   if (!url) {
     return res.status(400).json({ error: 'URL do vídeo é necessária' });
   }
 
   try {
-    const audioUrl = await audiodl(url);  // Chama a função audiodl para obter o áudio
-    res.json({ download_url: audioUrl });  // Retorna a URL de download
+    const audioUrl = await audiodl(url);  // Obtém a URL do áudio
+    const audioBuffer = await fetchFileBuffer(audioUrl);  // Obtém o áudio como buffer
+    
+    // Envia o arquivo como resposta com o tipo de conteúdo correto
+    res.setHeader('Content-Type', 'audio/mp3');  // Ajuste o tipo de mídia conforme necessário
+    res.setHeader('Content-Disposition', 'attachment; filename="audio.mp3"');  // Nome do arquivo
+    res.send(audioBuffer);  // Envia o buffer do áudio
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -149,15 +163,20 @@ router.get('/musica2', async (req, res) => {
 
 // Rota para baixar vídeo
 router.get('/clipe2', async (req, res) => {
-  const { url } = req.query;  // Obtém o URL da query string
+  const { url } = req.query;
 
   if (!url) {
     return res.status(400).json({ error: 'URL do vídeo é necessária' });
   }
 
   try {
-    const videoUrl = await videodl(url);  // Chama a função videodl para obter o vídeo
-    res.json({ download_url: videoUrl });  // Retorna a URL de download
+    const videoUrl = await videodl(url);  // Obtém a URL do vídeo
+    const videoBuffer = await fetchFileBuffer(videoUrl);  // Obtém o vídeo como buffer
+    
+    // Envia o vídeo como resposta com o tipo de conteúdo correto
+    res.setHeader('Content-Type', 'video/mp4');  // Ajuste o tipo de mídia conforme necessário
+    res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');  // Nome do arquivo
+    res.send(videoBuffer);  // Envia o buffer do vídeo
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
