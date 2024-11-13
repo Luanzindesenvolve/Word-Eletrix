@@ -131,6 +131,50 @@ const {
   audiodl
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
+// Função para buscar o vídeo pelo nome usando yt-search
+async function searchVideoByName(name) {
+  const result = await yt(name);  // Busca o vídeo pelo nome
+  if (result && result.videos.length > 0) {
+    return result.videos[0].url;  // Retorna a URL do primeiro vídeo encontrado
+  }
+  throw new Error('Vídeo não encontrado');
+}
+
+// Rota para buscar e baixar áudio
+router.get('/musica', async (req, res) => {
+  const { name } = req.query;  // Obtém o nome da música da query string
+
+  if (!name) {
+    return res.status(400).json({ error: 'Nome da música é necessário' });
+  }
+
+  try {
+    const videoUrl = await searchVideoByName(name);  // Busca o vídeo pelo nome
+    const audioUrl = await audiodl(videoUrl);  // Obtém a URL do áudio
+    res.redirect(audioUrl);  // Redireciona para a URL de download do áudio
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para buscar e baixar vídeo
+router.get('/clipe', async (req, res) => {
+  const { name } = req.query;  // Obtém o nome do vídeo da query string
+
+  if (!name) {
+    return res.status(400).json({ error: 'Nome do vídeo é necessário' });
+  }
+
+  try {
+    const videoUrl = await searchVideoByName(name);  // Busca o vídeo pelo nome
+    const videoDownloadUrl = await videodl(videoUrl);  // Obtém a URL do vídeo
+    res.redirect(videoDownloadUrl);  // Redireciona para a URL de download do vídeo
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // Rota para baixar áudio
 router.get('/linkmp3', async (req, res) => {
   const { url } = req.query;  // Obtém o URL da query string
