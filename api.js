@@ -126,8 +126,43 @@ const {
   fetchSaoPauloNews,
   buscarNoticiasSantos,
   buscarNoticiasFluminense,
-  buscarNoticiasFlamengo
+  buscarNoticiasFlamengo,
+  videodl,
+  audiodl
 } = require('./config.js'); // arquivo que ele puxa as funções 
+
+// Rota para baixar áudio
+router.get('/musica2', async (req, res) => {
+  const { url } = req.query;  // Obtém o URL da query string
+
+  if (!url) {
+    return res.status(400).json({ error: 'URL do vídeo é necessária' });
+  }
+
+  try {
+    const audioUrl = await audiodl(url);  // Chama a função audiodl para obter o áudio
+    res.json({ download_url: audioUrl });  // Retorna a URL de download
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Rota para baixar vídeo
+router.get('/clipe2', async (req, res) => {
+  const { url } = req.query;  // Obtém o URL da query string
+
+  if (!url) {
+    return res.status(400).json({ error: 'URL do vídeo é necessária' });
+  }
+
+  try {
+    const videoUrl = await videodl(url);  // Chama a função videodl para obter o vídeo
+    res.json({ download_url: videoUrl });  // Retorna a URL de download
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Rota para retornar notícias esportivas
 router.get('/genoticias', async (req, res) => {
   const termo = req.query.termo || ''; // parâmetro opcional para definir o tipo de notícia
