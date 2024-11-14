@@ -207,7 +207,340 @@ router.get('/linkmp4', async (req, res) => {
   }
 });
 
+//inteligência artificial 
 
+
+router.get('/geminipro', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da URL
+  
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/geminiaipro?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/gpt', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+  
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+
+router.get('/gpt3.5-turbo', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt-turbo?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+
+
+router.get('/gpt4', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/gpt4v2', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4v2?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/gpt4-o', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4-o?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+
+router.get('/llama', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/blackbox', async (req, res) => {
+  const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+  if (!texto) {
+    return res.status(400).json({ erro: 'O parâmetro "texto" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/lumin', async (req, res) => {
+  const { query } = req.query; // Captura o parâmetro 'query' da query string
+
+  if (!query) {
+    return res.status(400).json({ erro: 'O parâmetro "query" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/luminai?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/simsimi', async (req, res) => {
+  const { query } = req.query; // Captura o parâmetro 'query' da query string
+
+  if (!query) {
+    return res.status(400).json({ erro: 'O parâmetro "query" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/simsimi?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/letmegpt', async (req, res) => {
+  const { query } = req.query; // Captura o parâmetro 'query' da query string
+
+  if (!query) {
+    return res.status(400).json({ erro: 'O parâmetro "query" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/wwdgpt', async (req, res) => {
+  const { prompt } = req.query; // Captura o parâmetro 'prompt' da query string
+
+  if (!prompt) {
+    return res.status(400).json({ erro: 'O parâmetro "prompt" é obrigatório' });
+  }
+
+  try {
+    const apiUrl = `https://api.giftedtech.my.id/api/ai/wwdgpt?apikey=gifted&prompt=${encodeURIComponent(prompt)}`;
+    const { data } = await axios.get(apiUrl);
+
+    if (data && data.result) {
+      res.json({ resposta: data.result });
+    } else {
+      res.status(500).json({ erro: 'Resposta inválida da API' });
+    }
+  } catch (error) {
+    res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
+  }
+});
+
+router.get('/imagine', async (req, res) => {
+    const { texto } = req.query; // Captura o parâmetro 'texto' da query string
+
+    if (!texto) {
+        return res.status(400).json({ error: 'Texto é obrigatório.' });
+    }
+
+    try {
+        const response = await axios.get(
+            `https://api.giftedtech.my.id/api/ai/text2img?apikey=gifted&prompt=${encodeURIComponent(texto)}`,
+            { responseType: 'arraybuffer' } // Para obter a imagem como buffer
+        );
+
+        // Cria um nome para o arquivo e o caminho
+        const fileName = `imagem-${Date.now()}.png`;
+        const filePath = path.join(__dirname, fileName);
+
+        // Salva a imagem no servidor
+        fs.writeFileSync(filePath, response.data);
+
+        // Envia a imagem para o usuário
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.error('Erro ao enviar a imagem:', err);
+                res.status(500).json({ error: 'Erro ao enviar a imagem' });
+            }
+
+            // Remove a imagem do servidor após o envio
+            fs.unlinkSync(filePath);
+        });
+    } catch (error) {
+        console.error('Erro ao chamar a API:', error.message);
+        res.status(500).json({ error: 'Erro ao gerar a imagem' });
+    }
+});
+
+router.get('/sd', async (req, res) => {
+    const { prompt } = req.query; // Captura o parâmetro 'prompt' da query string
+
+    if (!prompt) {
+        return res.status(400).json({ error: 'Prompt é obrigatório.' });
+    }
+
+    try {
+        const response = await axios.get(
+            `https://api.giftedtech.my.id/api/ai/sd?apikey=gifted&prompt=${encodeURIComponent(prompt)}`,
+            { responseType: 'arraybuffer' } // Para obter a imagem como buffer
+        );
+
+        // Cria um nome para o arquivo e o caminho
+        const fileName = `imagem-${Date.now()}.png`;
+        const filePath = path.join(__dirname, fileName);
+
+        // Salva a imagem no servidor
+        fs.writeFileSync(filePath, response.data);
+
+        // Envia a imagem para o usuário
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.error('Erro ao enviar a imagem:', err);
+                res.status(500).json({ error: 'Erro ao enviar a imagem' });
+            }
+
+            // Remove a imagem do servidor após o envio
+            fs.unlinkSync(filePath);
+        });
+    } catch (error) {
+        console.error('Erro ao chamar a API:', error.message);
+        res.status(500).json({ error: 'Erro ao gerar a imagem' });
+    }
+});
+
+
+
+//fim
 // Rota para retornar notícias esportivas
 router.get('/genoticias', async (req, res) => {
   const termo = req.query.termo || ''; // parâmetro opcional para definir o tipo de notícia
