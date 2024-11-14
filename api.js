@@ -6212,10 +6212,9 @@ router.get('/pesquisayt', async (req, res) => {
 });
 
 //ytmp3 pela ulr
-
 // Endpoint para baixar áudio a partir de uma URL
 router.get('/ytmp3', async (req, res) => {
-    const { query } = req; // A URL da música será passada como parâmetro de consulta
+    const { query } = req;
     const audioUrl = query.url; // Exemplo: /ytmp3?url=https://youtu.be/nome_do_audio
 
     if (!audioUrl) {
@@ -6223,20 +6222,16 @@ router.get('/ytmp3', async (req, res) => {
     }
 
     try {
-        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=${encodeURIComponent(audioUrl)}`;
-        
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytaudio?apikey=gifted&url=${encodeURIComponent(audioUrl)}`;
+
         // Requisição à API para baixar o áudio
         const response = await axios.get(apiUrl);
 
-        if (response.data.status) {
-            const audioDownloadUrl = response.data.data.audio; // URL do áudio
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
 
-            // Retornar a URL do áudio e outras informações
-            return res.json({
-                title: response.data.data.title,
-                audioUrl: audioDownloadUrl,
-                thumb: response.data.data.thumb,
-            });
+            // Redirecionar para o link de download do áudio
+            return res.redirect(downloadUrl);
         } else {
             return res.status(500).json({ error: 'Erro ao baixar o áudio' });
         }
@@ -6245,11 +6240,10 @@ router.get('/ytmp3', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
 });
-//ytmp4 pela ulr vídeo
 
 // Endpoint para baixar vídeo a partir de uma URL
 router.get('/ytmp4', async (req, res) => {
-    const { query } = req; // A URL da música será passada como parâmetro de consulta
+    const { query } = req;
     const videoUrl = query.url; // Exemplo: /ytmp4?url=https://youtu.be/nome_do_video
 
     if (!videoUrl) {
@@ -6257,22 +6251,16 @@ router.get('/ytmp4', async (req, res) => {
     }
 
     try {
-        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=${encodeURIComponent(videoUrl)}`;
-        
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytvideo?apikey=gifted&url=${encodeURIComponent(videoUrl)}`;
+
         // Requisição à API para baixar o vídeo
         const response = await axios.get(apiUrl);
 
-        if (response.data.status) {
-            const videoDownloadUrl = response.data.data.video; // URL do vídeo
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
 
-            // Retornar a URL do vídeo e outras informações
-            return res.json({
-                title: response.data.data.title,
-                videoUrl: videoDownloadUrl,
-                thumb: response.data.data.thumb,
-                quality: response.data.data.quality,
-                desc: response.data.data.desc,
-            });
+            // Redirecionar para o link de download do vídeo
+            return res.redirect(downloadUrl);
         } else {
             return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
         }
@@ -6281,12 +6269,12 @@ router.get('/ytmp4', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao processar a solicitação' });
     }
 });
-//play
 
-// Endpoint para pesquisar e baixar áudio
+//play para baixar musica pelo nome
+
 router.get('/play', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
-    const musicName = query.nome; // Exemplo: /download?name=nome_da_musica
+    const musicName = query.nome; // Exemplo: /play?nome=nome_da_musica
 
     if (!musicName) {
         return res.status(400).json({ error: 'Nome da música é obrigatório' });
@@ -6302,20 +6290,16 @@ router.get('/play', async (req, res) => {
 
         // Pegar o primeiro vídeo da lista de resultados
         const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
-        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=https://youtu.be/${videoId}`;
-        
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytaudio?apikey=gifted&url=https://youtu.be/${videoId}`;
+
         // Requisição à API para baixar o áudio
         const response = await axios.get(apiUrl);
 
-        if (response.data.status) {
-            const audioUrl = response.data.data.audio; // URL do áudio
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
 
-            // Retornar a URL do áudio e outras informações
-            return res.json({
-                title: response.data.data.title,
-                audioUrl: audioUrl,
-                thumb: response.data.data.thumb,
-            });
+            // Redirecionar para o link de download
+            return res.redirect(downloadUrl);
         } else {
             return res.status(500).json({ error: 'Erro ao baixar a música' });
         }
@@ -6325,8 +6309,7 @@ router.get('/play', async (req, res) => {
     }
 });
 
-
-// Endpoint para pesquisar e baixar vídeo
+//rota para baixar video pelo nome
 router.get('/playvideo', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
     const musicName = query.nome; // Exemplo: /playvideo?nome=nome_da_musica
@@ -6345,22 +6328,16 @@ router.get('/playvideo', async (req, res) => {
 
         // Pegar o primeiro vídeo da lista de resultados
         const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
-        const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/ytv?url=https://youtu.be/${videoId}`;
-        
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytvideo?apikey=gifted&url=https://youtu.be/${videoId}`;
+
         // Requisição à API para baixar o vídeo
         const response = await axios.get(apiUrl);
 
-        if (response.data.status) {
-            const videoUrl = response.data.data.video; // URL do vídeo
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
 
-            // Retornar a URL do vídeo e outras informações
-            return res.json({
-                title: response.data.data.title,
-                videoUrl: videoUrl,
-                thumb: response.data.data.thumb,
-                quality: response.data.data.quality,
-                desc: response.data.data.desc,
-            });
+            // Redirecionar para o link de download
+            return res.redirect(downloadUrl);
         } else {
             return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
         }
