@@ -5365,10 +5365,9 @@ router.get('/hentai', async (req, res) => {
   }
 });
 
-// Rota para twitter
-router.post('/twitter', async (req, res) => {
+router.get('/twitter', async (req, res) => {
   try {
-    const link = req.body.link;
+    const link = req.query.link;
     if (!link) return res.status(400).send({ error: 'Link é necessário' });
     const result = await twitter(link);
     res.json(result);
