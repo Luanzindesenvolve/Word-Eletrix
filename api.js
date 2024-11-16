@@ -274,7 +274,34 @@ router.get('/gpt3.5-turbo', async (req, res) => {
   }
 });
 
+// Rota GET para buscar produtos do Mercado Livre
+router.get('/mercadolivre', async (req, res) => {
+  try {
+    const { q, category } = req.query; // 'q' é o termo de busca e 'category' é opcional
+    if (!q) {
+      return res.status(400).json({ error: 'O parâmetro "q" é obrigatório para buscar produtos.' });
+    }
 
+    // URL de busca da API do Mercado Livre
+    const url = 'https://api.mercadolibre.com/sites/MLB/search';
+
+    // Realizando a requisição para a API do Mercado Livre
+    const response = await axios.get(url, {
+      params: {
+        q: q,              // Termo de busca
+        category: category || undefined, // Categoria opcional
+      },
+    });
+
+    // Retorna os produtos encontrados
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar produtos no Mercado Livre' });
+  }
+});
+
+// Criando o app e usando o Router
 
 router.get('/gpt4', async (req, res) => {
   const { texto } = req.query; // Captura o parâmetro 'texto' da query string
