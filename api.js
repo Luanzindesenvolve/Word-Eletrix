@@ -318,6 +318,29 @@ router.get('/gpt4v2', async (req, res) => {
   }
 });
 
+
+// Rota GET para buscar dados da NASA
+router.get('/nasa', async (req, res) => {
+  try {
+    const { date } = req.query; // opcional, formato YYYY-MM-DD
+    const NASA_API_KEY = 'uZvH3nheGNcV59ZqWt6CwyiDPqWtL6R7fl3tFkbH';  // Coloque sua chave diretamente aqui
+
+    const response = await axios.get('https://api.nasa.gov/planetary/apod', {
+      params: {
+        api_key: NASA_API_KEY, // A chave da API está diretamente no código
+        date: date || undefined, // Inclui a data apenas se fornecida
+      },
+    });
+
+    // Retorna os dados recebidos da API da NASA
+    res.status(200).json(response.data);
+  } catch (error) {
+    console.error('Erro ao buscar dados da NASA:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar dados da NASA' });
+  }
+});
+
+
 router.get('/gpt4-o', async (req, res) => {
   const { texto } = req.query; // Captura o parâmetro 'texto' da query string
 
