@@ -348,48 +348,54 @@ router.get('/bing', async (req, res) => {
   }
 });
 
-// Rota GET para buscar ficha técnica de um celular
 router.get('/celular', async (req, res) => {
   try {
-    const { celular } = req.query; // Nome ou modelo do celular, por exemplo, "iPhone 12"
-    if (!celular) {
-      return res.status(400).json({ error: 'O parâmetro "celular" é obrigatório.' });
+    const { modelo } = req.query;
+    if (!modelo) {
+      return res.status(400).json({ error: 'O parâmetro "modelo" é obrigatório.' });
     }
 
-    // URL de busca no GSMArena (pesquisa por celular)
-    const searchUrl = `https://www.gsmarena.com/results.php3?sSearch=${encodeURIComponent(celular)}`;
+    const searchUrl = `https://www.tudocelular.com/?sName=${encodeURIComponent(modelo)}`;
 
-    // Realizando a requisição para buscar o celular no GSMArena
-    const searchResponse = await axios.get(searchUrl);
-    const $search = cheerio.load(searchResponse.data);
-    
-    // Pegando o link do primeiro celular encontrado
-    const firstResultLink = $search('.makers a').attr('href');
-    if (!firstResultLink) {
-      return res.status(404).json({ error: 'Celular não encontrado.' });
+    const response = await axios.get(searchUrl);
+    const $ = cheerio.load(response.data);
+
+    const firstPhoneLink = $('li a.item_movil').attr('href');
+    if (!firstPhoneLink) {
+      return res.status(404).json({ error: 'Celular não encontrado na busca.' });
     }
 
-    // Pegando a URL do celular
-    const phoneUrl = `https://www.gsmarena.com${firstResultLink}`;
+    const redirectResponse = await axios.get(firstPhoneLink, { maxRedirects: 5 });
+    const finalUrl = redirectResponse.request.res.responseUrl;
 
-    // Buscando os detalhes do celular na página do produto
-    const phoneResponse = await axios.get(phoneUrl);
-    const $phone = cheerio.load(phoneResponse.data);
+    const phoneResponse = await axios.get(finalUrl);
+    const $$ = cheerio.load(phoneResponse.data);
 
-    // Extraindo dados da ficha técnica
+    // Captura do nome do celular
+    const name = $$('h1').text().trim() || 'Nome não encontrado';
+
+    // Estrutura inicial para armazenar as especificações
     const phoneDetails = {
-      name: $phone('h1').text().trim(),
-      specs: []
+      name: name,
+      url: finalUrl,
+      specs: {}
     };
 
-    // Extraindo as especificações da ficha técnica
-    $phone('.specs-list li').each((i, el) => {
-      const specTitle = $phone(el).find('.ttl').text().trim();
-      const specValue = $phone(el).find('.nfo').text().trim();
-      phoneDetails.specs.push({ title: specTitle, value: specValue });
+    // Localizando os títulos das seções e os valores correspondentes
+    $$('div#phone_columns .phone_column').each((index, element) => {
+      const sectionTitles = $$('div#controles_titles .phone_column_features li').map((i, el) => $$(el).text().trim()).get();
+      const sectionValues = $$(element).find('.phone_column_features').map((i, el) => {
+        return $$(el).find('li').map((j, li) => $$(li).text().trim()).get();
+      }).get();
+
+      // Mapeando títulos com os valores
+      sectionTitles.forEach((title, i) => {
+        if (title && sectionValues[i]) {
+          phoneDetails.specs[title] = sectionValues[i];
+        }
+      });
     });
 
-    // Retornando as informações da ficha técnica
     res.status(200).json(phoneDetails);
   } catch (error) {
     console.error('Erro ao buscar ficha técnica:', error.message);
