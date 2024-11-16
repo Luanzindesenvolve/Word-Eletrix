@@ -5912,7 +5912,7 @@ router.get('/y2mate', async (req, res) => {
 });
 
 
-router.get('/mercadolivre', async (req, res) => {
+router.get('/mercadolivre2', async (req, res) => {
   const { query } = req.query;
   try {
     const resultado = await mercadoLivreSearch(query);
