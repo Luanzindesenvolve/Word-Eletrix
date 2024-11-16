@@ -274,6 +274,80 @@ router.get('/gpt3.5-turbo', async (req, res) => {
   }
 });
 
+// Rota GET para buscar resultados do Google (Raspagem)
+router.get('/raspar-google', async (req, res) => {
+  try {
+    const { query } = req.query;  // O termo de pesquisa
+    if (!query) {
+      return res.status(400).json({ error: 'O parâmetro "query" é obrigatório para buscar.' });
+    }
+
+    // URL do Google de busca
+    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+
+    // Realizando a requisição para a página de resultados do Google
+    const response = await axios.get(googleUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      },
+    });
+
+    // Usando cheerio para analisar a página HTML
+    const $ = cheerio.load(response.data);
+
+    // Extrair os links dos resultados
+    const results = [];
+    $('h3').each((index, element) => {
+      const title = $(element).text();
+      const link = $(element).parent().attr('href');
+      results.push({ title, link });
+    });
+
+    // Retornando os resultados
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Erro ao raspar conteúdo do Google:', error.message);
+    res.status(500).json({ error: 'Erro ao raspar conteúdo do Google' });
+  }
+});
+
+// Rota GET para buscar resultados do Bing (Raspagem)
+router.get('/bing', async (req, res) => {
+  try {
+    const { query } = req.query;  // O termo de pesquisa
+    if (!query) {
+      return res.status(400).json({ error: 'O parâmetro "query" é obrigatório para buscar.' });
+    }
+
+    // URL do Bing de busca
+    const bingUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+
+    // Realizando a requisição para a página de resultados do Bing
+    const response = await axios.get(bingUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      },
+    });
+
+    // Usando cheerio para analisar a página HTML
+    const $ = cheerio.load(response.data);
+
+    // Extrair os links dos resultados
+    const results = [];
+    $('.b_algo h2').each((index, element) => {
+      const title = $(element).text();
+      const link = $(element).parent().attr('href');
+      results.push({ title, link });
+    });
+
+    // Retornando os resultados
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Erro ao raspar conteúdo do Bing:', error.message);
+    res.status(500).json({ error: 'Erro ao raspar conteúdo do Bing' });
+  }
+});
+
 // Rota GET para buscar ficha técnica de um celular
 router.get('/celular', async (req, res) => {
   try {
