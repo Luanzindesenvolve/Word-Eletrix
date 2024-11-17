@@ -376,129 +376,149 @@ router.get('/ufc', async (req, res) => {
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
+
 router.get('/basquete', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/basquete-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
+
+
 router.get('/nfl', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/nfl-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
-router.get('/ucl', async (req, res) => {
+
+ router.get('/ucl', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/champions-league-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
-});
+});   
+
 router.get('/brasileirao', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/brasileiro-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
@@ -511,27 +531,31 @@ router.get('/tv', async (req, res) => {
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
+
 router.get('/esportedodia', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/esportes-ao-vivo/';
@@ -559,60 +583,38 @@ router.get('/esportedodia', async (req, res) => {
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
-router.get('/ufc', async (req, res) => {
-  try {
-    const siteUrl = 'https://multicanais.ninja/assistir/ufc-ao-vivo/';
-    const { data } = await axios.get(siteUrl);
 
-    const $ = cheerio.load(data);
-
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
-
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
-    } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
-    }
-  } catch (error) {
-    console.error('Erro ao fazer o scraping:', error.message);
-    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
-  }
-});
 router.get('/futebol', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/futebol-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
+    const events = [];
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Itera por cada elemento que representa um evento
+    $('.entry-image').each((index, element) => {
+      const entry = $(element).find('a');
+      const title = entry.attr('title');
+      const link = entry.attr('href');
+      const image = entry.find('img').attr('src');
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+      if (title && link && image) {
+        events.push({ title, link, image });
+      }
+    });
+
+    if (events.length > 0) {
+      res.json(events);
     } else {
-      res.status(404).json({ error: 'Informações não encontradas.' });
+      res.status(404).json({ error: 'Nenhum evento encontrado.' });
     }
   } catch (error) {
     console.error('Erro ao fazer o scraping:', error.message);
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
+
 router.get('/celular', async (req, res) => {
   try {
     const { modelo } = req.query;
