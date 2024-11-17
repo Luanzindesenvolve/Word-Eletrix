@@ -275,7 +275,7 @@ router.get('/gpt3.5-turbo', async (req, res) => {
 });
 
 // Rota GET para buscar resultados do Google (Raspagem)
-router.get('/raspar-google', async (req, res) => {
+router.get('/google', async (req, res) => {
   try {
     const { query } = req.query;  // O termo de pesquisa
     if (!query) {
@@ -347,7 +347,28 @@ router.get('/bing', async (req, res) => {
     res.status(500).json({ error: 'Erro ao raspar conteúdo do Bing' });
   }
 });
+router.get('/jogosdodia', async (req, res) => {
+  try {
+    const { data } = await axios.get('https://multicanais.ninja/');
+    const $ = cheerio.load(data);
+    const jogos = [];
 
+    $('.entry-image a').each((index, element) => {
+      const link = $(element).attr('href');
+      const titulo = $(element).attr('title');
+      const img = $(element).find('img').attr('src');
+
+      if (link && titulo && img) {
+        jogos.push({ Título: titulo, Img: img, Link: link });
+      }
+    });
+
+    res.json(jogos);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao processar a solicitação.');
+  }
+});
 router.get('/celular', async (req, res) => {
   try {
     const { modelo } = req.query;
