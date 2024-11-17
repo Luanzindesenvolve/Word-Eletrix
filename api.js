@@ -310,11 +310,9 @@ router.get('/google', async (req, res) => {
     res.status(500).json({ error: 'Erro ao raspar conteúdo do Google' });
   }
 });
-
-// Rota GET para buscar resultados do Bing (Raspagem)
 router.get('/bing', async (req, res) => {
   try {
-    const { query } = req.query;  // O termo de pesquisa
+    const { query } = req.query; // O termo de pesquisa
     if (!query) {
       return res.status(400).json({ error: 'O parâmetro "query" é obrigatório para buscar.' });
     }
@@ -332,12 +330,14 @@ router.get('/bing', async (req, res) => {
     // Usando cheerio para analisar a página HTML
     const $ = cheerio.load(response.data);
 
-    // Extrair os links dos resultados
+    // Extrair os links e títulos dos resultados
     const results = [];
-    $('.b_algo h2').each((index, element) => {
-      const title = $(element).text();
-      const link = $(element).parent().attr('href');
-      results.push({ title, link });
+    $('.b_algo').each((index, element) => {
+      const title = $(element).find('h2').text();
+      const link = $(element).find('h2 a').attr('href');
+      if (title && link) {
+        results.push({ title, link });
+      }
     });
 
     // Retornando os resultados
