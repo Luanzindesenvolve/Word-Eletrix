@@ -369,6 +369,250 @@ router.get('/jogosdodia', async (req, res) => {
     res.status(500).send('Erro ao processar a solicitação.');
   }
 });
+
+router.get('/ufc', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/ufc-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/basquete', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/basquete-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/nfl', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/nfl-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/ucl', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/champions-league-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/brasileirao', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/brasileiro-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/tv', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/tv-online/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/esportedodia', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/esportes-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/ufc', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/ufc-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
+router.get('/futebol', async (req, res) => {
+  try {
+    const siteUrl = 'https://multicanais.ninja/assistir/futebol-ao-vivo/';
+    const { data } = await axios.get(siteUrl);
+
+    const $ = cheerio.load(data);
+
+    // Seleciona o elemento desejado
+    const entry = $('.entry-image a');
+    const title = entry.attr('title');
+    const link = entry.attr('href');
+    const image = entry.find('img').attr('src');
+
+    if (title && link && image) {
+      res.json({
+        title,
+        link,
+        image,
+      });
+    } else {
+      res.status(404).json({ error: 'Informações não encontradas.' });
+    }
+  } catch (error) {
+    console.error('Erro ao fazer o scraping:', error.message);
+    res.status(500).json({ error: 'Erro ao processar a solicitação.' });
+  }
+});
 router.get('/celular', async (req, res) => {
   try {
     const { modelo } = req.query;
