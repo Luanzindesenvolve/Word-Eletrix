@@ -229,18 +229,29 @@ async function facepalm(req, res) {
 async function gay(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
 
-    // Chama a função gay do Caxinha.canvas
-    img = await Caxinha.canvas.gay(`${image}`);
+    if (!image) {
+      console.log("Erro: faltando o parâmetro image");
+      return res.json({ message: "faltando o parâmetro image" });
+    }
+
+    console.log(`Recebido link para imagem: ${image}`);
+
+    // Geração da imagem utilizando Caxinha
+    console.log("Iniciando processo de geração da imagem...");
+    const img = await Caxinha.canvas.gay(`${image}`);
     
-    // Salva a imagem gerada e envia de volta ao cliente
+    console.log("Imagem gerada com sucesso, salvando o arquivo...");
     await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+
+    console.log("Imagem salva, enviando para o cliente...");
     res.sendFile(__path + '/assets/canvasimg.png');
   } catch (err) {
-    console.log(err);
+    console.log("Erro durante o processamento:", err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error'
     });
   }
 }
