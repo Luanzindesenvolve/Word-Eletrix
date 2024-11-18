@@ -1,3 +1,4 @@
+__path = process.cwd()
 const axios = require("axios");
 const cookie = require("cookie");
 const FormData = require("form-data");
