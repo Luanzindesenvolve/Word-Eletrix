@@ -128,7 +128,31 @@ const {
   buscarNoticiasFluminense,
   buscarNoticiasFlamengo,
   videodl,
-  audiodl
+  audiodl,
+  musicard,
+  comunismo,
+  bolsonaro,
+  bnw,
+  blurr, 
+  affect, 
+  beautiful, 
+  circle, 
+  del, 
+  gay, 
+  invert, 
+  facepalm, 
+  dither, 
+  jail, 
+  magik, 
+  pixelate, 
+  rip,
+  sepia, 
+  rotate, 
+  trash,
+  wanted,
+  wasted, 
+  bobross, 
+  mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 // Função para buscar o vídeo pelo nome usando yt-search
@@ -273,7 +297,230 @@ router.get('/gpt3.5-turbo', async (req, res) => {
     res.status(500).json({ erro: 'Erro ao consultar a API', detalhes: error.message });
   }
 });
+//canvas 
 
+// Rota para a função gay
+router.get('/gay', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.gay(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função invert
+router.get('/invert', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.invert(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função jail
+router.get('/jail', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.jail(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função magik
+router.get('/magik', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.magik(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função pixelate
+router.get('/pixelate', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.pixelate(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função rip
+router.get('/rip', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.rip(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função sepia
+router.get('/sepia', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.sepia(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função rotate
+router.get('/rotate', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.rotate(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função trash
+router.get('/trash', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.trash(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função wanted
+router.get('/wanted', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.wanted(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função wasted
+router.get('/wasted', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    img = await Caxinha.canvas.wasted(`${image}`);
+    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    res.sendFile(__path + '/assets/canvasimg.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função bobross
+router.get('/bobross', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    imgr = await new Caxinha2.Bobross().getImage(`${image}`);
+    await fs.writeFileSync(__path + '/assets/bobross.png', imgr);
+    res.sendFile(__path + '/assets/bobross.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+// Rota para a função mms
+router.get('/mms', async (req, res) => {
+  try {
+    const image = req.query.link;
+    if (!image) return res.json({ message: "faltando o parâmetro image" });
+
+    imgr = await new Caxinha2.Mms().getImage(`${image}`);
+    await fs.writeFileSync(__path + '/assets/mms.png', imgr);
+    res.sendFile(__path + '/assets/mms.png');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+    });
+  }
+});
+
+//fim do canvas
 // Rota GET para buscar resultados do Google (Raspagem)
 router.get('/google', async (req, res) => {
   try {
