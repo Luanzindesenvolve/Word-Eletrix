@@ -301,19 +301,8 @@ router.get('/gpt3.5-turbo', async (req, res) => {
 
 // Rota para a função gay
 router.get('/gay', async (req, res) => {
-  try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
-
-    img = await Caxinha.canvas.gay(`${image}`);
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
-    });
-  }
+  console.log("Recebendo requisição para '/gay'...");
+  await gay(req, res);
 });
 
 // Rota para a função invert
