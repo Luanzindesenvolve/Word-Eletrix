@@ -34,8 +34,8 @@ const path = require("path");
 const { dirname } = require('path');
 __dirname = dirname(__filename);
 
-const Caxinha = require(__path+'./Canvas');
-const Caxinha2 = require(__path+'./Canvas2');
+const Caxinha = require(__path+'/Canvas');
+const Caxinha2 = require(__path+'/Canvas2');
 
 async function comunismo(req, res) {
   try {
