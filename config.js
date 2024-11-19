@@ -520,238 +520,229 @@ async function rip(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
-    
-async function rotate(req, res) {
+async function sepia(imageUrl) {
   try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.rotate(image);
+    // Gera a imagem com a função 'sepia' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.sepia(imageUrl);
 
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
-async function trash(req, res) {
+async function rotate(imageUrl) {
   try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.trash(image);
+    // Gera a imagem com a função 'rotate' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.rotate(imageUrl);
 
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
-}
-
-
-async function trash(req, res) {
+}    
+async function trash(imageUrl) {
   try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
-    // Chama a função trash do Caxinha.canvas
-    img = await Caxinha.canvas.trash(`${image}`);
-    
-    // Salva a imagem gerada e envia de volta ao cliente
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
-    });
-  }
-}
-// Função para aplicar o filtro "wanted"
-async function wanted(req, res) {
-  try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    // Gera a imagem com a função 'trash' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.trash(imageUrl);
 
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.wanted(image);
-
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
-}
+					}
 
-// Função para aplicar o filtro "wasted"
-async function wasted(req, res) {
+async function wanted(imageUrl) {
   try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.wasted(image);
+    // Gera a imagem com a função 'wanted' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.wanted(imageUrl);
 
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
-// Função para aplicar o filtro "bobross"
-async function bobross(req, res) {
+async function wasted(imageUrl) {
   try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
-    // Gera a imagem com o Caxinha2
-    const imgr = await new Caxinha2.Bobross().getImage(image);
+    // Gera a imagem com a função 'wasted' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.wasted(imageUrl);
 
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'bobross.png');
-    await fs.writeFileSync(filePath, imgr);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
+  }
+			      }
+
+async function bobross(imageUrl) {
+  try {
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
+
+    // Gera a imagem com o Caxinha2 Bobross
+    const imgr = await new Caxinha2.Bobross().getImage(imageUrl);
+
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      await fs.promises.mkdir(dirPath, { recursive: true });
+    }
+
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `bobross-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, imgr);
+
+    // Retorna o caminho da imagem gerada
+    return filePath;
+  } catch (err) {
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
 
-// Função para gerar imagem com filtro "mms"
-async function mms(req, res) {
+async function mms(imageUrl) {
   try {
-    const image = req.query.link;
-
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
     // Gera a imagem com o filtro MMS
-    const imgr = await new Caxinha2.Mms().getImage(image);
+    const imgr = await new Caxinha2.Mms().getImage(imageUrl);
 
-    // Caminho para o diretório 'assets'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+
+    // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true }); // Cria o diretório se não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho para salvar a imagem gerada
-    const filePath = path.join(dirPath, 'mms.png');
-    await fs.writeFileSync(filePath, imgr);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `mms-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
 
-    // Retorna a imagem gerada
-    res.sendFile(filePath);
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, imgr);
+
+    // Retorna o caminho da imagem gerada
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
 
-// Função para gerar capa de álbum com "musicard"
-async function musicard(req, res) {
+async function musicard(autor, nomealbum, fundo, fotomusic, titulo) {
   try {
-    const autor = req.query.autor;
-    const nomealbum = req.query.nomealbum;
-    const fundo = req.query.fundo;
-    const fotomusic = req.query.fotomusic;
-    const titulo = req.query.titulo;
+    if (!autor) throw new Error('Faltando o parâmetro "autor"');
+    if (!nomealbum) throw new Error('Faltando o parâmetro "nomealbum"');
+    if (!titulo) throw new Error('Faltando o parâmetro "titulo"');
+    if (!fundo) throw new Error('Faltando o parâmetro "fundo"');
+    if (!fotomusic) throw new Error('Faltando o parâmetro "fotomusic"');
 
-    if (!autor) return res.json({ message: "Faltando o parâmetro autor" });
-    if (!nomealbum) return res.json({ message: "Faltando o parâmetro nomealbum" });
-    if (!titulo) return res.json({ message: "Faltando o parâmetro titulo" });
-    if (!fundo) return res.json({ message: "Faltando o parâmetro fundo" });
-    if (!fotomusic) return res.json({ message: "Faltando o parâmetro fotomusic" });
-
-    // Gera a capa de álbum
+    // Gera a capa de álbum com o Caxinha2
     var sabrinaBot = await new canvafy.Spotify()
       .setAuthor(autor)
       .setAlbum(nomealbum)
@@ -764,25 +755,25 @@ async function musicard(req, res) {
     // Obtém o buffer da imagem gerada
     const data = sabrinaBot.toBuffer();
 
-    // Caminho para o diretório 'assets'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+
+    // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true }); // Cria o diretório se não existir
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
-    // Caminho para salvar a capa de álbum gerada
-    const filePath = path.join(dirPath, 'music.png');
-    await fs.writeFileSync(filePath, data);
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `musicard-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
 
-    // Retorna a imagem gerada
-    res.sendFile(filePath);
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, data);
+
+    // Retorna o caminho da imagem gerada
+    return filePath;
   } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
 
