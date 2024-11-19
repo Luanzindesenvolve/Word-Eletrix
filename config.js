@@ -10,6 +10,12 @@ const fs = require('fs-extra')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
 const encodeUrl = require('encodeurl');
 const linkfy = require('linkifyjs')
+const canvafy = require("canvafy");
+const path = require("path");
+const { dirname } = require('path');
+__dirname = dirname(__filename);
+const Caxinha = require(__path+'/Canvas');
+const Caxinha2 = require(__path+'/Canvas2');
 const randomIntFromInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -29,13 +35,6 @@ async function convert(ms) {
     var seconds = ((ms % 60000) / 1000).toFixed(0);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
-const canvafy = require("canvafy");
-const path = require("path");
-const { dirname } = require('path');
-__dirname = dirname(__filename);
-
-const Caxinha = require(__path+'/Canvas');
-const Caxinha2 = require(__path+'/Canvas2');
 
 async function comunismo(req, res) {
   try {
@@ -226,33 +225,25 @@ async function facepalm(req, res) {
     });
   }
 }
-async function gay(req, res) {
+// Função que gera a imagem
+async function gay(imageUrl) {
   try {
-    const image = req.query.link;
-
-    if (!image) {
-      console.log("Erro: faltando o parâmetro image");
-      return res.json({ message: "faltando o parâmetro image" });
+    // Verifica se o parâmetro 'link' foi fornecido
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
     }
 
-    console.log(`Recebido link para imagem: ${image}`);
+    // Gera a imagem com o Caxinha
+    const img = await Caxinha.canvas.gay(imageUrl);
 
-    // Geração da imagem utilizando Caxinha
-    console.log("Iniciando processo de geração da imagem...");
-    const img = await Caxinha.canvas.gay(`${image}`);
-    
-    console.log("Imagem gerada com sucesso, salvando o arquivo...");
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
+    // Caminho onde a imagem gerada será salva
+    const filePath = path.join(__dirname, 'assets', 'canvasimg.png');
+    await fs.writeFileSync(filePath, img);
 
-    console.log("Imagem salva, enviando para o cliente...");
-    res.sendFile(__path + '/assets/canvasimg.png');
+    // Retorna o caminho da imagem gerada
+    return filePath;
   } catch (err) {
-    console.log("Erro durante o processamento:", err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error'
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
 
