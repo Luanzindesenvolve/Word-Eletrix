@@ -433,7 +433,7 @@ router.get('/del', async (req, res) => {
 
 router.get('/dither', async (req, res) => {
   try {
-    const filePath = await dither(req, res);
+    const filePath = await dither(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -446,7 +446,7 @@ router.get('/dither', async (req, res) => {
 
 router.get('/invert', async (req, res) => {
   try {
-    const filePath = await invert(req, res);
+    const filePath = await invert(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -459,7 +459,7 @@ router.get('/invert', async (req, res) => {
 
 router.get('/jail', async (req, res) => {
   try {
-    const filePath = await jail(req, res);
+    const filePath = await jail(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -472,7 +472,7 @@ router.get('/jail', async (req, res) => {
 
 router.get('/facepalm', async (req, res) => {
   try {
-    const filePath = await facepalm(req, res);
+    const filePath = await facepalm(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -484,7 +484,7 @@ router.get('/facepalm', async (req, res) => {
 });
 router.get('/magik', async (req, res) => {
   try {
-    const filePath = await magik(req, res);
+    const filePath = await magik(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -497,7 +497,7 @@ router.get('/magik', async (req, res) => {
 
 router.get('/pixelate', async (req, res) => {
   try {
-    const filePath = await pixelate(req, res);
+    const filePath = await pixelate(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -510,7 +510,7 @@ router.get('/pixelate', async (req, res) => {
 
 router.get('/rip', async (req, res) => {
   try {
-    const filePath = await rip(req, res);
+    const filePath = await rip(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -522,7 +522,7 @@ router.get('/rip', async (req, res) => {
 });
 router.get('/wanted', async (req, res) => {
   try {
-    const filePath = await wanted(req, res);
+    const filePath = await wanted(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -535,7 +535,7 @@ router.get('/wanted', async (req, res) => {
 
 router.get('/wasted', async (req, res) => {
   try {
-    const filePath = await wasted(req, res);
+    const filePath = await wasted(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -548,7 +548,7 @@ router.get('/wasted', async (req, res) => {
 
 router.get('/bobross', async (req, res) => {
   try {
-    const filePath = await bobross(req, res);
+    const filePath = await bobross(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -560,7 +560,7 @@ router.get('/bobross', async (req, res) => {
 });
 router.get('/mms', async (req, res) => {
   try {
-    const filePath = await mms(req, res);
+    const filePath = await mms(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -571,18 +571,7 @@ router.get('/mms', async (req, res) => {
   }
 });
 
-router.get('/musicard', async (req, res) => {
-  try {
-    const filePath = await musicard(req, res);
-    res.sendFile(filePath);
-  } catch (err) {
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
-  }
-});
+router.get('/musicard', musicard);
 
 //fim do canvas
 // Rota GET para buscar resultados do Google (Raspagem)
