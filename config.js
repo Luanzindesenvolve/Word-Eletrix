@@ -38,30 +38,34 @@ async function convert(ms) {
 
 async function comunismo(req, res) {
   try {
+    // Acessa o parâmetro 'link' da query string da requisição
     const image = req.query.link;
+    
+    // Se o parâmetro 'link' não for passado, retorna erro 400
     if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
 
-    // Gera a imagem com o Caxinha
+    // Gera a imagem com a função 'comunism' do objeto 'Caxinha.canvas'
     const img = await Caxinha.canvas.comunism(image);
 
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
+    // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
 
-    // Verifica se o diretório 'assets' existe, se não, cria
+    // Verifica se o diretório 'assets' existe; se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório de forma recursiva, se necessário
     }
 
-    // Gera um nome único para o arquivo
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
     const fileName = `canvasimg-${Date.now()}.png`;
-    const filePath = path.join(dirPath, fileName);
-    
-    // Escreve o arquivo gerado (assíncrono)
+    const filePath = path.join(dirPath, fileName);  // Caminho completo do arquivo
+
+    // Escreve a imagem gerada no diretório 'assets'
     await fs.promises.writeFile(filePath, img);
 
-    // Retorna o caminho da imagem gerada
+    // Retorna a imagem gerada para o cliente
     res.sendFile(filePath);
   } catch (err) {
+    // Se ocorrer qualquer erro, loga o erro e retorna status 500
     console.log(err);
     res.status(500).send({
       status: 500,
