@@ -660,95 +660,153 @@ async function trash(req, res) {
     });
   }
 }
+// Função para aplicar o filtro "wanted"
 async function wanted(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
+    if (!image) return res.json({ message: "Faltando o parâmetro image" });
 
-    // Chama a função wanted do Caxinha.canvas
-    img = await Caxinha.canvas.wanted(`${image}`);
-    
-    // Salva a imagem gerada e envia de volta ao cliente
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
+    // Gera a imagem com o Caxinha
+    const img = await Caxinha.canvas.wanted(image);
+
+    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+    }
+
+    // Caminho completo do arquivo para a imagem gerada
+    const filePath = path.join(dirPath, 'canvasimg.png');
+    await fs.writeFileSync(filePath, img);
+
+    // Retorna o caminho da imagem gerada
+    res.sendFile(filePath);
   } catch (err) {
     console.log(err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
     });
   }
 }
 
+// Função para aplicar o filtro "wasted"
 async function wasted(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
+    if (!image) return res.json({ message: "Faltando o parâmetro image" });
 
-    // Chama a função wasted do Caxinha.canvas
-    img = await Caxinha.canvas.wasted(`${image}`);
-    
-    // Salva a imagem gerada e envia de volta ao cliente
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
+    // Gera a imagem com o Caxinha
+    const img = await Caxinha.canvas.wasted(image);
+
+    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+    }
+
+    // Caminho completo do arquivo para a imagem gerada
+    const filePath = path.join(dirPath, 'canvasimg.png');
+    await fs.writeFileSync(filePath, img);
+
+    // Retorna o caminho da imagem gerada
+    res.sendFile(filePath);
   } catch (err) {
     console.log(err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
     });
   }
 }
 
+// Função para aplicar o filtro "bobross"
 async function bobross(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
+    if (!image) return res.json({ message: "Faltando o parâmetro image" });
 
-    // Chama a função bobross do Caxinha2
-    imgr = await new Caxinha2.Bobross().getImage(`${image}`);
-    
-    // Salva a imagem gerada e envia de volta ao cliente
-    await fs.writeFileSync(__path + '/assets/bobross.png', imgr);
-    res.sendFile(__path + '/assets/bobross.png');
+    // Gera a imagem com o Caxinha2
+    const imgr = await new Caxinha2.Bobross().getImage(image);
+
+    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+    }
+
+    // Caminho completo do arquivo para a imagem gerada
+    const filePath = path.join(dirPath, 'bobross.png');
+    await fs.writeFileSync(filePath, imgr);
+
+    // Retorna o caminho da imagem gerada
+    res.sendFile(filePath);
   } catch (err) {
     console.log(err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
     });
   }
 }
+
+// Função para gerar imagem com filtro "mms"
 async function mms(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
 
-    // Chama a função Mms do Caxinha2
-    imgr = await new Caxinha2.Mms().getImage(`${image}`);
-    
-    // Salva a imagem gerada e envia de volta ao cliente
-    await fs.writeFileSync(__path + '/assets/mms.png', imgr);
-    res.sendFile(__path + '/assets/mms.png');
+    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+
+    // Gera a imagem com o filtro MMS
+    const imgr = await new Caxinha2.Mms().getImage(image);
+
+    // Caminho para o diretório 'assets'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true }); // Cria o diretório se não existir
+    }
+
+    // Caminho para salvar a imagem gerada
+    const filePath = path.join(dirPath, 'mms.png');
+    await fs.writeFileSync(filePath, imgr);
+
+    // Retorna a imagem gerada
+    res.sendFile(filePath);
   } catch (err) {
     console.log(err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
     });
   }
 }
+
+// Função para gerar capa de álbum com "musicard"
 async function musicard(req, res) {
   try {
-    const autor = req.query.autor; 
-    const nomealbum = req.query.nomealbum; 
+    const autor = req.query.autor;
+    const nomealbum = req.query.nomealbum;
     const fundo = req.query.fundo;
     const fotomusic = req.query.fotomusic;
-    const titulo = req.query.titulo;  
-    
-    if (!autor) return res.json({ message: "faltando o parâmetro autor" });
-    if (!nomealbum) return res.json({ message: "faltando o parâmetro nomealbum" });
-    if (!titulo) return res.json({ message: "faltando o parâmetro titulo" });
-    if (!fundo) return res.json({ message: "faltando o parâmetro fundo" });
-    if (!fotomusic) return res.json({ message: "faltando o parâmetro fotomusic" });
+    const titulo = req.query.titulo;
 
-    // Chama a função Spotify do canvafy
+    if (!autor) return res.json({ message: "Faltando o parâmetro autor" });
+    if (!nomealbum) return res.json({ message: "Faltando o parâmetro nomealbum" });
+    if (!titulo) return res.json({ message: "Faltando o parâmetro titulo" });
+    if (!fundo) return res.json({ message: "Faltando o parâmetro fundo" });
+    if (!fotomusic) return res.json({ message: "Faltando o parâmetro fotomusic" });
+
+    // Gera a capa de álbum
     var sabrinaBot = await new canvafy.Spotify()
       .setAuthor(autor)
       .setAlbum(nomealbum)
@@ -758,17 +816,32 @@ async function musicard(req, res) {
       .setTitle(titulo)
       .build();
 
-    // Converte para buffer e envia a imagem gerada
-    data = sabrinaBot.toBuffer();
-    await fs.writeFileSync(__path + '/assets/music.png', data);
-    res.sendFile(__path + '/tmp/music.png');
+    // Obtém o buffer da imagem gerada
+    const data = sabrinaBot.toBuffer();
+
+    // Caminho para o diretório 'assets'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true }); // Cria o diretório se não existir
+    }
+
+    // Caminho para salvar a capa de álbum gerada
+    const filePath = path.join(dirPath, 'music.png');
+    await fs.writeFileSync(filePath, data);
+
+    // Retorna a imagem gerada
+    res.sendFile(filePath);
   } catch (err) {
     console.log(err);
     res.status(500).send({
-      status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
     });
   }
-	}
+}
+
+//fim do Canvas
 // Função para obter credenciais do Spotify
 async function spotifyCreds() {
     return new Promise(async resolve => {
