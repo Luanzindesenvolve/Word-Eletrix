@@ -236,7 +236,7 @@ async function gay(imageUrl) {
     const img = await Caxinha.canvas.gay(imageUrl);
 
     // Caminho onde a imagem gerada será salva
-    const dirPath = path.join(__dirname, 'assets');  // Diretório onde a imagem será salva
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // Diretório onde a imagem será salva
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
