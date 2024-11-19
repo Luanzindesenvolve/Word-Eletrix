@@ -39,7 +39,7 @@ async function convert(ms) {
 async function comunismo(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
 
     // Gera a imagem com o Caxinha
     const img = await Caxinha.canvas.comunism(image);
@@ -52,9 +52,12 @@ async function comunismo(req, res) {
       fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+    
+    // Escreve o arquivo gerado (assíncrono)
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
     res.sendFile(filePath);
@@ -71,7 +74,7 @@ async function comunismo(req, res) {
 async function bolsonaro(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
 
     // Gera a imagem com o Caxinha
     const img = await Caxinha.canvas.bolsonaro(image);
@@ -84,9 +87,12 @@ async function bolsonaro(req, res) {
       fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+    
+    // Escreve o arquivo gerado (assíncrono)
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
     res.sendFile(filePath);
@@ -103,7 +109,7 @@ async function bolsonaro(req, res) {
 async function affect(req, res) {
   try {
     const image = req.query.link;
-    if (!image) return res.json({ message: "Faltando o parâmetro image" });
+    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
 
     // Gera a imagem com o Caxinha
     const img = await Caxinha.canvas.affect(image);
@@ -116,9 +122,12 @@ async function affect(req, res) {
       fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
     }
 
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
+    // Gera um nome único para o arquivo
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+    
+    // Escreve o arquivo gerado (assíncrono)
+    await fs.promises.writeFile(filePath, img);
 
     // Retorna o caminho da imagem gerada
     res.sendFile(filePath);
