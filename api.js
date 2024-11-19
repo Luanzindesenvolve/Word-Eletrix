@@ -319,20 +319,6 @@ router.get('/gay', async (req, res) => {
   }
 });
 
-router.get('/comunismo', async (req, res) => {
-  try {
-    const image = req.query.link;
-    const filePath = await comunismo(image);  
-    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
-  } catch (err) {
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error'
-    });
-  }
-});
-
 router.get('/bolsonaro', async (req, res) => {
   try {
     const image = req.query.link;
