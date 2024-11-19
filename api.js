@@ -336,8 +336,9 @@ router.get('/comunismo', async (req, res) => {
 router.get('/bolsonaro', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await bolsonaro(image);  // Passando 'image' como argumento
-    res.sendFile(filePath);
+    // Passando 'req' e 'res' para a função 'bolsonaro'
+    const filePath = await bolsonaro(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
@@ -350,8 +351,9 @@ router.get('/bolsonaro', async (req, res) => {
 router.get('/affect', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await affect(image);  // Passando 'image' como argumento
-    res.sendFile(filePath);
+    // Passando 'req' e 'res' para a função 'affect'
+    const filePath = await affect(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
@@ -362,9 +364,9 @@ router.get('/affect', async (req, res) => {
 });
 router.get('/beautiful', async (req, res) => {
   try {
-    const image = req.query.link;
-    const filePath = await beautiful(req, res);
-    res.sendFile(filePath);
+    // Passando 'req' e 'res' para a função 'beautiful'
+    const filePath = await beautiful(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
@@ -376,9 +378,9 @@ router.get('/beautiful', async (req, res) => {
 
 router.get('/blurr', async (req, res) => {
   try {
-    const image = req.query.link;
-    const filePath = await blurr(req, res);
-    res.sendFile(filePath);
+    // Passando 'req' e 'res' para a função 'blurr'
+    const filePath = await blurr(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
@@ -390,9 +392,9 @@ router.get('/blurr', async (req, res) => {
 
 router.get('/bnw', async (req, res) => {
   try {
-    const image = req.query.link;
-    const filePath = await bnw(req, res);
-    res.sendFile(filePath);
+    // Passando 'req' e 'res' para a função 'bnw'
+    const filePath = await bnw(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
