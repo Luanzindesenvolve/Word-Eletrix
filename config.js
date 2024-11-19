@@ -225,7 +225,6 @@ async function facepalm(req, res) {
     });
   }
 }
-// Função que gera a imagem
 async function gay(imageUrl) {
   try {
     // Verifica se o parâmetro 'link' foi fornecido
@@ -237,7 +236,15 @@ async function gay(imageUrl) {
     const img = await Caxinha.canvas.gay(imageUrl);
 
     // Caminho onde a imagem gerada será salva
-    const filePath = path.join(__dirname, 'assets', 'canvasimg.png');
+    const dirPath = path.join(__dirname, 'assets');  // Diretório onde a imagem será salva
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
+    }
+
+    // Caminho completo do arquivo para a imagem gerada
+    const filePath = path.join(dirPath, 'canvasimg.png');
     await fs.writeFileSync(filePath, img);
 
     // Retorna o caminho da imagem gerada
