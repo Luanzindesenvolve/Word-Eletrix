@@ -322,8 +322,8 @@ router.get('/gay', async (req, res) => {
 router.get('/comunismo', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await comunismo(image);  // Passando 'image' como argumento
-    res.sendFile(filePath);
+    const filePath = await comunismo(req, res);  
+    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
       status: 500,
