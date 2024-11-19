@@ -322,7 +322,7 @@ router.get('/gay', async (req, res) => {
 router.get('/comunismo', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await comunismo(req, res);  
+    const filePath = await comunismo(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -337,7 +337,7 @@ router.get('/bolsonaro', async (req, res) => {
   try {
     const image = req.query.link;
     // Passando 'req' e 'res' para a função 'bolsonaro'
-    const filePath = await bolsonaro(req, res);  
+    const filePath = await bolsonaro(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -352,7 +352,7 @@ router.get('/affect', async (req, res) => {
   try {
     const image = req.query.link;
     // Passando 'req' e 'res' para a função 'affect'
-    const filePath = await affect(req, res);  
+    const filePath = await affect(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -365,7 +365,7 @@ router.get('/affect', async (req, res) => {
 router.get('/beautiful', async (req, res) => {
   try {
     // Passando 'req' e 'res' para a função 'beautiful'
-    const filePath = await beautiful(req, res);  
+    const filePath = await beautiful(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -379,7 +379,7 @@ router.get('/beautiful', async (req, res) => {
 router.get('/blurr', async (req, res) => {
   try {
     // Passando 'req' e 'res' para a função 'blurr'
-    const filePath = await blurr(req, res);  
+    const filePath = await blurr(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -393,7 +393,7 @@ router.get('/blurr', async (req, res) => {
 router.get('/bnw', async (req, res) => {
   try {
     // Passando 'req' e 'res' para a função 'bnw'
-    const filePath = await bnw(req, res);  
+    const filePath = await bnw(image);  
     res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
   } catch (err) {
     res.status(500).send({
@@ -405,7 +405,7 @@ router.get('/bnw', async (req, res) => {
 });
 router.get('/circle', async (req, res) => {
   try {
-    const filePath = await circle(req, res);
+    const filePath = await circle(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -418,7 +418,7 @@ router.get('/circle', async (req, res) => {
 
 router.get('/del', async (req, res) => {
   try {
-    const filePath = await del(req, res);
+    const filePath = await del(image);
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
