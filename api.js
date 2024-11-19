@@ -301,8 +301,22 @@ router.get('/gpt3.5-turbo', async (req, res) => {
 
 // Rota para a função gay
 router.get('/gay', async (req, res) => {
-  console.log("Recebendo requisição para '/gay'...");
-  await gay(req, res);
+  try {
+    const image = req.query.link;
+
+    // Chama a função gay definida no config.js para gerar a imagem
+    const filePath = await gay(image);
+
+    // Envia a imagem gerada para o cliente
+    res.sendFile(filePath);  // Aqui o Express envia o arquivo para o cliente
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error'
+    });
+  }
 });
 
 // Rota para a função invert
