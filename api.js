@@ -322,7 +322,7 @@ router.get('/gay', async (req, res) => {
 router.get('/comunismo', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await comunismo(req, res);
+    const filePath = await comunismo(image);  // Passando 'image' como argumento
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -336,7 +336,7 @@ router.get('/comunismo', async (req, res) => {
 router.get('/bolsonaro', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await bolsonaro(req, res);
+    const filePath = await bolsonaro(image);  // Passando 'image' como argumento
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
@@ -350,7 +350,7 @@ router.get('/bolsonaro', async (req, res) => {
 router.get('/affect', async (req, res) => {
   try {
     const image = req.query.link;
-    const filePath = await affect(req, res);
+    const filePath = await affect(image);  // Passando 'image' como argumento
     res.sendFile(filePath);
   } catch (err) {
     res.status(500).send({
