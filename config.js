@@ -35,46 +35,37 @@ async function convert(ms) {
     var seconds = ((ms % 60000) / 1000).toFixed(0);
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 }
-
-async function comunismo(req, res) {
+async function comunismo(imageUrl) {
   try {
-    // Acessa o parâmetro 'link' da query string da requisição
-    const image = req.query.link;
-    
-    // Se o parâmetro 'link' não for passado, retorna erro 400
-    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
+    // Verifica se o parâmetro 'imageUrl' foi fornecido
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
+    }
 
     // Gera a imagem com a função 'comunism' do objeto 'Caxinha.canvas'
-    const img = await Caxinha.canvas.comunism(image);
+    const img = await Caxinha.canvas.comunism(imageUrl);
 
     // Define o caminho para o diretório onde as imagens serão armazenadas
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
 
-    // Verifica se o diretório 'assets' existe; se não, cria
+    // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório de forma recursiva, se necessário
+      await fs.promises.mkdir(dirPath, { recursive: true });
     }
 
     // Gera um nome único para o arquivo da imagem, baseado no timestamp
     const fileName = `canvasimg-${Date.now()}.png`;
-    const filePath = path.join(dirPath, fileName);  // Caminho completo do arquivo
+    const filePath = path.join(dirPath, fileName);
 
     // Escreve a imagem gerada no diretório 'assets'
     await fs.promises.writeFile(filePath, img);
 
-    // Retorna a imagem gerada para o cliente
-    res.sendFile(filePath);
+    // Retorna o caminho da imagem gerada
+    return filePath; // Retorna o caminho do arquivo gerado
   } catch (err) {
-    // Se ocorrer qualquer erro, loga o erro e retorna status 500
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-    });
+    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
 async function bolsonaro(req, res) {
   try {
     const image = req.query.link;
