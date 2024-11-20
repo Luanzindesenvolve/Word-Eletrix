@@ -11,6 +11,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const encodeUrl = require('encodeurl');
 const linkfy = require('linkifyjs')
 const canvafy = require("canvafy");
+const Jimp = require('jimp');
 const path = require("path");
 const { dirname } = require('path');
 __dirname = dirname(__filename);
