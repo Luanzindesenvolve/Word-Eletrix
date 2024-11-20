@@ -98,46 +98,18 @@ async function bolsonaro(imageUrl) {
   }
 }
 async function affect(req, res) {
-  try {
-    const image = req.query.link;
-    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
-
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.affect(image);
-
-    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
-
-    // Verifica se o diretório 'assets' existe, se não, cria
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
-    }
-
-    // Gera um nome único para o arquivo
-    const fileName = `canvasimg-${Date.now()}.png`;
-    const filePath = path.join(dirPath, fileName);
-    
-    // Escreve o arquivo gerado (assíncrono)
-    await fs.promises.writeFile(filePath, img);
-
-    // Retorna o caminho da imagem gerada
-    res.sendFile(filePath);
-  } catch (err) {
-    // Verifique o tipo do erro antes de acessar propriedades
-    const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
-    
-    console.log("[affect] Erro no processamento:", errorMessage);
-
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error',
-      logs: [
-        { etapa: "Recebendo link", valor: req.query.link },
-        { etapa: "Erro no processamento", valor: errorMessage }
-      ]
-    });
-  }
+try {
+const image = req.query.link;
+if(!image) return res.json({message: "faltando o parâmetro image"})
+  img = await Caxinha.canvas.affect(`${image}`);
+  await fs.writeFileSync(__path+'Canvas2/src/assets/canvasimg.png', img)
+  res.sendFile(__path+'Canvas2/src/assets/canvasimg.png')
+	} catch(err) {
+		console.log(err)
+		res.status(500).send({
+			status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+		})
+	}
 }
 
 async function beautiful(imageUrl) {
