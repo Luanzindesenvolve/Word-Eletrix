@@ -97,42 +97,59 @@ async function bolsonaro(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-async function affect(imageUrl) {
-  try {
-    console.log("[affect] URL recebida:", imageUrl);
 
-    if (!imageUrl) {
-      throw new Error('Faltando o parâmetro "link".');
+const fs = require('fs');
+const path = require('path');
+
+async function affect(req, res) {
+  try {
+    console.log("[affect] Requisição recebida.");
+    
+    // Obtendo a URL da imagem dos parâmetros de query
+    const image = req.query.link;
+    console.log("[affect] Link da imagem:", image);
+
+    if (!image) {
+      console.log("[affect] Erro: Faltando o parâmetro 'image'");
+      return res.status(400).json({ message: "Faltando o parâmetro 'image'" });
     }
 
-    // Gera a imagem com a função 'affect' do objeto 'Caxinha.canvas'
-    const img = await Caxinha.canvas.affect(imageUrl);
-    console.log("[affect] Imagem gerada pelo Caxinha.canvas.affect:", !!img);
+    // Gera a imagem com o Caxinha
+    console.log("[affect] Gerando imagem com Caxinha...");
+    const img = await Caxinha.canvas.affect(image);
+    console.log("[affect] Imagem gerada com sucesso:", !!img);
 
-    // Define o caminho para o diretório onde as imagens serão armazenadas
+    // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
-    console.log("[affect] Diretório alvo:", dirPath);
+    console.log("[affect] Caminho do diretório 'assets':", dirPath);
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      await fs.promises.mkdir(dirPath, { recursive: true });
-      console.log("[affect] Diretório criado:", dirPath);
+      console.log("[affect] Diretório não encontrado. Criando...");
+      fs.mkdirSync(dirPath, { recursive: true });
+      console.log("[affect] Diretório 'assets' criado com sucesso.");
     }
 
-    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    // Gera um nome único para o arquivo
     const fileName = `canvasimg-${Date.now()}.png`;
     const filePath = path.join(dirPath, fileName);
-    console.log("[affect] Caminho completo do arquivo gerado:", filePath);
+    console.log("[affect] Caminho completo do arquivo:", filePath);
 
-    // Escreve a imagem gerada no diretório 'assets'
+    // Escreve o arquivo gerado (assíncrono)
+    console.log("[affect] Salvando a imagem...");
     await fs.promises.writeFile(filePath, img);
     console.log("[affect] Imagem salva com sucesso.");
 
     // Retorna o caminho da imagem gerada
-    return filePath;
+    console.log("[affect] Enviando arquivo:", filePath);
+    res.sendFile(filePath);
   } catch (err) {
-    console.error("[affect] Erro:", err.message);
-    throw new Error('Erro ao gerar imagem: ' + err.message);
+    console.log("[affect] Erro no processamento:", err);
+    res.status(500).send({
+      status: 500,
+      info: 'Ops, aconteceu um erro no servidor interno.',
+      resultado: 'error',
+    });
   }
 }
 
