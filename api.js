@@ -351,16 +351,49 @@ router.get('/bolsonaro', async (req, res) => {
 });
 
 router.get('/affect', async (req, res) => {
+  const logs = []; // Array para registrar os logs que serão retornados no JSON
   try {
     const image = req.query.link;
-    // Passando 'req' e 'res' para a função 'affect'
-    const filePath = await affect(image);  
-    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
+    logs.push({ etapa: "Recebendo link", valor: image });
+    console.log("[/affect] Link recebido:", image);
+
+    if (!image) {
+      logs.push({ etapa: "Erro", valor: "Faltando o parâmetro link." });
+      return res.status(400).json({
+        status: 400,
+        info: "Faltando o parâmetro 'link'.",
+        resultado: "error",
+        logs
+      });
+    }
+
+    const filePath = await affect(image); // Passando o link para a função 'affect'
+    logs.push({ etapa: "Arquivo gerado", valor: filePath });
+    console.log("[/affect] Caminho do arquivo gerado:", filePath);
+
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        logs.push({ etapa: "Erro ao enviar arquivo", valor: err.message });
+        console.error("[/affect] Erro ao enviar arquivo:", err.message);
+        return res.status(500).json({
+          status: 500,
+          info: "Erro ao enviar arquivo.",
+          resultado: "error",
+          logs
+        });
+      } else {
+        logs.push({ etapa: "Arquivo enviado", valor: "Sucesso" });
+        console.log("[/affect] Arquivo enviado com sucesso.");
+      }
+    });
   } catch (err) {
-    res.status(500).send({
+    logs.push({ etapa: "Erro no processamento", valor: err.message });
+    console.error("[/affect] Erro no processamento:", err.message);
+    res.status(500).json({
       status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error'
+      info: "Ops, aconteceu um erro no servidor interno.",
+      resultado: "error",
+      logs
     });
   }
 });
