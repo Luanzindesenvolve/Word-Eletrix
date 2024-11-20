@@ -97,10 +97,6 @@ async function bolsonaro(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
-const fs = require('fs');
-const path = require('path');
-
 async function affect(req, res) {
   try {
     console.log("[affect] Requisição recebida.");
