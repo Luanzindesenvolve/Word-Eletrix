@@ -96,6 +96,7 @@ async function bolsonaro(imageUrl) {
   } catch (err) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
+}
 async function affect(req, res) {
   try {
     const image = req.query.link;
