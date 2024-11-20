@@ -98,31 +98,39 @@ async function bolsonaro(imageUrl) {
 }
 async function affect(imageUrl) {
   try {
+    console.log("[affect] URL recebida:", imageUrl);
+
     if (!imageUrl) {
-      throw new Error('Faltando o parâmetro "link"');
+      throw new Error('Faltando o parâmetro "link".');
     }
 
     // Gera a imagem com a função 'affect' do objeto 'Caxinha.canvas'
     const img = await Caxinha.canvas.affect(imageUrl);
+    console.log("[affect] Imagem gerada pelo Caxinha.canvas.affect:", !!img);
 
     // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
+    console.log("[affect] Diretório alvo:", dirPath);
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
       await fs.promises.mkdir(dirPath, { recursive: true });
+      console.log("[affect] Diretório criado:", dirPath);
     }
 
     // Gera um nome único para o arquivo da imagem, baseado no timestamp
     const fileName = `canvasimg-${Date.now()}.png`;
     const filePath = path.join(dirPath, fileName);
+    console.log("[affect] Caminho completo do arquivo gerado:", filePath);
 
     // Escreve a imagem gerada no diretório 'assets'
     await fs.promises.writeFile(filePath, img);
+    console.log("[affect] Imagem salva com sucesso.");
 
     // Retorna o caminho da imagem gerada
     return filePath;
   } catch (err) {
+    console.error("[affect] Erro:", err.message);
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
