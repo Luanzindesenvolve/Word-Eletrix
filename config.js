@@ -96,55 +96,45 @@ async function bolsonaro(imageUrl) {
   } catch (err) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
-}
 async function affect(req, res) {
   try {
-    console.log("[affect] Requisição recebida.");
-    
-    // Obtendo a URL da imagem dos parâmetros de query
     const image = req.query.link;
-    console.log("[affect] Link da imagem:", image);
-
-    if (!image) {
-      console.log("[affect] Erro: Faltando o parâmetro 'image'");
-      return res.status(400).json({ message: "Faltando o parâmetro 'image'" });
-    }
+    if (!image) return res.status(400).json({ message: "Faltando o parâmetro image" });
 
     // Gera a imagem com o Caxinha
-    console.log("[affect] Gerando imagem com Caxinha...");
     const img = await Caxinha.canvas.affect(image);
-    console.log("[affect] Imagem gerada com sucesso:", !!img);
 
     // Caminho para o diretório 'assets' dentro de 'Canvas2/src'
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
-    console.log("[affect] Caminho do diretório 'assets':", dirPath);
+    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // 'assets' dentro de 'Canvas2/src'
 
     // Verifica se o diretório 'assets' existe, se não, cria
     if (!fs.existsSync(dirPath)) {
-      console.log("[affect] Diretório não encontrado. Criando...");
-      fs.mkdirSync(dirPath, { recursive: true });
-      console.log("[affect] Diretório 'assets' criado com sucesso.");
+      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
     }
 
     // Gera um nome único para o arquivo
     const fileName = `canvasimg-${Date.now()}.png`;
     const filePath = path.join(dirPath, fileName);
-    console.log("[affect] Caminho completo do arquivo:", filePath);
-
+    
     // Escreve o arquivo gerado (assíncrono)
-    console.log("[affect] Salvando a imagem...");
     await fs.promises.writeFile(filePath, img);
-    console.log("[affect] Imagem salva com sucesso.");
 
     // Retorna o caminho da imagem gerada
-    console.log("[affect] Enviando arquivo:", filePath);
     res.sendFile(filePath);
   } catch (err) {
-    console.log("[affect] Erro no processamento:", err);
+    // Verifique o tipo do erro antes de acessar propriedades
+    const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
+    
+    console.log("[affect] Erro no processamento:", errorMessage);
+
     res.status(500).send({
       status: 500,
       info: 'Ops, aconteceu um erro no servidor interno.',
       resultado: 'error',
+      logs: [
+        { etapa: "Recebendo link", valor: req.query.link },
+        { etapa: "Erro no processamento", valor: errorMessage }
+      ]
     });
   }
 }
