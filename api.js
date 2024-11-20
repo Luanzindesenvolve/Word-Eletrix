@@ -367,10 +367,24 @@ router.get('/affect', async (req, res) => {
       });
     }
 
+    // Gerando o arquivo com a função 'affect'
     const filePath = await affect(image); // Passando o link para a função 'affect'
     logs.push({ etapa: "Arquivo gerado", valor: filePath });
     console.log("[/affect] Caminho do arquivo gerado:", filePath);
 
+    // Verificando se o arquivo realmente existe antes de tentar enviar
+    if (!fs.existsSync(filePath)) {
+      logs.push({ etapa: "Erro", valor: "Arquivo não encontrado." });
+      console.error("[/affect] Arquivo não encontrado:", filePath);
+      return res.status(500).json({
+        status: 500,
+        info: "Arquivo não encontrado.",
+        resultado: "error",
+        logs
+      });
+    }
+
+    // Enviando o arquivo gerado
     res.sendFile(filePath, (err) => {
       if (err) {
         logs.push({ etapa: "Erro ao enviar arquivo", valor: err.message });
