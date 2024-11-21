@@ -7,7 +7,6 @@ const request = require('request');
 const yts = require("yt-search")
 const qs = require("qs")
 const fs = require('fs-extra')
-const fs = require('fs')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
 const encodeUrl = require('encodeurl');
 const linkfy = require('linkifyjs')
