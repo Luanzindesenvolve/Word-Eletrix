@@ -104,7 +104,7 @@ async function affect(imageUrl) {
     }
 
     // Gera a imagem com a função 'bolsonaro' do objeto 'Caxinha.canvas'
-    const img = await Caxinha.canvas.bolsonaro(imageUrl);
+    const img = await Caxinha.canvas.affect(imageUrl);
 
     // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');
