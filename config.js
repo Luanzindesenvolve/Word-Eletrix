@@ -7,6 +7,7 @@ const request = require('request');
 const yts = require("yt-search")
 const qs = require("qs")
 const fs = require('fs-extra')
+const fs = require('fs')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
 const encodeUrl = require('encodeurl');
 const linkfy = require('linkifyjs')
@@ -99,19 +100,32 @@ async function bolsonaro(imageUrl) {
 }
 
 async function affect(req, res) {
-try {
-const image = req.query.link;
-if(!image) return res.json({message: "faltando o parâmetro image"})
-  img = await Caxinha.canvas.affect(`${image}`);
-  await fs.writeFileSync(__path+'/assets/canvasimg.png', img)
-  res.sendFile(__path+'/assets/canvasimg.png')
-	} catch(err) {
-		console.log(err)
-		res.status(500).send({
-			status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
-		})
-	}
+    try {
+        const image = req.query.link;
+        if (!image) return res.json({ message: "Faltando o parâmetro image" });
+
+        // Processa a imagem usando o módulo
+        const img = await Caxinha(image);
+
+        // Define o caminho e salva a imagem
+        const filePath = `${__path}/assets/canvasimg.png`;
+        await fs.promises.writeFile(filePath, img);
+
+        // Verifica e envia o arquivo gerado
+        if (!fs.existsSync(filePath)) {
+            return res.status(500).json({ error: "Arquivo não gerado corretamente." });
+        }
+        res.sendFile(filePath);
+    } catch (err) {
+        console.error("Erro na função affect:", err.message);
+        res.status(500).send({
+            status: 500,
+            info: "Ops, aconteceu um erro no servidor interno.",
+            resultado: "error",
+        });
+    }
 }
+
 async function beautiful(imageUrl) {
   try {
     if (!imageUrl) {
