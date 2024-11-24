@@ -100,12 +100,18 @@ async function bolsonaro(imageUrl) {
 
 async function affect(req, res) {
   try {
+    // Verifica se o parâmetro 'link' existe na query
+    if (!req.query || !req.query.link) {
+      return res.status(400).json({
+        status: 400,
+        info: "Faltando o parâmetro 'link'.",
+        resultado: "error",
+      });
+    }
+
     const imageUrl = req.query.link;
 
-    // Verifica se o parâmetro 'link' foi enviado
-    if (!imageUrl) {
-      throw new Error('Faltando o parâmetro "link"');
-    }
+    console.log("[/affect] Link recebido:", imageUrl);
 
     // Gera a imagem usando a função 'bolsonaro' do objeto 'Caxinha.canvas'
     const img = await Caxinha.canvas.bolsonaro(imageUrl);
@@ -128,26 +134,25 @@ async function affect(req, res) {
     // Envia o arquivo gerado para o cliente
     res.sendFile(filePath, (err) => {
       if (err) {
-        console.error("Erro ao enviar o arquivo:", err.message);
-        res.status(500).json({
+        console.error("[/affect] Erro ao enviar arquivo:", err.message);
+        return res.status(500).json({
           status: 500,
           info: "Erro ao enviar o arquivo gerado.",
           resultado: "error",
         });
       } else {
-        console.log("Arquivo enviado com sucesso:", filePath);
+        console.log("[/affect] Arquivo enviado com sucesso:", filePath);
       }
     });
   } catch (err) {
-    console.error("Erro na função affect:", err.message);
+    console.error("[/affect] Erro no processamento:", err.message);
     res.status(500).json({
       status: 500,
-      info: "Erro ao gerar imagem: " + err.message,
+      info: "Erro no processamento: " + err.message,
       resultado: "error",
     });
   }
 }
-
 async function beautiful(imageUrl) {
   try {
     if (!imageUrl) {
