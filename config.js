@@ -99,30 +99,53 @@ async function bolsonaro(imageUrl) {
 }
 
 async function affect(req, res) {
-    try {
-        const image = req.query.link;
-        if (!image) return res.json({ message: "Faltando o parâmetro image" });
+  try {
+    const imageUrl = req.query.link;
 
-        // Processa a imagem usando o módulo
-        const img = await Caxinha(image);
-
-        // Define o caminho e salva a imagem
-        const filePath = `${__path}/assets/canvasimg.png`;
-        await fs.promises.writeFile(filePath, img);
-
-        // Verifica e envia o arquivo gerado
-        if (!fs.existsSync(filePath)) {
-            return res.status(500).json({ error: "Arquivo não gerado corretamente." });
-        }
-        res.sendFile(filePath);
-    } catch (err) {
-        console.error("Erro na função affect:", err.message);
-        res.status(500).send({
-            status: 500,
-            info: "Ops, aconteceu um erro no servidor interno.",
-            resultado: "error",
-        });
+    // Verifica se o parâmetro 'link' foi enviado
+    if (!imageUrl) {
+      throw new Error('Faltando o parâmetro "link"');
     }
+
+    // Gera a imagem usando a função 'bolsonaro' do objeto 'Caxinha.canvas'
+    const img = await Caxinha.canvas.bolsonaro(imageUrl);
+
+    // Define o caminho para o diretório onde as imagens serão armazenadas
+    const dirPath = path.join(__dirname, "Canvas2", "src", "assets");
+
+    // Verifica se o diretório 'assets' existe, se não, cria
+    if (!fs.existsSync(dirPath)) {
+      await fs.promises.mkdir(dirPath, { recursive: true });
+    }
+
+    // Gera um nome único para o arquivo da imagem, baseado no timestamp
+    const fileName = `canvasimg-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    // Escreve a imagem gerada no diretório 'assets'
+    await fs.promises.writeFile(filePath, img);
+
+    // Envia o arquivo gerado para o cliente
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.error("Erro ao enviar o arquivo:", err.message);
+        res.status(500).json({
+          status: 500,
+          info: "Erro ao enviar o arquivo gerado.",
+          resultado: "error",
+        });
+      } else {
+        console.log("Arquivo enviado com sucesso:", filePath);
+      }
+    });
+  } catch (err) {
+    console.error("Erro na função affect:", err.message);
+    res.status(500).json({
+      status: 500,
+      info: "Erro ao gerar imagem: " + err.message,
+      resultado: "error",
+    });
+  }
 }
 
 async function beautiful(imageUrl) {
