@@ -352,13 +352,16 @@ router.get('/bolsonaro', async (req, res) => {
 
 router.get('/affect', async (req, res) => {
   const logs = []; // Array para registrar os logs que serão retornados no JSON
+
   try {
+    // Obtém o link da imagem da query
     const image = req.query.link;
     logs.push({ etapa: "Recebendo link", valor: image });
     console.log("[/affect] Link recebido:", image);
 
+    // Verifica se o parâmetro 'link' foi enviado
     if (!image) {
-      logs.push({ etapa: "Erro", valor: "Faltando o parâmetro link." });
+      logs.push({ etapa: "Erro", valor: "Faltando o parâmetro 'link'." });
       return res.status(400).json({
         status: 400,
         info: "Faltando o parâmetro 'link'.",
@@ -411,6 +414,7 @@ router.get('/affect', async (req, res) => {
     });
   }
 });
+
 router.get('/beautiful', async (req, res) => {
   try {
     // Passando 'req' e 'res' para a função 'beautiful'
