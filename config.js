@@ -97,7 +97,6 @@ async function bolsonaro(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
 async function affect(req, res) {
   try {
     // Verifica se o parâmetro 'link' existe na query
@@ -110,11 +109,18 @@ async function affect(req, res) {
     }
 
     const imageUrl = req.query.link;
-
     console.log("[/affect] Link recebido:", imageUrl);
 
-    // Gera a imagem usando a função 'bolsonaro' do objeto 'Caxinha.canvas'
+    // Gera a imagem usando a função 'affect' do objeto 'Caxinha.canvas'
     const img = await Caxinha.canvas.affect(imageUrl);
+
+    if (!img) {
+      return res.status(500).json({
+        status: 500,
+        info: "Erro ao gerar a imagem.",
+        resultado: "error",
+      });
+    }
 
     // Define o caminho para o diretório onde as imagens serão armazenadas
     const dirPath = path.join(__dirname, "Canvas2", "src", "assets");
@@ -132,7 +138,7 @@ async function affect(req, res) {
     await fs.promises.writeFile(filePath, img);
 
     // Envia o arquivo gerado para o cliente
-    res.sendFile(filePath, (err) => {
+    res.sendFile(filePath, { root: __dirname }, (err) => {
       if (err) {
         console.error("[/affect] Erro ao enviar arquivo:", err.message);
         return res.status(500).json({
