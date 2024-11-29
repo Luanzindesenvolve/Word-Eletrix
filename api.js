@@ -700,7 +700,7 @@ router.get('/bing', async (req, res) => {
 });
 router.get('/jogosdodia', async (req, res) => {
   try {
-    const { data } = await axios.get('https://multicanais.ninja/');
+    const { data } = await axios.get('https://multicanais.red/');
     const $ = cheerio.load(data);
     const jogos = [];
 
@@ -723,7 +723,7 @@ router.get('/jogosdodia', async (req, res) => {
 
 router.get('/ufc', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/ufc-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/ufc-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -754,7 +754,7 @@ router.get('/ufc', async (req, res) => {
 
 router.get('/basquete', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/basquete-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/basquete-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -786,7 +786,7 @@ router.get('/basquete', async (req, res) => {
 
 router.get('/nfl', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/nfl-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/nfl-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -817,7 +817,7 @@ router.get('/nfl', async (req, res) => {
 
  router.get('/ucl', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/champions-league-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/champions-league-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -848,7 +848,7 @@ router.get('/nfl', async (req, res) => {
 
 router.get('/brasileirao', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/brasileiro-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/brasileiro-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -878,7 +878,7 @@ router.get('/brasileirao', async (req, res) => {
 });
 router.get('/tv', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/tv-online/';
+    const siteUrl = 'https://multicanais.red/assistir/tv-online/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -908,7 +908,7 @@ router.get('/tv', async (req, res) => {
 });
 router.get('/esportedodia', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/esportes-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/esportes-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -939,7 +939,7 @@ router.get('/esportedodia', async (req, res) => {
 });
 router.get('/futebol', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.ninja/assistir/futebol-ao-vivo/';
+    const siteUrl = 'https://multicanais.red/assistir/futebol-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
