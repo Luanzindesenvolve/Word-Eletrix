@@ -906,7 +906,6 @@ router.get('/tv', async (req, res) => {
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
-
 router.get('/esportedodia', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/esportes-ao-vivo/';
@@ -914,18 +913,22 @@ router.get('/esportedodia', async (req, res) => {
 
     const $ = cheerio.load(data);
 
-    // Seleciona o elemento desejado
-    const entry = $('.entry-image a');
-    const title = entry.attr('title');
-    const link = entry.attr('href');
-    const image = entry.find('img').attr('src');
+    // Seleciona todos os elementos desejados
+    const entries = $('.entry-image a');
+    const results = [];
 
-    if (title && link && image) {
-      res.json({
-        title,
-        link,
-        image,
-      });
+    entries.each((index, element) => {
+      const title = $(element).attr('title');
+      const link = $(element).attr('href');
+      const image = $(element).find('img').attr('src');
+
+      if (title && link && image) {
+        results.push({ title, link, image });
+      }
+    });
+
+    if (results.length > 0) {
+      res.json(results);
     } else {
       res.status(404).json({ error: 'Informações não encontradas.' });
     }
@@ -934,7 +937,6 @@ router.get('/esportedodia', async (req, res) => {
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
-
 router.get('/futebol', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.ninja/assistir/futebol-ao-vivo/';
