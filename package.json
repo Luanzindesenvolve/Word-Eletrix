@@ -9,7 +9,7 @@
   "author": "luanzin dev",
   "license": "MIT",
   "dependencies": {
-    "express": "^20.18.1",
+    "express": "^4.18.2",
     "axios": "",
     "yt-search": "",
     "request": "",
