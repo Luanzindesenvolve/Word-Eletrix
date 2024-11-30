@@ -698,6 +698,58 @@ router.get('/bing', async (req, res) => {
     res.status(500).json({ error: 'Erro ao raspar conteúdo do Bing' });
   }
 });
+router.get('/guia-filmes', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Filmes');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+// Rota GET para pegar a programação de séries
+router.get('/guia-series', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Series');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+
 router.get('/jogosdodia', async (req, res) => {
   try {
     const { data } = await axios.get('https://multicanais.red/');
@@ -719,6 +771,157 @@ router.get('/jogosdodia', async (req, res) => {
     console.error(error);
     res.status(500).send('Erro ao processar a solicitação.');
   }
+});
+router.get('/guia-sportes', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Esportes');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+
+router.get('/guia-infantil', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Infantil');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+router.get('/guia-variedades', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Variedades');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+router.get('/guia-documentarios', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Documentarios');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+router.get('/guia-noticias', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Noticias');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
+});
+router.get('/guia-aberta', async (req, res) => {
+    try {
+        const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Aberta');
+        const $ = cheerio.load(data);
+        const programacao = [];
+
+        $('li').each((i, element) => {
+            const canal = $(element).find('h2').text().trim();
+            const programas = [];
+            
+            $(element).find('h3').each((i, programElement) => {
+                const hora = $(programElement).find('strong').text().trim();
+                const titulo = $(programElement).text().replace(hora, '').trim();
+                programas.push({ hora, titulo });
+            });
+
+            programacao.push({ canal, programas });
+        });
+
+        res.json(programacao);
+    } catch (error) {
+        console.error('Erro ao raspar os dados:', error);
+        res.status(500).send('Erro ao buscar programação');
+    }
 });
 
 router.get('/ufc', async (req, res) => {
