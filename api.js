@@ -165,7 +165,7 @@ async function searchVideoByName(name) {
 }
 
 // Rota para buscar e baixar áudio
-router.get('/musica', async (req, res) => {
+router.get('/audio', async (req, res) => {
   const { name } = req.query;  // Obtém o nome da música da query string
 
   if (!name) {
@@ -182,7 +182,7 @@ router.get('/musica', async (req, res) => {
 });
 
 // Rota para buscar e baixar vídeo
-router.get('/clipe', async (req, res) => {
+router.get('/video', async (req, res) => {
   const { name } = req.query;  // Obtém o nome do vídeo da query string
 
   if (!name) {
@@ -200,7 +200,7 @@ router.get('/clipe', async (req, res) => {
 
 
 // Rota para baixar áudio
-router.get('/linkmp3', async (req, res) => {
+router.get('/linkaudio', async (req, res) => {
   const { url } = req.query;  // Obtém o URL da query string
 
   if (!url) {
@@ -216,7 +216,7 @@ router.get('/linkmp3', async (req, res) => {
 });
 
 // Rota para baixar vídeo
-router.get('/linkmp4', async (req, res) => {
+router.get('/linkvideo', async (req, res) => {
   const { url } = req.query;  // Obtém o URL da query string
 
   if (!url) {
@@ -3518,7 +3518,7 @@ router.get('/spotify2', async (req, res) => {
     }
 });
 // Rota para buscar e converter vídeo para MP3 e enviar como stream
-router.get('/musica2', async (req, res) => {
+router.get('/musica', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
@@ -3550,7 +3550,7 @@ router.get('/musica2', async (req, res) => {
     }
 });
 
-router.get('/clipe2', async (req, res) => {
+router.get('/clipe', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do clipe: ${videoName}`);
@@ -3605,7 +3605,7 @@ router.get('/clipe2', async (req, res) => {
 
 
 // Rota para baixar MP3 com qualidade automática (melhor disponível) e enviar o arquivo
-router.get('/linkmp33', async (req, res) => {
+router.get('/linkmp3', async (req, res) => {
     const url = req.query.url;
 
     try {
@@ -3653,7 +3653,7 @@ router.get('/linkmp33', async (req, res) => {
 });
 
 // Rota para baixar MP4 com qualidade automática (melhor disponível)
-router.get('/linkmp44', async (req, res) => {
+router.get('/linkmp4', async (req, res) => {
     const url = req.query.url;
 
     try {
