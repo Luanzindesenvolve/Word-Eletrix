@@ -923,7 +923,9 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
-router.get('/jogosdehoje', async (req, res) => {
+
+
+ router.get('/jogosdehoje', async (req, res) => {
   try {
     const url = 'https://onefootball.com/pt-br/jogos';
     const response = await axios.get(url);
@@ -934,17 +936,21 @@ router.get('/jogosdehoje', async (req, res) => {
     const jogosFimDeJogo = [];
 
     $('article.SimpleMatchCard').each((index, element) => {
-      const campeonato = $(element).find('.screen-reader-only').text();
-      const timeCasa = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(0).text();
-      const timeFora = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(1).text();
-      const horario = $(element).find('time').text();
-      const status = $(element).find('.SimpleMatchCard_simpleMatchCard__infoMessage___NJqW').text().trim();
+      const campeonato = $(element).find('.screen-reader-only').text().trim();
+      const timeCasa = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(0).text().trim();
+      const timeFora = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(1).text().trim();
+      const horario = $(element).find('.SimpleMatchCard_simpleMatchCard__infoMessage___NJqW').text().trim();
       const resultado = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__score__UYMc_').text().trim();
+      
+      // Verificar status
+      let status = $(element).find('.SimpleMatchCard_simpleMatchCard__infoMessage__secondary__hisY4').text().trim();
+      if (!status) {
+        status = $(element).find('.SimpleMatchCard_simpleMatchCard__live__kg0bW').text().trim();  // Se não encontrar "Fim de jogo", tenta pegar o minuto.
+      }
 
-      // Extraindo o tempo (minuto ou status)
       let tempo = $(element).find('.SimpleMatchCard_simpleMatchCard__live__kg0bW').text().trim();
       if (!tempo) {
-        tempo = status;  // Se não houver tempo, usa o status (Fim de jogo, etc.)
+        tempo = status;  // Caso não encontre o tempo, utiliza o status como "Fim de jogo" ou outro.
       }
 
       // Classificando os jogos
