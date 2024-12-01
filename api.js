@@ -923,7 +923,73 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
+router.get('/jogosdehoje', async (req, res) => {
+  try {
+    const url = 'https://onefootball.com/pt-br/jogos';
+    const response = await axios.get(url);
+    const $ = cheerio.load(response.data);  // Carregar a página HTML
 
+    const jogosAindaHoje = [];
+    const jogosAoVivo = [];
+    const jogosFimDeJogo = [];
+
+    $('article.SimpleMatchCard').each((index, element) => {
+      const campeonato = $(element).find('.screen-reader-only').text();
+      const timeCasa = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(0).text();
+      const timeFora = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').eq(1).text();
+      const horario = $(element).find('time').text();
+      const status = $(element).find('.SimpleMatchCard_simpleMatchCard__infoMessage___NJqW').text().trim();
+      const resultado = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__score__UYMc_').text().trim();
+
+      // Extraindo o tempo (minuto ou status)
+      let tempo = $(element).find('.SimpleMatchCard_simpleMatchCard__live__kg0bW').text().trim();
+      if (!tempo) {
+        tempo = status;  // Se não houver tempo, usa o status (Fim de jogo, etc.)
+      }
+
+      // Classificando os jogos
+      if (status === "Fim de jogo" || tempo === "Fim de jogo") {
+        jogosFimDeJogo.push({
+          campeonato,
+          timeCasa,
+          timeFora,
+          horario,
+          status: "Fim de jogo",
+          tempo: "Fim de jogo",
+          resultado
+        });
+      } else if (tempo) {
+        jogosAoVivo.push({
+          campeonato,
+          timeCasa,
+          timeFora,
+          horario,
+          status: "Ao vivo",
+          tempo
+        });
+      } else {
+        jogosAindaHoje.push({
+          campeonato,
+          timeCasa,
+          timeFora,
+          horario,
+          status: "Ainda hoje",
+          tempo: horario
+        });
+      }
+    });
+
+    // Retorna os jogos organizados por categoria
+    res.json({
+      ainda_hoje: jogosAindaHoje,
+      ao_vivo: jogosAoVivo,
+      fim_de_jogo: jogosFimDeJogo
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar jogos' });
+  }
+});
 router.get('/ufc', async (req, res) => {
   try {
     const siteUrl = 'https://multicanais.red/assistir/ufc-ao-vivo/';
