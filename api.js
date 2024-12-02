@@ -934,19 +934,11 @@ router.get('/jogosdehoje', async (req, res) => {
     $('article').each((index, element) => {
       const time1 = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').first().text().trim();
       const time2 = $(element).find('.SimpleMatchCardTeam_simpleMatchCardTeam__name__7Ud8D').last().text().trim();
-
-      let horario = $(element).find('time').text().trim();
-      if (!horario) {
-        horario = "Hoje"; // Define "Hoje" se o horário estiver vazio
-      }
-
-      let status = $(element)
+      const horario = $(element).find('time').text().trim();
+      const status = $(element)
         .find('.title-8-medium.SimpleMatchCard_simpleMatchCard__infoMessage___NJqW.SimpleMatchCard_simpleMatchCard__infoMessage__secondary__hisY4')
         .text()
         .trim();
-      if (!status) {
-        status = "Fim de jogo"; // Define "Fim de jogo" se o status estiver vazio
-      }
 
       // Separando o placar corretamente
       const placarTime1 = $(element)
