@@ -923,44 +923,53 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
-// Rota para buscar as informações de standings
 router.get('/tabelaucl', async (req, res) => {
   try {
-    // URL da página que contém a tabela
-    const url = process.env.STANDINGS_URL || 'https://onefootball.com/pt-br/competicao/uefa-liga-dos-campeoes-5/tabela';
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/uefa-liga-dos-campeoes-5/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://image-service.onefootball.com/transform?w=128&dpr=2&image=https://images.onefootball.com/icons/leagueColoredCompetition/128/5.png'; // Logo da competição
 
-    // Fazendo a requisição HTTP para obter o HTML da página
-    const { data: html } = await axios.get(url);
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
 
-    // Carrega o HTML com o cheerio
-    const $ = cheerio.load(html);
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
 
-    // Array para armazenar os dados dos times
-    const standings = [];
-
-    // Seleciona os elementos da tabela (ajuste os seletores de acordo com o HTML real)
-    $('div[class*="Standing_standings__teamName__"]').each((_, element) => {
-      const teamName = $(element).text().trim();
-      const matchesPlayed = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(0).text().trim();
-      const points = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(1).text().trim();
-      const goalDifference = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
-      const imageSrc = 'https://image-service.onefootball.com/transform?w=128&dpr=2&image=https://images.onefootball.com/icons/leagueColoredCompetition/128/5';
-
-      // Adiciona os dados no array
-      standings.push({
-        nomeTime: teamName,
-        partidas: matchesPlayed,
-        pontos: points,
-        saldoDeGols: goalDifference,
-        imagem: imageSrc
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
       });
     });
 
-    // Retorna os dados como JSON
-    res.json(standings);
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
   } catch (error) {
-    console.error('Erro ao buscar standings:', error.message);
-    res.status(500).json({ error: `Erro ao buscar standings: ${error.message}` });
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
   }
 });
 
