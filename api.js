@@ -923,6 +923,48 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
+// Rota para buscar as informações de standings
+router.get('/tabelaucl', async (req, res) => {
+  try {
+    // URL da página que contém a tabela
+    const url = process.env.STANDINGS_URL || 'https://onefootball.com/pt-br/competicao/uefa-liga-dos-campeoes-5/tabela';
+
+    // Fazendo a requisição HTTP para obter o HTML da página
+    const { data: html } = await axios.get(url);
+
+    // Carrega o HTML com o cheerio
+    const $ = cheerio.load(html);
+
+    // Array para armazenar os dados dos times
+    const standings = [];
+
+    // Seleciona os elementos da tabela (ajuste os seletores de acordo com o HTML real)
+    $('div[class*="Standing_standings__teamName__"]').each((_, element) => {
+      const teamName = $(element).text().trim();
+      const matchesPlayed = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(0).text().trim();
+      const points = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(1).text().trim();
+      const goalDifference = $(element).siblings('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const imageSrc = 'https://image-service.onefootball.com/transform?w=128&dpr=2&image=https://images.onefootball.com/icons/leagueColoredCompetition/128/5';
+
+      // Adiciona os dados no array
+      standings.push({
+        nomeTime: teamName,
+        partidas: matchesPlayed,
+        pontos: points,
+        saldoDeGols: goalDifference,
+        imagem: imageSrc
+      });
+    });
+
+    // Retorna os dados como JSON
+    res.json(standings);
+  } catch (error) {
+    console.error('Erro ao buscar standings:', error.message);
+    res.status(500).json({ error: `Erro ao buscar standings: ${error.message}` });
+  }
+});
+
+
 router.get('/jogosdehoje', async (req, res) => {
   const url = 'https://onefootball.com/pt-br/jogos'; // URL do site
 
