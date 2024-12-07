@@ -1169,6 +1169,153 @@ router.get('/tabela-seriea', async (req, res) => {
     res.status(500).json({ error: 'Erro ao extrair dados' });
   }
 });
+router.get('/tabela-brasileirao', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/brasileirao-betano-16/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F16.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=443e5027b246f937cde0011c87456acd'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
+router.get('/tabela-ligue1', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/ligue-1-23/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F23.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=f8636d26087d579e11e307fca6a3077e'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
+router.get('/tabela-portugal', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/liga-portugal-35/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F35.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=5def0cd8a2e18cd7a49483556f60ab72'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
 router.get('/jogosdehoje', async (req, res) => {
   const url = 'https://onefootball.com/pt-br/jogos'; // URL do site
 
