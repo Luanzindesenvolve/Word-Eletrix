@@ -923,7 +923,7 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
-router.get('/tabelaucl', async (req, res) => {
+router.get('/tabela-ucl', async (req, res) => {
   try {
     const response = await axios.get('https://onefootball.com/pt-br/competicao/uefa-liga-dos-campeoes-5/tabela');
     
@@ -973,7 +973,202 @@ router.get('/tabelaucl', async (req, res) => {
   }
 });
 
+router.get('/tabela-laliga', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/laliga-10/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F10.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=e463b392a49b852072242e4858d597a4'; // Logo da competição
 
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
+router.get('/tabela-premierleague', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/premier-league-9/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F9.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=af2ee309c6dafeb5c5f604e89ce8a94c'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
+router.get('/tabela-bundesliga', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/bundesliga-1/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F1.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=d1874d598b463068260f0f91daef42a5'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
+router.get('/tabela-seriea', async (req, res) => {
+  try {
+    const response = await axios.get('https://onefootball.com/pt-br/competicao/serie-a-13/tabela');
+    
+    // Carregar a página HTML com o cheerio
+    const $ = cheerio.load(response.data);
+    
+    const tabela = [];
+    const logo = 'https://oneftbl-cms.imgix.net/https%3A%2F%2Fimages.onefootball.com%2Ficons%2FleagueColoredCompetition%2F128%2F13.png?auto=format%2Ccompress&crop=faces&dpr=2&fit=crop&h=0&q=25&w=256&s=9d87b0266c49182b3d11937ba59f8a82'; // Logo da competição
+
+    // Agora pegamos as linhas que contêm os dados de cada time
+    $('li.Standing_standings__row__5sdZG').each((index, element) => {
+      const posicao = $(element).find('.Standing_standings__cell__5Kd0W span').first().text().trim();
+      const time = $(element).find('.title-7-medium.Standing_standings__teamName__psv61').text().trim();
+      
+      // Evitar adicionar time vazio
+      if (!time) return;
+
+      const jogos = $(element).find('.Standing_standings__cell__5Kd0W').eq(2).text().trim();
+      const vitorias = $(element).find('.Standing_standings__cell__5Kd0W').eq(3).text().trim();
+      const empates = $(element).find('.Standing_standings__cell__5Kd0W').eq(4).text().trim();
+      const derrotas = $(element).find('.Standing_standings__cell__5Kd0W').eq(5).text().trim();
+      const saldo = $(element).find('.Standing_standings__cell__5Kd0W').eq(6).text().trim();
+      const pontos = $(element).find('.Standing_standings__cell__5Kd0W').eq(7).text().trim();
+
+      tabela.push({
+        time,
+        posicao,
+        jogos,
+        vitorias,
+        empates,
+        derrotas,
+        saldo,
+        pontos
+      });
+    });
+
+    // Adiciona a logo no início da resposta
+    const responseData = {
+      logo,
+      tabela
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao extrair dados' });
+  }
+});
 router.get('/jogosdehoje', async (req, res) => {
   const url = 'https://onefootball.com/pt-br/jogos'; // URL do site
 
@@ -1015,7 +1210,7 @@ router.get('/jogosdehoje', async (req, res) => {
 });
 router.get('/ufc', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/ufc-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/ufc-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1046,7 +1241,7 @@ router.get('/ufc', async (req, res) => {
 
 router.get('/basquete', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/basquete-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/basquete-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1078,7 +1273,7 @@ router.get('/basquete', async (req, res) => {
 
 router.get('/nfl', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/nfl-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/nfl-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1109,7 +1304,7 @@ router.get('/nfl', async (req, res) => {
 
  router.get('/ucl', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/champions-league-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/champions-league-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1140,7 +1335,7 @@ router.get('/nfl', async (req, res) => {
 
 router.get('/brasileirao', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/brasileiro-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/brasileiro-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1170,7 +1365,7 @@ router.get('/brasileirao', async (req, res) => {
 });
 router.get('/tv', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/tv-online/';
+    const siteUrl = 'https://multicanais.games/assistir/tv-online/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1200,7 +1395,7 @@ router.get('/tv', async (req, res) => {
 });
 router.get('/esportedodia', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/esportes-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/esportes-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
@@ -1231,7 +1426,7 @@ router.get('/esportedodia', async (req, res) => {
 });
 router.get('/futebol', async (req, res) => {
   try {
-    const siteUrl = 'https://multicanais.red/assistir/futebol-ao-vivo/';
+    const siteUrl = 'https://multicanais.games/assistir/futebol-ao-vivo/';
     const { data } = await axios.get(siteUrl);
 
     const $ = cheerio.load(data);
