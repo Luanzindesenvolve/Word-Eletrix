@@ -923,6 +923,76 @@ router.get('/guia-aberta', async (req, res) => {
         res.status(500).send('Erro ao buscar programação');
     }
 });
+router.get('/jogador/:nome', async (req, res) => {
+  const nomeJogador = req.params.nome;
+  console.log(`Iniciando busca para o jogador: ${nomeJogador}`);
+
+  try {
+    const urlBusca = `https://onefootball.com/pt-br/busca?q=${nomeJogador}`;
+    console.log(`Fazendo requisição para buscar jogador: ${urlBusca}`);
+
+    // Faz a requisição para a página de busca
+    const responseBusca = await axios.get(urlBusca);
+    console.log('Página de busca carregada com sucesso');
+
+    const $ = cheerio.load(responseBusca.data);
+
+    // Localiza o link do jogador na lista de resultados que contém "jogador/"
+    const jogadorLinkRelativo = $('a').filter(function() {
+      return $(this).attr('href') && $(this).attr('href').includes('/jogador/');
+    }).attr('href');
+
+    if (!jogadorLinkRelativo) {
+      console.log('Jogador não encontrado');
+      return res.status(404).json({ error: 'Jogador não encontrado' });
+    }
+
+    const jogadorLink = `https://onefootball.com${jogadorLinkRelativo}`;
+    console.log(`Link do jogador encontrado: ${jogadorLink}`);
+
+    // Faz a requisição para a página do jogador
+    const urlJogador = jogadorLink;
+    console.log(`Fazendo requisição para a página do jogador: ${urlJogador}`);
+    const responseJogador = await axios.get(urlJogador);
+    console.log('Página do jogador carregada com sucesso');
+
+    const $$ = cheerio.load(responseJogador.data);
+
+    // Coleta as informações do jogador
+    const time = $$('p.EntityNavigationLink_title__zbfTk.title-7-bold').text().trim();
+    const idade = $$('p.TransferDetails_entryTitle__5Oqq_').eq(0).text().trim();
+    const posicao = $$('p.TransferDetails_entryTitle__5Oqq_').eq(1).text().trim();
+    const pais = $$('p.TransferDetails_entryTitle__5Oqq_').eq(2).text().trim();
+    const altura = $$('p.TransferDetails_entryTitle__5Oqq_').eq(3).text().trim();
+    const peso = $$('p.TransferDetails_entryTitle__5Oqq_').eq(4).text().trim();
+    const numeroCamisa = $$('p.TransferDetails_entryTitle__5Oqq_').eq(5).text().trim();
+
+    // Log dos dados extraídos
+    console.log('Dados do jogador extraídos:');
+    console.log(`Time: ${time}`);
+    console.log(`Idade: ${idade}`);
+    console.log(`Posição: ${posicao}`);
+    console.log(`País: ${pais}`);
+    console.log(`Altura: ${altura}`);
+    console.log(`Peso: ${peso}`);
+    console.log(`Número da camisa: ${numeroCamisa}`);
+
+    // Envia os dados para o cliente
+    res.json({
+      nome: nomeJogador,
+      time,
+      idade,
+      posicao,
+      pais,
+      altura,
+      peso,
+      numeroCamisa,
+    });
+  } catch (error) {
+    console.error('Erro ao buscar informações:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar informações' });
+  }
+});
 router.get('/tabela-ucl', async (req, res) => {
   try {
     const response = await axios.get('https://onefootball.com/pt-br/competicao/uefa-liga-dos-campeoes-5/tabela');
