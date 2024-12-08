@@ -772,7 +772,7 @@ router.get('/jogosdodia', async (req, res) => {
     res.status(500).send('Erro ao processar a solicitação.');
   }
 });
-router.get('/guia-sportes', async (req, res) => {
+router.get('/guia-esportes', async (req, res) => {
     try {
         const { data } = await axios.get('https://meuguia.tv/programacao/categoria/Esportes');
         const $ = cheerio.load(data);
