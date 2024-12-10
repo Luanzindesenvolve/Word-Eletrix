@@ -4,7 +4,13 @@ const apiRoutes = require('./api');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+// bloquear arquivos.js
+app.use((req, res, next) => {
+  if (req.url.endsWith('.js')) {
+    return res.status(403).send('Acesso negado');
+  }
+  next();
+});
 // Define o diretório público para servir os arquivos estáticos
 app.use(express.static(path.join(__dirname)));
 
@@ -28,13 +34,7 @@ app.get('/:page', (req, res) => {
     }
   });
 });
-// bloquear arquivos.js
-app.use((req, res, next) => {
-  if (req.url.endsWith('.js')) {
-    return res.status(403).send('Acesso negado');
-  }
-  next();
-});
+
 // Usar as rotas do api.js para qualquer caminho que comece com /api
 app.use('/api', apiRoutes);
 
