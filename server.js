@@ -29,15 +29,12 @@ app.get('/:page', (req, res) => {
   });
 });
 // bloquear arquivos.js
-app.use(
-  express.static(path.join(__dirname), {
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith('.js')) {
-        res.status(403).send('Acesso negado');
-      }
-    },
-  })
-);
+app.use((req, res, next) => {
+  if (req.url.endsWith('.js')) {
+    return res.status(403).send('Acesso negado');
+  }
+  next();
+});
 // Usar as rotas do api.js para qualquer caminho que comece com /api
 app.use('/api', apiRoutes);
 
