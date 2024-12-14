@@ -752,7 +752,7 @@ router.get('/guia-series', async (req, res) => {
 
 router.get('/jogosdodia', async (req, res) => {
   try {
-    const { data } = await axios.get('https://multicanais.red/');
+    const { data } = await axios.get('https://multicanais.games/');
     const $ = cheerio.load(data);
     const jogos = [];
 
