@@ -178,7 +178,7 @@ router.get('/likesff', async (req, res) => {
       console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /like ${id}`);
 
       // Aguarda 10 segundos antes de começar a processar mensagens
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       console.log('Esperou 10 segundos. Agora vai processar as mensagens.');
 
       const handleResponse = new Promise((resolve, reject) => {
@@ -205,7 +205,7 @@ router.get('/likesff', async (req, res) => {
         setTimeout(() => {
           reject('Tempo de espera esgotado');
           client.removeEventHandler(eventHandler);
-        }, 20000); // Tempo total de 20 segundos (10 segundos de espera + 10 segundos processando)
+        }, 1000); // Tempo total de 20 segundos (10 segundos de espera + 10 segundos processando)
       });
 
       try {
@@ -216,7 +216,7 @@ router.get('/likesff', async (req, res) => {
         console.error('Erro ao receber a resposta:', error);
         return res.json({
           status: false,
-          mensagem: 'Não foi possível obter uma resposta do bot. Tente novamente mais tarde.',
+          mensagem: '100 Likes enviados, não recebeu? tente novamente mais tatde.',
         });
       }
     } catch (e) {
