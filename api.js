@@ -163,11 +163,11 @@ async function searchVideoByName(name) {
   }
   throw new Error('Vídeo não encontrado');
 }
+
 router.get('/likesff', async (req, res) => {
   try {
     const id = req.query.id;
     if (!id) {
-      console.log('Parâmetro ID ausente na consulta');
       return res.json({ status: false, resultado: 'Cadê o parâmetro ID?' });
     }
 
@@ -178,13 +178,16 @@ router.get('/likesff', async (req, res) => {
       await client.sendMessage(grupoChatId, { message: `/like ${id}` });
       console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /like ${id}`);
 
+      // Aguarda 10 segundos antes de começar a processar mensagens
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      console.log('Esperou 10 segundos. Agora vai processar as mensagens.');
+
       const handleResponse = new Promise((resolve, reject) => {
         const eventHandler = async (event) => {
           try {
             const message = event.message;
-            console.log('Nova mensagem recebida:', message);
 
-            // Caso sucesso
+            // Mensagem de sucesso
             if (message && message.message.includes("👏 LIKE ENVIADO COM SUCESSO! 👏")) {
               const lines = message.message.split('\n');
               const resultado = {
@@ -199,17 +202,16 @@ router.get('/likesff', async (req, res) => {
                 velocidade: lines[8]?.replace('• Velocidade: ', '').trim(),
               };
 
-              console.log('Resposta formatada:', resultado);
               resolve({
                 status: true,
-                mensagem: 'Like enviado com sucesso!',
-                resultado
+                mensagem: 'Likes enviados com sucesso!',
+                resultado,
               });
               client.removeEventHandler(eventHandler);
               return;
             }
 
-            // Caso UID já recebeu likes
+            // Mensagem de limite de likes
             if (message && message.message.includes("❌ UID já recebeu likes hoje! 🚫")) {
               const lines = message.message.split('\n');
               const resultado = {
@@ -219,11 +221,30 @@ router.get('/likesff', async (req, res) => {
                 regiao: lines[4]?.replace('• Região: ', '').trim(),
               };
 
-              console.log('UID já recebeu likes hoje:', resultado);
               resolve({
                 status: false,
                 mensagem: 'UID já recebeu likes hoje!',
-                resultado
+                resultado,
+              });
+              client.removeEventHandler(eventHandler);
+              return;
+            }
+
+            // Mensagem de UID não encontrado
+            if (message && message.message.includes("❌ UID NÃO ENCONTRADO! 🚫")) {
+              resolve({
+                status: false,
+                mensagem: 'UID não encontrado. Verifique o ID e tente novamente.',
+              });
+              client.removeEventHandler(eventHandler);
+              return;
+            }
+
+            // Mensagem de envio inicial
+            if (message && message.message.includes("⚙️ Enviando likes... ⏳")) {
+              resolve({
+                status: true,
+                mensagem: 'Likes enviados com sucesso! (Mensagem inicial detectada)',
               });
               client.removeEventHandler(eventHandler);
               return;
@@ -238,7 +259,7 @@ router.get('/likesff', async (req, res) => {
         setTimeout(() => {
           reject('Tempo de espera esgotado');
           client.removeEventHandler(eventHandler);
-        }, 90000);
+        }, 20000); // Tempo total de 20 segundos (10 segundos de espera + 10 segundos processando)
       });
 
       try {
@@ -249,7 +270,7 @@ router.get('/likesff', async (req, res) => {
         console.error('Erro ao receber a resposta:', error);
         return res.json({
           status: false,
-          mensagem: 'Servidor caiu temporariamente, volte mais tarde'
+          mensagem: 'Likes já foram enviados no período de 24 horas. Volte mais tarde.',
         });
       }
     } catch (e) {
@@ -257,7 +278,7 @@ router.get('/likesff', async (req, res) => {
       if (!res.headersSent) {
         return res.json({
           status: false,
-          mensagem: 'Servidor caiu temporariamente, volte mais tarde'
+          mensagem: 'Não foi possível processar sua solicitação. Tente novamente mais tarde.',
         });
       }
     }
