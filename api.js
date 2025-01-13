@@ -6773,7 +6773,8 @@ router.get('/consultas', async (req, res) => {
                 message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF") ||
                 message.message.includes("as consultas completas estão apenas no melhor site") ||
                 message.message.includes("As consultas completas estão apenas no melhor site: buscardados.com.br!") || // Nova mensagem a ignorar
-                message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF.") // Nova mensagem a ignorar
+                message.message.includes("Entre no site buscardados.com.br para completar a sua pesquisa de CPF.") || // Nova mensagem a ignorar
+                message.message.includes("Exemplo de Uso: /nome lux")
             ) {
 
                 
