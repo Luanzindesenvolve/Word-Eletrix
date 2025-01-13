@@ -163,7 +163,109 @@ async function searchVideoByName(name) {
   }
   throw new Error('Vídeo não encontrado');
 }
+router.get('/likesff', async (req, res) => {
+  try {
+    const id = req.query.id;
+    if (!id) {
+      console.log('Parâmetro ID ausente na consulta');
+      return res.json({ status: false, resultado: 'Cadê o parâmetro ID?' });
+    }
 
+    console.log(`[CONSULTA]: likes para ID = ${id}`);
+
+    try {
+      // Envia a mensagem para o grupo com o comando de consulta
+      await client.sendMessage(grupoChatId, { message: `/like ${id}` });
+      console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /like ${id}`);
+
+      const handleResponse = new Promise((resolve, reject) => {
+        const eventHandler = async (event) => {
+          try {
+            const message = event.message;
+            console.log('Nova mensagem recebida:', message);
+
+            // Caso sucesso
+            if (message && message.message.includes("👏 LIKE ENVIADO COM SUCESSO! 👏")) {
+              const lines = message.message.split('\n');
+              const resultado = {
+                nome: lines[1]?.replace('• Nome: ', '').trim(),
+                uid: lines[2]?.replace('• UID: ', '').trim(),
+                nivel: lines[3]?.replace('• Nível: ', '').trim(),
+                regiao: lines[4]?.replace('• Região: ', '').trim(),
+                likes: {
+                  antes: lines[6]?.replace('• Likes Antes: ', '').trim(),
+                  agora: lines[7]?.replace('• Likes Agora: ', '').trim(),
+                },
+                velocidade: lines[8]?.replace('• Velocidade: ', '').trim(),
+              };
+
+              console.log('Resposta formatada:', resultado);
+              resolve({
+                status: true,
+                mensagem: 'Like enviado com sucesso!',
+                resultado
+              });
+              client.removeEventHandler(eventHandler);
+              return;
+            }
+
+            // Caso UID já recebeu likes
+            if (message && message.message.includes("❌ UID já recebeu likes hoje! 🚫")) {
+              const lines = message.message.split('\n');
+              const resultado = {
+                nome: lines[1]?.replace('• Nome: ', '').trim(),
+                uid: lines[2]?.replace('• UID: ', '').trim(),
+                nivel: lines[3]?.replace('• Nível: ', '').trim(),
+                regiao: lines[4]?.replace('• Região: ', '').trim(),
+              };
+
+              console.log('UID já recebeu likes hoje:', resultado);
+              resolve({
+                status: false,
+                mensagem: 'UID já recebeu likes hoje!',
+                resultado
+              });
+              client.removeEventHandler(eventHandler);
+              return;
+            }
+          } catch (err) {
+            console.error('Erro ao processar nova mensagem:', err);
+          }
+        };
+
+        client.addEventHandler(eventHandler, new NewMessage({}));
+
+        setTimeout(() => {
+          reject('Tempo de espera esgotado');
+          client.removeEventHandler(eventHandler);
+        }, 90000);
+      });
+
+      try {
+        const resultado = await handleResponse;
+        console.log('Resposta recebida antes do timeout:', resultado);
+        return res.json(resultado);
+      } catch (error) {
+        console.error('Erro ao receber a resposta:', error);
+        return res.json({
+          status: false,
+          mensagem: 'Servidor caiu temporariamente, volte mais tarde'
+        });
+      }
+    } catch (e) {
+      console.error('Erro ao enviar a mensagem de consulta ou processar a resposta:', e);
+      if (!res.headersSent) {
+        return res.json({
+          status: false,
+          mensagem: 'Servidor caiu temporariamente, volte mais tarde'
+        });
+      }
+    }
+  } catch (err) {
+    console.error('Erro na rota /likesff:', err);
+    return res.json({ status: false, resultado: 'Erro interno do servidor.' });
+  }
+});
 // Rota para buscar e baixar áudio
 router.get('/audio', async (req, res) => {
   const { name } = req.query;  // Obtém o nome da música da query string
