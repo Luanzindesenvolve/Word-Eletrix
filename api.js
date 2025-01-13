@@ -163,7 +163,6 @@ async function searchVideoByName(name) {
   }
   throw new Error('Vídeo não encontrado');
 }
-
 router.get('/likesff', async (req, res) => {
   try {
     const id = req.query.id;
@@ -187,64 +186,11 @@ router.get('/likesff', async (req, res) => {
           try {
             const message = event.message;
 
-            // Mensagem de sucesso
-            if (message && message.message.includes("👏 LIKE ENVIADO COM SUCESSO! 👏")) {
-              const lines = message.message.split('\n');
-              const resultado = {
-                nome: lines[1]?.replace('• Nome: ', '').trim(),
-                uid: lines[2]?.replace('• UID: ', '').trim(),
-                nivel: lines[3]?.replace('• Nível: ', '').trim(),
-                regiao: lines[4]?.replace('• Região: ', '').trim(),
-                likes: {
-                  antes: lines[6]?.replace('• Likes Antes: ', '').trim(),
-                  agora: lines[7]?.replace('• Likes Agora: ', '').trim(),
-                },
-                velocidade: lines[8]?.replace('• Velocidade: ', '').trim(),
-              };
-
+            if (message) {
+              console.log('Mensagem recebida:', message.message);
               resolve({
                 status: true,
-                mensagem: 'Likes enviados com sucesso!',
-                resultado,
-              });
-              client.removeEventHandler(eventHandler);
-              return;
-            }
-
-            // Mensagem de limite de likes
-            if (message && message.message.includes("❌ UID já recebeu likes hoje! 🚫")) {
-              const lines = message.message.split('\n');
-              const resultado = {
-                nome: lines[1]?.replace('• Nome: ', '').trim(),
-                uid: lines[2]?.replace('• UID: ', '').trim(),
-                nivel: lines[3]?.replace('• Nível: ', '').trim(),
-                regiao: lines[4]?.replace('• Região: ', '').trim(),
-              };
-
-              resolve({
-                status: false,
-                mensagem: 'UID já recebeu likes hoje!',
-                resultado,
-              });
-              client.removeEventHandler(eventHandler);
-              return;
-            }
-
-            // Mensagem de UID não encontrado
-            if (message && message.message.includes("❌ UID NÃO ENCONTRADO! 🚫")) {
-              resolve({
-                status: false,
-                mensagem: 'UID não encontrado. Verifique o ID e tente novamente.',
-              });
-              client.removeEventHandler(eventHandler);
-              return;
-            }
-
-            // Mensagem de envio inicial
-            if (message && message.message.includes("⚙️ Enviando likes... ⏳")) {
-              resolve({
-                status: true,
-                mensagem: 'Likes enviados com sucesso! (Mensagem inicial detectada)',
+                mensagem: message.message, // Retorna exatamente a mensagem recebida do bot
               });
               client.removeEventHandler(eventHandler);
               return;
@@ -270,7 +216,7 @@ router.get('/likesff', async (req, res) => {
         console.error('Erro ao receber a resposta:', error);
         return res.json({
           status: false,
-          mensagem: 'Likes já foram enviados no período de 24 horas. Volte mais tarde.',
+          mensagem: 'Não foi possível obter uma resposta do bot. Tente novamente mais tarde.',
         });
       }
     } catch (e) {
