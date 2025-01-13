@@ -1,1 +1,129 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Likes FF</title>
+  <style>
+    /* Fundo da página */
+    body {
+      background-image: url('sua-imagem.jpg'); /* Substitua 'sua-imagem.jpg' pelo caminho da sua imagem */
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Estilo do título */
+    h1 {
+      font-size: 60px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    /* Caixa de mensagens e input */
+    .form-container {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    /* Estilo do campo de input */
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+    }
+
+    /* Estilo do botão */
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Mensagem de sucesso */
+    .message {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      display: none;
+    }
+
+    /* Estilo do texto 'by luanzn_fe' */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 14px;
+      color: white;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Likes FF</h1>
+
+  <div class="form-container">
+    <input type="text" id="userId" placeholder="Digite o ID do usuário" />
+    <button onclick="enviarLikes()">Enviar</button>
+    <div class="message" id="message">Likes enviados com sucesso!</div>
+  </div>
+
+  <div class="footer">
+    by luanzn_fe
+  </div>
+
+  <script>
+    function enviarLikes() {
+      const userId = document.getElementById('userId').value;
+      const messageElement = document.getElementById('message');
+
+      if (!userId) {
+        alert('Por favor, insira um ID válido!');
+        return;
+      }
+
+      messageElement.style.display = 'none'; // Esconde a mensagem anterior, caso exista
+
+      // Envia a requisição para a API sem aguardar a resposta
+      fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`)
+        .then(() => {
+          messageElement.style.color = 'green'; // Cor verde para sucesso
+          messageElement.textContent = 'Likes enviados com sucesso!';
+          messageElement.style.display = 'block'; // Exibe a mensagem
+        })
+        .catch(() => {
+          messageElement.style.color = 'red'; // Cor vermelha para erro
+          messageElement.textContent = 'Erro ao conectar com a API. Tente novamente mais tarde.';
+          messageElement.style.display = 'block'; // Exibe a mensagem
+        });
+    }
+  </script>
+
+</body>
+</html>
