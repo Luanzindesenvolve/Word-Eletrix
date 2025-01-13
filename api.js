@@ -233,6 +233,36 @@ router.get('/likesff', async (req, res) => {
     return res.json({ status: false, resultado: 'Erro interno do servidor.' });
   }
 });
+
+router.get('/musica', async (req, res) => {
+    const { query } = req; // O nome da música será passado como parâmetro de consulta
+    const musicName = query.name; // Exemplo: /play?nome=nome_da_musica
+
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
+    }
+
+    try {
+        // Montar a URL da API com o nome da música
+        const apiUrl = `https://carisys.online/api/downloads/youtube/play?query=${encodeURIComponent(musicName)}`;
+        
+        // Fazer a requisição para a API
+        const response = await axios.get(apiUrl);
+
+        if (response.data.status && response.data.resultado && response.data.resultado.audio) {
+            const audioUrl = response.data.resultado.audio;
+
+            // Redirecionar para o link do áudio
+            return res.redirect(audioUrl);
+        } else {
+            return res.status(404).json({ error: 'Áudio não encontrado' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
 // Rota para buscar e baixar áudio
 router.get('/audio', async (req, res) => {
   const { name } = req.query;  // Obtém o nome da música da query string
@@ -4018,12 +4048,12 @@ async function youtubedl(url) {
     };
 
     try {
-        const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
+        const data = await got.post('https://www.y2mate.tube/mates/analyzeV2/ajax', {
             headers: {
                 ...DEFAULT_HEADERS,
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.com'
+                origin: 'https://www.y2mate.tube'
             },
             form
         }).json();
@@ -4044,12 +4074,12 @@ async function youtubedl(url) {
 async function convert(vid, k) {
     const form = { vid, k };
     try {
-        const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
+        const data = await got.post('https://www.y2mate.tube/mates/convertV2/index', {
             headers: {
                 ...DEFAULT_HEADERS,
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.com'
+                origin: 'https://www.y2mate.tube'
             },
             form
         }).json();
@@ -4088,7 +4118,7 @@ router.get('/spotify2', async (req, res) => {
     }
 });
 // Rota para buscar e converter vídeo para MP3 e enviar como stream
-router.get('/musica', async (req, res) => {
+router.get('/musica2', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
