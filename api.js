@@ -272,7 +272,7 @@ router.get('/instamp3', async (req, res) => {
     }
 });
 
-router.get('/musica', async (req, res) => {
+router.get('/musicav2', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
     const musicName = query.name; // Exemplo: /play?nome=nome_da_musica
 
@@ -4155,8 +4155,144 @@ router.get('/spotify2', async (req, res) => {
         res.status(500).json({ status: false, message: error.message });
     }
 });
+//ytmp3 pela ulr
+// Endpoint para baixar áudio a partir de uma URL
+router.get('/linkmp3', async (req, res) => {
+    const { query } = req;
+    const audioUrl = query.url; // Exemplo: /ytmp3?url=https://youtu.be/nome_do_audio
+
+    if (!audioUrl) {
+        return res.status(400).json({ error: 'A URL do áudio é obrigatória' });
+    }
+
+    try {
+        const apiUrl = `https://api.giftedtech.web.id/api/download/dlmp3q?apikey=gifted&quality=128&url=${encodeURIComponent(audioUrl)}`;
+
+        // Requisição à API para baixar o áudio
+        const response = await axios.get(apiUrl);
+
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
+
+            // Redirecionar para o link de download do áudio
+            return res.redirect(downloadUrl);
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o áudio' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+// Endpoint para baixar vídeo a partir de uma URL
+router.get('/linkmp4', async (req, res) => {
+    const { query } = req;
+    const videoUrl = query.url; // Exemplo: /ytmp4?url=https://youtu.be/nome_do_video
+
+    if (!videoUrl) {
+        return res.status(400).json({ error: 'A URL do vídeo é obrigatória' });
+    }
+
+    try {
+        const apiUrl = `https://api.giftedtech.web.id/api/download/dlmp4q?apikey=gifted&quality=128&url=${encodeURIComponent(videoUrl)}`;
+
+        // Requisição à API para baixar o vídeo
+        const response = await axios.get(apiUrl);
+
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
+
+            // Redirecionar para o link de download do vídeo
+            return res.redirect(downloadUrl);
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+//play para baixar musica pelo nome
+
+router.get('/musica', async (req, res) => {
+    const { query } = req; // O nome da música será passado como parâmetro de consulta
+    const musicName = query.nome; // Exemplo: /play?nome=nome_da_musica
+
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
+    }
+
+    try {
+        // Buscar o vídeo no YouTube pelo nome da música
+        const searchResults = await search(musicName);
+        
+        if (!searchResults || searchResults.videos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
+        }
+
+        // Pegar o primeiro vídeo da lista de resultados
+        const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
+        const apiUrl = `https://api.giftedtech.web.id/api/download/dlmp3q?apikey=gifted&quality=128&url=https://youtu.be/${videoId}`;
+
+        // Requisição à API para baixar o áudio
+        const response = await axios.get(apiUrl);
+
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
+
+            // Redirecionar para o link de download
+            return res.redirect(downloadUrl);
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar a música' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+
+//rota para baixar video pelo nome
+router.get('/clipe', async (req, res) => {
+    const { query } = req; // O nome da música será passado como parâmetro de consulta
+    const musicName = query.nome; // Exemplo: /playvideo?nome=nome_da_musica
+
+    if (!musicName) {
+        return res.status(400).json({ error: 'Nome da música é obrigatório' });
+    }
+
+    try {
+        // Buscar o vídeo no YouTube pelo nome da música
+        const searchResults = await search(musicName);
+        
+        if (!searchResults || searchResults.videos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum vídeo encontrado' });
+        }
+
+        // Pegar o primeiro vídeo da lista de resultados
+        const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
+        const apiUrl = `https://api.giftedtech.web.id/api/download/dlmp3q?apikey=gifted&quality=128&url=https://youtu.be/${videoId}`;
+
+        // Requisição à API para baixar o vídeo
+        const response = await axios.get(apiUrl);
+
+        if (response.data.success) {
+            const downloadUrl = response.data.result.download_url;
+
+            // Redirecionar para o link de download
+            return res.redirect(downloadUrl);
+        } else {
+            return res.status(500).json({ error: 'Erro ao baixar o vídeo' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+//fim
 // Rota para buscar e converter vídeo para MP3 e enviar como stream
-router.get('/musica2', async (req, res) => {
+router.get('/musica3', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do vídeo: ${videoName}`);
@@ -4188,7 +4324,7 @@ router.get('/musica2', async (req, res) => {
     }
 });
 
-router.get('/clipe', async (req, res) => {
+router.get('/clipe3', async (req, res) => {
     const videoName = req.query.name;
 
     console.log(`Recebido pedido para download do clipe: ${videoName}`);
@@ -4243,7 +4379,7 @@ router.get('/clipe', async (req, res) => {
 
 
 // Rota para baixar MP3 com qualidade automática (melhor disponível) e enviar o arquivo
-router.get('/linkmp3', async (req, res) => {
+router.get('/linkmp33', async (req, res) => {
     const url = req.query.url;
 
     try {
@@ -4291,7 +4427,7 @@ router.get('/linkmp3', async (req, res) => {
 });
 
 // Rota para baixar MP4 com qualidade automática (melhor disponível)
-router.get('/linkmp4', async (req, res) => {
+router.get('/linkmp44', async (req, res) => {
     const url = req.query.url;
 
     try {
