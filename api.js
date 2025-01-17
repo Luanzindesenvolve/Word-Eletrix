@@ -4218,7 +4218,7 @@ router.get('/linkmp4', async (req, res) => {
 
 router.get('/musica', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
-    const musicName = query.nome; // Exemplo: /play?nome=nome_da_musica
+    const musicName = query.name; // Exemplo: /play?nome=nome_da_musica
 
     if (!musicName) {
         return res.status(400).json({ error: 'Nome da música é obrigatório' });
@@ -4256,7 +4256,7 @@ router.get('/musica', async (req, res) => {
 //rota para baixar video pelo nome
 router.get('/clipe', async (req, res) => {
     const { query } = req; // O nome da música será passado como parâmetro de consulta
-    const musicName = query.nome; // Exemplo: /playvideo?nome=nome_da_musica
+    const musicName = query.name; // Exemplo: /playvideo?nome=nome_da_musica
 
     if (!musicName) {
         return res.status(400).json({ error: 'Nome da música é obrigatório' });
