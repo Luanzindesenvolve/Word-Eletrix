@@ -234,38 +234,47 @@ router.get('/likesff', async (req, res) => {
   }
 });
 
-
-router.get('/instamp3', async (req, res) => {
-    const { query } = req;
-    const instagramUrl = query.url; // Exemplo: /instamp3?url=https://www.instagram.com/reel/C8QOS3SPnoo
+router.get('/instamp4', async (req, res) => {
+    const { url: instagramUrl } = req.query;
 
     if (!instagramUrl) {
         return res.status(400).json({ error: 'URL do Instagram é obrigatório' });
     }
 
     try {
-        // Montar a URL da API
-        const apiUrl = `https://carisys.online/api/downloads/instagram/mp3?url=${encodeURIComponent(instagramUrl)}`;
+        // Montar a URL da API externa
+        const apiUrl = `https://carisys.online/api/downloads/instagram/dl?url=${encodeURIComponent(instagramUrl)}`;
 
-        // Fazer a requisição para a API
+        // Fazer a requisição para a API externa
         const apiResponse = await axios.get(apiUrl);
 
-        if (apiResponse.data.status && apiResponse.data.resultado) {
-            const audioUrl = apiResponse.data.resultado;
+        // Verificar se a resposta é válida e contém o link do vídeo
+        if (apiResponse.data.status && apiResponse.data.resultado?.video) {
+            const videoUrl = apiResponse.data.resultado.video;
 
-            // Baixar o arquivo de áudio
-            const audioResponse = await axios.get(audioUrl, { responseType: 'stream' });
-            const fileName = `audio-${Date.now()}.mp3`;
-
-            // Configurar headers para o download
-            res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-            res.setHeader('Content-Type', 'audio/mpeg');
-
-            // Enviar o áudio diretamente para o cliente
-            audioResponse.data.pipe(res);
+            // Redirecionar o cliente para o link do vídeo
+            res.redirect(videoUrl);
         } else {
-            return res.status(404).json({ error: 'Áudio não encontrado' });
+            return res.status(404).json({ error: 'Vídeo não encontrado' });
         }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+    }
+});
+router.get('/instamp3', (req, res) => {
+    const { url: instagramUrl } = req.query;
+
+    if (!instagramUrl) {
+        return res.status(400).json({ error: 'URL do Instagram é obrigatório' });
+    }
+
+    try {
+        // Montar a URL da API externa
+        const apiUrl = `https://carisys.online/api/downloads/instagram/mp3?url=${encodeURIComponent(instagramUrl)}`;
+
+        // Redirecionar o cliente para a URL
+        res.redirect(apiUrl);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Erro ao processar a solicitação' });
