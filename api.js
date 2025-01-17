@@ -379,7 +379,7 @@ router.get('/geminipro', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/geminiaipro?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/geminiaipro?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -400,7 +400,7 @@ router.get('/gpt', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -422,7 +422,7 @@ router.get('/gpt3.5-turbo', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt-turbo?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt-turbo?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
