@@ -8183,7 +8183,6 @@ router.get('/pesquisayt', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar vídeos do YouTube' });
     }
 });
-
 //ytmp3 pela ulr
 // Endpoint para baixar áudio a partir de uma URL
 router.get('/ytmp3', async (req, res) => {
@@ -8195,7 +8194,7 @@ router.get('/ytmp3', async (req, res) => {
     }
 
     try {
-        const apiUrl = `https://api.giftedtech.my.id/api/download/ytaudio?apikey=gifted&url=${encodeURIComponent(audioUrl)}`;
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytmp3?apikey=gifted&url=${encodeURIComponent(audioUrl)}`;
 
         // Requisição à API para baixar o áudio
         const response = await axios.get(apiUrl);
@@ -8224,7 +8223,7 @@ router.get('/ytmp4', async (req, res) => {
     }
 
     try {
-        const apiUrl = `https://api.giftedtech.my.id/api/download/ytvideo?apikey=gifted&url=${encodeURIComponent(videoUrl)}`;
+        const apiUrl = `https://api.giftedtech.my.id/api/download/ytmp4?apikey=gifted&url=${encodeURIComponent(videoUrl)}`;
 
         // Requisição à API para baixar o vídeo
         const response = await axios.get(apiUrl);
@@ -8263,7 +8262,7 @@ router.get('/play', async (req, res) => {
 
         // Pegar o primeiro vídeo da lista de resultados
         const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
-        const apiUrl = `https://api.giftedtech.my.id/api/download/ytaudio?apikey=gifted&url=https://youtu.be/${videoId}`;
+        const apiUrl = `https://api.giftedtech.my.id/api/download/dlmp3?apikey=gifted&url=https://youtu.be/${videoId}`;
 
         // Requisição à API para baixar o áudio
         const response = await axios.get(apiUrl);
@@ -8301,7 +8300,7 @@ router.get('/playvideo', async (req, res) => {
 
         // Pegar o primeiro vídeo da lista de resultados
         const videoId = searchResults.videos[0].videoId; // Obtém o ID do vídeo
-        const apiUrl = `https://api.giftedtech.my.id/api/download/ytvideo?apikey=gifted&url=https://youtu.be/${videoId}`;
+        const apiUrl = `https://api.giftedtech.my.id/api/download/dlmp4?apikey=gifted&url=https://youtu.be/${videoId}`;
 
         // Requisição à API para baixar o vídeo
         const response = await axios.get(apiUrl);
@@ -8320,6 +8319,7 @@ router.get('/playvideo', async (req, res) => {
     }
 });
 //fim
+
 // Rota para consulta de CEP
 router.get('/consulta/cep/:cep', async (req, res) => {
     const cep = req.params.cep;
