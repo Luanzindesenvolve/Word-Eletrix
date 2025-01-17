@@ -1901,7 +1901,7 @@ router.get('/gpt4', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -1922,7 +1922,7 @@ router.get('/gpt4v2', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4v2?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4v2?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -1966,7 +1966,7 @@ router.get('/gpt4-o', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/gpt4-o?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/gpt4-o?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -1988,7 +1988,7 @@ router.get('/llama', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/llamaai?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2009,7 +2009,7 @@ router.get('/blackbox', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(texto)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/blackbox?apikey=gifted&q=${encodeURIComponent(texto)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2030,7 +2030,7 @@ router.get('/lumin', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/luminai?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/luminai?apikey=gifted&query=${encodeURIComponent(query)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2051,7 +2051,7 @@ router.get('/simsimi', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/simsimi?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/simsimi?apikey=gifted&query=${encodeURIComponent(query)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2072,7 +2072,7 @@ router.get('/letmegpt', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(query)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/letmegpt?apikey=gifted&query=${encodeURIComponent(query)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2093,7 +2093,7 @@ router.get('/wwdgpt', async (req, res) => {
   }
 
   try {
-    const apiUrl = `https://api.giftedtech.my.id/api/ai/wwdgpt?apikey=gifted&prompt=${encodeURIComponent(prompt)}`;
+    const apiUrl = `https://api.giftedtech.web.id/api/ai/wwdgpt?apikey=gifted&prompt=${encodeURIComponent(prompt)}`;
     const { data } = await axios.get(apiUrl);
 
     if (data && data.result) {
@@ -2115,7 +2115,7 @@ router.get('/imagine', async (req, res) => {
 
     try {
         const response = await axios.get(
-            `https://api.giftedtech.my.id/api/ai/text2img?apikey=gifted&prompt=${encodeURIComponent(texto)}`,
+            `https://api.giftedtech.web.id/api/ai/text2img?apikey=gifted&prompt=${encodeURIComponent(texto)}`,
             { responseType: 'arraybuffer' } // Para obter a imagem como buffer
         );
 
@@ -2151,7 +2151,7 @@ router.get('/sd', async (req, res) => {
 
     try {
         const response = await axios.get(
-            `https://api.giftedtech.my.id/api/ai/sd?apikey=gifted&prompt=${encodeURIComponent(prompt)}`,
+            `https://api.giftedtech.web.id/api/ai/sd?apikey=gifted&prompt=${encodeURIComponent(prompt)}`,
             { responseType: 'arraybuffer' } // Para obter a imagem como buffer
         );
 
