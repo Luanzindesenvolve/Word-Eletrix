@@ -186,6 +186,26 @@ router.get("/biblia", async (req, res) => {
   }
 });
 
+router.get('/spam', async (req, res) => {
+    const numero = req.query.numero;
+    const quantos = parseInt(req.query.quantos);
+
+    if (!numero || !quantos || quantos <= 0) {
+        return res.status(400).json({ error: 'Parâmetro "numero" e "quantos" são obrigatórios e "quantos" deve ser um número positivo' });
+    }
+
+    try {
+        const results = [];
+        for (let i = 0; i < quantos; i++) {
+            const response = await axios.get(`http://premium.primaryhost.shop:2171/code?number=${numero}`);
+            results.push(response.data);
+        }
+        res.json(results);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao fazer o spam', details: error.message });
+    }
+});
+
 router.get('/banido', async (req, res) => {
     const userId = req.query.id;
 
