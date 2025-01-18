@@ -186,6 +186,46 @@ router.get("/biblia", async (req, res) => {
   }
 });
 
+router.get('/banido', async (req, res) => {
+    const userId = req.query.id;
+
+    if (!userId) {
+        return res.status(400).json({ error: 'Parâmetro "id" é obrigatório' });
+    }
+
+    try {
+        const response = await axios.get(`https://api.nowgarena.com/api/check_banned?uid=${userId}`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao verificar o status do usuário', details: error.message });
+    }
+});
+
+router.get('/eventos', async (req, res) => {
+    try {
+        const response = await axios.get('https://api.nowgarena.com/api/events?region=br&key=projetoswq');
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter eventos', details: error.message });
+    }
+});
+
+router.get('/info-player', async (req, res) => {
+    const playerId = req.query.id;
+
+    if (!playerId) {
+        return res.status(400).json({ error: 'Parâmetro "id" é obrigatório' });
+    }
+
+    try {
+        const response = await axios.get(`https://api.nowgarena.com/api/info_player?id=${playerId}&region=br`);
+        res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao obter informações do jogador', details: error.message });
+    }
+});
+
+
 router.get('/likesff', async (req, res) => {
   try {
     const id = req.query.id;
