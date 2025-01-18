@@ -163,6 +163,29 @@ async function searchVideoByName(name) {
   }
   throw new Error('Vídeo não encontrado');
 }
+
+// Rota GET simples, apenas com o parâmetro 'vers'
+router.get("/biblia", async (req, res) => {
+  const versiculo = req.query.vers;
+
+  // Verificar se o parâmetro `vers` foi passado
+  if (!versiculo) {
+    return res.status(400).json({ error: "O parâmetro 'vers' é obrigatório." });
+  }
+
+  try {
+    // Fazendo a requisição à API externa (com a tradução fixa 'almeida')
+    const response = await axios.get(`https://bible-api.com/${encodeURIComponent(versiculo)}?translation=almeida`);
+    res.json(response.data); // Retornando a resposta da API externa
+  } catch (error) {
+    // Tratando erros (ex.: versículo inválido)
+    res.status(500).json({
+      error: "Erro ao buscar o versículo. Verifique o formato ou se ele existe.",
+      details: error.message,
+    });
+  }
+});
+
 router.get('/likesff', async (req, res) => {
   try {
     const id = req.query.id;
