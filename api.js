@@ -245,75 +245,31 @@ router.get('/info-player', async (req, res) => {
     }
 });
 
-
 router.get('/likesff', async (req, res) => {
+  const { id } = req.query;
+
+  // Validação do parâmetro
+  if (!id) {
+    return res.status(400).json({ error: 'O parâmetro "id" é obrigatório!' });
+  }
+
   try {
-    const id = req.query.id;
-    if (!id) {
-      return res.json({ status: false, resultado: 'Cadê o parâmetro ID?' });
-    }
+    // Fazendo a requisição para a API externa
+    const response = await axios.get(`https://api.nowgarena.com/api/send_likes`, {
+      params: { uid: id, key: 'projetoswq' }, // Parâmetros fixos
+    });
 
-    console.log(`[CONSULTA]: likes para ID = ${id}`);
-
-    try {
-      // Envia a mensagem para o grupo com o comando de consulta
-      await client.sendMessage(grupoChatId, { message: `/like ${id}` });
-      console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /like ${id}`);
-
-      // Aguarda 10 segundos antes de começar a processar mensagens
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Esperou 10 segundos. Agora vai processar as mensagens.');
-
-      const handleResponse = new Promise((resolve, reject) => {
-        const eventHandler = async (event) => {
-          try {
-            const message = event.message;
-
-            if (message) {
-              console.log('Mensagem recebida:', message.message);
-              resolve({
-                status: true,
-                mensagem: message.message, // Retorna exatamente a mensagem recebida do bot
-              });
-              client.removeEventHandler(eventHandler);
-              return;
-            }
-          } catch (err) {
-            console.error('Erro ao processar nova mensagem:', err);
-          }
-        };
-
-        client.addEventHandler(eventHandler, new NewMessage({}));
-
-        setTimeout(() => {
-          reject('Tempo de espera esgotado');
-          client.removeEventHandler(eventHandler);
-        }, 1000); // Tempo total de 20 segundos (10 segundos de espera + 10 segundos processando)
-      });
-
-      try {
-        const resultado = await handleResponse;
-        console.log('Resposta recebida antes do timeout:', resultado);
-        return res.json(resultado);
-      } catch (error) {
-        console.error('Erro ao receber a resposta:', error);
-        return res.json({
-          status: false,
-          mensagem: '100 Likes enviados, não recebeu? tente novamente mais tatde.',
-        });
-      }
-    } catch (e) {
-      console.error('Erro ao enviar a mensagem de consulta ou processar a resposta:', e);
-      if (!res.headersSent) {
-        return res.json({
-          status: false,
-          mensagem: 'Não foi possível processar sua solicitação. Tente novamente mais tarde.',
-        });
-      }
-    }
-  } catch (err) {
-    console.error('Erro na rota /likesff:', err);
-    return res.json({ status: false, resultado: 'Erro interno do servidor.' });
+    // Retornando a resposta da API externa
+    res.status(200).json({
+      message: 'Likes enviados com sucesso!',
+      data: response.data,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: 'Erro ao enviar os likes!',
+      details: error.response?.data || error.message,
+    });
   }
 });
 
