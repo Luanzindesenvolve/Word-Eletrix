@@ -1788,6 +1788,15 @@ router.get('/ufc', async (req, res) => {
     res.status(500).json({ error: 'Erro ao processar a solicitação.' });
   }
 });
+// Rota para a API bbb25
+router.get('/bbb25', (req, res) => {
+  const resultado = [
+    "https://multicanais.black/assistir-bbb-ao-vivo-online-24-horas/",
+    "https://globoplay.gratis/"
+  ];
+  
+  res.json({ resultado });
+});
 
 router.get('/basquete', async (req, res) => {
   try {
