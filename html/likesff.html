@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Likes FF</title>
   <style>
-    /* Fundo da página */
     body {
-      background-image: url('./fundos/likesff.jpg'); /* Substitua 'sua-imagem.jpg' pelo caminho da sua imagem */
+      background-image: url('./fundos/likesff.jpg');
       background-size: cover;
       background-position: center;
       height: 100vh;
@@ -21,14 +19,12 @@
       align-items: center;
     }
 
-    /* Estilo do título */
     h1 {
       font-size: 60px;
       font-weight: bold;
       margin-bottom: 20px;
     }
 
-    /* Caixa de mensagens e input */
     .form-container {
       background-color: rgba(0, 0, 0, 0.5);
       padding: 30px;
@@ -38,7 +34,6 @@
       width: 100%;
     }
 
-    /* Estilo do campo de input */
     input[type="text"] {
       width: 100%;
       padding: 10px;
@@ -50,7 +45,6 @@
       color: black;
     }
 
-    /* Estilo do botão */
     button {
       width: 100%;
       padding: 15px;
@@ -66,7 +60,6 @@
       background-color: #45a049;
     }
 
-    /* Mensagem de sucesso */
     .message {
       margin-top: 20px;
       font-size: 20px;
@@ -74,7 +67,17 @@
       display: none;
     }
 
-    /* Estilo do texto 'by luanzn_fe' */
+    .api-info {
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      display: none;
+      width: 100%;
+      max-width: 400px;
+    }
+
     .footer {
       position: absolute;
       bottom: 20px;
@@ -91,7 +94,8 @@
   <div class="form-container">
     <input type="text" id="userId" placeholder="Digite o ID do usuário" />
     <button onclick="enviarLikes()">Enviar</button>
-    <div class="message" id="message">Likes enviados!</div>
+    <div class="message" id="message"></div>
+    <div class="api-info" id="apiInfo"></div>
   </div>
 
   <div class="footer">
@@ -102,31 +106,52 @@
     function enviarLikes() {
       const userId = document.getElementById('userId').value;
       const messageElement = document.getElementById('message');
+      const apiInfoElement = document.getElementById('apiInfo');
 
       if (!userId) {
         alert('Por favor, insira um ID válido!');
         return;
       }
 
-      messageElement.style.display = 'none'; // Esconde a mensagem anterior, caso exista
+      messageElement.style.display = 'none';
+      apiInfoElement.style.display = 'none';
 
-      // Envia a requisição para a API sem aguardar a resposta
-      fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`)
-        .then(() => {
-          messageElement.style.color = 'green'; // Cor verde para sucesso
-          messageElement.textContent = 'Likes enviados com sucesso!';
-          messageElement.style.display = 'block'; // Exibe a mensagem
+      fetch(`https://api.nowgarena.com/api/send_likes?uid=${userId}&key=projetoswq`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            messageElement.style.color = 'green';
+            messageElement.textContent = 'Likes enviados com sucesso!';
+            messageElement.style.display = 'block';
+
+            // Exibir informações da API
+            apiInfoElement.innerHTML = `
+              <p><strong>Nome:</strong> ${data.Likes_Info.Name}</p>
+              <p><strong>Nível:</strong> ${data.Likes_Info.Level}</p>
+              <p><strong>Região:</strong> ${data.Likes_Info.Region}</p>
+              <p><strong>Likes Antes:</strong> ${data.Likes_Info["Likes before"]}</p>
+              <p><strong>Likes Depois:</strong> ${data.Likes_Info["Likes later"]}</p>
+              <p><strong>Likes Enviados:</strong> ${data.Likes_Info.Bot_Send}</p>
+              <p><strong>Velocidade:</strong> ${data.Likes_Info.Speed}</p>
+            `;
+            apiInfoElement.style.display = 'block';
+          } else {
+            messageElement.style.color = 'red';
+            messageElement.textContent = 'Erro ao enviar likes! Verifique o ID.';
+            messageElement.style.display = 'block';
+          }
         })
         .catch(() => {
-          messageElement.style.color = 'red'; // Cor vermelha para erro
+          messageElement.style.color = 'red';
           messageElement.textContent = 'Erro ao conectar com a API. Tente novamente mais tarde.';
-          messageElement.style.display = 'block'; // Exibe a mensagem
+          messageElement.style.display = 'block';
         });
     }
   </script>
-<audio autoplay loop>
-        <source src="./musicas/likesff.mp3" type="audio/mpeg">
-        Seu navegador não suporta áudio HTML5.
-</audio>
+
+  <audio autoplay loop>
+    <source src="./musicas/likesff.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio HTML5.
+  </audio>
 </body>
 </html>
