@@ -4441,12 +4441,12 @@ async function youtubedl(url) {
     };
 
     try {
-        const data = await got.post('https://www.y2mate.tube/mates/analyzeV2/ajax', {
+        const data = await got.post('https://www.y2mate.com/mates/analyzeV2/ajax', {
             headers: {
                 ...DEFAULT_HEADERS,
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.tube'
+                origin: 'https://www.y2mate.com'
             },
             form
         }).json();
@@ -4467,12 +4467,12 @@ async function youtubedl(url) {
 async function convert(vid, k) {
     const form = { vid, k };
     try {
-        const data = await got.post('https://www.y2mate.tube/mates/convertV2/index', {
+        const data = await got.post('https://www.y2mate.com/mates/convertV2/index', {
             headers: {
                 ...DEFAULT_HEADERS,
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 cookie: '_ga=GA1.1.1058493269.1720585210; _ga_PSRPB96YVC=GS1.1.1720585209.1.1.1720585486.0.0.0',
-                origin: 'https://www.y2mate.tube'
+                origin: 'https://www.y2mate.com'
             },
             form
         }).json();
