@@ -164,6 +164,59 @@ async function searchVideoByName(name) {
   throw new Error('Vídeo não encontrado');
 }
 
+
+// Rota para baixar vídeo
+router.get('/play2', async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).send('Por favor, forneça um parâmetro de busca (query).');
+  }
+
+  try {
+    const results = await search(query);
+    const video = results.videos[0];
+
+    if (!video) {
+      return res.status(404).send('Vídeo não encontrado.');
+    }
+
+    const videoStream = yt(video.url, { quality: 'highestvideo' });
+
+    res.setHeader('Content-Disposition', `attachment; filename="${video.title}.mp4"`);
+    videoStream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao baixar o vídeo.');
+  }
+});
+
+// Rota para baixar música
+router.get('/play3', async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).send('Por favor, forneça um parâmetro de busca (query).');
+  }
+
+  try {
+    const results = await search(query);
+    const video = results.videos[0];
+
+    if (!video) {
+      return res.status(404).send('Música não encontrada.');
+    }
+
+    const audioStream = yt(video.url, { filter: 'audioonly', quality: 'highestaudio' });
+
+    res.setHeader('Content-Disposition', `attachment; filename="${video.title}.mp3"`);
+    audioStream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao baixar a música.');
+  }
+});
+
 // Rota GET simples, apenas com o parâmetro 'vers'
 router.get("/biblia", async (req, res) => {
   const versiculo = req.query.vers;
