@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="pt">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detalhes da Série</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            color: white;
+
+            text-align: center;
+
+            margin: 0;
+
+            padding: 0;
+
+            background-color: black; /* Cor de fundo preto */
+
+        }
+
+        h1 {
+
+            background-color: transparent; /* Removido o fundo vermelho */
+            color: black; /* Cor do título alterada para preto */
+            padding: 15px;
+
+            margin: 0;
+
+        }
+
+        .container {
+
+            width: 80%;
+
+            margin: auto;
+
+            text-align: left;
+
+        }
+
+        img {
+
+            width: 200px;
+
+            border-radius: 10px;
+
+        }
+
+        select {
+
+            padding: 10px;
+
+            margin: 10px;
+
+            border-radius: 5px;
+
+        }
+
+        iframe {
+
+            width: 100%;
+
+            height: 500px;
+
+            margin-top: 20px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1 id="serieTitle"></h1>
+
+    <div class="container">
+
+        <img id="seriePoster">
+
+        <p><b>Ano de Lançamento:</b> <span id="serieYear"></span></p>
+
+        <p><b>Elenco:</b> <span id="serieCast"></span></p>
+
+        <h2>Selecione Temporada e Episódio</h2>
+
+        <select id="seasonSelect" onchange="loadEpisodes()"></select>
+
+        <select id="episodeSelect" onchange="watchEpisode()"></select>
+
+        <iframe id="videoPlayer" frameborder="0" allowfullscreen></iframe>
+
+    </div>
+
+    <script>
+
+        const API_KEY = 'cf72f14362cff1da8bed9fa86831de66';
+
+        let serieId = new URLSearchParams(window.location.search).get("id");
+
+        function loadSerieDetails() {
+
+            fetch(`https://api.themoviedb.org/3/tv/${serieId}?api_key=${API_KEY}&language=pt-BR`)
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    document.getElementById("serieTitle").innerText = data.name;
+
+                    document.getElementById("seriePoster").src = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+
+                    document.getElementById("serieYear").innerText = data.first_air_date.split("-")[0];
+
+                    // Definir o fundo da página como a imagem da série
+                    document.body.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${data.backdrop_path}')`;
+                    document.body.style.backgroundSize = 'cover';  // Faz a imagem cobrir toda a tela
+                    document.body.style.backgroundPosition = 'center'; // Centraliza a imagem
+
+                    fetch(`https://api.themoviedb.org/3/tv/${serieId}/credits?api_key=${API_KEY}`)
+
+                        .then(response => response.json())
+
+                        .then(credits => {
+
+                            let cast = credits.cast.slice(0, 5).map(actor => actor.name).join(", ");
+
+                            document.getElementById("serieCast").innerText = cast;
+
+                        });
+
+                    let seasonSelect = document.getElementById("seasonSelect");
+
+                    data.seasons.forEach(season => {
+
+                        if (season.season_number > 0) {
+
+                            let option = document.createElement("option");
+
+                            option.value = season.season_number;
+
+                            option.textContent = `Temporada ${season.season_number}`;
+
+                            seasonSelect.appendChild(option);
+
+                        }
+
+                    });
+
+                    loadEpisodes();
+
+                });
+
+        }
+
+        function loadEpisodes() {
+
+            let season = document.getElementById("seasonSelect").value;
+
+            let episodeSelect = document.getElementById("episodeSelect");
+
+            episodeSelect.innerHTML = "";
+
+            fetch(`https://api.themoviedb.org/3/tv/${serieId}/season/${season}?api_key=${API_KEY}&language=pt-BR`)
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    data.episodes.forEach(ep => {
+
+                        let option = document.createElement("option");
+
+                        option.value = ep.episode_number;
+
+                        option.textContent = `Episódio ${ep.episode_number} - ${ep.name}`;
+
+                        episodeSelect.appendChild(option);
+
+                    });
+
+                    watchEpisode();
+
+                });
+
+        }
+
+        function watchEpisode() {
+
+            let season = document.getElementById("seasonSelect").value;
+
+            let episode = document.getElementById("episodeSelect").value;
+
+            document.getElementById("videoPlayer").src = `https://embed.spaceembed.us.kg/s/${serieId}/${season}/${episode}`;
+
+        }
+
+        loadSerieDetails();
+
+    </script>
+
+</body>
+
+</html>
