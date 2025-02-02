@@ -6,7 +6,6 @@ const cheerio = require('cheerio');
 const search = require('yt-search');
 const yt = require('@distube/ytdl-core');
 const criador = 'World Ecletix';
-const GIFEncoder = require('gifencoder');
 const sharp = require('sharp'); // Biblioteca para conversão WebP
 const cors = require('cors');
 const iconv = require('iconv-lite'); // Biblioteca para lidar com codificação de caracteres
