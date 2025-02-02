@@ -218,8 +218,8 @@ function searchMedia() {
         }
 
         function openMediaPage(id, category) {
-            let page = category === "movie" ? "filme" : category === "anime" ? "anime" : "serie";
-            window.location.href = `${page}?id=${id}`;
+    let page = category === "movie" ? "filme" : category === "anime" ? "anime" : "serie";
+    window.location.href = `/${page}?id=${id}`;  // Removendo a extensão .html
         }
 
         fetchPopularSeries();
