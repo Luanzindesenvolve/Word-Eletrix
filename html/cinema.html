@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Ecletix Cine</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #141414;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #000;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        input, select, button {
+            width: 80%;
+            max-width: 400px;
+            padding: 12px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input {
+            background-color: #222;
+            color: white;
+        }
+
+        select {
+            background-color: #333;
+            color: white;
+        }
+
+        button {
+            background-color: #e50914;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #b20710;
+        }
+
+        h2 {
+            margin-left: 20px;
+            font-size: 22px;
+        }
+   .grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.grid-item {
+    width: calc(25% - 15px); /* 4 itens por linha */
+    max-width: 250px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.grid-item img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+}
+
+.grid-item:hover {
+    transform: scale(1.1);
+}
+
+.grid-item p {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 90%;
+    color: white;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 1024px) {
+    .grid-item {
+        width: calc(33.33% - 15px); /* 3 itens por linha */
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>World Ecletix Cine</header>
+
+    <div class="search-container">
+        <input type="text" id="searchBox" placeholder="Digite o nome...">
+        <select id="categorySelect">
+            <option value="tv">Série</option>
+            <option value="movie">Filme</option>
+            <option value="anime">Anime</option>
+        </select>
+        <button onclick="searchMedia()">Buscar</button>
+    </div>
+
+    <h2>Séries Populares</h2>
+    <div class="grid-container" id="popularSeries"></div>
+
+    <h2>Filmes Populares</h2>
+    <div class="grid-container" id="popularMovies"></div>
+
+    <h2>Resultados da Busca</h2>
+    <div class="grid-container" id="mediaList"></div>
+
+    <script>
+        const API_KEY = '12a263eb78c5a66bf238a09bf48a413b';
+
+        function fetchPopularSeries() {
+            fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=pt-BR`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("popularSeries");
+                    container.innerHTML = "";
+
+                    data.results.forEach(serie => {
+                        let div = document.createElement("div");
+                        div.classList.add("grid-item");
+                        div.innerHTML = `
+                            <img src="https://image.tmdb.org/t/p/w500${serie.poster_path}" alt="${serie.name}">
+                            <p>${serie.name}</p>
+                        `;
+                        div.onclick = () => openSeriePage(serie.id);
+                        container.appendChild(div);
+                    });
+                });
+        }
+
+        function fetchPopularMovies() {
+            fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=pt-BR`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("popularMovies");
+                    container.innerHTML = "";
+
+                    data.results.forEach(movie => {
+                        let div = document.createElement("div");
+                        div.classList.add("grid-item");
+                        div.innerHTML = `
+                            <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+                            <p>${movie.title}</p>
+                        `;
+                        div.onclick = () => openMoviePage(movie.id);
+                        container.appendChild(div);
+                    });
+                });
+        }
+function searchMedia() {
+    const query = document.getElementById("searchBox").value;
+    const category = document.getElementById("categorySelect").value;
+
+    if (!query) return;
+
+    let type = category === "anime" ? "tv" : category;
+
+    fetch(`https://api.themoviedb.org/3/search/${type}?query=${query}&api_key=${API_KEY}&language=pt-BR`)
+        .then(response => response.json())
+        .then(data => {
+            const mediaList = document.getElementById("mediaList");
+            mediaList.innerHTML = "";
+
+            data.results.forEach(item => {
+                let div = document.createElement("div");
+                div.classList.add("grid-item");
+
+                div.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${item.name || item.title}">
+                    <p>${item.name || item.title}</p>
+                `;
+
+                div.onclick = () => openMediaPage(item.id, category);
+                mediaList.appendChild(div);
+            });
+
+            // Aguarda um pouco e depois rola mais para baixo
+            setTimeout(() => {
+                const offset = mediaList.getBoundingClientRect().top + window.scrollY - 100; // Ajuste fino
+                window.scrollTo({ top: offset, behavior: "smooth" });
+            }, 500);
+        });
+}
+        
+        function openSeriePage(id) {
+            window.location.href = `serie.html?id=${id}`;
+        }
+
+        function openMoviePage(id) {
+            window.location.href = `filme.html?id=${id}`;
+        }
+
+        function openMediaPage(id, category) {
+            let page = category === "movie" ? "filme.html" : category === "anime" ? "anime.html" : "serie.html";
+            window.location.href = `${page}?id=${id}`;
+        }
+
+        fetchPopularSeries();
+        fetchPopularMovies();
+    </script>
+
+</body>
+</html>
