@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="pt">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Filme</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #111;
+
+            margin: 0;
+
+            padding: 0;
+
+            overflow: hidden; /* Impede rolagem da página */
+        }
+
+        iframe {
+
+            width: 100vw; /* Ajusta o iframe para ocupar toda a largura da tela */
+
+            height: 100vh; /* Ajusta o iframe para ocupar toda a altura da tela */
+
+            border: none; /* Remove a borda do iframe */
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <iframe id="videoPlayer" frameborder="0" allowfullscreen></iframe>
+
+    <script>
+
+        const API_KEY = 'cf72f14362cff1da8bed9fa86831de66';
+
+        let filmeId = new URLSearchParams(window.location.search).get("id");
+
+        function loadFilmeDetails() {
+
+            fetch(`https://api.themoviedb.org/3/movie/${filmeId}?api_key=${API_KEY}&language=pt-BR`)
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    document.getElementById("videoPlayer").src = `https://embed.spaceembed.us.kg/e/${filmeId}`;
+
+                    // Força o modo de tela cheia assim que o iframe é carregado
+                    document.getElementById("videoPlayer").requestFullscreen();
+
+                });
+
+        }
+
+        loadFilmeDetails();
+
+    </script>
+
+</body>
+
+</html>
