@@ -31,6 +31,7 @@
     "got": "^11.8.3",
     "cheerio": "~1.0.0-rc.5",
     "iconv-lite": "",
-    "sharp": ""
+    "sharp": "",
+    "gif2webp": ""
   }
 }
