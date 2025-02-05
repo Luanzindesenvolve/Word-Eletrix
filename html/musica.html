@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Música</title>
+  <style>
+    /* Fundo com a imagem */
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://i.imgur.com/HG4cX7Z.jpeg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Container para o conteúdo */
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #1db954;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    /* Estilo para o quadrado com a imagem do vídeo */
+    .video-thumbnail {
+      margin-top: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 15px;
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    /* Botão de play estilizado */
+    #playPauseButton {
+      width: 80px;
+      height: 80px;
+      background-color: #1db954;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+
+    #playPauseButton:hover {
+      background-color: #1ed760;
+    }
+
+    #playPauseButton:before {
+      content: '';
+      width: 24px;
+      height: 24px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/3/3b/Spotify_icon.svg') no-repeat center center;
+      background-size: 50%;
+    }
+
+    /* Transformando o botão para mostrar o ícone de Play */
+    #playPauseButton.playing:before {
+      content: '||';
+      font-size: 36px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .video-info {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    /* Ajuste do botão para centralizar e colocar acima da capa do vídeo */
+    #audioPlayer {
+      display: none; /* O player de áudio será controlado pelo botão de play */
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ouça Sua Música</h1>
+    <input type="text" id="musicSearch" placeholder="Digite o nome da música" />
+    <button id="searchButton">Buscar</button>
+
+    <div id="musicInfo" class="video-info"></div>
+    <div id="audioPlayer" class="btn-container">
+      <button id="playPauseButton"></button>
+    </div>
+  </div>
+
+  <script>
+    const searchButton = document.getElementById("searchButton");
+    const musicSearch = document.getElementById("musicSearch");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const playPauseButton = document.getElementById("playPauseButton");
+    const musicInfo = document.getElementById("musicInfo");
+
+    searchButton.addEventListener("click", async () => {
+      const query = musicSearch.value;
+      if (query) {
+        const response = await fetch(`https://world-ecletix.onrender.com/api/pesquisayt?query=${query}`);
+        const data = await response.json();
+
+        if (data.formattedVideos && data.formattedVideos.length > 0) {
+          const video = data.formattedVideos[0];
+          const audioResponse = await fetch(`https://world-ecletix.onrender.com/api/musica?name=${query}`);
+          const audioData = await audioResponse.json();
+
+          // Atualizando o player de áudio com o link retornado
+          const audioElement = new Audio(audioData.downloadLink);
+
+          // Exibindo as informações do vídeo
+          musicInfo.innerHTML = `
+            <h2>${video.title}</h2>
+            <p><strong>Criador:</strong> ${video.creator}</p>
+            <p><strong>Canal:</strong> ${video.channel}</p>
+            <p><strong>Visualizações:</strong> ${video.views}</p>
+            <p><strong>Duração:</strong> ${video.duration}</p>
+            <a href="${video.link}" target="_blank">
+              <img src="${video.thumbnail}" class="video-thumbnail" alt="${video.title}" />
+            </a>
+          `;
+
+          // Ação do botão Play/Pause
+          playPauseButton.addEventListener("click", () => {
+            if (audioElement.paused) {
+              audioElement.play();
+              playPauseButton.classList.add('playing');
+            } else {
+              audioElement.pause();
+              playPauseButton.classList.remove('playing');
+            }
+          });
+
+          audioPlayer.style.display = "block";  // Mostra o botão de play
+        }
+      }
+    });
+  </script>
+</body>
+</html>
