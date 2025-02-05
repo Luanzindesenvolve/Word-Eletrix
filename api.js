@@ -534,7 +534,7 @@ router.get('/receita', async (req, res) => {
     }
 });
 
-router.get('/anime', async (req, res) => {
+router.get('/pesq-anime', async (req, res) => {
     const query = req.query.q;
     const page = req.query.page || 1;
 
@@ -578,7 +578,7 @@ router.get('/cachorro', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar imagem de cachorro' });
     }
 });
-router.get('/basquete', async (req, res) => {
+router.get('/basquete-news', async (req, res) => {
     try {
         const response = await axios.get('https://noticiasdebasquete.com.br/noticias-basquete/');
         const html = response.data;
@@ -598,7 +598,7 @@ router.get('/basquete', async (req, res) => {
         res.status(500).json({ error: 'Erro ao buscar notícias de basquete' });
     }
 });
-router.get('/noticias', async (req, res) => {
+router.get('/noticias-news', async (req, res) => {
     const { tema } = req.query;
     if (!tema) return res.status(400).json({ error: 'Informe um tema' });
 
@@ -674,7 +674,7 @@ router.get('/baixarsite', async (req, res) => {
 });
 
 
-router.get('/volei', async (req, res) => {
+router.get('/volei-news', async (req, res) => {
     try {
         const { data } = await axios.get('https://webvolei.com.br/');
         const $ = cheerio.load(data);
@@ -729,7 +729,7 @@ router.get('/qrcode', async (req, res) => {
         res.status(500).json({ error: 'Erro ao gerar QR Code' });
     }
 });
-router.get('/printsite', async (req, res) => {
+router.get('/printarsite', async (req, res) => {
     const siteUrl = req.query.url;
 
     if (!siteUrl) {
@@ -754,7 +754,7 @@ router.get('/printsite', async (req, res) => {
     }
 });
 
-router.get('/letra', async (req, res) => {
+router.get('/letradamusica', async (req, res) => {
     const musica = req.query.musica;
 
     if (!musica) {
