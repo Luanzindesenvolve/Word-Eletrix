@@ -32,6 +32,7 @@
     "cheerio": "~1.0.0-rc.5",
     "iconv-lite": "",
     "sharp": "",
-    "webp-converter": ""
+    "webp-converter": "",
+    "@hiudyy/ytdl": ""
   }
 }
