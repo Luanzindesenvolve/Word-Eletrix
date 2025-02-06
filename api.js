@@ -1303,7 +1303,7 @@ router.get('/grok-2', async (req, res) => {
 });
 
 // Grok-2-mini
-router.get('/ai-grok-2-mini', async (req, res) => {
+router.get('/grok-2-mini', async (req, res) => {
   const { texto } = req.query;
   if (!texto) return res.status(400).send('Texto parameter is required.');
 
