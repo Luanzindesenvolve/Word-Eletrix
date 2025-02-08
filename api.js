@@ -8495,7 +8495,79 @@ router.get('/consultas', async (req, res) => {
   }
 });
 
+router.get('/likes', async (req, res) => {
+  try {
+    const id = req.query.id;
+    if (!id) {
+      console.log('Parâmetro id ausente na requisição');
+      return res.json({ status: false, resultado: 'Cadê o parâmetro id?' });
+    }
 
+    console.log(`[LIKE]: ID = ${id}`);
+
+    try {
+      // Envia a mensagem para o grupo com o comando de like
+      await client.sendMessage(grupoChatId, { message: `/like ${id}` });
+      console.log(`Mensagem de like enviada para o grupo ${grupoChatId}: /like ${id}`);
+
+      const handleResponse = new Promise((resolve, reject) => {
+        const eventHandler = async (event) => {
+          try {
+            const message = event.message;
+            console.log('Nova mensagem recebida:', message);
+
+            if (message && message.message) {
+              const resposta = message.message;
+
+              // Verifica se o like já foi enviado recentemente
+              if (resposta.includes("Likes para o ID")) {
+                console.log('Like já enviado recentemente:', resposta);
+                resolve({ status: false, resultado: resposta });
+              } 
+              // Ignora mensagens do tipo "LIKES SENDO ENVIADOS PARA A CONTA ..."
+              else if (resposta.includes("LIKES SENDO ENVIADOS PARA A CONTA")) {
+                console.log('Mensagem de envio de likes ignorada.');
+                return;
+              } 
+              else {
+                console.log('Resposta inesperada:', resposta);
+                resolve({ status: true, resultado: resposta });
+              }
+
+              client.removeEventHandler(eventHandler);
+            }
+          } catch (err) {
+            console.error('Erro ao processar nova mensagem:', err);
+          }
+        };
+
+        client.addEventHandler(eventHandler, new NewMessage({}));
+
+        setTimeout(() => {
+          reject({ status: false, resultado: 'Tempo de espera esgotado' });
+          client.removeEventHandler(eventHandler);
+        }, 30000); // Tempo máximo de espera: 30 segundos
+      });
+
+      try {
+        const resultado = await handleResponse;
+        console.log('Resposta recebida antes do timeout:', resultado);
+        return res.json(resultado);
+      } catch (error) {
+        console.error('Erro ao receber a resposta:', error);
+        return res.json({ status: false, resultado: 'Não foi possível registrar o like.' });
+      }
+    } catch (e) {
+      console.error('Erro ao enviar a mensagem de like ou processar a resposta:', e);
+      if (!res.headersSent) {
+        return res.json({ status: false, resultado: 'Erro ao tentar registrar o like.' });
+      }
+    }
+  } catch (err) {
+    console.error('Erro na rota /likes:', err);
+    return res.json({ status: false, resultado: 'Erro interno do servidor.' });
+  }
+});
 // Função para buscar wallpapers
 async function wallpaper3(query) {
     return new Promise((resolve, reject) => {
