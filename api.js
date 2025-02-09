@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Likes FF</title>
   <style>
+    /* Estilo Geral */
     body {
       background-image: url('./fundos/likesff.jpg');
       background-size: cover;
@@ -17,43 +18,50 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 60px;
+      font-size: 50px;
       font-weight: bold;
       margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
+    /* Caixa de Formulário */
     .form-container {
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 25px;
+      border-radius: 12px;
       max-width: 400px;
       width: 100%;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      font-size: 18px;
-      margin-bottom: 20px;
+      padding: 12px;
+      font-size: 16px;
       border: none;
-      border-radius: 5px;
-      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.9);
       color: black;
+      text-align: center;
+      outline: none;
     }
 
     button {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       font-size: 18px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       background-color: #4CAF50;
       color: white;
       cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
     }
 
     button:hover {
@@ -61,29 +69,46 @@
     }
 
     .message {
-      margin-top: 20px;
-      font-size: 20px;
+      margin-top: 15px;
+      font-size: 18px;
       font-weight: bold;
       display: none;
+      padding: 10px;
+      border-radius: 6px;
     }
 
-    .api-info {
-      margin-top: 20px;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 15px;
-      border-radius: 10px;
-      text-align: left;
-      display: none;
-      width: 100%;
-      max-width: 400px;
+    .message.success {
+      color: #28a745;
+      background-color: rgba(40, 167, 69, 0.2);
+    }
+
+    .message.error {
+      color: #dc3545;
+      background-color: rgba(220, 53, 69, 0.2);
     }
 
     .footer {
       position: absolute;
-      bottom: 20px;
+      bottom: 15px;
       font-size: 14px;
       color: white;
       text-align: center;
+      width: 100%;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 40px;
+      }
+      
+      .form-container {
+        padding: 20px;
+      }
+      
+      input[type="text"], button {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -93,9 +118,8 @@
 
   <div class="form-container">
     <input type="text" id="userId" placeholder="Digite o ID do usuário" />
-    <button onclick="enviarLikes()">Enviar</button>
+    <button onclick="enviarLikes()">Enviar Likes</button>
     <div class="message" id="message"></div>
-    <div class="api-info" id="apiInfo"></div>
   </div>
 
   <div class="footer">
@@ -103,52 +127,49 @@
   </div>
 
   <script>
-  function enviarLikes() {
-    const userId = document.getElementById('userId').value;
-    const messageElement = document.getElementById('message');
-    const apiInfoElement = document.getElementById('apiInfo');
+    function enviarLikes() {
+      const userId = document.getElementById('userId').value;
+      const messageElement = document.getElementById('message');
 
-    if (!userId) {
-      alert('Por favor, insira um ID válido!');
-      return;
-    }
+      if (!userId) {
+        alert('Por favor, insira um ID válido!');
+        return;
+      }
 
-    messageElement.style.display = 'none';
-    apiInfoElement.style.display = 'none';
+      messageElement.style.display = 'none';
 
-    fetch(`https://api.nowgarena.com/api/send_likes?uid=${userId}&key=projetoswq`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.status) {
-          messageElement.style.color = 'green';
-          messageElement.textContent = '✅ Likes enviados com sucesso!';
-          messageElement.style.display = 'block';
-        } else {
-          // Tratamento específico para quando o UID já recebeu likes
-          const match = data.resultado.match(/Tente novamente em (\d+) horas e (\d+) minutos/);
-          if (match) {
-            const horas = match[1];
-            const minutos = match[2];
-            messageElement.style.color = 'red';
-            messageElement.textContent = `⏳ Esse ID já recebeu likes nas últimas 24 horas. Tente novamente em ${horas}h e ${minutos}min.`;
+      fetch(`https://world-ecletix.onrender.com/api/likes?id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status) {
+            messageElement.className = 'message success';
+            messageElement.textContent = '✅ Likes enviados com sucesso!';
           } else {
-            messageElement.style.color = 'red';
-            messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
+            const match = data.resultado.match(/Tente novamente em (\d+) horas e (\d+) minutos/);
+            if (match) {
+              const horas = match[1];
+              const minutos = match[2];
+              messageElement.className = 'message error';
+              messageElement.textContent = `⏳ Esse ID já recebeu likes. Tente novamente em ${horas}h e ${minutos}min.`;
+            } else {
+              messageElement.className = 'message error';
+              messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
+            }
           }
           messageElement.style.display = 'block';
-        }
-      })
-      .catch(() => {
-        messageElement.style.color = 'red';
-        messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
-        messageElement.style.display = 'block';
-      });
-  }
-</script>
+        })
+        .catch(() => {
+          messageElement.className = 'message error';
+          messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
+          messageElement.style.display = 'block';
+        });
+    }
+  </script>
 
   <audio autoplay loop>
     <source src="./musicas/likesff.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio HTML5.
   </audio>
+
 </body>
 </html>
