@@ -8525,7 +8525,7 @@ router.get('/likes', async (req, res) => {
                 resolve({ status: false, resultado: resposta });
               } 
               // Ignora mensagens do tipo "LIKES SENDO ENVIADOS PARA A CONTA ..."
-              else if (resposta.includes("Aguarde um momento, isso pode levar alguns segundos...")) {
+              else if (resposta.includes("/")) {
                 console.log('Mensagem de envio de likes ignorada.');
                 return;
               } 
