@@ -8520,12 +8520,12 @@ router.get('/likes', async (req, res) => {
               const resposta = message.message;
 
               // Verifica se o like já foi enviado recentemente
-              if (resposta.includes("Likes para o ID")) {
+              if (resposta.includes("JÁ RECEBEU LIKES")) {
                 console.log('Like já enviado recentemente:', resposta);
                 resolve({ status: false, resultado: resposta });
               } 
               // Ignora mensagens do tipo "LIKES SENDO ENVIADOS PARA A CONTA ..."
-              else if (resposta.includes("⏳ PROCESSANDO PEDIDO...  \n\n💠 Enviando likes para o UID: 168274224  \n🔄 Aguarde um momento, isso pode levar alguns segundos...")) {
+              else if (resposta.includes("Aguarde um momento, isso pode levar alguns segundos...")) {
                 console.log('Mensagem de envio de likes ignorada.');
                 return;
               } 
