@@ -8591,7 +8591,7 @@ router.get('/likes', async (req, res) => {
     return res.json({ status: false, resultado: 'Erro interno do servidor.' });
   }
 });
-router.get('/infoid', async (req, res) => { try { const id = req.query.id; if (!id) { console.log('Parâmetro id ausente na requisição'); return res.json({ status: false, resultado: 'Cadê o parâmetro id?' }); }
+router.get('/infoiff', async (req, res) => { try { const id = req.query.id; if (!id) { console.log('Parâmetro id ausente na requisição'); return res.json({ status: false, resultado: 'Cadê o parâmetro id?' }); }
 
 console.log(`[INFOID]: ID = ${id}`);
 
@@ -8642,7 +8642,7 @@ try {
 } catch (err) { console.error('Erro na rota /infoid:', err); return res.json({ status: false, resultado: 'Erro interno do servidor.' }); } });
 
 
-router.get('/visitasid', async (req, res) => { try { const id = req.query.id; if (!id) { console.log('Parâmetro id ausente na requisição'); return res.json({ status: false, resultado: 'Cadê o parâmetro id?' }); }
+router.get('/visitasff', async (req, res) => { try { const id = req.query.id; if (!id) { console.log('Parâmetro id ausente na requisição'); return res.json({ status: false, resultado: 'Cadê o parâmetro id?' }); }
 
 console.log(`[VISITAS]: ID = ${id}`);
 
