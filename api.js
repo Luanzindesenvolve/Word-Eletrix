@@ -8597,8 +8597,8 @@ console.log(`[INFOID]: ID = ${id}`);
 
 try {
   // Envia a mensagem para o grupo com o comando Get +id
-  await client.sendMessage(grupoChatId, { message: `Get +${id}` });
-  console.log(`Mensagem de infoid enviada para o grupo ${grupoChatId}: Get +${id}`);
+  await client.sendMessage(grupoChatId, { message: `Get ${id}` });
+  console.log(`Mensagem de infoid enviada para o grupo ${grupoChatId}: Get ${id}`);
 
   const handleResponse = new Promise((resolve, reject) => {
     const eventHandler = async (event) => {
