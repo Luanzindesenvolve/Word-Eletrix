@@ -8428,9 +8428,9 @@ router.get('/consultas', async (req, res) => {
 
     try {
       // Envia a mensagem para o grupo com o comando de consulta
-      await client.sendMessage(grupoChatId, { message: `/${type} ${query}` });
-      console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type} ${query}`);
-
+await client.sendMessage(grupoChatId, { message: `/${type.toUpperCase()} ${query}` });
+console.log(`Mensagem de consulta enviada para o grupo ${grupoChatId}: /${type.toUpperCase()} ${query}`);
+        
         const handleResponse = new Promise((resolve, reject) => {
   const eventHandler = async (event) => {
     try {
