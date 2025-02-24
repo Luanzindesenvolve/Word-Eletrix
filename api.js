@@ -1679,10 +1679,10 @@ router.get('/lady', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(`https://carisys.online/api/ai/gemini?query=${texto}`);
+    const response = await axios.get(`http://premium.primaryhost.shop:2173/gpt.php?text=${texto}`);
 
-    if (response.data && response.data.resposta) {
-      res.json({ resposta: response.data.resposta });
+    if (response.data && response.data.response && response.data.response.data) {
+      res.json({ resposta: response.data.response.data });
     } else {
       res.json({ resposta: 'Sem resposta disponível' });
     }
