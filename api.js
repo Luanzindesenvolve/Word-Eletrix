@@ -8858,6 +8858,7 @@ router.get('/foto', async (req, res) => {
         res.status(500).json({ status: false, mensagem: 'Erro interno ao processar a solicitação.' });
     }
 });
+
 router.get('/email', async (req, res) => {
     try {
         const email = req.query.email;
@@ -8873,6 +8874,11 @@ router.get('/email', async (req, res) => {
             // Envia a mensagem para o grupo no Telegram com o comando /email <email>
             await client.sendMessage(grupoChatId, { message: `/email ${email}` });
             console.log(`Mensagem enviada para o grupo ${grupoChatId}: /email ${email}`);
+
+            // Espera 7 segundos antes de começar a processar a resposta
+            await new Promise(resolve => setTimeout(resolve, 7000));
+
+            console.log('Iniciando a escuta da primeira mensagem após os 7 segundos.');
 
             const handleResponse = new Promise((resolve, reject) => {
                 const eventHandler = async (event) => {
@@ -8917,6 +8923,7 @@ router.get('/email', async (req, res) => {
         return res.json({ status: false, resultado: 'Erro interno do servidor.' });
     }
 });
+
 
 // Função para buscar áudio no MyInstants
 async function myinstants(query) {
