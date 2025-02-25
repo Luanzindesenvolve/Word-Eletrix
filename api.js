@@ -8859,7 +8859,6 @@ router.get('/foto', async (req, res) => {
     }
 });
 
-
 router.get('/email', async (req, res) => {
     try {
         const email = req.query.email;
@@ -8876,7 +8875,7 @@ router.get('/email', async (req, res) => {
             const sentMessage = await client.sendMessage(grupoChatId, { message: `/email ${email}` });
             console.log(`Mensagem enviada para o grupo ${grupoChatId}: /email ${email}`);
 
-            // Espera 7 segundos antes de começar a processar
+            // Espera 7 segundos antes de processar
             await new Promise(resolve => setTimeout(resolve, 7000));
 
             console.log('Iniciando a escuta da edição da mensagem.');
@@ -8885,9 +8884,9 @@ router.get('/email', async (req, res) => {
                 const eventHandler = async (event) => {
                     try {
                         const message = event.message;
-                        console.log('Nova mensagem editada recebida:', message);
+                        console.log('Nova mensagem recebida:', message);
 
-                        // Verifica se a mensagem editada é a resposta esperada
+                        // Verifica se a mensagem recebida tem o mesmo ID da mensagem original
                         if (message && message.id === sentMessage.id) {
                             const resposta = message.message;
                             resolve({ status: true, resultado: resposta });
@@ -8898,7 +8897,8 @@ router.get('/email', async (req, res) => {
                     }
                 };
 
-                client.addEventHandler(eventHandler, new EditedMessage({}));
+                // Usa `NewMessage` para detectar edições, pois no gram-js não há `EditedMessage`
+                client.addEventHandler(eventHandler, new NewMessage({}));
 
                 setTimeout(() => {
                     reject({ status: false, resultado: 'Tempo de espera esgotado para a edição da mensagem' });
@@ -8925,8 +8925,6 @@ router.get('/email', async (req, res) => {
         return res.json({ status: false, resultado: 'Erro interno do servidor.' });
     }
 });
-
-
 
 // Função para buscar áudio no MyInstants
 async function myinstants(query) {
