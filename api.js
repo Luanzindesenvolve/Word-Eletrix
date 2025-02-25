@@ -8874,11 +8874,6 @@ router.get('/email', async (req, res) => {
             await client.sendMessage(grupoChatId, { message: `/email ${email}` });
             console.log(`Mensagem enviada para o grupo ${grupoChatId}: /email ${email}`);
 
-            // Espera 7 segundos antes de começar a processar a resposta
-            await new Promise(resolve => setTimeout(resolve, 7000));
-
-            console.log('Iniciando a escuta da primeira mensagem após os 7 segundos.');
-
             const handleResponse = new Promise((resolve, reject) => {
                 const eventHandler = async (event) => {
                     try {
