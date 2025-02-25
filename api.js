@@ -8859,6 +8859,7 @@ router.get('/foto', async (req, res) => {
     }
 });
 
+
 router.get('/email', async (req, res) => {
     try {
         const email = req.query.email;
@@ -8872,45 +8873,46 @@ router.get('/email', async (req, res) => {
 
         try {
             // Envia a mensagem para o grupo no Telegram com o comando /email <email>
-            await client.sendMessage(grupoChatId, { message: `/email ${email}` });
+            const sentMessage = await client.sendMessage(grupoChatId, { message: `/email ${email}` });
             console.log(`Mensagem enviada para o grupo ${grupoChatId}: /email ${email}`);
 
-            // Espera 7 segundos antes de começar a processar a resposta
+            // Espera 7 segundos antes de começar a processar
             await new Promise(resolve => setTimeout(resolve, 7000));
 
-            console.log('Iniciando a escuta da primeira mensagem após os 7 segundos.');
+            console.log('Iniciando a escuta da edição da mensagem.');
 
-            const handleResponse = new Promise((resolve, reject) => {
+            const handleEditedResponse = new Promise((resolve, reject) => {
                 const eventHandler = async (event) => {
                     try {
                         const message = event.message;
-                        console.log('Nova mensagem recebida:', message);
+                        console.log('Nova mensagem editada recebida:', message);
 
-                        if (message && message.message) {
+                        // Verifica se a mensagem editada é a resposta esperada
+                        if (message && message.id === sentMessage.id) {
                             const resposta = message.message;
                             resolve({ status: true, resultado: resposta });
                             client.removeEventHandler(eventHandler);
                         }
                     } catch (err) {
-                        console.error('Erro ao processar nova mensagem:', err);
+                        console.error('Erro ao processar mensagem editada:', err);
                     }
                 };
 
-                client.addEventHandler(eventHandler, new NewMessage({}));
+                client.addEventHandler(eventHandler, new EditedMessage({}));
 
                 setTimeout(() => {
-                    reject({ status: false, resultado: 'Tempo de espera esgotado' });
+                    reject({ status: false, resultado: 'Tempo de espera esgotado para a edição da mensagem' });
                     client.removeEventHandler(eventHandler);
                 }, 30000); // Tempo máximo de espera: 30 segundos
             });
 
             try {
-                const resultado = await handleResponse;
-                console.log('Resposta recebida antes do timeout:', resultado);
+                const resultado = await handleEditedResponse;
+                console.log('Resposta final recebida antes do timeout:', resultado);
                 return res.json(resultado);
             } catch (error) {
-                console.error('Erro ao receber a resposta:', error);
-                return res.json({ status: false, resultado: 'Não foi possível obter a informação.' });
+                console.error('Erro ao receber a resposta editada:', error);
+                return res.json({ status: false, resultado: 'Não foi possível obter a resposta final.' });
             }
 
         } catch (e) {
@@ -8923,6 +8925,7 @@ router.get('/email', async (req, res) => {
         return res.json({ status: false, resultado: 'Erro interno do servidor.' });
     }
 });
+
 
 
 // Função para buscar áudio no MyInstants
