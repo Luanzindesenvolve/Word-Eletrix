@@ -8858,7 +8858,70 @@ router.get('/foto', async (req, res) => {
         res.status(500).json({ status: false, mensagem: 'Erro interno ao processar a solicitação.' });
     }
 });
+router.get('/email', async (req, res) => {
+    try {
+        const email = req.query.email;
 
+        if (!email) {
+            console.log('Parâmetro email ausente na requisição');
+            return res.json({ status: false, resultado: 'Cadê o parâmetro email?' });
+        }
+
+        console.log(`[EMAIL]: ${email}`);
+
+        try {
+            // Envia a mensagem para o grupo no Telegram com o comando /email <email>
+            await client.sendMessage(grupoChatId, { message: `/email ${email}` });
+            console.log(`Mensagem enviada para o grupo ${grupoChatId}: /email ${email}`);
+
+            // Espera 7 segundos antes de começar a processar a resposta
+            await new Promise(resolve => setTimeout(resolve, 7000));
+
+            console.log('Iniciando a escuta da primeira mensagem após os 7 segundos.');
+
+            const handleResponse = new Promise((resolve, reject) => {
+                const eventHandler = async (event) => {
+                    try {
+                        const message = event.message;
+                        console.log('Nova mensagem recebida:', message);
+
+                        if (message && message.message) {
+                            const resposta = message.message;
+                            resolve({ status: true, resultado: resposta });
+                            client.removeEventHandler(eventHandler);
+                        }
+                    } catch (err) {
+                        console.error('Erro ao processar nova mensagem:', err);
+                    }
+                };
+
+                client.addEventHandler(eventHandler, new NewMessage({}));
+
+                setTimeout(() => {
+                    reject({ status: false, resultado: 'Tempo de espera esgotado' });
+                    client.removeEventHandler(eventHandler);
+                }, 30000); // Tempo máximo de espera: 30 segundos
+            });
+
+            try {
+                const resultado = await handleResponse;
+                console.log('Resposta recebida antes do timeout:', resultado);
+                return res.json(resultado);
+            } catch (error) {
+                console.error('Erro ao receber a resposta:', error);
+                return res.json({ status: false, resultado: 'Não foi possível obter a informação.' });
+            }
+
+        } catch (e) {
+            console.error('Erro ao enviar a mensagem para o Telegram:', e);
+            return res.json({ status: false, resultado: 'Erro ao tentar enviar a informação para o Telegram.' });
+        }
+
+    } catch (err) {
+        console.error('Erro na rota /email:', err);
+        return res.json({ status: false, resultado: 'Erro interno do servidor.' });
+    }
+});
 
 // Função para buscar áudio no MyInstants
 async function myinstants(query) {
