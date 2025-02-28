@@ -2,11 +2,11 @@
 
 <h1 align="center">
 <p>
-<img src= "https://i.ibb.co/pjYXcKy/5a0bfa08f34c.jpg" alt="-𝐖𝐎𝐑𝐋𝐃 𝐄𝐂𝐋𝐄𝐓𝐈𝐗 ✓" width="720">
+<img src= "https://envs.sh/iZH.jpg alt="-𝐖𝐎𝐑𝐋𝐃 𝐄𝐂𝐋𝐄𝐓𝐈𝐗 ✓" width="720">
 </p>
 
 <p align="center">
-<a href="#"><img title="𝑾𝑬𝑩-𝑼𝑵𝑫𝑬𝑹𝑮𝑹𝑶𝑼𝑵𝑫 " src="https://img.shields.io/badge/BOT•MULTI•DEVICE-blue?&style=for-the-badge"></a>
+<a href="#"><img title="𝑾𝑬𝑩-𝑼𝑵𝑫𝑬𝑹𝑮𝑹𝑶𝑼𝑵𝑫 " src="https://img.shields.io/badge/WORLD•ECLETIX•SITE-blue?&style=for-the-badge"></a>
 </p>
 
 <p align="center">
