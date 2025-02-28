@@ -1,17 +1,17 @@
-<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=2500&color=C60404&center=falso&vCenter=falso&lines=𝐋𝐀𝐃𝐘-𝐁𝐎𝐓+✿+V4.4.0✓;𝐁𝐎𝐓+𝐌𝐔𝐋𝐓𝐈+𝐃𝐄𝐕𝐈𝐂𝐄;✰✰✰✰✰">
+<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=2500&color=C60404&center=falso&vCenter=falso&lines=𝐖𝐎𝐑𝐋𝐃 +𝐄𝐂𝐋𝐄𝐓𝐈𝐗 +✿+V3.0✓;𝑾𝑬𝑩+𝑼𝑵𝑫𝑬𝑹𝑮𝑹𝑶𝑼𝑵𝑫;✰✰✰✰✰">
 
 <h1 align="center">
 <p>
-<img src= "https://i.ibb.co/pjYXcKy/5a0bfa08f34c.jpg" alt="LADY-BOT V4.4.0✓" width="720">
+<img src= "https://i.ibb.co/pjYXcKy/5a0bfa08f34c.jpg" alt="-𝐖𝐎𝐑𝐋𝐃 𝐄𝐂𝐋𝐄𝐓𝐈𝐗 ✓" width="720">
 </p>
 
 <p align="center">
-<a href="#"><img title="BOT-MULTI-DEVICE" src="https://img.shields.io/badge/BOT•MULTI•DEVICE-blue?&style=for-the-badge"></a>
+<a href="#"><img title="𝑾𝑬𝑩-𝑼𝑵𝑫𝑬𝑹𝑮𝑹𝑶𝑼𝑵𝑫 " src="https://img.shields.io/badge/BOT•MULTI•DEVICE-blue?&style=for-the-badge"></a>
 </p>
 
 <p align="center">
 <img title="Autor" src="https://img.shields.io/badge/Autor-Luanzn_fe-orange.svg?style=for-the-badge&logo=github"></a>
-<img title="Versão" src="https://img.shields.io/badge/Versão-4.4.0-orange.svg?style=for-the-badge&logo=github"></a>
+<img title="Versão" src="https://img.shields.io/badge/Versão-3.0-orange.svg?style=for-the-badge&logo=github"></a>
 </p>
 
 <div align="center">
@@ -22,7 +22,7 @@
 
 ## ARQUIVO ZIP 📥
 
-Você pode baixar o arquivo e descompacta-lo depois. [Baixar](https://github.com/Powerapis7/Lady-bot-v4.4/archive/refs/heads/main.zip)
+Você pode baixar o arquivo e descompacta-lo depois. [Baixar](https://github.com/Powerapis7//Word-Eletrix/archive/refs/heads/main.zip)
 > Disponível somente se você já estiver tudo instalado no termux
 ------------------
 
@@ -57,7 +57,7 @@ pkg install -y ffmpeg nodejs-lts wget tesseract git
 ````
 4 - COMANDO: 🐞
 ````bash
-cd /sdcard && git clone https://github.com/Powerapis/Lady-bot-v4.4.git
+cd /sdcard && git clone https://github.com/Luanzindesenvolve/Word-Eletrix.git
 ````
 5 - COMANDO: 🐞
 ````bash
@@ -71,14 +71,14 @@ npm install
 ````
 7 - COMANDO: 🐞
 ````bash
-cd /sdcard/Lady-bot-free-main && sh start.sh
+cd /sdcard/word-ecletix-free-main && sh start.sh
 ````
 > Use-o para toda vez que for ligar o bot!
 ------------------
 
 ## Contributors
 
-- **Update**: Canal onde será postado updates da ladybot-MD. ✨
+- **Update**: Canal onde será postado updates da World Ecletix. ✨
 
 * [__Canal__](https://whatsapp.com/channel/0029Vb3AQtJ3AzNOz3mqx310)
 
