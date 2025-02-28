@@ -2,7 +2,7 @@
 
 <h1 align="center">
 <p>
-<img src= "https://envs.sh/iZH.jpg alt="-𝐖𝐎𝐑𝐋𝐃 𝐄𝐂𝐋𝐄𝐓𝐈𝐗 ✓" width="720">
+<img src= "https://envs.sh/iZH.jpg" alt="-𝐖𝐎𝐑𝐋𝐃 𝐄𝐂𝐋𝐄𝐓𝐈𝐗 ✓" width="720">
 </p>
 
 <p align="center">
