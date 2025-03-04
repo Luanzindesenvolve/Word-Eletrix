@@ -71,7 +71,7 @@ npm install
 ````
 7 - COMANDO: 🐞
 ````bash
-cd /sdcard/word-ecletix-free-main && sh start.sh
+cd /sdcard/word-ecletix-free-main && node server.js
 ````
 > Use-o para toda vez que for ligar o bot!
 ------------------
