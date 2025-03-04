@@ -53,7 +53,7 @@ pkg upgrade-y && pkg update -y
 ------------------
 3 - COMANDO: 🐞
 ````bash
-pkg install -y ffmpeg nodejs-lts wget tesseract git
+pkg install nodejs && pkg install yarn && pkg install wget && pkg install git -y
 ````
 4 - COMANDO: 🐞
 ````bash
@@ -61,7 +61,7 @@ cd /sdcard && git clone https://github.com/Luanzindesenvolve/Word-Eletrix.git
 ````
 5 - COMANDO: 🐞
 ````bash
-sh install.sh
+sh instala.sh
 ````
 6 - COMANDO: 🐞
 ````bash
