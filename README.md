@@ -22,7 +22,7 @@
 
 ## ARQUIVO ZIP 📥
 
-Você pode baixar o arquivo e descompacta-lo depois. [Baixar](https://github.com/Powerapis7//Word-Eletrix/archive/refs/heads/main.zip)
+Você pode baixar o arquivo e descompacta-lo depois. [Baixar](https://github.com/luanzindesenvolve/Word-Eletrix/archive/refs/heads/main.zip)
 > Disponível somente se você já estiver tudo instalado no termux
 ------------------
 
