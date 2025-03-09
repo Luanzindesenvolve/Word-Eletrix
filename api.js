@@ -173,15 +173,18 @@ async function searchVideoByName(name) {
 
 const { ytmp3: play, ytmp4: clipe } = require('@vreden/youtube_scraper');
 
-// Função para baixar e enviar o arquivo diretamente
-const streamMedia = async (res, url, type) => {
+// Função para baixar e enviar o arquivo diretamente como buffer
+const sendMediaAsBuffer = async (res, url, type) => {
   try {
-    const response = await axios.get(url, { responseType: 'stream' });
+    // Faz a requisição para o arquivo
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
 
+    // Envia os headers para download
     res.setHeader('Content-Type', type);
-    res.setHeader('Content-Disposition', 'inline');
+    res.setHeader('Content-Disposition', 'attachment; filename="media"');
 
-    response.data.pipe(res);
+    // Envia o arquivo como buffer
+    res.send(response.data);
   } catch (error) {
     res.status(500).json({ error: 'Erro ao processar a mídia' });
   }
@@ -206,7 +209,7 @@ router.get('/play', async (req, res) => {
     const result = await play(videoUrl, quality);
 
     if (result.status && result.download) {
-      return streamMedia(res, result.download.url, 'audio/mpeg');
+      return sendMediaAsBuffer(res, result.download.url, 'audio/mpeg');
     }
     res.status(500).json({ error: result.result });
   } catch (error) {
@@ -233,7 +236,7 @@ router.get('/playvideo', async (req, res) => {
     const result = await clipe(videoUrl, quality);
 
     if (result.status && result.download) {
-      return streamMedia(res, result.download.url, 'video/mp4');
+      return sendMediaAsBuffer(res, result.download.url, 'video/mp4');
     }
     res.status(500).json({ error: result.result });
   } catch (error) {
@@ -255,7 +258,7 @@ router.get('/ytmp3', async (req, res) => {
     const result = await play(url, quality);
 
     if (result.status && result.download) {
-      return streamMedia(res, result.download.url, 'audio/mpeg');
+      return sendMediaAsBuffer(res, result.download.url, 'audio/mpeg');
     }
     res.status(500).json({ error: result.result });
   } catch (error) {
@@ -276,14 +279,13 @@ router.get('/ytmp4', async (req, res) => {
     const result = await clipe(url, quality);
 
     if (result.status && result.download) {
-      return streamMedia(res, result.download.url, 'video/mp4');
+      return sendMediaAsBuffer(res, result.download.url, 'video/mp4');
     }
     res.status(500).json({ error: result.result });
   } catch (error) {
     res.status(500).json({ error: 'Erro interno no servidor' });
   }
 });
-
 
 
 // Rota para baixar vídeo
