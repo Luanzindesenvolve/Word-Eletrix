@@ -171,8 +171,7 @@ async function searchVideoByName(name) {
   throw new Error('Vídeo não encontrado');
 }
 
-const { ytmp3, ytmp4 } = require('@vreden/youtube_scraper');
-
+const { ytmp3: play, ytmp4: clipe } = require('@vreden/youtube_scraper');
 
 // Função para baixar e enviar o arquivo diretamente
 const streamMedia = async (res, url, type) => {
@@ -204,7 +203,7 @@ router.get('/play', async (req, res) => {
     }
 
     const videoUrl = searchResults.videos[0].url;
-    const result = await ytmp3(videoUrl, quality);
+    const result = await play(videoUrl, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'audio/mpeg');
@@ -231,7 +230,7 @@ router.get('/playvideo', async (req, res) => {
     }
 
     const videoUrl = searchResults.videos[0].url;
-    const result = await ytmp4(videoUrl, quality);
+    const result = await clipe(videoUrl, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'video/mp4');
@@ -253,7 +252,7 @@ router.get('/ytmp3', async (req, res) => {
   }
 
   try {
-    const result = await ytmp3(url, quality);
+    const result = await play(url, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'audio/mpeg');
@@ -274,7 +273,7 @@ router.get('/ytmp4', async (req, res) => {
   }
 
   try {
-    const result = await ytmp4(url, quality);
+    const result = await clipe(url, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'video/mp4');
