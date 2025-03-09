@@ -171,7 +171,7 @@ async function searchVideoByName(name) {
   throw new Error('Vídeo não encontrado');
 }
 
-const { play, clipe } = require('@vreden/youtube_scraper');
+const { ytmp3, ytmp4 } = require('@vreden/youtube_scraper');
 
 
 // Função para baixar e enviar o arquivo diretamente
@@ -204,7 +204,7 @@ router.get('/play', async (req, res) => {
     }
 
     const videoUrl = searchResults.videos[0].url;
-    const result = await play(videoUrl, quality);
+    const result = await ytmp3(videoUrl, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'audio/mpeg');
@@ -231,7 +231,7 @@ router.get('/playvideo', async (req, res) => {
     }
 
     const videoUrl = searchResults.videos[0].url;
-    const result = await clipe(videoUrl, quality);
+    const result = await ytmp4(videoUrl, quality);
 
     if (result.status && result.download) {
       return streamMedia(res, result.download.url, 'video/mp4');
