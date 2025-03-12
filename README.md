@@ -57,7 +57,7 @@ pkg install nodejs && pkg install yarn && pkg install wget && pkg install git -y
 ````
 4 - COMANDO: 🐞
 ````bash
-cd /sdcard && git clone https://github.com/Luanzindesenvolve/Word-Eletrix.git
+cd /storage && git clone https://github.com/Luanzindesenvolve/Word-Eletrix.git
 ````
 5 - COMANDO: 🐞
 ````bash
@@ -71,7 +71,7 @@ npm install
 ````
 7 - COMANDO: 🐞
 ````bash
-cd /sdcard/word-ecletix-free-main && node server.js
+cd /storage/word-ecletix-free-main && node server.js
 ````
 > Use-o para toda vez que for ligar o bot!
 ------------------
