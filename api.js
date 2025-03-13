@@ -161,79 +161,9 @@ const {
   bobross, 
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
-// Função para pegar os canais de uma página
-const { chromium } = require('playwright');  // Importando o Playwright
 
-async function getChannelsFromPage(pageNumber) {
-  const browser = await chromium.launch({ headless: true });  // Inicia o navegador no modo headless
-  const page = await browser.newPage();  // Cria uma nova página
 
-  await page.goto(`https://superflixapi.ps/tv/?paged=${pageNumber}`, { waitUntil: 'domcontentloaded' });
 
-  // Espera os canais carregarem
-  await page.waitForSelector('.poster');
-
-  // Pega os dados dos canais
-  const canais = await page.evaluate(() => {
-    const canaisArray = [];
-    const posters = document.querySelectorAll('.poster');
-    
-    posters.forEach(poster => {
-      const title = poster.querySelector('.title')?.textContent.trim();
-      const embedLink = poster.querySelector('.btn')?.getAttribute('href');
-      const imageSrc = poster.querySelector('img')?.getAttribute('src');
-      
-      if (title && embedLink && imageSrc) {
-        canaisArray.push({
-          title,
-          embedLink,
-          imageSrc
-        });
-      }
-    });
-
-    return canaisArray;
-  });
-
-  // Coleta a informação de paginação
-  const nextPageButton = await page.$('.next');
-  let nextPage = false;
-  if (nextPageButton) {
-    nextPage = await page.evaluate(button => {
-      return button.getAttribute('data-page');
-    }, nextPageButton);
-  }
-
-  await browser.close();
-  return { canais, nextPage: nextPage ? parseInt(nextPage) : null };
-}
-
-getChannelsFromPage(1)
-  .then(result => console.log(result))
-  .catch(error => console.error('Erro ao buscar todos os canais:', error));
-// Rota para pegar todos os canais de todas as páginas
-router.get('/api-tv', async (req, res) => {
-  let allChannels = [];
-  let page = 1;
-  let nextPage = true;
-
-  try {
-    // Enquanto houver páginas a serem carregadas, continuamos buscando
-    while (nextPage !== null) {
-      console.log(`Buscando canais da página ${page}...`);
-      const { canais, nextPage: nextPageNumber } = await getChannelsFromPage(page);
-      allChannels = [...allChannels, ...canais];
-      nextPage = nextPageNumber;
-      page++;
-    }
-
-    // Respondendo com todos os canais encontrados
-    res.json({ canais: allChannels });
-  } catch (error) {
-    console.error('Erro ao buscar todos os canais:', error);
-    res.status(500).json({ error: 'Erro ao buscar canais' });
-  }
-});
 // Função para buscar o vídeo pelo nome usando yt-search
 async function searchVideoByName(name) {
   const result = await search(name);  // Busca o vídeo pelo nome
