@@ -162,6 +162,7 @@ const {
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Função para pegar os canais de uma página
+const puppeteer = require('puppeteer');
 async function getChannelsFromPage(pageNumber) {
   const browser = await puppeteer.launch({ headless: true });
   const [page] = await browser.pages();
