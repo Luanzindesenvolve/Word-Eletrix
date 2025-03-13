@@ -31,4 +31,4 @@ sudo apt-get install -y nodejs
 echo "Instalando Playwright..."
 npm install playwright
 
-echo "Instalação completa!
+echo "Instalação completa!"
