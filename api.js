@@ -162,9 +162,13 @@ const {
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
 // Função para pegar os canais de uma página
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+
 async function getChannelsFromPage(pageNumber) {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: true,
+    executablePath: puppeteer.executablePath(),  // Força o uso do Chromium embutido no Puppeteer
+  });
   const [page] = await browser.pages();
   await page.goto(`https://superflixapi.ps/tv/?paged=${pageNumber}`, { waitUntil: 'domcontentloaded' });
 
@@ -193,7 +197,7 @@ async function getChannelsFromPage(pageNumber) {
     return canaisArray;
   });
 
-  // Coleta a informação de páginação
+  // Coleta a informação de paginação
   const nextPageButton = await page.$('.next');
   let nextPage = false;
   if (nextPageButton) {
@@ -205,7 +209,6 @@ async function getChannelsFromPage(pageNumber) {
   await browser.close();
   return { canais, nextPage: nextPage ? parseInt(nextPage) : null };
 }
-
 // Rota para pegar todos os canais de todas as páginas
 router.get('/api-tv', async (req, res) => {
   let allChannels = [];
