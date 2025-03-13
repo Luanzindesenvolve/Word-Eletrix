@@ -36,7 +36,6 @@
     "@hiudyy/ytdl": "",
     "archiver": "",
     "@tnfangel/ytmusic-api": "",
-    "@vreden/youtube_scraper": "",
-    "playwright": ""
+    "@vreden/youtube_scraper": ""
   }
 }
