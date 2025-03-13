@@ -37,6 +37,6 @@
     "archiver": "",
     "@tnfangel/ytmusic-api": "",
     "@vreden/youtube_scraper": "",
-    "puppeteer": ""
+    "puppeteer-core": ""
   }
 }
