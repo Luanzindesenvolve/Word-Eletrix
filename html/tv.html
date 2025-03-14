@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="videoPlayer" frameborder="0" allowfullscreen></iframe>
+
+    <script>
+        let canal = new URLSearchParams(window.location.search).get("canal");
+        if (canal) {
+            document.getElementById("videoPlayer").src = `https://superflixapi.ps/tv/${canal}`;
+        }
+    </script>
+
+</body>
+</html
