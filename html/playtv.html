@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play tv free</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .post {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+    }
+    .post img {
+      width: 100%;
+      height: auto;
+    }
+    .post h3 {
+      margin: 10px 0;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="conteudo">
+    <!-- Os conteúdos extraídos da API serão injetados aqui -->
+  </div>
+
+  <script>
+    // Função para buscar dados da API e gerar o layout
+    axios.get('https://world-ecletix.onrender.com/api/playertv')
+      .then(function (response) {
+        const posts = response.data;  // Dados recebidos da API
+        const container = document.getElementById('conteudo');
+        
+        posts.forEach(post => {
+          // Criar o elemento de cada post
+          const postElement = document.createElement('div');
+          postElement.classList.add('post');
+          
+          // Adicionar a imagem
+          const img = document.createElement('img');
+          img.src = post.imgSrc;
+          img.alt = post.title;
+
+          // Adicionar o título
+          const title = document.createElement('h3');
+          title.textContent = post.title;
+
+          // Adicionar link para redirecionar ao clicar
+          postElement.addEventListener('click', () => {
+            window.location.href = post.link;
+          });
+
+          // Montar o post
+          postElement.appendChild(img);
+          postElement.appendChild(title);
+
+          // Injetar no container
+          container.appendChild(postElement);
+        });
+      })
+      .catch(function (error) {
+        console.log('Erro ao obter o conteúdo:', error);
+      });
+  </script>
+</body>
+  </html
