@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Dinâmico</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .canal-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .canal-item {
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .canal-item:hover {
+      background-color: #f0f0f0;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: 0;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Escolha um Canal</h1>
+    <!-- Lista de canais -->
+    <div class="canal-list" id="canal-list">
+      <!-- Os canais serão carregados aqui dinamicamente -->
+    </div>
+
+    <!-- Área para o player -->
+    <div class="entry-content">
+      <iframe id="player-iframe" src="" allow="encrypted-media" allowfullscreen frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Função para carregar a lista de canais da API
+    axios.get('https://world-ecletix.onrender.com/api/playertv')
+      .then(function (response) {
+        const canais = response.data;  // Dados recebidos da API
+        const canalList = document.getElementById('canal-list');
+
+        canais.forEach(canal => {
+          // Criar item de canal
+          const canalItem = document.createElement('div');
+          canalItem.classList.add('canal-item');
+          canalItem.textContent = canal.title;
+
+          // Adicionar evento de clique para carregar o iframe
+          canalItem.addEventListener('click', () => {
+            loadPlayer(canal);
+          });
+
+          // Adicionar o canal à lista
+          canalList.appendChild(canalItem);
+        });
+      })
+      .catch(function (error) {
+        console.log('Erro ao obter os canais:', error);
+      });
+
+    // Função para carregar o player com o iframe correspondente
+    function loadPlayer(canal) {
+      const iframe = document.getElementById('player-iframe');
+      
+      // Aqui estamos usando o formato de URL conforme você mencionou
+      const iframeUrl = `https://playertv.net/e/?v=${canal.id}`;  // Aqui usamos o ID ou identificador do canal (você pode ajustar isso conforme os dados da API)
+      
+      // Atualizar o src do iframe
+      iframe.src = iframeUrl;
+    }
+  </script>
+</body>
+</html>
