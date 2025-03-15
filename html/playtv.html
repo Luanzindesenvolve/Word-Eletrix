@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play TV Free</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .post {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+    }
+    .post img {
+      width: 100%;
+      height: auto;
+    }
+    .post h3 {
+      margin: 10px 0;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Selecione um Canal</h1>
+  <div class="container" id="conteudo">
+    <!-- Os conteúdos extraídos da API serão injetados aqui -->
+  </div>
+
+  <script>
+    // Carregar canais da API
+    axios.get('https://world-ecletix.onrender.com/api/playertv')
+      .then(function (response) {
+        const posts = response.data;
+        const container = document.getElementById('conteudo');
+        
+        posts.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.classList.add('post');
+          
+          const img = document.createElement('img');
+          img.src = post.imgSrc;
+          img.alt = post.title;
+
+          const title = document.createElement('h3');
+          title.textContent = post.title;
+
+          // Redireciona para a página do canal, passando a URL real como parâmetro
+          postElement.addEventListener('click', () => {
+            // Redireciona para a página do canal amigável
+            window.location.href = `/canal/${encodeURIComponent(post.title)}?canal=${encodeURIComponent(post.link)}`;
+          });
+
+          postElement.appendChild(img);
+          postElement.appendChild(title);
+          container.appendChild(postElement);
+        });
+      })
+      .catch(function (error) {
+        console.log('Erro ao obter o conteúdo:', error);
+      });
+  </script>
+</body>
+</html>
