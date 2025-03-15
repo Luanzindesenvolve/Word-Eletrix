@@ -1,4 +1,4 @@
-<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=2500&color=C60404&center=falso&vCenter=falso&lines=𝐖𝐎𝐑𝐋𝐃 +𝐄𝐂𝐋𝐄𝐓𝐈𝐗 +✿+V3.0✓;𝑾𝑬𝑩+𝑼𝑵𝑫𝑬𝑹𝑮𝑹𝑶𝑼𝑵𝑫;✰✰✰✰✰">
+<img src="https://readme-typing-svg.herokuapp.com/?font=mono&size=30&duration=2500&color=C60404&center=falso&vCenter=falso&lines=WORLD+ECLETIX;WEB+SITE+MULTI-CONTEUDO;✰✰✰✰✰">
 
 <h1 align="center">
 <p>
