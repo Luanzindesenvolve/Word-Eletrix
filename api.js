@@ -196,6 +196,30 @@ router.get('/playertv', async (req, res) => {
   }
 });
 
+router.get('/api/iframe', async (req, res) => {
+  const canalUrl = req.query.canal;
+  if (!canalUrl) {
+    return res.status(400).json({ error: 'URL do canal é necessária' });
+  }
+
+  try {
+    // Faz a requisição para a página do canal
+    const { data } = await axios.get(canalUrl);
+    const $ = cheerio.load(data);
+
+    // Busca o iframe correto dentro da página
+    const iframeSrc = $('.entry-content iframe').attr('src');
+
+    if (!iframeSrc) {
+      return res.status(404).json({ error: 'Iframe não encontrado' });
+    }
+
+    res.json({ iframe: iframeSrc });
+  } catch (error) {
+    console.error('Erro ao buscar o iframe:', error);
+    res.status(500).json({ error: 'Erro ao processar a página do canal' });
+  }
+});
 
 // Função para buscar o vídeo pelo nome usando yt-search
 async function searchVideoByName(name) {
