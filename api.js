@@ -2201,19 +2201,7 @@ router.get('/bolsonaro', async (req, res) => {
     });
   }
 });
-router.get('/beautiful', async (req, res) => {
-  try {
-    const image = req.query.link;
-    const filePath = await beautiful(image);  
-    res.sendFile(filePath);  // Envia o arquivo gerado para o cliente
-  } catch (err) {
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error'
-    });
-  }
-});
+router.get('/beautiful', beautiful)
 router.get('/musicard', musicard) 
 router.get('/bnw', bnw) 
 router.get('/affect', affect) 
