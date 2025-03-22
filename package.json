@@ -23,6 +23,8 @@
     "cors": "",
     "canvas": "^2.6.1",
     "canvafy": "^7.1.0",
+    "discord-image-generation": "",
+    "caxinha": "",
     "discord-canvas": "",
     "canvacard": "^5.2.8",
     "@jimp/custom": "",
