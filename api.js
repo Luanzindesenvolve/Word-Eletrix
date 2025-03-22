@@ -29,6 +29,18 @@ const getImageBuffer = async (url) => {
         throw new Error('Erro ao buscar imagem.');
     }
 };
+// Função para gerar o User-Agent
+function userAgent() {
+  const oos = [
+    'Macintosh; Intel Mac OS X 10_15_7', 'Macintosh; Intel Mac OS X 10_15_5', 'Macintosh; Intel Mac OS X 10_11_6',
+    'Macintosh; Intel Mac OS X 10_6_6', 'Macintosh; Intel Mac OS X 10_9_5', 'Macintosh; Intel Mac OS X 10_10_5',
+    'Macintosh; Intel Mac OS X 10_7_5', 'Macintosh; Intel Mac OS X 10_11_3', 'Macintosh; Intel Mac OS X 10_10_3',
+    'Macintosh; Intel Mac OS X 10_6_8', 'Macintosh; Intel Mac OS X 10_10_2', 'Macintosh; Intel Mac OS X 10_10_3',
+    'Macintosh; Intel Mac OS X 10_11_5', 'Windows NT 10.0; Win64; x64', 'Windows NT 10.0; WOW64', 'Windows NT 10.0'
+  ];
+
+  return `Mozilla/5.0 (${oos[Math.floor(Math.random() * oos.length)]}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${Math.floor(Math.random() * 3) + 87}.0.${Math.floor(Math.random() * 190) + 4100}.${Math.floor(Math.random() * 50) + 140} Safari/537.36`;
+}
 //teste
 
 
@@ -4428,69 +4440,48 @@ router.get('/whois/:domain', async (req, res) => {
     }
 });
 
-// Rota GET para consultar a operadora
-router.get('/qual-operadora', async (req, res) => {
-    let numero = req.query.numero;
+// Função para verificar a operadora
+router.get('/qual-operadora/:numero', async (req, res) => {
+  const numero = req.params.numero;
+  const getDate = String(Date.now()).slice(0, 10);
+  const telefone = numero; // Aqui você pode aplicar a formatação do número, se necessário
 
-    if (!numero) return res.json({ message: "Faltando o parâmetro número" });
+  if (!telefone) return res.status(400).json({ error: 'Número desconhecido.' });
 
-    // Função para formatar número
-    const formatarNumero = (numero) => {
-        return numero.replace(/\D/g, '');  // Remove qualquer caractere não numérico
-    };
+  const user = userAgent();
 
-    // Função para consultar a operadora
-    const qualOperadora = (numero) => {
-        const user = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36';  // Exemplo de user-agent
-        const getDate = String(Date.now()).slice(0, 10);  // Data atual (10 primeiros caracteres do timestamp)
-        const telefone = formatarNumero(numero);  // Formatar o número
+  const headers = {
+    method: "POST",
+    headers: {
+      "user-agent": user,
+      cookie: `SSID=sfeb17gj92tcllul8c17tb6iji; USID=4f85b07d2188dc8b683bf2050d0a20dc; _jsuid=2662589599; _heatmaps_g2g_100536567=no; cf_clearance=KmTYQBKBLdNP4axA2h60DDwZE9j.wTKAPaI38jgr8lk-${getDate}-0-1-68ba348d.886f8aa2.e20e0874-0.2.${getDate}`,
+      'accept-language': "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+      Origin: 'https://www.qualoperadora.net',
+      Referer: 'https://www.qualoperadora.net/'
+    },
+    data: { telefone }
+  };
 
-        if (!telefone) return Promise.reject('Número desconhecido.');
+  try {
+    const html = await axios.post('https://www.qualoperadora.net', headers);
+    const $ = cheerio.load(html.data);
+    const ope = $('div[id="resultado"] > span').html()?.split(/ +/);
+    
+    if (!ope) return res.status(404).json({ error: 'Operadora desconhecida ou não foi encontrada.' });
 
-        const headers = {
-            method: "POST",
-            headers: {
-                "user-agent": user,  // User-agent diretamente aqui
-                cookie: `SSID=sfeb17gj92tcllul8c17tb6iji; USID=4f85b07d2188dc8b683bf2050d0a20dc; _jsuid=2662589599; _heatmaps_g2g_100536567=no; cf_clearance=KmTYQBKBLdNP4axA2h60DDwZE9j.wTKAPaI38jgr8lk-${getDate}-0-1-68ba348d.886f8aa2.e20e0874-0.2.${getDate}`,
-                'accept-language': "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-                Origin: 'https://www.qualoperadora.net',
-                Referer: 'https://www.qualoperadora.net/'
-            },
-            data: { telefone }
-        };
-
-        return getHTML('https://www.qualoperadora.net', headers).then((html) => {
-            const $ = cheerio.load(html);
-            const ope = $('div[id="resultado"] > span').html()?.split(/ +/);
-            if (!ope) return Promise.reject('Operadora desconhecida ou não encontrada.');
-
-            const estado = $('div[id="resultado"] > span > span').html();
-            return Promise.resolve({
-                telefone,
-                operadora: ope[0],
-                dispositivo: ope.pop(),
-                estado
-            });
-        });
-    };
-
-    // Função auxiliar para realizar requisição HTTP com axios
-    const getHTML = async (url, options) => {
-        try {
-            const response = await axios.post(url, options.data, { headers: options.headers });
-            return response.data;
-        } catch (error) {
-            return Promise.reject('Erro ao consultar a página');
-        }
-    };
-
-    try {
-        const resultado = await qualOperadora(numero);
-        res.json(resultado);  // Retorna os dados de operadora
-    } catch (error) {
-        res.json({ message: error });  // Retorna o erro se falhar
-    }
+    const estado = $('div[id="resultado"] > span > span').html();
+    
+    res.json({
+      telefone,
+      operadora: ope[0],
+      dispositivo: ope.pop(),
+      estado
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar a operadora.' });
+  }
 });
+            
 
 router.get('/operadora', async (req, res) => {
     const { numero } = req.query;
