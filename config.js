@@ -114,7 +114,20 @@ async function affect(req, res) {
     });
   }
 }
-
+async function gay(req, res) {
+try {
+const image = req.query.link;
+if(!image) return res.json({message: "faltando o parâmetro image"})
+  img = await Caxinha.canvas.gay(`${image}`);
+  await fs.writeFileSync(__path+'canvasimg.png', img)
+  res.sendFile(__path+'canvasimg.png')
+	} catch(err) {
+		console.log(err)
+		res.status(500).send({
+			status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+		})
+	}
+}
 async function beautiful(req, res) {
   try {
     const image = req.query.link;
@@ -268,9 +281,6 @@ async function gay(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
-
-
-
 
 async function jail(req, res) {
   try {
