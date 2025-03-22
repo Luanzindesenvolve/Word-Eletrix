@@ -134,8 +134,8 @@ async function beautiful(req, res) {
     if (!image) return res.json({ message: "faltando o parâmetro image" });
 
     img = await Caxinha.canvas.beautiful(`${image}`);
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
+    await fs.writeFileSync(__path + '/canvasimg.png', img);
+    res.sendFile(__path + 'canvasimg.png');
   } catch (err) {
     console.log(err);
     res.status(500).send({
