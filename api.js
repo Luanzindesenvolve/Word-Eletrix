@@ -8597,15 +8597,15 @@ router.get('/attp', async (req, res, next) => {
 
     try {
         // Monta a URL da API com o tipo e o texto
-        let hasil = `https://api.iblgroup.cloud/api-iblcloud/${tipo}?texto=${texto}&apikey=TURBO_CONECT`;
+        let apiUrl = `https://api.iblgroup.cloud/api-iblcloud/${tipo}?texto=${texto}&apikey=TURBO_CONECT`;
 
         // Fazendo a requisição com axios e pegando os dados binários
-        let response = await axios.get(hasil, { responseType: 'arraybuffer' });
+        let response = await axios.get(apiUrl, { responseType: 'arraybuffer' });
 
-        // Caminho onde o arquivo será salvo
-        const filePath = path.join(bla, `${tipo}.webp`);
+        // Definindo o caminho onde o arquivo será salvo (na raiz do projeto)
+        const filePath = path.join(__dirname, `${tipo}.webp`);
 
-        // Escrevendo o arquivo
+        // Escrevendo o arquivo na raiz do projeto
         fs.writeFileSync(filePath, response.data);
 
         // Enviando o arquivo como resposta
@@ -8615,6 +8615,7 @@ router.get('/attp', async (req, res, next) => {
         return res.json({ message: "Erro no servidor interno..." });
     }
 });
+
 router.get('/consultarcpf', async (req, res, next) => {
     let cpf = req.query.cpf;
 
