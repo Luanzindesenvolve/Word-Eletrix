@@ -98,21 +98,18 @@ async function bolsonaro(imageUrl) {
   }
 }
 async function affect(req, res) {
-  try {
-    const image = req.query.link;
-    if (!image) return res.json({ message: "faltando o parâmetro image" });
-
-    img = await Caxinha.canvas.affect(`${image}`);
-    await fs.writeFileSync(__path +'canvasimg.png', img);
-    res.sendFile(__path +'canvasimg.png');
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({
-      status: 500,
-      info: 'Ops, aconteceu um erro no servidor interno.',
-      resultado: 'error'
-    });
-  }
+try {
+const image = req.query.link;
+if(!image) return res.json({message: "faltando o parâmetro image"})
+  img = await Caxinha.canvas.affect(`${image}`);
+  await fs.writeFileSync(__path+'canvasimg.png', img)
+  res.sendFile(__path+'canvasimg.png')
+	} catch(err) {
+		console.log(err)
+		res.status(500).send({
+			status: 500, info: 'Ops, aconteceu um erro no servidor interno.', resultado: 'error'
+		})
+	}
 }
 async function gay(req, res) {
 try {
@@ -135,7 +132,7 @@ async function beautiful(req, res) {
 
     img = await Caxinha.canvas.beautiful(`${image}`);
     await fs.writeFileSync(__path +'canvasimg.png', img);
-    res.sendFile(__path +'canvasimg.png');
+    res.sendFile(__path +'canvasimg.png')
   } catch (err) {
     console.log(err);
     res.status(500).send({
