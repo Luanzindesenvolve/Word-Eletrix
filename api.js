@@ -4470,6 +4470,7 @@ router.get('/qual-operadora/:numero', async (req, res) => {
   }
 });
 
+
 router.get('/operadora', async (req, res) => {
     const { numero } = req.query;
 
