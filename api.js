@@ -8897,7 +8897,7 @@ router.get('/cpf3', async (req, res) => {
     res.json({ message: "Erro ao consultar o CPF. Tente novamente mais tarde." });
   }
 });
-royter.get('/cpf2', async (req, res) => {
+router.get('/cpf2', async (req, res) => {
   const cpf = req.query.q;
   if (!cpf) return res.json({ message: "Faltando o parâmetro CPF!" });
 
