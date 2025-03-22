@@ -103,8 +103,8 @@ async function affect(req, res) {
     if (!image) return res.json({ message: "faltando o parâmetro image" });
 
     img = await Caxinha.canvas.affect(`${image}`);
-    await fs.writeFileSync(__path + '/assets/canvasimg.png', img);
-    res.sendFile(__path + '/assets/canvasimg.png');
+    await fs.writeFileSync(__path +'canvasimg.png', img);
+    res.sendFile(__path +'canvasimg.png');
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -134,8 +134,8 @@ async function beautiful(req, res) {
     if (!image) return res.json({ message: "faltando o parâmetro image" });
 
     img = await Caxinha.canvas.beautiful(`${image}`);
-    await fs.writeFileSync(__path + 'canvasimg.png', img);
-    res.sendFile(__path + 'canvasimg.png');
+    await fs.writeFileSync(__path +'canvasimg.png', img);
+    res.sendFile(__path +'canvasimg.png');
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -251,34 +251,6 @@ async function facepalm(req, res) {
       info: 'Ops, aconteceu um erro no servidor interno.',
       resultado: 'error'
     });
-  }
-}
-async function gay(imageUrl) {
-  try {
-    // Verifica se o parâmetro 'link' foi fornecido
-    if (!imageUrl) {
-      throw new Error('Faltando o parâmetro "link"');
-    }
-
-    // Gera a imagem com o Caxinha
-    const img = await Caxinha.canvas.gay(imageUrl);
-
-    // Caminho onde a imagem gerada será salva
-    const dirPath = path.join(__dirname, 'Canvas2', 'src', 'assets');  // Diretório onde a imagem será salva
-
-    // Verifica se o diretório 'assets' existe, se não, cria
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });  // Cria o diretório se ele não existir
-    }
-
-    // Caminho completo do arquivo para a imagem gerada
-    const filePath = path.join(dirPath, 'canvasimg.png');
-    await fs.writeFileSync(filePath, img);
-
-    // Retorna o caminho da imagem gerada
-    return filePath;
-  } catch (err) {
-    throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
 
