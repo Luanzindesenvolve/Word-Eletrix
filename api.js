@@ -29,6 +29,7 @@ const getImageBuffer = async (url) => {
         throw new Error('Erro ao buscar imagem.');
     }
 };
+
 // Função para gerar o User-Agent
 function userAgent() {
   const oos = [
@@ -41,7 +42,6 @@ function userAgent() {
 
   return `Mozilla/5.0 (${oos[Math.floor(Math.random() * oos.length)]}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${Math.floor(Math.random() * 3) + 87}.0.${Math.floor(Math.random() * 190) + 4100}.${Math.floor(Math.random() * 50) + 140} Safari/537.36`;
 }
-//teste
 
 
 const {
@@ -4439,20 +4439,19 @@ router.get('/qual-operadora/:numero', async (req, res) => {
   const user = userAgent();
 
   const headers = {
-    method: "POST",
-    headers: {
-      "user-agent": user,
-      cookie: `SSID=sfeb17gj92tcllul8c17tb6iji; USID=4f85b07d2188dc8b683bf2050d0a20dc; _jsuid=2662589599; _heatmaps_g2g_100536567=no; cf_clearance=KmTYQBKBLdNP4axA2h60DDwZE9j.wTKAPaI38jgr8lk-${getDate}-0-1-68ba348d.886f8aa2.e20e0874-0.2.${getDate}`,
-      'accept-language': "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-      Origin: 'https://www.qualoperadora.net',
-      Referer: 'https://www.qualoperadora.net/'
-    },
-    data: { telefone }
+    "User-Agent": user,
+    "cookie": `SSID=sfeb17gj92tcllul8c17tb6iji; USID=4f85b07d2188dc8b683bf2050d0a20dc; _jsuid=2662589599; _heatmaps_g2g_100536567=no; cf_clearance=KmTYQBKBLdNP4axA2h60DDwZE9j.wTKAPaI38jgr8lk-${getDate}-0-1-68ba348d.886f8aa2.e20e0874-0.2.${getDate}`,
+    'Accept-Language': "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+    'Origin': 'https://www.qualoperadora.net',
+    'Referer': 'https://www.qualoperadora.net/'
   };
 
+  const formData = new URLSearchParams();
+  formData.append("telefone", telefone);
+
   try {
-    const html = await axios.post('https://www.qualoperadora.net', headers);
-    const $ = cheerio.load(html.data);
+    const response = await axios.post('https://www.qualoperadora.net', formData, { headers });
+    const $ = cheerio.load(response.data);
     const ope = $('div[id="resultado"] > span').html()?.split(/ +/);
     
     if (!ope) return res.status(404).json({ error: 'Operadora desconhecida ou não foi encontrada.' });
@@ -4466,10 +4465,10 @@ router.get('/qual-operadora/:numero', async (req, res) => {
       estado
     });
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar a operadora.' });
+    console.error(error); // Log para ajudar na depuração
+    res.status(500).json({ error: 'Erro ao buscar a operadora ou erro de rede.' });
   }
 });
-            
 
 router.get('/operadora', async (req, res) => {
     const { numero } = req.query;
