@@ -568,6 +568,36 @@ router.get('/play2', async (req, res) => {
   }
 });
 
+router.get('/threads', async (req, res) => { try { const { url } = req.query; if (!url) return res.status(400).json({ error: 'URL is required' });
+
+const response = await axios.get(`https://api.vreden.my.id/api/download/threads?url=${encodeURIComponent(url)}`);
+    
+    const data = response.data;
+    data.creator = 'come primas';
+    
+    res.json(data);
+} catch (error) {
+    res.status(500).json({ error: 'Failed to fetch data' });
+}
+
+});
+
+router.get('/capcut', async (req, res) => {
+    try {
+        const { url } = req.query;
+        if (!url) return res.status(400).json({ error: 'URL is required' });
+
+        const response = await axios.get(`https://api.vreden.my.id/api/capcutdl?url=${encodeURIComponent(url)}`);
+        
+        const data = response.data;
+        data.creator = 'come primas';
+        
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch data' });
+    }
+});
+
 // Rota para baixar música
 router.get('/play3', async (req, res) => {
   const { query } = req.query;
