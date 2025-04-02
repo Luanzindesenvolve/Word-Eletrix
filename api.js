@@ -429,8 +429,6 @@ router.get('/play5', async (req, res) => {
     res.status(500).json({ error: 'Erro interno no servidor' });
   }
 });
-
-
 router.get('/musica', async (req, res) => {
     try {
         const name = req.query.name;
@@ -440,8 +438,8 @@ router.get('/musica', async (req, res) => {
 
         const response = await axios.get(`https://api.nexfuture.com.br/api/downloads/youtube/playaudio/v2?query=${encodeURIComponent(name)}`);
 
-        if (response.data?.resultado?.result?.downloads?.audio?.any4k) {
-            return res.redirect(response.data.resultado.result.downloads.audio.any4k);
+        if (response.data?.downloads?.audio?.any4k) {
+            return res.redirect(response.data.downloads.audio.any4k);
         } else {
             return res.status(404).json({ error: 'URL de download não encontrada' });
         }
@@ -449,7 +447,6 @@ router.get('/musica', async (req, res) => {
         return res.status(500).json({ error: 'Erro ao processar a solicitação', details: error.message });
     }
 });
-
 
 
 // Rota para buscar e tocar um clipe pelo nome
