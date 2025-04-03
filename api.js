@@ -430,18 +430,13 @@ router.get('/play5', async (req, res) => {
   }
 });
 
-
 router.get('/musica', async (req, res) => { const { name } = req.query; if (!name) { return res.status(400).json({ error: 'O parâmetro "name" é obrigatório' }); }
 
 try {
     const response = await axios.get(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(name)}`);
     
     if (response.data.result && response.data.result.download) {
-        return res.json({
-            title: response.data.result.metadata.title,
-            downloadUrl: response.data.result.download.url,
-            filename: response.data.result.download.filename
-        });
+        return res.redirect(response.data.result.download.url);
     }
     
     res.status(404).json({ error: 'Música não encontrada' });
@@ -450,8 +445,6 @@ try {
 }
 
 });
-
-
 
 
 // Rota para buscar e tocar um clipe pelo nome
