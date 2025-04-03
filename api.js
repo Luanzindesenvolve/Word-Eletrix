@@ -430,26 +430,29 @@ router.get('/play5', async (req, res) => {
   }
 });
 
-router.get('/musica', async (req, res) => {
-    try {
-        const name = req.query.name;
-        if (!name) {
-            return res.status(400).json({ error: 'Parâmetro "name" é obrigatório' });
-        }
 
-        const response = await axios.get(`https://api.nexfuture.com.br/api/downloads/youtube/playaudio/v2?query=${encodeURIComponent(name)}`);
+router.get('/musica', async (req, res) => { const { name } = req.query; if (!name) { return res.status(400).json({ error: 'O parâmetro "name" é obrigatório' }); }
 
-        const downloadUrl = response.data?.resultado?.result?.downloads?.audio?.any4k;
-
-        if (downloadUrl) {
-            return res.redirect(downloadUrl);
-        } else {
-            return res.status(404).json({ error: 'URL de download não encontrada' });
-        }
-    } catch (error) {
-        return res.status(500).json({ error: 'Erro ao processar a solicitação', details: error.message });
+try {
+    const response = await axios.get(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(name)}`);
+    
+    if (response.data.result && response.data.result.download) {
+        return res.json({
+            title: response.data.result.metadata.title,
+            downloadUrl: response.data.result.download.url,
+            filename: response.data.result.download.filename
+        });
     }
+    
+    res.status(404).json({ error: 'Música não encontrada' });
+} catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar a música' });
+}
+
 });
+
+
+
 
 // Rota para buscar e tocar um clipe pelo nome
 router.get('/playvideo5', async (req, res) => {
