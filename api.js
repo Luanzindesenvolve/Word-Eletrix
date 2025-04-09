@@ -174,6 +174,49 @@ const {
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
+
+router.get('/celular2', async (req, res) => {
+  try {
+    const modelo = req.query.modelo;
+    if (!modelo) return res.json({ status: false, motivo: 'Coloque o parâmetro: modelo' });
+
+    const buscaResp = await axios.get(`https://www.techtudo.com.br/busca/?q=${encodeURIComponent(modelo)}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      }
+    });
+
+    const $busca = cheerio.load(buscaResp.data);
+    const DFN_UR = $busca(".widget--navigational__title").text().toLowerCase();
+    if (!DFN_UR) return res.json({ status: false, message: 'Modelo não encontrado' });
+
+    const slug = DFN_UR.replace(/\s+/g, '-');
+    const detalhesResp = await axios.get(`https://www.techtudo.com.br/tudo-sobre/${slug}/`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0'
+      }
+    });
+
+    const $detalhes = cheerio.load(detalhesResp.data);
+    const titulo = $detalhes("h1").text();
+    const resumo = $detalhes("div").find(".content-row").text().replace(/  /g, "\n\n").trim();
+    const info = $detalhes("div").find(".all-about").text().trim();
+
+    res.json({
+      status: true,
+      código: 999,
+      criador: 'World-Ecletix',
+      resultado: {
+        title: titulo,
+        info: info,
+        resumo: resumo
+      }
+    });
+  } catch (error) {
+    res.json({ message: "Erro... Aguarde ou fale com algum administrador." });
+  }
+});
+
 // Rota para buscar as informações do site
 router.get('/playertv', async (req, res) => {
   try {
