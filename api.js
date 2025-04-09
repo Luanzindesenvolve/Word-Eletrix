@@ -174,7 +174,69 @@ const {
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
+router.get('/book', async (req, res) => {
+  const { livro } = req.query;
+  if (!livro) return res.json({ status: false, erro: "Informe o parâmetro: livro" });
 
+  try {
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes`, {
+      params: {
+        q: livro,
+        langRestrict: 'pt'
+      }
+    });
+
+    res.json({
+      status: true,
+      criador: "@m4thxyz_",
+      resultado: response.data.items || []
+    });
+  } catch {
+    res.json({ status: false, resultado: "Nenhuma resposta obtida do servidor" });
+  }
+});
+router.get('/cotacao', async (req, res) => {
+  const { moeda } = req.query;
+  if (!moeda) return res.json({ erro: "Faltando parâmetro: moeda" });
+
+  const moda = moeda.toLowerCase().replace("ó", "o");
+  const moedasMap = {
+    dolar: "USD-BRL",
+    euro: "EUR-BRL",
+    bitcoin: "BTC-BRL",
+    libra: "GBP-BRL",
+    ether: "ETH-BRL",
+    iene: "JPY-BRL",
+    yuan: "CNY-BRL"
+  };
+
+  const money = moedasMap[moda];
+  if (!money) {
+    return res.json({
+      erro: `A moeda escolhida não está presente em meu banco de dados... As moedas disponíveis são:
+• Dólar
+• Euro
+• Bitcoin
+• Libra
+• Ether
+• Iene
+• Yuan`
+    });
+  }
+
+  try {
+    const response = await axios.get(`https://economia.awesomeapi.com.br/last/${money}`);
+    const dados = response.data[Object.keys(response.data)[0]];
+
+    res.json({
+      status: true,
+      criador: "@m4thxyz_",
+      resultado: [dados]
+    });
+  } catch {
+    res.json({ status: false, erro: "Nenhuma resposta obtida do servidor" });
+  }
+});
 router.get('/celular2', async (req, res) => {
   try {
     const modelo = req.query.modelo;
