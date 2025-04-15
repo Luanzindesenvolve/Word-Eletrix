@@ -173,7 +173,78 @@ const {
   bobross, 
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
+router.get('/igstalk', async (req, res) => {
+  const username = req.query.user
+  if (!username) {
+    return res.status(400).json({ error: 'Parâmetro ?user= é obrigatório' })
+  }
 
+  // Função interna para buscar perfil do Instagram
+  const instaCheck = async (user) => {
+    const api = 'https://privatephotoviewer.com/wp-json/instagram-viewer/v1/fetch-profile'
+    const payload = { find: user }
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': '*/*',
+      'X-Requested-With': 'XMLHttpRequest',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 11)',
+      'Referer': 'https://privatephotoviewer.com/'
+    }
+
+    try {
+      const { data } = await axios.post(api, payload, { headers })
+      const $ = cheerio.load(data.html)
+
+      let profilePic = $('#profile-insta').find('.col-md-4 img').attr('src')
+      if (profilePic?.startsWith('//')) profilePic = 'https:' + profilePic
+
+      const name = $('#profile-insta').find('.col-md-8 h4.text-muted').text().trim()
+      const user = $('#profile-insta').find('.col-md-8 h5.text-muted').text().trim()
+      const stats = {}
+
+      $('#profile-insta')
+        .find('.col-md-8 .d-flex.justify-content-between.my-3 > div')
+        .each((i, el) => {
+          const value = $(el).find('strong').text().trim()
+          const label = $(el).find('span.text-muted').text().trim().toLowerCase()
+          if (label.includes('posts')) stats.posts = value
+          else if (label.includes('followers')) stats.followers = value
+          else if (label.includes('following')) stats.following = value
+        })
+
+      const bio = $('#profile-insta').find('.col-md-8 p').text().trim()
+
+      return {
+        name,
+        username: user,
+        profilePic,
+        posts: stats.posts,
+        followers: stats.followers,
+        following: stats.following,
+        bio
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error.message)
+      return null
+    }
+  }
+
+  try {
+    const data = await instaCheck(username)
+    if (!data) {
+      return res.status(404).json({ error: 'Perfil não encontrado ou privado' })
+    }
+
+    res.json({
+      status: 'success',
+      source: 'privatephotoviewer.com',
+      data
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'Erro interno no servidor' })
+  }
+})
 router.get('/book', async (req, res) => {
   const { livro } = req.query;
   if (!livro) return res.json({ status: false, erro: "Informe o parâmetro: livro" });
