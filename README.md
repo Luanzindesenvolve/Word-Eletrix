@@ -90,5 +90,5 @@ cd /storage/word-ecletix-free-main && node server.js
 - **Configuração e segurança**: Você pode programar o bot para enviar uma mensagem específica. E também manter a segurança de seu grupo com algums sistemas disponíveis.
 ## License
 
-Licensed under [MIT](./LICENSE).
+Licensed under [MIT](./LICENSE.md).
 Todos os direitos reservados
