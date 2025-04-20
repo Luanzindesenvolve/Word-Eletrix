@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play TV Free</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      background: #f0f2f5;
+      display: flex;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      flex: 1;
+      padding: 20px;
+    }
+    .post {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+    .post img {
+      width: 100%;
+      height: auto;
+    }
+    .post h3 {
+      margin: 10px 0;
+      font-size: 18px;
+      color: #333;
+    }
+    .sidebar {
+      width: 300px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      padding: 20px;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    }
+    .categoria h2 {
+      font-size: 20px;
+      color: #444;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #ddd;
+    }
+    .canal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px;
+      background: #f7f7f7;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    .canal-header:hover {
+      background: #e9e9e9;
+    }
+    .programacao {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding-left: 10px;
+      text-align: left;
+      background: #fafafa;
+    }
+    .programacao.aberta {
+      max-height: 2000px;
+      padding: 10px 10px;
+    }
+    .programa {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #555;
+    }
+    .seta {
+      transition: transform 0.3s ease;
+      font-size: 18px;
+    }
+    .seta.aberto {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="menuLateral">
+    <!-- Categorias de canais serão inseridas aqui -->
+  </div>
+
+  <div class="container" id="conteudo">
+    <!-- Canais serão inseridos aqui -->
+  </div>
+
+  <script>
+    function slugify(text) {
+      return text.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
+        .replace(/[^a-z0-9]+/g, "-") // Troca espaços e caracteres especiais por "-"
+        .replace(/^-+|-+$/g, ""); // Remove traços extras no início/fim
+    }
+
+    function criarCategoria(nome, urlApi) {
+      const menu = document.getElementById('menuLateral');
+      const categoriaDiv = document.createElement('div');
+      categoriaDiv.classList.add('categoria');
+
+      const titulo = document.createElement('h2');
+      titulo.textContent = nome;
+      categoriaDiv.appendChild(titulo);
+
+      axios.get(urlApi)
+        .then(response => {
+          const canais = response.data;
+
+          canais.forEach(canal => {
+            const canalDiv = document.createElement('div');
+            canalDiv.classList.add('canal');
+
+            const canalHeader = document.createElement('div');
+            canalHeader.classList.add('canal-header');
+
+            const canalNome = document.createElement('span');
+            canalNome.textContent = canal.canal;
+
+            const seta = document.createElement('span');
+            seta.classList.add('seta');
+            seta.textContent = '▶';
+
+            canalHeader.appendChild(canalNome);
+            canalHeader.appendChild(seta);
+
+            const programacaoDiv = document.createElement('div');
+            programacaoDiv.classList.add('programacao');
+
+            canal.programas.forEach(programa => {
+              const programaDiv = document.createElement('div');
+              programaDiv.classList.add('programa');
+              programaDiv.textContent = `${programa.hora} - ${programa.titulo}`;
+              programacaoDiv.appendChild(programaDiv);
+            });
+
+            canalHeader.addEventListener('click', () => {
+              const aberto = programacaoDiv.style.maxHeight && programacaoDiv.style.maxHeight !== '0px';
+
+              if (aberto) {
+                programacaoDiv.style.maxHeight = '0';
+                programacaoDiv.classList.remove('aberta');
+                seta.classList.remove('aberto');
+              } else {
+                programacaoDiv.style.maxHeight = programacaoDiv.scrollHeight + 'px';
+                programacaoDiv.classList.add('aberta');
+                seta.classList.add('aberto');
+              }
+            });
+
+            canalDiv.appendChild(canalHeader);
+            canalDiv.appendChild(programacaoDiv);
+            categoriaDiv.appendChild(canalDiv);
+          });
+
+          menu.appendChild(categoriaDiv);
+        })
+        .catch(error => console.log('Erro ao carregar categoria:', error));
+    }
+
+    // Carregando as categorias e canais
+    criarCategoria('Filmes', 'https://world-ecletix.onrender.com/api/guia-filmes');
+    criarCategoria('Variedades', 'https://world-ecletix.onrender.com/api/guia-variedades');
+    criarCategoria('Séries', 'https://world-ecletix.onrender.com/api/guia-series');
+    criarCategoria('Esportes', 'https://world-ecletix.onrender.com/api/guia-esportes');
+    criarCategoria('Canais Abertos', 'https://world-ecletix.onrender.com/api/guia-aberta');
+    criarCategoria('Notícias', 'https://world-ecletix.onrender.com/api/guia-noticias');
+    criarCategoria('Infantil', 'https://world-ecletix.onrender.com/api/guia-infantil');
+    criarCategoria('Documentários', 'https://world-ecletix.onrender.com/api/guia-documentarios');
+
+    // Carregando canais para o conteúdo principal
+    axios.get('https://world-ecletix.onrender.com/api/playertv')
+      .then(response => {
+        const posts = response.data;
+        const container = document.getElementById('conteudo');
+        
+        posts.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.classList.add('post');
+          
+          const img = document.createElement('img');
+          img.src = post.imgSrc;
+          img.alt = post.title;
+
+          const title = document.createElement('h3');
+          title.textContent = post.title;
+
+          const canalSlug = slugify(post.title);
+
+          postElement.addEventListener('click', () => {
+            window.location.href = `/api/canal/${canalSlug}`;
+          });
+
+          postElement.appendChild(img);
+          postElement.appendChild(title);
+          container.appendChild(postElement);
+        });
+      })
+      .catch(error => console.log('Erro ao obter o conteúdo:', error));
+  </script>
+</body>
+</html>
