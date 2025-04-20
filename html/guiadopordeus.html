@@ -2,117 +2,219 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Play TV Free</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
+      font-family: Arial, sans-serif;
       background: #f0f2f5;
-      display: flex;
+      overflow-x: hidden;
     }
+
+    video#wallpaperVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 20px;
+      color: #fff;
+    }
+
+    .menu-button {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #fff;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    .search-container input {
+      border: none;
+      outline: none;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .search-container span {
+      font-size: 20px;
+      color: #333;
+      margin-left: 5px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100%;
+      background: rgba(255,255,255,0.95);
+      overflow-y: auto;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.aberto {
+      left: 0;
+    }
+
     .container {
+      margin-top: 80px;
+      padding: 20px;
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      flex: 1;
-      padding: 20px;
+      background: rgba(255,255,255,0.9);
+      min-height: 100vh;
     }
+
     .post {
       width: 300px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      overflow: hidden;
-      text-align: center;
-      cursor: pointer;
       background: #fff;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
     }
+
     .post img {
       width: 100%;
       height: auto;
     }
+
     .post h3 {
-      margin: 10px 0;
-      font-size: 18px;
+      margin: 10px;
       color: #333;
+      font-size: 18px;
     }
-    .sidebar {
-      width: 300px;
-      background-color: #fff;
-      border-right: 1px solid #ddd;
-      padding: 20px;
-      height: 100vh;
-      overflow-y: auto;
-      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    }
+
     .categoria h2 {
       font-size: 20px;
       color: #444;
       margin-bottom: 15px;
-      padding-bottom: 5px;
       border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
     }
+
     .canal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      cursor: pointer;
       padding: 10px;
       background: #f7f7f7;
       border-radius: 5px;
-      margin-bottom: 10px;
+      cursor: pointer;
+      margin-bottom: 5px;
       font-weight: bold;
-      font-size: 16px;
     }
+
     .canal-header:hover {
-      background: #e9e9e9;
+      background: #eaeaea;
     }
+
     .programacao {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      padding-left: 10px;
-      text-align: left;
+      transition: max-height 0.3s ease;
       background: #fafafa;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 0 10px;
     }
+
     .programacao.aberta {
-      max-height: 2000px;
-      padding: 10px 10px;
+      max-height: 500px;
+      padding: 10px;
     }
+
     .programa {
-      margin: 5px 0;
       font-size: 14px;
       color: #555;
+      margin: 5px 0;
     }
-    .seta {
-      transition: transform 0.3s ease;
-      font-size: 18px;
+
+    .jogos-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 20px;
+      margin: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-x: auto;
     }
-    .seta.aberto {
-      transform: rotate(90deg);
+
+    .jogo {
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .jogo.ao-vivo {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
+  <video id="wallpaperVideo" autoplay muted loop playsinline>
+    <source src="https://files.catbox.moe/4dyef9.mp4" type="video/mp4">
+  </video>
+
+  <header>
+    <button class="menu-button" onclick="toggleSidebar()">☰</button>
+    <h1>Play TV Free</h1>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar...">
+      <span>🔍</span>
+    </div>
+  </header>
+
   <div class="sidebar" id="menuLateral">
-    <!-- Categorias de canais serão inseridas aqui -->
+    <!-- Categorias carregadas aqui -->
+  </div>
+
+  <div class="jogos-container" id="jogosDeHoje">
+    <h2>Jogos de Hoje</h2>
+    <!-- Jogos serão carregados aqui -->
   </div>
 
   <div class="container" id="conteudo">
-    <!-- Canais serão inseridos aqui -->
+    <!-- Conteúdo principal -->
   </div>
 
   <script>
+    function toggleSidebar() {
+      document.getElementById('menuLateral').classList.toggle('aberto');
+    }
+
     function slugify(text) {
       return text.toLowerCase()
-        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
-        .replace(/[^a-z0-9]+/g, "-") // Troca espaços e caracteres especiais por "-"
-        .replace(/^-+|-+$/g, ""); // Remove traços extras no início/fim
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
     function criarCategoria(nome, urlApi) {
@@ -127,7 +229,6 @@
       axios.get(urlApi)
         .then(response => {
           const canais = response.data;
-
           canais.forEach(canal => {
             const canalDiv = document.createElement('div');
             canalDiv.classList.add('canal');
@@ -139,7 +240,6 @@
             canalNome.textContent = canal.canal;
 
             const seta = document.createElement('span');
-            seta.classList.add('seta');
             seta.textContent = '▶';
 
             canalHeader.appendChild(canalNome);
@@ -156,30 +256,70 @@
             });
 
             canalHeader.addEventListener('click', () => {
-              const aberto = programacaoDiv.style.maxHeight && programacaoDiv.style.maxHeight !== '0px';
-
-              if (aberto) {
-                programacaoDiv.style.maxHeight = '0';
-                programacaoDiv.classList.remove('aberta');
-                seta.classList.remove('aberto');
-              } else {
-                programacaoDiv.style.maxHeight = programacaoDiv.scrollHeight + 'px';
-                programacaoDiv.classList.add('aberta');
-                seta.classList.add('aberto');
-              }
+              programacaoDiv.classList.toggle('aberta');
+              seta.classList.toggle('aberto');
             });
 
             canalDiv.appendChild(canalHeader);
             canalDiv.appendChild(programacaoDiv);
             categoriaDiv.appendChild(canalDiv);
           });
-
           menu.appendChild(categoriaDiv);
         })
-        .catch(error => console.log('Erro ao carregar categoria:', error));
+        .catch(error => console.error('Erro ao carregar categorias:', error));
     }
 
-    // Carregando as categorias e canais
+    function carregarJogos() {
+      axios.get('https://world-ecletix.onrender.com/api/jogosdehoje')
+        .then(response => {
+          const jogos = response.data;
+          const jogosDiv = document.getElementById('jogosDeHoje');
+
+          jogos.forEach(jogo => {
+            const jogoDiv = document.createElement('div');
+            jogoDiv.classList.add('jogo');
+            if (jogo.status.toLowerCase().includes('vivo')) {
+              jogoDiv.classList.add('ao-vivo');
+            }
+            jogoDiv.textContent = `${jogo.casa} ${jogo.placar} ${jogo.fora} (${jogo.horario || jogo.tempo})`;
+            jogosDiv.appendChild(jogoDiv);
+          });
+        })
+        .catch(error => console.error('Erro ao carregar jogos:', error));
+    }
+
+    function carregarCanais() {
+      axios.get('https://world-ecletix.onrender.com/api/playertv')
+        .then(response => {
+          const posts = response.data;
+          const container = document.getElementById('conteudo');
+
+          posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+
+            const img = document.createElement('img');
+            img.src = post.imgSrc;
+            img.alt = post.title;
+
+            const title = document.createElement('h3');
+            title.textContent = post.title;
+
+            const canalSlug = slugify(post.title);
+
+            postElement.addEventListener('click', () => {
+              window.location.href = `/api/canal/${canalSlug}`;
+            });
+
+            postElement.appendChild(img);
+            postElement.appendChild(title);
+            container.appendChild(postElement);
+          });
+        })
+        .catch(error => console.error('Erro ao carregar canais:', error));
+    }
+
+    // Inicialização
     criarCategoria('Filmes', 'https://world-ecletix.onrender.com/api/guia-filmes');
     criarCategoria('Variedades', 'https://world-ecletix.onrender.com/api/guia-variedades');
     criarCategoria('Séries', 'https://world-ecletix.onrender.com/api/guia-series');
@@ -188,36 +328,9 @@
     criarCategoria('Notícias', 'https://world-ecletix.onrender.com/api/guia-noticias');
     criarCategoria('Infantil', 'https://world-ecletix.onrender.com/api/guia-infantil');
     criarCategoria('Documentários', 'https://world-ecletix.onrender.com/api/guia-documentarios');
-
-    // Carregando canais para o conteúdo principal
-    axios.get('https://world-ecletix.onrender.com/api/playertv')
-      .then(response => {
-        const posts = response.data;
-        const container = document.getElementById('conteudo');
-        
-        posts.forEach(post => {
-          const postElement = document.createElement('div');
-          postElement.classList.add('post');
-          
-          const img = document.createElement('img');
-          img.src = post.imgSrc;
-          img.alt = post.title;
-
-          const title = document.createElement('h3');
-          title.textContent = post.title;
-
-          const canalSlug = slugify(post.title);
-
-          postElement.addEventListener('click', () => {
-            window.location.href = `/api/canal/${canalSlug}`;
-          });
-
-          postElement.appendChild(img);
-          postElement.appendChild(title);
-          container.appendChild(postElement);
-        });
-      })
-      .catch(error => console.log('Erro ao obter o conteúdo:', error));
+    carregarJogos();
+    carregarCanais();
   </script>
+
 </body>
 </html>
