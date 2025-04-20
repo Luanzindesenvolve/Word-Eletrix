@@ -410,22 +410,20 @@ router.get('/iframe', async (req, res) => {
 });
 
 
-router.get('/canal/:slug', async (req, res) => {
+
+    router.get('/canal/:slug', async (req, res) => {
   const slug = req.params.slug;
 
   try {
-    // Busca a lista de canais na API
     const response = await axios.get('https://world-ecletix.onrender.com/api/playertv');
     const canais = response.data;
 
-    // Encontra o canal correspondente ao slug
     const canal = canais.find(c => slugify(c.title) === slug);
 
     if (!canal) {
       return res.status(404).send('<h1>Canal não encontrado</h1>');
     }
 
-    // Obtém o iframe do canal a partir da outra API
     const iframeResponse = await axios.get(`https://world-ecletix.onrender.com/api/iframe?canal=${encodeURIComponent(canal.link)}`);
     const iframeUrl = iframeResponse.data.iframe;
 
@@ -437,8 +435,25 @@ router.get('/canal/:slug', async (req, res) => {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Assistindo ${canal.title}</title>
           <style>
-            body { font-family: Arial, sans-serif; text-align: center; }
-            iframe { width: 100%; height: 500px; border: none; margin-top: 20px; }
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              background: url('https://files.catbox.moe/d0cb9z.jpg') no-repeat center center fixed;
+              background-size: cover;
+              color: white;
+            }
+            iframe {
+              width: 100%;
+              height: 500px;
+              border: none;
+              margin-top: 20px;
+            }
+            h1 {
+              background-color: rgba(0, 0, 0, 0.5);
+              display: inline-block;
+              padding: 10px 20px;
+              border-radius: 10px;
+            }
           </style>
         </head>
         <body>
