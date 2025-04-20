@@ -3306,6 +3306,7 @@ router.get('/tabela-portugal', async (req, res) => {
     res.status(500).json({ error: 'Erro ao extrair dados' });
   }
 });
+
 router.get('/jogosdehoje', async (req, res) => {
   const url = 'https://onefootball.com.br/pt-br/jogos';
 
@@ -3327,13 +3328,25 @@ router.get('/jogosdehoje', async (req, res) => {
       let horario = $(element).find('time').text().trim();
       if (!horario || horario.toLowerCase().includes('inval')) {
         horario = '';
+      } else {
+        // Ajustar horário -5 horas
+        const matchHora = horario.match(/^(\d{1,2}):(\d{2})$/);
+        if (matchHora) {
+          let horas = parseInt(matchHora[1]);
+          let minutos = parseInt(matchHora[2]);
+          horas -= 5;
+          if (horas < 0) {
+            horas += 24; // Corrige para formato 24h se ficar negativo
+          }
+          // Formata de novo para HH:MM
+          horario = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+        }
       }
 
       let tempo = $(element)
         .find('.title-8-bold.SimpleMatchCard_simpleMatchCard__live__kg0bW')
         .text()
         .trim();
-
       if (!tempo) tempo = 'Hoje';
 
       let status = $(element)
@@ -3341,7 +3354,6 @@ router.get('/jogosdehoje', async (req, res) => {
         .text()
         .trim();
 
-      // Regras para status e horário
       if (tempo !== 'Hoje') {
         status = 'Ao vivo';
         if (!horario) {
