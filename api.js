@@ -3306,7 +3306,6 @@ router.get('/tabela-portugal', async (req, res) => {
     res.status(500).json({ error: 'Erro ao extrair dados' });
   }
 });
-
 router.get('/jogosdehoje', async (req, res) => {
   const url = 'https://onefootball.com.br/pt-br/jogos';
 
