@@ -676,7 +676,7 @@ router.get('/clipe', async (req, res) => {
 
   try {
     const response = await axios.get(`https://api.nexfuture.com.br/api/downloads/youtube/playvideo/v2?query=${encodeURIComponent(name)}`);
-    const any4k = response.data?.resultado?.result?.downloads?.video?.clipe;
+    const any4k = response.data?.resultado?.result?.downloads?.video?.config;
 
     if (!any4k) return res.status(404).send('Link de download não encontrado');
 
