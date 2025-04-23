@@ -632,7 +632,7 @@ router.get('/musica', async (req, res) => {
         const response = await axios.get(`https://api.nexfuture.com.br/api/downloads/youtube/playaudio/v2?query=${encodeURIComponent(name)}`);
         
         if (response.data.resultado && response.data.resultado.result && response.data.resultado.result.downloads && response.data.resultado.result.downloads.audio) {
-            return res.redirect(response.data.resultado.result.downloads.audio.any4k);
+            return res.redirect(response.data.resultado.result.downloads.audio.config);
         }
         
         res.status(404).json({ error: 'Música não encontrada' });
@@ -676,7 +676,7 @@ router.get('/clipe', async (req, res) => {
 
   try {
     const response = await axios.get(`https://api.nexfuture.com.br/api/downloads/youtube/playvideo/v2?query=${encodeURIComponent(name)}`);
-    const any4k = response.data?.resultado?.result?.downloads?.video?.any4k;
+    const any4k = response.data?.resultado?.result?.downloads?.video?.clipe;
 
     if (!any4k) return res.status(404).send('Link de download não encontrado');
 
