@@ -9079,7 +9079,7 @@ router.get('/pin/video', (req, res) => {
 
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
-const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu2ZVqA9JedFiPsDq2hUnffsZzmUBnTwB2SRxLKeGIibPLWQJjDK2c9tgsT55K6amhSdE6JgDjzyWuyDK4wVJhxRn50LxAhMX5dKczXEbhfRsqGhVuMTHNPBTBA4GbRXIMppJubdL/DjUKpf5TxC3AQ/Jm8QMLcf23gDJYxecEaid6oYsEF3/cb+dlVE9jna9W/4ItiNLH9CX1KNKg9I5EM8Waq6I4gC8nr6YaP+E2HvhrrCgc1hH8ku4EuDqhfdIl9Uw+tZccQfjjUE76epyHYdbZsybNIy6EP/JTMyQobod4llQ7CJUu4TzM1eoo7hAsiSxPzmflgtzX/7CzSMkuVY=');
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBuzP6mKqlHUy/jTjOtCvowA1GiYnRqWjhTymJYyan3P+SU2ys9iqa+eEDbl8a/ZpOxsYLhu5RzLElY8y0A/YxtxTJfAK6SMEhDP6pVp8NS2giZ2cZ0Edf2K/92UbazORoZge1bvzDfLKix5ADh+zbHEFSsddXnKhjqxcpuXC9wmuHHu1vZ+Fzwy73aCX4qs2uMkRFhTZuVEovNOhOu6ZUTimA9dF9TXQDndzineizO5FL6yEXElyoRmLVnVVI2fyDvYZ2maAdxEwYZ/PXsrUALsUgUUUECPdkA63J/zANHM7DM6GEphk0wseJi03YsCJ0BnNMXhrwsGjdNi/iuwcRqgo=');
 const grupoChatId = -1002208588695;
 
 const rl = readline.createInterface({
