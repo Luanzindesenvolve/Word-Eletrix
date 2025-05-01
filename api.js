@@ -236,7 +236,7 @@ async function savetube(link, quality, value) {
     }
 }
 
-async function ytmp3(name) {
+async function playdw(name) {
     const format = 128;
     try {
         const data = await ytSearch(name);
@@ -259,7 +259,7 @@ async function ytmp3(name) {
     }
 }
 
-async function ytmp4(name) {
+async function clipedw(name) {
     const format = 360;
     try {
         const data = await ytSearch(name);
@@ -292,7 +292,7 @@ router.get("/musica", async (req, res) => {
     const name = req.query.name;
     if (!name) return res.status(400).send("Parâmetro 'name' obrigatório");
 
-    const result = await ytmp3(name);
+    const result = await playdw(name);
     if (result.status) return res.redirect(result.download.url);
     res.status(404).send("Nada encontrado.");
 });
@@ -302,7 +302,7 @@ router.get("/clipe", async (req, res) => {
     const name = req.query.name;
     if (!name) return res.status(400).send("Parâmetro 'name' obrigatório");
 
-    const result = await ytmp4(name);
+    const result = await clipedw(name);
     if (result.status) return res.redirect(result.download.url);
     res.status(404).send("Nada encontrado.");
 });
