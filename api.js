@@ -5,7 +5,6 @@ const path = require('path');
 const cheerio = require('cheerio');
 const search = require('yt-search');
 const ytSearch = require('yt-search');
-const yts = require("yt-search");
 const { createDecipheriv } = require('crypto');
 const yt = require('@distube/ytdl-core');
 const criador = 'World Ecletix';
@@ -240,7 +239,7 @@ async function savetube(link, quality, value) {
 async function ytmp3(name) {
     const format = 128;
     try {
-        const data = await yts(name);
+        const data = await ytSearch(name);
         if (!data.videos || data.videos.length === 0) {
             return { status: false, message: "Nenhum vídeo encontrado" };
         }
@@ -263,7 +262,7 @@ async function ytmp3(name) {
 async function ytmp4(name) {
     const format = 360;
     try {
-        const data = await yts(name);
+        const data = await ytSearch(name);
         if (!data.videos || data.videos.length === 0) {
             return { status: false, message: "Nenhum vídeo encontrado" };
         }
