@@ -400,6 +400,53 @@ router.get('/igstalk', async (req, res) => {
     res.status(500).json({ error: 'Erro interno no servidor' })
   }
 })
+
+router.get('/assistir', async (req, res) => {
+  const query = req.query.oq;
+  if (!query) {
+    return res.status(400).json({ error: 'Parâmetro "oq" é obrigatório.' });
+  }
+
+  const url = `https://multicanais.asia/?s=${encodeURIComponent(query)}`;
+  console.log(`Buscando URL: ${url}`);
+
+  try {
+    const { data } = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept-Language': 'pt-BR,pt;q=0.9'
+      }
+    });
+
+    const $ = cheerio.load(data);
+    const resultados = [];
+
+    $('article.vlog-post').each((i, el) => {
+      const img = $(el).find('.entry-image img').attr('src');
+      const link = $(el).find('.entry-header h2.entry-title a').attr('href');
+      const titulo = $(el).find('.entry-header h2.entry-title a').text().trim();
+
+      console.log(`[${i}] Título: ${titulo}`);
+      console.log(`     Link: ${link}`);
+      console.log(`     Imagem: ${img}`);
+
+      if (titulo && link && img) {
+        resultados.push({ titulo, link, imagem: img });
+      }
+    });
+
+    if (resultados.length === 0) {
+      console.warn('Nenhum resultado encontrado.');
+      return res.status(404).json({ mensagem: 'Nenhum resultado encontrado.' });
+    }
+
+    res.json({ resultados });
+  } catch (error) {
+    console.error('Erro ao buscar ou processar a página:', error.message);
+    res.status(500).json({ error: 'Erro ao buscar os dados.' });
+  }
+});
+
 router.get('/book', async (req, res) => {
   const { livro } = req.query;
   if (!livro) return res.json({ status: false, erro: "Informe o parâmetro: livro" });
