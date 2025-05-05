@@ -400,7 +400,54 @@ router.get('/igstalk', async (req, res) => {
     res.status(500).json({ error: 'Erro interno no servidor' })
   }
 })
+
 router.get('/assistir', async (req, res) => {
+  const query = req.query.oq;
+  if (!query) return res.status(400).json({ error: 'Parâmetro "oq" é obrigatório.' });
+
+  const searchUrl = `https://multicanais.asia/?s=${encodeURIComponent(query)}`;
+  try {
+    const searchRes = await axios.get(searchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+
+    const $ = cheerio.load(searchRes.data);
+    const firstPost = $('article.vlog-post').first();
+    const postLink = firstPost.find('h2.entry-title a').attr('href');
+    const imagem = firstPost.find('.entry-image img').attr('src');
+
+    if (!postLink) return res.status(404).json({ error: 'Jogo não encontrado.' });
+
+    const postRes = await axios.get(postLink, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+
+    const $$ = cheerio.load(postRes.data);
+    const titulo = $$('h2.wp-block-heading').first().text();
+
+    const links = $$('.links a[data-id]')
+      .map((i, el) => $$(el).attr('data-id'))
+      .get()
+      .filter(Boolean);
+
+    if (links.length === 0) return res.status(404).json({ error: 'Nenhum player encontrado.' });
+
+    res.json({
+      titulo,
+      imagem,
+      link1: links[0] || null,
+      link2: links[1] || null,
+      link3: links[2] || null
+    });
+
+  } catch (err) {
+    console.error('Erro ao buscar:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar dados.' });
+  }
+});
+
+
+router.get('/assistir2', async (req, res) => {
   const query = req.query.oq;
   if (!query) return res.status(400).json({ error: 'Parâmetro "oq" é obrigatório.' });
 
