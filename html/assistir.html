@@ -53,44 +53,48 @@
     </div>
   </div>
 
-  <script>
-    async function buscar() {
-      const query = document.getElementById('search').value.trim();
-      if (!query) return alert("Digite algo para buscar");
+<script>
+  async function buscar() {
+    const query = document.getElementById('search').value.trim();
+    if (!query) return alert("Digite algo para buscar");
 
-      const resultados = document.getElementById('resultados');
-      const player = document.getElementById('player');
-      resultados.innerHTML = '<p class="text-gray-300">Buscando...</p>';
-      player.classList.add('hidden');
+    const resultados = document.getElementById('resultados');
+    const player = document.getElementById('player');
+    resultados.innerHTML = '<p class="text-gray-300">Buscando...</p>';
+    player.classList.add('hidden');
 
-      try {
-        const res = await fetch(`/api/assistir?oq=${encodeURIComponent(query)}`);
-        const data = await res.json();
+    try {
+      const res = await fetch(`/api/assistir?oq=${encodeURIComponent(query)}`);
+      const data = await res.json();
 
-        if (!data.link) {
-          resultados.innerHTML = '<p class="text-red-500">Nenhum resultado encontrado.</p>';
-          return;
-        }
-
-        resultados.innerHTML = '';
-
-        const card = document.createElement('div');
-        card.className = 'bg-gray-900 bg-opacity-70 p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 cursor-pointer';
-        card.innerHTML = `
-          <img src="${data.imagem}" alt="${data.titulo}" class="w-full h-48 object-cover rounded-lg mb-4">
-          <h3 class="text-lg font-semibold text-purple-300">${data.titulo}</h3>
-        `;
-        resultados.appendChild(card);
-
-        document.getElementById('iframe').src = data.link;
-        player.classList.remove('hidden');
-        window.scrollTo({ top: player.offsetTop - 20, behavior: 'smooth' });
-
-      } catch (err) {
-        console.error(err);
-        resultados.innerHTML = '<p class="text-red-500">Erro ao buscar resultados.</p>';
+      // Verifica se o link2 está disponível
+      if (!data.link2) {
+        resultados.innerHTML = '<p class="text-red-500">Nenhum resultado encontrado.</p>';
+        return;
       }
+
+      resultados.innerHTML = '';
+
+      // Exibe o título e a imagem
+      const card = document.createElement('div');
+      card.className = 'bg-gray-900 bg-opacity-70 p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 cursor-pointer';
+      card.innerHTML = `
+        <img src="${data.imagem}" alt="${data.titulo}" class="w-full h-48 object-cover rounded-lg mb-4">
+        <h3 class="text-lg font-semibold text-purple-300">${data.titulo}</h3>
+      `;
+      resultados.appendChild(card);
+
+      // Carrega o link2 no iframe e exibe o player
+      document.getElementById('iframe').src = data.link2;
+      player.classList.remove('hidden');
+      window.scrollTo({ top: player.offsetTop - 20, behavior: 'smooth' });
+
+    } catch (err) {
+      console.error(err);
+      resultados.innerHTML = '<p class="text-red-500">Erro ao buscar resultados.</p>';
     }
-  </script>
+  }
+</script>
+
 </body>
 </html
