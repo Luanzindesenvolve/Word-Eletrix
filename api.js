@@ -403,49 +403,43 @@ router.get('/igstalk', async (req, res) => {
 
 router.get('/assistir', async (req, res) => {
   const query = req.query.oq;
-  if (!query) {
-    return res.status(400).json({ error: 'Parâmetro "oq" é obrigatório.' });
-  }
+  if (!query) return res.status(400).json({ error: 'Parâmetro "oq" é obrigatório.' });
 
-  const url = `https://multicanais.asia/?s=${encodeURIComponent(query)}`;
-  console.log(`Buscando URL: ${url}`);
-
+  const searchUrl = `https://multicanais.asia/?s=${encodeURIComponent(query)}`;
   try {
-    const { data } = await axios.get(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'Accept-Language': 'pt-BR,pt;q=0.9'
-      }
+    const searchRes = await axios.get(searchUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
 
-    const $ = cheerio.load(data);
-    const resultados = [];
+    const $ = cheerio.load(searchRes.data);
+    const firstPost = $('article.vlog-post').first();
+    const postLink = firstPost.find('h2.entry-title a').attr('href');
+    const imagem = firstPost.find('.entry-image img').attr('src');
 
-    $('article.vlog-post').each((i, el) => {
-      const img = $(el).find('.entry-image img').attr('src');
-      const link = $(el).find('.entry-header h2.entry-title a').attr('href');
-      const titulo = $(el).find('.entry-header h2.entry-title a').text().trim();
+    if (!postLink) return res.status(404).json({ error: 'Jogo não encontrado.' });
 
-      console.log(`[${i}] Título: ${titulo}`);
-      console.log(`     Link: ${link}`);
-      console.log(`     Imagem: ${img}`);
-
-      if (titulo && link && img) {
-        resultados.push({ titulo, link, imagem: img });
-      }
+    const postRes = await axios.get(postLink, {
+      headers: { 'User-Agent': 'Mozilla/5.0' }
     });
 
-    if (resultados.length === 0) {
-      console.warn('Nenhum resultado encontrado.');
-      return res.status(404).json({ mensagem: 'Nenhum resultado encontrado.' });
-    }
+    const $$ = cheerio.load(postRes.data);
+    const firstPlayer = $$('.links a[data-id]').first().attr('data-id');
+    const titulo = $$('h2.wp-block-heading').first().text();
 
-    res.json({ resultados });
-  } catch (error) {
-    console.error('Erro ao buscar ou processar a página:', error.message);
-    res.status(500).json({ error: 'Erro ao buscar os dados.' });
+    if (!firstPlayer) return res.status(404).json({ error: 'Nenhum player encontrado.' });
+
+    res.json({
+      titulo,
+      imagem,
+      link: firstPlayer
+    });
+
+  } catch (err) {
+    console.error('Erro ao buscar:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar dados.' });
   }
 });
+
 
 router.get('/book', async (req, res) => {
   const { livro } = req.query;
