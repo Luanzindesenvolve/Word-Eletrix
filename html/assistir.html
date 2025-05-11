@@ -39,13 +39,11 @@
     <h1 class="text-4xl font-extrabold text-center text-purple-400 mb-8">Assistir Canais Ao Vivo</h1>
 
     <div class="flex items-center gap-4 mb-8">
-      <input id="search" type="text" placeholder="Ex: Flamengo, Real Madrid, Globo..." class="w-full p-4 rounded-lg border border-purple-500 bg-gray-900 bg-opacity-70 text-white placeholder-gray-400 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-300">
+      <input id="search" type="text" placeholder="Ex: Flamengo, Globo, Real Madrid..." class="w-full p-4 rounded-lg border border-purple-500 bg-gray-900 bg-opacity-70 text-white placeholder-gray-400 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-300">
       <button onclick="buscar()" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">Buscar</button>
     </div>
 
-    <div id="resultados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Resultado aparecerá aqui -->
-    </div>
+    <div id="resultados" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <div id="player" class="mt-8 hidden">
       <h2 class="text-2xl font-semibold mb-4 text-center text-purple-300">Assistir Agora</h2>
@@ -60,10 +58,10 @@
 
       const resultados = document.getElementById('resultados');
       const player = document.getElementById('player');
-      const playerContainer = document.querySelector('.Player');
+      const playerDiv = document.querySelector('.Player');
       resultados.innerHTML = '<p class="text-gray-300">Buscando...</p>';
       player.classList.add('hidden');
-      playerContainer.innerHTML = '';
+      playerDiv.innerHTML = '';
 
       try {
         const res = await fetch(`/api/assistir?oq=${encodeURIComponent(query)}`);
@@ -81,57 +79,50 @@
         card.innerHTML = `
           <img src="${data.imagem}" alt="${data.titulo}" class="w-full h-48 object-cover rounded-lg mb-4">
           <h3 class="text-lg font-semibold text-purple-300 mb-4 text-center">${data.titulo}</h3>
-          <div class="links flex flex-wrap justify-center gap-4 mt-4"></div>
+          <div class="flex flex-wrap justify-center gap-4 mt-4 links"></div>
         `;
         resultados.appendChild(card);
 
         const linksContainer = card.querySelector('.links');
         data.links.forEach((link, index) => {
-          const tipo = link.includes("hls") ? "hls" : (link.includes("iframe") || link.includes(".php") ? "iframe" : "embed");
-          const canal = tipo === "hls" || tipo === "iframe" ? link.split('=')[1] || link : link;
-
           const a = document.createElement('a');
           a.href = "javascript:void(0)";
           a.className = 'px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition';
           a.textContent = `OPÇÃO ${index + 1}`;
-          a.setAttribute('data-id', canal);
-          a.setAttribute('data-tipo', tipo);
+          a.setAttribute('data-id', link);
+          a.setAttribute('data-tipo', "iframe");
           linksContainer.appendChild(a);
         });
-
       } catch (err) {
         console.error(err);
         resultados.innerHTML = '<p class="text-red-500">Erro ao buscar resultados.</p>';
       }
     }
-  </script>
 
-  <!-- Script do site original para gerenciar clique nos botões -->
-  <script>
+    // Script essencial do site original
     jQuery(document).ready(function () {
-      jQuery(document).on('click', '.links a', function () {
+      jQuery(document).on('click', '.links a', function(){
         var iframeSrc = jQuery(this).attr('data-id');
         var tipo = jQuery(this).attr('data-tipo');
-        var urlIframe = 'https://multiplayhd.com/player.php?canal=' + iframeSrc;
+        var urlIframe = '';
 
         if (tipo === "iframe") {
           urlIframe = iframeSrc;
-        }
-        if (tipo === "hls") {
+        } else if (tipo === "hls") {
           urlIframe = 'https://multiplayhd.com/hls.php?canal=' + iframeSrc;
+        } else {
+          urlIframe = 'https://multiplayhd.com/player.php?canal=' + iframeSrc;
         }
 
-        jQuery('.Player').html('<iframe src="' + urlIframe + '" width="100%" height="360" frameborder="0" scrolling="no" id="myFrame" allowfullscreen="true" allow="encrypted-media" style="border-radius:5px;"></iframe>');
-        jQuery(".links a").css("background-color", "#572e57");
+        jQuery('.Player').html('<iframe src="'+urlIframe+'" width="100%" height="400" frameborder="0" scrolling="no" allowfullscreen="true" allow="encrypted-media" style="border-radius:5px;"></iframe>');
+        jQuery(".links a").css("background-color","#572e57");
         jQuery(this).css("background-color", "rgb(201, 0, 126)");
-        jQuery(".indica").css("display", "none");
-        jQuery('#player').removeClass('hidden');
         jQuery('html, body').animate({
           scrollTop: (jQuery('#player').offset().top)
         }, 500);
+        jQuery('#player').removeClass('hidden');
       });
     });
   </script>
-
 </body>
-  </html>
+</html>
