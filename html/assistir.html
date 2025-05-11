@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Assistir Ao Vivo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     .bg-video {
       position: fixed;
@@ -29,7 +30,6 @@
 <body class="text-white font-sans">
 
   <!-- Vídeo de fundo -->
-  <!--https://f.uguu.se/cCRwniGR.mp-->
   <video autoplay muted loop playsinline class="bg-video">
     <source src="https://files.catbox.moe/9jdc06.mp4" type="video/mp4">
   </video>
@@ -49,52 +49,89 @@
 
     <div id="player" class="mt-8 hidden">
       <h2 class="text-2xl font-semibold mb-4 text-center text-purple-300">Assistir Agora</h2>
-      <iframe id="iframe" src="" width="100%" height="400" frameborder="0" allowfullscreen class="rounded-lg shadow-lg"></iframe>
+      <div class="Player rounded-lg shadow-lg overflow-hidden"></div>
     </div>
   </div>
 
-<script>
-  async function buscar() {
-    const query = document.getElementById('search').value.trim();
-    if (!query) return alert("Digite algo para buscar");
+  <script>
+    async function buscar() {
+      const query = document.getElementById('search').value.trim();
+      if (!query) return alert("Digite algo para buscar");
 
-    const resultados = document.getElementById('resultados');
-    const player = document.getElementById('player');
-    resultados.innerHTML = '<p class="text-gray-300">Buscando...</p>';
-    player.classList.add('hidden');
+      const resultados = document.getElementById('resultados');
+      const player = document.getElementById('player');
+      const playerContainer = document.querySelector('.Player');
+      resultados.innerHTML = '<p class="text-gray-300">Buscando...</p>';
+      player.classList.add('hidden');
+      playerContainer.innerHTML = '';
 
-    try {
-      const res = await fetch(`/api/assistir?oq=${encodeURIComponent(query)}`);
-      const data = await res.json();
+      try {
+        const res = await fetch(`/api/assistir?oq=${encodeURIComponent(query)}`);
+        const data = await res.json();
 
-      // Verifica se o link2 está disponível
-      if (!data.link2) {
-        resultados.innerHTML = '<p class="text-red-500">Nenhum resultado encontrado.</p>';
-        return;
+        if (!data.links || data.links.length === 0) {
+          resultados.innerHTML = '<p class="text-red-500">Nenhum player encontrado.</p>';
+          return;
+        }
+
+        resultados.innerHTML = '';
+
+        const card = document.createElement('div');
+        card.className = 'bg-gray-900 bg-opacity-70 p-6 rounded-lg shadow-lg';
+        card.innerHTML = `
+          <img src="${data.imagem}" alt="${data.titulo}" class="w-full h-48 object-cover rounded-lg mb-4">
+          <h3 class="text-lg font-semibold text-purple-300 mb-4 text-center">${data.titulo}</h3>
+          <div class="links flex flex-wrap justify-center gap-4 mt-4"></div>
+        `;
+        resultados.appendChild(card);
+
+        const linksContainer = card.querySelector('.links');
+        data.links.forEach((link, index) => {
+          const tipo = link.includes("hls") ? "hls" : (link.includes("iframe") || link.includes(".php") ? "iframe" : "embed");
+          const canal = tipo === "hls" || tipo === "iframe" ? link.split('=')[1] || link : link;
+
+          const a = document.createElement('a');
+          a.href = "javascript:void(0)";
+          a.className = 'px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition';
+          a.textContent = `OPÇÃO ${index + 1}`;
+          a.setAttribute('data-id', canal);
+          a.setAttribute('data-tipo', tipo);
+          linksContainer.appendChild(a);
+        });
+
+      } catch (err) {
+        console.error(err);
+        resultados.innerHTML = '<p class="text-red-500">Erro ao buscar resultados.</p>';
       }
-
-      resultados.innerHTML = '';
-
-      // Exibe o título e a imagem
-      const card = document.createElement('div');
-      card.className = 'bg-gray-900 bg-opacity-70 p-6 rounded-lg shadow-lg hover:shadow-2xl transition transform hover:scale-105 cursor-pointer';
-      card.innerHTML = `
-        <img src="${data.imagem}" alt="${data.titulo}" class="w-full h-48 object-cover rounded-lg mb-4">
-        <h3 class="text-lg font-semibold text-purple-300">${data.titulo}</h3>
-      `;
-      resultados.appendChild(card);
-
-      // Carrega o link2 no iframe e exibe o player
-      document.getElementById('iframe').src = data.link2;
-      player.classList.remove('hidden');
-      window.scrollTo({ top: player.offsetTop - 20, behavior: 'smooth' });
-
-    } catch (err) {
-      console.error(err);
-      resultados.innerHTML = '<p class="text-red-500">Erro ao buscar resultados.</p>';
     }
-  }
-</script>
+  </script>
+
+  <!-- Script do site original para gerenciar clique nos botões -->
+  <script>
+    jQuery(document).ready(function () {
+      jQuery(document).on('click', '.links a', function () {
+        var iframeSrc = jQuery(this).attr('data-id');
+        var tipo = jQuery(this).attr('data-tipo');
+        var urlIframe = 'https://multiplayhd.com/player.php?canal=' + iframeSrc;
+
+        if (tipo === "iframe") {
+          urlIframe = iframeSrc;
+        }
+        if (tipo === "hls") {
+          urlIframe = 'https://multiplayhd.com/hls.php?canal=' + iframeSrc;
+        }
+
+        jQuery('.Player').html('<iframe src="' + urlIframe + '" width="100%" height="360" frameborder="0" scrolling="no" id="myFrame" allowfullscreen="true" allow="encrypted-media" style="border-radius:5px;"></iframe>');
+        jQuery(".links a").css("background-color", "#572e57");
+        jQuery(this).css("background-color", "rgb(201, 0, 126)");
+        jQuery(".indica").css("display", "none");
+        jQuery('#player').removeClass('hidden');
+        jQuery('html, body').animate({
+          scrollTop: (jQuery('#player').offset().top)
+        }, 500);
+      });
+    });
+  </script>
 
 </body>
-</html
+  </html>
