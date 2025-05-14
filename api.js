@@ -401,24 +401,13 @@ router.get('/igstalk', async (req, res) => {
   }
 })
 
-    
-
 router.get('/jogo/:slug', async (req, res) => {
   const { slug } = req.params;
-
-  // Função para gerar slug (se necessário no futuro)
-  function slugify(text) {
-    return text.toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
-      .replace(/[^a-z0-9]+/g, "-") // Substitui caracteres não alfanuméricos por '-'
-      .replace(/^-+|-+$/g, ""); // Remove traços extras
-  }
 
   try {
     const response = await axios.get('https://world-ecletix.onrender.com/api/futemax');
     const jogos = response.data;
 
-    // Procurar o jogo que contém a palavra-chave do slug na URL
     const jogo = jogos.find(j => {
       const path = j.link.replace('https://futemax.loan/', '').replace(/\/$/, '').toLowerCase();
       return path.includes(slug.toLowerCase());
@@ -437,37 +426,48 @@ router.get('/jogo/:slug', async (req, res) => {
           <title>${title}</title>
           <style>
             body {
-              background: #000;
+              margin: 0;
+              padding: 20px;
+              background: url('https://files.catbox.moe/daejby.jpg') no-repeat center center fixed;
+              background-size: cover;
               color: #fff;
               font-family: Arial, sans-serif;
               text-align: center;
-              padding: 20px;
+            }
+            h1 {
+              font-size: 28px;
+              margin-bottom: 10px;
+            }
+            p {
+              font-size: 18px;
+              margin-bottom: 20px;
             }
             img {
-              max-width: 300px;
+              max-width: 90%;
               border-radius: 8px;
               margin-bottom: 20px;
             }
             button {
-              margin: 10px;
-              padding: 12px 20px;
+              margin: 10px 5px;
+              padding: 14px 24px;
               background: #ff4444;
               color: #fff;
               border: none;
-              border-radius: 8px;
+              border-radius: 10px;
               cursor: pointer;
+              font-size: 18px;
               transition: background 0.3s;
-              font-size: 16px;
             }
             button:hover {
               background: #cc0000;
             }
             iframe {
               width: 100%;
-              height: 500px;
+              max-width: 100%;
+              height: 60vh;
               border: none;
-              margin-top: 20px;
               border-radius: 12px;
+              margin-top: 20px;
             }
           </style>
         </head>
@@ -481,7 +481,6 @@ router.get('/jogo/:slug', async (req, res) => {
           <div id="player-container">
             <iframe id="player" src="" allowfullscreen></iframe>
           </div>
-
           <script>
             function loadPlayer(link) {
               document.getElementById('player').src = link;
@@ -494,10 +493,10 @@ router.get('/jogo/:slug', async (req, res) => {
     res.send(html);
 
   } catch (err) {
-    console.error(err);
     res.status(500).send('Erro ao carregar o jogo');
   }
-});
+});    
+
 router.get('/futemax', async (req, res) => {
   const baseUrl = 'https://futemax.loan/';
 
