@@ -4,7 +4,6 @@
   "description": "site com objetivos de espalhar conhecimento!",
   "main": "server.js",
   "scripts": {
-    "postinstall": "puppeteer install",
     "start": "node server.js"
   },
   "author": "luanzin dev",
@@ -42,9 +41,7 @@
     "@hiudyy/ytdl": "",
     "archiver": "",
     "@tnfangel/ytmusic-api": "",
-    "@vreden/youtube_scraper": "",
-    "atob": "",
-    "puppeteer": ""
+    "@vreden/youtube_scraper": ""
 
   }
 }
