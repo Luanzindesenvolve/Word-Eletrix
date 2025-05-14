@@ -4,6 +4,7 @@
   "description": "site com objetivos de espalhar conhecimento!",
   "main": "server.js",
   "scripts": {
+    "postinstall": "puppeteer install",
     "start": "node server.js"
   },
   "author": "luanzin dev",
