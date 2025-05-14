@@ -415,7 +415,7 @@ router.get('/jogo/:slug', async (req, res) => {
   }
 
   try {
-    const response = await axios.get('/api/futemax');
+    const response = await axios.get('https://world-ecletix.onrender.com/api/futemax');
     const jogos = response.data;
 
     // Procurar o jogo que contém a palavra-chave do slug na URL
@@ -428,7 +428,7 @@ router.get('/jogo/:slug', async (req, res) => {
       return res.status(404).send('Jogo não encontrado');
     }
 
-    const futplay = await axios.get(`/api/futplay?url=${encodeURIComponent(jogo.link)}`);
+    const futplay = await axios.get(`https://world-ecletix.onrender.com/api/futplay?url=${encodeURIComponent(jogo.link)}`);
     const { title, description, thumbnail, players } = futplay.data;
 
     const html = `
