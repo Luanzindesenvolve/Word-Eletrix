@@ -5,174 +5,210 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Play TV Free</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <style>
-    body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #000;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  /* height: 100vh;  <-- REMOVA ESSA LINHA */
-  overflow-y: auto;
-    }
-    }
-    header {
-      background: #111;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      flex-wrap: wrap;
-      color: #fff;
-    }
-    header h1 {
-      font-size: 24px;
-      flex: 1 1 100%;
-      text-align: center;
-      margin-bottom: 10px;
-      color: #fff;
-    }
-    .top-controls {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #menuBtn {
-      font-size: 24px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      color: #fff;
-    }
-    #searchBar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #searchInput {
-      padding: 5px 10px;
-      font-size: 16px;
-      width: 200px;
-      background-color: #fff;
-      color: #555;
-      border: none;
-      border-radius: 4px;
-    }
-    #searchInput::placeholder {
-      color: #888;
-    }
-    .container-wrapper {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-    .sidebar {
-      width: 0;
-      background: #111;
-      overflow-y: auto;
-      transition: width 0.3s;
-      border-right: 1px solid #333;
-      padding: 20px 0;
-      color: #fff;
-    }
-    .sidebar.aberto {
-      width: 300px;
-    }
-    .categoria {
-      padding: 0 20px;
-    }
-    .categoria h2 {
-      font-size: 20px;
-      color: #fff;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #444;
-      padding-bottom: 5px;
-    }
-    .canal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background: #222;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      color: #fff;
-    }
-    .canal-header:hover {
-      background: #333;
-    }
-    .programacao {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-      padding-left: 10px;
-      background: #181818;
-      margin-bottom: 10px;
-    }
-    .programacao.aberta {
-      max-height: 1000px;
-      padding: 10px;
-    }
-    .programa, .jogo {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #ccc;
-    }
-    .seta {
-      transition: transform 0.3s;
-      font-size: 18px;
-    }
-    .seta.aberto {
-      transform: rotate(90deg);
-    }
-    .container {
-      flex: 1;
-      overflow-y: auto;
-      background-color: #000;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-      justify-content: center;
-    }
+
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #000;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  header {
+    background: #111;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+    color: #fff;
+  }
+
+  header h1 {
+    font-size: 24px;
+    flex: 1 1 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .top-controls {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #menuBtn {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #fff;
+  }
+
+  #searchBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  #searchInput {
+    padding: 8px 12px;
+    font-size: 16px;
+    width: clamp(250px, 30vw, 400px);
+    background-color: #fff;
+    color: #555;
+    border: none;
+    border-radius: 4px;
+  }
+
+  #searchInput::placeholder {
+    color: #888;
+  }
+
+  .container-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 0;
+    background: #111;
+    overflow-y: auto;
+    transition: width 0.3s;
+    border-right: 1px solid #333;
+    padding: 20px 0;
+    color: #fff;
+  }
+
+  .sidebar.aberto {
+    width: 300px;
+  }
+
+  .categoria {
+    padding: 0 20px;
+  }
+
+  .categoria h2 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 5px;
+  }
+
+  .canal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #222;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .canal-header:hover {
+    background: #333;
+  }
+
+  .programacao {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 10px;
+    background: #181818;
+    margin-bottom: 10px;
+  }
+
+  .programacao.aberta {
+    max-height: 1000px;
+    padding: 10px;
+  }
+
+  .programa, .jogo {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .seta {
+    transition: transform 0.3s;
+    font-size: 18px;
+  }
+
+  .seta.aberto {
+    transform: rotate(90deg);
+  }
+
+  .container {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+  }
+
+  .post {
+    background: #111;
+    border: 1px solid #444;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 16%;
+    min-width: 200px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    color: #fff;
+  }
+
+  .post img {
+    width: 100%;
+    height: auto;
+  }
+
+  .post h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #fff;
+  }
+
+  @media (max-width: 1200px) {
     .post {
-      background: #111;
-      border: 1px solid #444;
-      border-radius: 8px;
-      overflow: hidden;
       width: 30%;
-      min-width: 250px;
-      text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-      cursor: pointer;
-      color: #fff;
     }
-    .post img {
-      width: 100%;
-      height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .post {
+      width: 45%;
     }
-    .post h3 {
-      margin: 10px 0;
-      font-size: 18px;
-      color: #fff;
+  }
+
+  @media (max-width: 480px) {
+    .post {
+      width: 90%;
     }
-    @media (max-width: 900px) {
-      .post {
-        width: 45%;
-      }
-    }
-    @media (max-width: 600px) {
-      .post {
-        width: 90%;
-      }
-    }
-  </style>
+  }
+</style>
+      
 </head>
 <body>
 
