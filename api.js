@@ -403,67 +403,7 @@ router.get('/igstalk', async (req, res) => {
   }
 })
 
-
-
-router.get('/playertv4', async (req, res) => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-
-  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36');
-
-  try {
-    // 1. Acessa a página evento_alt.php
-    await page.goto('https://playertv.net/c/dplus/evento_alt.php', {
-      waitUntil: 'domcontentloaded',
-      timeout: 30000,
-    });
-
-    const data = await page.evaluate(() => {
-      const title = document.querySelector('.card-title')?.innerText || null;
-      const assistirHref = document.querySelector('a.btn.btn-danger')?.getAttribute('href') || null;
-      const iframeInputValue = document.querySelector('input.form-control')?.value || null;
-
-      return { title, assistirHref, iframeInputValue };
-    });
-
-    // Decodifica iframe da input
-    const match = data.iframeInputValue?.match(/v=([a-zA-Z0-9=]+)/);
-    const decodedIframeURL = match && match[1] ? atob(match[1]) : null;
-
-    // 2. Segue o link do botão "ASSISTIR" (v.php)
-    let finalIframe = null;
-
-    if (data.assistirHref) {
-      const assistirPage = await browser.newPage();
-      await assistirPage.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36');
-
-      const assistirURL = `https://playertv.net/${data.assistirHref.replace(/^\/+/, '')}`;
-
-      await assistirPage.goto(assistirURL, {
-        waitUntil: 'domcontentloaded',
-        timeout: 30000,
-      });
-
-      // Captura o iframe real da página v.php
-      finalIframe = await assistirPage.evaluate(() => {
-        return document.querySelector('iframe')?.src || null;
-      });
-
-      await assistirPage.close();
-    }
-
-    res.json({
-      title: data.title,
-      assistir_url: `https://playertv.net/${data.assistirHref}`,
-      iframe_decodificado: decodedIframeURL,
-      iframe_final: finalIframe
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'Erro: ' + err.message });
-  } finally {
-    await browser.close();
-  }
-});
+    
 
 router.get('/jogo/:slug', async (req, res) => {
   const { slug } = req.params;
