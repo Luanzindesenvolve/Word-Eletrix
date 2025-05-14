@@ -405,7 +405,7 @@ router.get('/igstalk', async (req, res) => {
 
 
 
-router.get('/evento', async (req, res) => {
+router.get('/playertv4', async (req, res) => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
@@ -685,6 +685,62 @@ router.get('/playertv', async (req, res) => {
   } catch (error) {
     console.error('Erro ao obter o conteúdo:', error);
     res.status(500).json({ error: 'Erro ao buscar o conteúdo.' });
+  }
+});
+router.get('/playertv2', async (req, res) => {
+  try {
+    const { data } = await axios.get('https://playertv.net/c/max/uefa.php');
+    const $ = cheerio.load(data);
+    const resultados = [];
+
+    $('.col-lg-3').each((_, el) => {
+      const card = $(el);
+      const titulo = card.find('.card-title').text().trim();
+      const horario = card.find('.btn.btn-primary').first().text().trim();
+      const assistirHref = card.find('.btn.btn-danger').attr('href');
+      const iframe = card.find('input.form-control').val();
+      const imagem = card.find('img').attr('src');
+
+      resultados.push({
+        titulo,
+        horario,
+        imagem,
+        iframe,
+        assistir: `https://playertv.net/c/max/${assistirHref}`
+      });
+    });
+
+    res.json(resultados);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao capturar dados', details: err.message });
+  }
+});
+router.get('/playertv3', async (req, res) => {
+  try {
+    const { data } = await axios.get('https://playertv.net/c/one/one.php');
+    const $ = cheerio.load(data);
+    const resultados = [];
+
+    $('.col-lg-3').each((_, el) => {
+      const card = $(el);
+      const titulo = card.find('.card-title').text().trim();
+      const horario = card.find('.btn.btn-primary').first().text().trim();
+      const assistirHref = card.find('.btn.btn-danger').attr('href');
+      const iframe = card.find('input.form-control').val();
+      const imagem = card.find('img').attr('src');
+
+      resultados.push({
+        titulo,
+        horario,
+        imagem,
+        iframe,
+        assistir: `https://playertv.net/c/one/${assistirHref}`
+      });
+    });
+
+    res.json(resultados);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao capturar dados', details: err.message });
   }
 });
 
