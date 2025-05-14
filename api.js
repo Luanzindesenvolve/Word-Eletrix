@@ -465,6 +465,197 @@ router.get('/playertv4', async (req, res) => {
   }
 });
 
+router.get('/jogo/:slug', async (req, res) => {
+  const { slug } = req.params;
+
+  // Função para gerar slug (se necessário no futuro)
+  function slugify(text) {
+    return text.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
+      .replace(/[^a-z0-9]+/g, "-") // Substitui caracteres não alfanuméricos por '-'
+      .replace(/^-+|-+$/g, ""); // Remove traços extras
+  }
+
+  try {
+    const response = await axios.get('http://localhost:3000/futemax');
+    const jogos = response.data;
+
+    // Procurar o jogo que contém a palavra-chave do slug na URL
+    const jogo = jogos.find(j => {
+      const path = j.link.replace('https://futemax.loan/', '').replace(/\/$/, '').toLowerCase();
+      return path.includes(slug.toLowerCase());
+    });
+
+    if (!jogo) {
+      return res.status(404).send('Jogo não encontrado');
+    }
+
+    const futplay = await axios.get(`http://localhost:3000/futplay?url=${encodeURIComponent(jogo.link)}`);
+    const { title, description, thumbnail, players } = futplay.data;
+
+    const html = `
+      <html>
+        <head>
+          <title>${title}</title>
+          <style>
+            body {
+              background: #000;
+              color: #fff;
+              font-family: Arial, sans-serif;
+              text-align: center;
+              padding: 20px;
+            }
+            img {
+              max-width: 300px;
+              border-radius: 8px;
+              margin-bottom: 20px;
+            }
+            button {
+              margin: 10px;
+              padding: 12px 20px;
+              background: #ff4444;
+              color: #fff;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              transition: background 0.3s;
+              font-size: 16px;
+            }
+            button:hover {
+              background: #cc0000;
+            }
+            iframe {
+              width: 100%;
+              height: 500px;
+              border: none;
+              margin-top: 20px;
+              border-radius: 12px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>${title}</h1>
+          <p>${description}</p>
+          <img src="${thumbnail}" alt="${title}" />
+          <div>
+            ${players.map((p, i) => `<button onclick="loadPlayer('${p.link}')">${p.label}</button>`).join('')}
+          </div>
+          <div id="player-container">
+            <iframe id="player" src="" allowfullscreen></iframe>
+          </div>
+
+          <script>
+            function loadPlayer(link) {
+              document.getElementById('player').src = link;
+            }
+          </script>
+        </body>
+      </html>
+    `;
+
+    res.send(html);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao carregar o jogo');
+  }
+});
+router.get('/futemax', async (req, res) => {
+  const baseUrl = 'https://futemax.loan/';
+
+  try {
+    console.log(`[INFO] Buscando homepage: ${baseUrl}`);
+    const { data } = await axios.get(baseUrl, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/90.0.4430.212 Safari/537.36',
+        'Accept-Language': 'pt-BR,pt;q=0.9',
+        'Referer': 'https://www.google.com'
+      }
+    });
+
+    const $ = cheerio.load(data);
+    const jogos = [];
+
+    $('.ultp-block-item').each((_, el) => {
+      const title = $(el).find('.ultp-block-title a').text().trim();
+      const link = $(el).find('.ultp-block-title a').attr('href');
+      const imgSrc = $(el).find('img.ultp-block-image-content').attr('src');
+
+      if (title && link && imgSrc) {
+        // Corrige imagem relativa para absoluta
+        const image = imgSrc.startsWith('http') ? imgSrc : baseUrl + imgSrc.replace(/^\/?/, '');
+        jogos.push({ title, link, image });
+        console.log(`[INFO] Jogo encontrado: ${title} => ${link} | ${image}`);
+      }
+    });
+
+    res.json(jogos);
+
+  } catch (err) {
+    console.error('[ERRO] Falha ao buscar a página inicial do Futemax:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar dados da página inicial.', details: err.message });
+  }
+});
+
+router.get('/futplay', async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    console.log('[ERRO] URL não fornecida na requisição.');
+    return res.status(400).json({ error: 'URL é obrigatória.' });
+  }
+
+  console.log(`[INFO] Buscando dados da URL: ${url}`);
+
+  try {
+    const { data } = await axios.get(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/90.0.4430.212 Safari/537.36',
+        'Accept-Language': 'pt-BR,pt;q=0.9',
+        'Referer': 'https://www.google.com'
+      }
+    });
+
+    const $ = cheerio.load(data);
+
+    // Thumbnail
+    const thumbnailMatch = data.match(/"thumbnailUrl":"(https:\/\/img\.futemax\.loan[^"]+)/);
+    const thumbnail = thumbnailMatch ? thumbnailMatch[1] : null;
+    console.log(`[INFO] Thumbnail extraída: ${thumbnail}`);
+
+    // Metadados
+    const title = $('meta[property="og:title"]').attr('content') || null;
+    const description = $('meta[property="og:description"]').attr('content') || null;
+    const canonical = $('link[rel="canonical"]').attr('href') || null;
+    console.log(`[INFO] Título: ${title}`);
+    console.log(`[INFO] Descrição: ${description}`);
+    console.log(`[INFO] Canonical: ${canonical}`);
+
+    // Players
+    const players = [];
+    $('.btn-player button').each((_, el) => {
+      const label = $(el).text().trim();
+      const link = $(el).attr('data-src');
+      if (link) {
+        players.push({ label, link });
+        console.log(`[INFO] Player encontrado: ${label} => ${link}`);
+      }
+    });
+
+    res.json({
+      title,
+      description,
+      thumbnail,
+      canonical,
+      players
+    });
+
+  } catch (err) {
+    console.error('[ERRO] Falha ao buscar ou processar dados:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar dados do Futemax.', details: err.message });
+  }
+});
 
 router.get('/assistir', async (req, res) => {
   const query = req.query.oq;
