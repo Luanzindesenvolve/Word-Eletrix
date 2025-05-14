@@ -176,7 +176,10 @@ const {
   bobross, 
   mms
 } = require('./config.js'); // arquivo que ele puxa as funções 
-
+const browser = await puppeteer.launch({
+  headless: true,
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+});
 const audio = [92, 128, 256, 320];
 const video = [144, 360, 480, 720, 1080];
 
