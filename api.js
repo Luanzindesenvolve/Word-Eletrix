@@ -501,7 +501,6 @@ router.get('/futemax', async (req, res) => {
   const baseUrl = 'https://futemax.loan/';
 
   try {
-    console.log(`[INFO] Buscando homepage: ${baseUrl}`);
     const { data } = await axios.get(baseUrl, {
       headers: {
         'User-Agent':
@@ -523,14 +522,12 @@ router.get('/futemax', async (req, res) => {
         // Corrige imagem relativa para absoluta
         const image = imgSrc.startsWith('http') ? imgSrc : baseUrl + imgSrc.replace(/^\/?/, '');
         jogos.push({ title, link, image });
-        console.log(`[INFO] Jogo encontrado: ${title} => ${link} | ${image}`);
       }
     });
 
     res.json(jogos);
 
   } catch (err) {
-    console.error('[ERRO] Falha ao buscar a página inicial do Futemax:', err.message);
     res.status(500).json({ error: 'Erro ao buscar dados da página inicial.', details: err.message });
   }
 });
@@ -538,12 +535,8 @@ router.get('/futemax', async (req, res) => {
 router.get('/futplay', async (req, res) => {
   const { url } = req.query;
   if (!url) {
-    console.log('[ERRO] URL não fornecida na requisição.');
     return res.status(400).json({ error: 'URL é obrigatória.' });
   }
-
-  console.log(`[INFO] Buscando dados da URL: ${url}`);
-
   try {
     const { data } = await axios.get(url, {
       headers: {
@@ -559,15 +552,11 @@ router.get('/futplay', async (req, res) => {
     // Thumbnail
     const thumbnailMatch = data.match(/"thumbnailUrl":"(https:\/\/img\.futemax\.loan[^"]+)/);
     const thumbnail = thumbnailMatch ? thumbnailMatch[1] : null;
-    console.log(`[INFO] Thumbnail extraída: ${thumbnail}`);
 
     // Metadados
     const title = $('meta[property="og:title"]').attr('content') || null;
     const description = $('meta[property="og:description"]').attr('content') || null;
     const canonical = $('link[rel="canonical"]').attr('href') || null;
-    console.log(`[INFO] Título: ${title}`);
-    console.log(`[INFO] Descrição: ${description}`);
-    console.log(`[INFO] Canonical: ${canonical}`);
 
     // Players
     const players = [];
@@ -576,7 +565,6 @@ router.get('/futplay', async (req, res) => {
       const link = $(el).attr('data-src');
       if (link) {
         players.push({ label, link });
-        console.log(`[INFO] Player encontrado: ${label} => ${link}`);
       }
     });
 
@@ -589,7 +577,6 @@ router.get('/futplay', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('[ERRO] Falha ao buscar ou processar dados:', err.message);
     res.status(500).json({ error: 'Erro ao buscar dados do Futemax.', details: err.message });
   }
 });
