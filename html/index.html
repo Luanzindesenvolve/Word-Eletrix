@@ -297,7 +297,7 @@ thead th {
         }
 
         /* Estilos para o menu lateral */
-       /* Menu lateral */
+       
 .sidebar {
     height: 100%;
     width: 0;
@@ -307,16 +307,12 @@ thead th {
     background-image: url('/fundos/4.jpg');
     background-size: cover;
     background-position: center;
-    overflow-y: auto; /* só rola o menu */
+    overflow-y: auto;
     overflow-x: hidden;
     padding-top: 60px;
     z-index: 1000;
     transition: width 0.5s ease;
     box-sizing: border-box;
-
-    /* Contorno LED verde animado */
-    border: 4px solid transparent;
-    animation: led-glow 2s linear infinite alternate;
 }
 
 /* Links do menu */
@@ -347,20 +343,33 @@ thead th {
     color: white;
 }
 
-/* Animação LED verde subindo e descendo pelo contorno */
-@keyframes led-glow {
-    0% {
-        border-color: #006400;
-        box-shadow: 0 0 8px #00ff00, inset 0 0 8px #00ff00;
-    }
-    50% {
-        border-color: #00ff00;
-        box-shadow: 0 0 16px #00ff00, inset 0 0 16px #00ff00;
-    }
-    100% {
-        border-color: #006400;
-        box-shadow: 0 0 8px #00ff00, inset 0 0 8px #00ff00;
-    }
+/* Contorno LED animado ao redor do menu */
+.sidebar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: 2px solid transparent;
+    pointer-events: none;
+    box-sizing: border-box;
+    z-index: 1;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.sidebar.open::before {
+    border-color: #00ff00;
+    background: linear-gradient(90deg, #00ff00, transparent, #00ff00) 0 0 / 400% 100% no-repeat;
+    animation: move-led 2s linear infinite;
+}
+
+/* Animação da borda se movendo ao redor */
+@keyframes move-led {
+    0% { background-position: 0 0; }
+    100% { background-position: -400% 0; }
 }
 
         /* Estilos para a mensagem de boas-vindas */
