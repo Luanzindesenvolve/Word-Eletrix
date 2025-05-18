@@ -150,16 +150,17 @@
     fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`)
       .then(response => response.json())
       .then(data => {
-        if (data["Likes Enviados"] !== undefined) {
+        if (data["ID do Jogador"]) {
           messageElement.className = 'message success';
           messageElement.textContent =
-            `✅ Likes enviados com sucesso!\n\n` +
-            `• Apelido: ${data["Apelido"]}\n` +
-            `• Região: ${data["Região"]}\n` +
-            `• Nível: ${data["Nível"]}\n` +
-            `• Likes Antes: ${data["Likes Antes"]}\n` +
-            `• Likes Depois: ${data["Likes Depois"]}\n` +
-            `• Likes Enviados: ${data["Likes Enviados"]}`;
+            `❤️ *Informações de Likes do Jogador*\n\n` +
+            `• 🆔 ID: ${data["ID do Jogador"]}\n` +
+            `• ✨ Apelido: ${data["Apelido"]}\n` +
+            `• 🌎 Região: ${data["Região"]}\n` +
+            `• ⭐ Nível: ${data["Nível"]}\n` +
+            `• 👍 Likes Antes: ${data["Likes Antes"]}\n` +
+            `• 👍 Likes Depois: ${data["Likes Depois"]}\n` +
+            `• 🤖 Likes Enviados: ${data["Likes Enviados"]}`;
         } else {
           messageElement.className = 'message error';
           messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
