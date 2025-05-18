@@ -152,7 +152,14 @@
       .then(data => {
         if (data["Likes Enviados"] !== undefined) {
           messageElement.className = 'message success';
-          messageElement.textContent = `✅ Likes enviados com sucesso!\n\n• Apelido: ${data.Apelido}\n• Região: ${data.Região}\n• Nível: ${data["Nível"]}\n• Likes Antes: ${data["Likes Antes"]}\n• Likes Depois: ${data["Likes Depois"]}\n• Likes Enviados: ${data["Likes Enviados"]}`;
+          messageElement.textContent =
+            `✅ Likes enviados com sucesso!\n\n` +
+            `• Apelido: ${data["Apelido"]}\n` +
+            `• Região: ${data["Região"]}\n` +
+            `• Nível: ${data["Nível"]}\n` +
+            `• Likes Antes: ${data["Likes Antes"]}\n` +
+            `• Likes Depois: ${data["Likes Depois"]}\n` +
+            `• Likes Enviados: ${data["Likes Enviados"]}`;
         } else {
           messageElement.className = 'message error';
           messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
@@ -166,7 +173,6 @@
       });
   }
 </script>
-
   <audio autoplay loop>
     <source src="./musicas/likesff.mp3" type="audio/mpeg">
     Seu navegador não suporta áudio HTML5.
