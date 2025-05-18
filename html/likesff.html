@@ -132,48 +132,40 @@
   </div>
 
   <div class="footer">
-    by @luanzn_fe
+    by luanzin dev
   </div>
 
-  <script>
-    function enviarLikes() {
-      const userId = document.getElementById('userId').value;
-      const messageElement = document.getElementById('message');
+<script>
+  function enviarLikes() {
+    const userId = document.getElementById('userId').value;
+    const messageElement = document.getElementById('message');
 
-      if (!userId) {
-        alert('Por favor, insira um ID válido!');
-        return;
-      }
-
-      messageElement.style.display = 'none';
-
-      fetch(`https://world-ecletix.onrender.com/api/likes?id=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.status) {
-            messageElement.className = 'message success';
-            messageElement.textContent = '✅ Likes enviados com sucesso!';
-          } else {
-            const match = data.resultado.match(/Tente novamente em (\d+) horas e (\d+) minutos/);
-            if (match) {
-              const horas = match[1];
-              const minutos = match[2];
-              messageElement.className = 'message error';
-              messageElement.textContent = `⏳ Esse ID já recebeu likes. Tente novamente em ${horas}h e ${minutos}min.`;
-            } else {
-              messageElement.className = 'message error';
-              messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
-            }
-          }
-          messageElement.style.display = 'block';
-        })
-        .catch(() => {
-          messageElement.className = 'message error';
-          messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
-          messageElement.style.display = 'block';
-        });
+    if (!userId) {
+      alert('Por favor, insira um ID válido!');
+      return;
     }
-  </script>
+
+    messageElement.style.display = 'none';
+
+    fetch(`https://world-ecletix.onrender.com/api/likesff2?id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data["Likes Enviados"] !== undefined) {
+          messageElement.className = 'message success';
+          messageElement.textContent = `✅ Likes enviados com sucesso!\n\n• Apelido: ${data.Apelido}\n• Região: ${data.Região}\n• Nível: ${data["Nível"]}\n• Likes Antes: ${data["Likes Antes"]}\n• Likes Depois: ${data["Likes Depois"]}\n• Likes Enviados: ${data["Likes Enviados"]}`;
+        } else {
+          messageElement.className = 'message error';
+          messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
+        }
+        messageElement.style.display = 'block';
+      })
+      .catch(() => {
+        messageElement.className = 'message error';
+        messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
+        messageElement.style.display = 'block';
+      });
+  }
+</script>
 
   <audio autoplay loop>
     <source src="./musicas/likesff.mp3" type="audio/mpeg">
