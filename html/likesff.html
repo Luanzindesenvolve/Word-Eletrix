@@ -147,7 +147,7 @@
 
     messageElement.style.display = 'none';
 
-    fetch(`https://world-ecletix.onrender.com/api/likesff2?id=${userId}`)
+    fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`)
       .then(response => response.json())
       .then(data => {
         if (data["Likes Enviados"] !== undefined) {
