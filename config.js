@@ -6,6 +6,7 @@ const cheerio = require("cheerio");
 const request = require('request');
 const yts = require("yt-search")
 const qs = require("qs")
+const JXR = require('jxr-canvas');
 const fs = require('fs-extra')
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args))
 const encodeUrl = require('encodeurl');
@@ -67,6 +68,43 @@ async function comunismo(imageUrl) {
     throw new Error('Erro ao gerar imagem: ' + err.message);
   }
 }
+
+async function welcome({ nome, guilda, perfil, membro, avatar, fundo }) {
+  try {
+    if (!nome) throw new Error('Faltando o parâmetro "nome"');
+    if (!guilda) throw new Error('Faltando o parâmetro "guilda"');
+    if (!perfil) throw new Error('Faltando o parâmetro "perfil"');
+    if (!membro) throw new Error('Faltando o parâmetro "membro"');
+    if (!avatar) throw new Error('Faltando o parâmetro "avatar"');
+    if (!fundo) throw new Error('Faltando o parâmetro "fundo"');
+
+    const image = await new JXR.Welcome()
+      .setUsername(nome)
+      .setGuildName(guilda)
+      .setGuildIcon(perfil)
+      .setMemberCount(`${membro}`)
+      .setAvatar(avatar)
+      .setBackground(fundo)
+      .toAttachment();
+
+    const buffer = image.toBuffer();
+
+    const dirPath = path.join(__dirname, 'assets');
+    if (!fs.existsSync(dirPath)) {
+      await fs.promises.mkdir(dirPath, { recursive: true });
+    }
+
+    const fileName = `welcome-${Date.now()}.png`;
+    const filePath = path.join(dirPath, fileName);
+
+    await fs.promises.writeFile(filePath, buffer);
+
+    return filePath;
+  } catch (error) {
+    throw new Error('Erro ao gerar imagem: ' + error.message);
+  }
+}
+
 async function bolsonaro(imageUrl) {
   try {
     if (!imageUrl) {
@@ -3844,7 +3882,8 @@ trash,
 wanted, 
 wasted, 
 bobross, 
-mms
+mms,
+welcome
  
  };
 
