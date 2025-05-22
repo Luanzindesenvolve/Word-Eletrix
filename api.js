@@ -172,10 +172,20 @@ const {
   wanted,
   wasted, 
   bobross, 
-  mms
+  mms,
+  welcome
 } = require('./config.js'); // arquivo que ele puxa as funções 
 
 // 677 rotas 18/05/2025 00:50
+
+router.get('/welcome', async (req, res) => {
+  try {
+    const filePath = await welcome(req.query);
+    res.sendFile(filePath);
+  } catch (err) {
+    res.status(400).json({ erro: err.message });
+  }
+});
 
 const audio = [92, 128, 256, 320];
 const video = [144, 360, 480, 720, 1080];
