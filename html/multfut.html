@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogos de hoje</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .games {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .game-card {
+      background: #111;
+      border-radius: 12px;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 0 10px #00ccff;
+      transition: transform 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+    }
+    .game-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00aaff;
+    }
+    .game-card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .game-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogos Multicanais</h1>
+  <div class="games" id="games"></div>
+
+  <script>
+    fetch('https://world-ecletix.onrender.com/api/multicanais')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('games');
+        data.forEach(game => {
+          // extrair slug do link, remove https://multicanais.casa/ e barras no fim
+          let slug = game.link.replace('https://multicanais.casa/', '').replace(/\/$/, '');
+
+          let card = document.createElement('a');
+          card.href = '/fut/' + slug;
+          card.className = 'game-card';
+          card.innerHTML = `
+            <img src="${game.capa}" alt="${game.titulo}" />
+            <div class="game-title">${game.titulo}</div>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(() => {
+        document.getElementById('games').innerText = 'Erro ao carregar jogos.';
+      });
+  </script>
+</body>
+</html
