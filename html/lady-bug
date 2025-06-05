@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lady bug - bot</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://files.catbox.moe/m88k78.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 0.5rem;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      background: linear-gradient(270deg, red, blue, cyan, magenta, red);
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rgbText 8s ease infinite;
+    }
+
+    @keyframes rgbText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h2 {
+      font-weight: 400;
+      color: #eee;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .rgb-border {
+      position: relative;
+      padding: 3px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, red, blue, magenta, cyan, red);
+      background-size: 400% 400%;
+      animation: moveRGB 10s linear infinite;
+      max-width: 700px;
+      margin: 12rem auto 1.5rem;
+    }
+
+    @keyframes moveRGB {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .rgb-card {
+      background-color: rgba(0, 0, 0, 0.85);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 0.95rem;
+    }
+
+    li {
+      padding: 0.6rem;
+      margin-bottom: 0.4rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid #ff2e63;
+      transition: background 0.3s ease;
+    }
+
+    li:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .whatsapp-button {
+      display: block;
+      margin: 2rem auto 0.5rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      border-radius: 10px;
+      background: linear-gradient(270deg, red, blue, magenta, cyan, red);
+      background-size: 400% 400%;
+      animation: rgbButton 6s linear infinite;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      width: fit-content;
+      cursor: pointer;
+      max-width: 90vw;
+      white-space: nowrap;
+    }
+
+    .dev-button {
+      display: block;
+      margin: 0.3rem auto 1rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      border-radius: 10px;
+      background: linear-gradient(270deg, red, blue, magenta, cyan, red);
+      background-size: 400% 400%;
+      animation: rgbButton 6s linear infinite;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      width: fit-content;
+      cursor: pointer;
+      max-width: 90vw;
+      white-space: nowrap;
+    }
+
+    @keyframes rgbButton {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.85);
+      color: #ccc;
+      margin-top: auto;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 0.9rem;
+      }
+
+      .rgb-card {
+        padding: 1rem;
+      }
+
+      li {
+        font-size: 0.9rem;
+      }
+
+      .whatsapp-button,
+      .dev-button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Lady bug - bot</h1>
+    <h2>Automação, inteligência e poder no seu WhatsApp</h2>
+  </header>
+
+  <div class="rgb-border">
+    <main class="rgb-card">
+      <ul>
+        <li>🤖 Inteligência Artificial para conversa e criação de conteúdo</li>
+        <li>📥 Downloads de mídias de plataformas populares</li>
+        <li>🎮 Sistema de RPG com economia e batalhas</li>
+        <li>🛠️ Ferramentas úteis e consultas automatizadas</li>
+        <li>🎭 Entretenimento: piadas, curiosidades, jogos e mais</li>
+        <li>🔞 Comandos +18 com busca e download</li>
+        <li>👑 Administração completa de grupos (ban, add, configs)</li>
+        <li>💬 Criação automática de figurinhas</li>
+      </ul>
+    </main>
+  </div>
+
+  <a class="whatsapp-button" href="https://wa.me/13476953415?text=.menu" target="_blank">
+    📲 Entrar em contato via WhatsApp
+  </a>
+
+  <a class="dev-button" href="https://instagram.com/comedor_di_primas" target="_blank">
+    Dono e desenvolvedor
+  </a>
+
+  <footer>
+    &copy; 2025 Lady bug - bot • Todos os direitos reservados
+  </footer>
+
+</body>
+</html
