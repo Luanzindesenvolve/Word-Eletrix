@@ -190,6 +190,7 @@ const {
 
 // 719 rotas 10/06/2025 18:38
 
+
 async function generateAudio(res, voice_id, text) {
   if (!text || text.trim() === "") {
     return res.status(400).json({ error: "Parâmetro 'text' é obrigatório." });
@@ -211,21 +212,30 @@ async function generateAudio(res, voice_id, text) {
           "xi-api-key": API_KEY,
           "Content-Type": "application/json"
         },
-        responseType: "arraybuffer" // importante para tratar como áudio binário
+        responseType: "arraybuffer" // necessário para tratar áudio
       }
     );
 
+    // Forçar download do arquivo como voz.mp3
     res.setHeader("Content-Type", "audio/mpeg");
-    res.setHeader("Content-Disposition", "inline; filename=voz.mp3");
+    res.setHeader("Content-Disposition", 'attachment; filename="voz.mp3"');
     res.send(response.data);
   } catch (error) {
-    const mensagemErro =
-      error?.response?.data?.message || error?.message || "Erro desconhecido.";
-    console.error("Erro ElevenLabs:", mensagemErro);
-    res.status(500).json({ error: "Erro ao gerar áudio com ElevenLabs." });
+    // Se retornar JSON de erro (mesmo em arraybuffer), tentamos interpretar
+    const buffer = error?.response?.data;
+    let mensagem = "Erro desconhecido.";
+
+    try {
+      const json = JSON.parse(Buffer.from(buffer).toString("utf8"));
+      mensagem = json?.detail?.message || json?.message || mensagem;
+    } catch (e) {
+      mensagem = error.message;
+    }
+
+    console.error("Erro ElevenLabs:", mensagem);
+    res.status(500).json({ error: "Erro ao gerar áudio: " + mensagem });
   }
 }
-
 
 // 🎧 Rota VoiceRSS com idioma fixo pt-br e sem texto padrão
 router.get("/voicerss", (req, res) => {
