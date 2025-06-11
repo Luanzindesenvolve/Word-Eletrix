@@ -191,49 +191,37 @@ const {
 // 719 rotas 10/06/2025 18:38
 
 
-async function generateAudio(res, voice_id, text) {
-  if (!text || text.trim() === "") {
-    return res.status(400).json({ error: "Parâmetro 'text' é obrigatório." });
-  }
-
+async function generateAudio(req, res, voice_id) {
   try {
-    const response = await axios.post(
-      `${ELEVEN_API}/${voice_id}`,
-      {
-        text: text.trim(),
-        model_id: "eleven_monolingual_v1",
+    const response = await axios({
+      method: 'POST',
+      url: `https://api.elevenlabs.io/v1/text-to-speech/${voice_id}/stream`,
+      data: {
+        text: req.query.text || 'Olá, exemplo de voz.',
+        model_id: 'eleven_multilingual_v2',
         voice_settings: {
           stability: 0.5,
           similarity_boost: 0.5
         }
       },
-      {
-        headers: {
-          "xi-api-key": API_KEY,
-          "Content-Type": "application/json"
-        },
-        responseType: "arraybuffer" // necessário para tratar áudio
-      }
-    );
+      headers: {
+        'xi-api-key': API_KEY,
+        'Content-Type': 'application/json'
+      },
+      responseType: 'stream'
+    });
 
-    // Forçar download do arquivo como voz.mp3
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.setHeader("Content-Disposition", 'attachment; filename="voz.mp3"');
-    res.send(response.data);
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Content-Disposition', 'inline; filename=voz.mp3');
+
+    // 🔁 Redireciona diretamente o stream da ElevenLabs para o usuário
+    response.data.pipe(res);
+
   } catch (error) {
-    // Se retornar JSON de erro (mesmo em arraybuffer), tentamos interpretar
-    const buffer = error?.response?.data;
-    let mensagem = "Erro desconhecido.";
-
-    try {
-      const json = JSON.parse(Buffer.from(buffer).toString("utf8"));
-      mensagem = json?.detail?.message || json?.message || mensagem;
-    } catch (e) {
-      mensagem = error.message;
-    }
-
-    console.error("Erro ElevenLabs:", mensagem);
-    res.status(500).json({ error: "Erro ao gerar áudio: " + mensagem });
+    console.error('Erro ao gerar áudio:', error?.response?.data || error.message);
+    res.status(500).json({
+      error: 'Erro ao gerar áudio: ' + (error?.response?.data?.detail || error.message)
+    });
   }
 }
 
