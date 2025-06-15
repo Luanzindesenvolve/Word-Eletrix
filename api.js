@@ -38,7 +38,7 @@ const getImageBuffer = async (url) => {
         throw new Error('Erro ao buscar imagem.');
     }
 };
-const API_KEY = "sk_eac0b3cf4844b207f470de0b0cabce3af9a8df1268fe3856";
+const API_KEY = "sk_55253a1928f65a03e8c680b002b1d5bf270044112e99516c";
 const ELEVEN_API = "https://api.elevenlabs.io/v1/text-to-speech";
 
 // 🔑 VoiceRSS API Key
