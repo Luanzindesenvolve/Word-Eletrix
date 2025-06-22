@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogos Multicanais</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background: #111;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 0 10px #00ccff22;
+      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 20px #00aaff66;
+    }
+
+    .team-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .team-logos img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .game-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .game-meta {
+      font-size: 14px;
+      color: #ccc;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jogos Multicanais</h1>
+  <div class="games" id="games"></div>
+
+  <script>
+    fetch('https://world-ecletix.onrender.com/api/multicanais')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('games');
+        const jogos = data.jogos || [];
+
+        jogos.forEach(game => {
+          const slug = game.link.replace('https://multicanais.wiki/assistir/', '').replace(/\/$/, '');
+
+          const card = document.createElement('a');
+          card.href = '/api/fut/' + slug;
+          card.className = 'game-card';
+
+          card.innerHTML = `
+            <div class="team-logos">
+              <img src="${game.time1_foto}" alt="${game.time1}" />
+              <span style="font-size: 18px;">⚔️</span>
+              <img src="${game.time2_foto}" alt="${game.time2}" />
+            </div>
+            <div class="game-title">${game.time1} vs ${game.time2}</div>
+            <div class="game-meta">${game.campeonato}</div>
+            <div class="game-meta">${game.horario}</div>
+          `;
+
+          container.appendChild(card);
+        });
+      })
+      .catch(() => {
+        document.getElementById('games').innerText = 'Erro ao carregar os jogos.';
+      });
+  </script>
+</body>
+</html>
