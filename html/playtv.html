@@ -339,7 +339,7 @@ criarCategoria('Documentários', 'https://world-ecletix.onrender.com/api/guia-do
 criarCategoria('Jogos de Hoje', 'https://world-ecletix.onrender.com/api/jogosdehoje');
 
 // Carregar Jogos do Calendário
-axios.get('https://world-ecletix.onrender.com/calendario') // coloque aqui sua URL da API real
+axios.get('https://world-ecletix.onrender.com/api/calendario') // coloque aqui sua URL da API real
   .then(response => {
     if (response.data.success && Array.isArray(response.data.dias)) {
       response.data.dias.forEach(dia => {
