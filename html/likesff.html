@@ -136,42 +136,51 @@
   </div>
 
 <script>
-  function enviarLikes() {
+  async function enviarLikes() {
     const userId = document.getElementById('userId').value;
     const messageElement = document.getElementById('message');
 
-    if (!userId) {
+    if (!userId.trim()) {
       alert('Por favor, insira um ID válido!');
       return;
     }
 
-    messageElement.style.display = 'none';
+    messageElement.className = 'message';
+    messageElement.style.display = 'block';
+    messageElement.textContent = '⏳ Enviando likes, aguarde...';
 
-    fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data["ID do Jogador"]) {
-          messageElement.className = 'message success';
-          messageElement.textContent =
-            `❤️ *Informações de Likes do Jogador*\n\n` +
-            `• 🆔 ID: ${data["ID do Jogador"]}\n` +
-            `• ✨ Apelido: ${data["Apelido"]}\n` +
-            `• 🌎 Região: ${data["Região"]}\n` +
-            `• ⭐ Nível: ${data["Nível"]}\n` +
-            `• 👍 Likes Antes: ${data["Likes Antes"]}\n` +
-            `• 👍 Likes Depois: ${data["Likes Depois"]}\n` +
-            `• 🤖 Likes Enviados: ${data["Likes Enviados"]}`;
-        } else {
-          messageElement.className = 'message error';
-          messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
-        }
-        messageElement.style.display = 'block';
-      })
-      .catch(() => {
+    const startTime = Date.now(); // Início da medição de tempo
+
+    try {
+      const response = await fetch(`https://world-ecletix.onrender.com/api/likesff?id=${userId}`);
+      const data = await response.json();
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(2); // Tempo de resposta em segundos
+
+      if (data["ID do Jogador"]) {
+        const likesAntes = parseInt(data["Likes Antes"]);
+        const likesDepois = parseInt(data["Likes Depois"]);
+        const enviados = likesDepois - likesAntes;
+
+        messageElement.className = 'message success';
+        messageElement.textContent =
+          `❤️ *Informações de Likes do Jogador*\n\n` +
+          `• 🆔 ID: ${data["ID do Jogador"]}\n` +
+          `• ✨ Apelido: ${data["Apelido"]}\n` +
+          `• 🌎 Região: ${data["Região"]}\n` +
+          `• ⭐ Nível: ${data["Nível"]}\n` +
+          `• 👍 Likes Antes: ${likesAntes}\n` +
+          `• 👍 Likes Depois: ${likesDepois}\n` +
+          `• 🤖 Likes Enviados: ${enviados}\n\n` +
+          `⏱️ Tempo de resposta: ${elapsed} segundos`;
+      } else {
         messageElement.className = 'message error';
-        messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
-        messageElement.style.display = 'block';
-      });
+        messageElement.textContent = '❌ Erro ao enviar likes! Verifique o ID.';
+      }
+
+    } catch (err) {
+      messageElement.className = 'message error';
+      messageElement.textContent = '⚠️ Erro ao conectar com a API. Tente novamente mais tarde.';
+    }
   }
 </script>
   <audio autoplay loop>
