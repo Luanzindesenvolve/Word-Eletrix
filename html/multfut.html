@@ -81,7 +81,7 @@
         const jogos = data.jogos || [];
 
         jogos.forEach(game => {
-          const slug = game.link.replace('https://multicanais.cassino/assistir/', '').replace(/\/$/, '');
+          const slug = game.link.replace('https://multicanais.casino/assistir/', '').replace(/\/$/, '');
 
           const card = document.createElement('a');
           card.href = '/api/fut/' + slug;
