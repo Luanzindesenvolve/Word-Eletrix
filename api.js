@@ -15,7 +15,6 @@ const ffmpeg = require('fluent-ffmpeg');
 const cheerio = require('cheerio');
 const search = require('yt-search');
 const ytSearch = require('yt-search');
-const { createDecipheriv } = require('crypto');
 const yt = require('@distube/ytdl-core');
 const criador = 'World Ecletix';
 const { exec } = require('child_process');
