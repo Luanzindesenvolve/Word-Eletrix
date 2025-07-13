@@ -30,7 +30,7 @@ const readline = require('readline');
 const { Api } = require('telegram/tl');
 const { NewMessage, CallbackQuery } = require('telegram/events');
 const input = require('input');
-const { AI } from 'unlimited-ai';
+const { AI } = require('unlimited-ai');
 const { gpt, bing, llama, blackbox } = require('gpti'); 
 const router = express.Router();
 const getImageBuffer = async (url) => {
