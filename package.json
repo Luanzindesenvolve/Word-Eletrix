@@ -11,7 +11,7 @@
   "dependencies": {
     "express": "",
     "axios": "",
-    "node-fetch": "^2.6.11"
+    "node-fetch": "^2.6.11",
     "yt-search": "",
     "request": "",
     "node-fetch": "",
