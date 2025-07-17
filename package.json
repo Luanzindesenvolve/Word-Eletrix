@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "site com objetivos de espalhar conhecimento!",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
