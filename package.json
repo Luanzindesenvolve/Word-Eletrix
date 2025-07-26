@@ -49,6 +49,8 @@
     "fluent-ffmpeg": "",
     "morgan": "",
     "unlimited-ai": "",
-    "gpti": ""
+    "gpti": "",
+    "ws": "^8.13.0",
+    "unofficial-copilot-api": "github:000mistra000/unofficial-copilot-api"
   }
 }
