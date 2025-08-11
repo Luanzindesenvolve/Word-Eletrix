@@ -51,7 +51,6 @@
     "unlimited-ai": "",
     "gpti": "",
     "ws": "^8.13.0",
-    "puppeteer": "",
     "unofficial-copilot-api": "github:000mistra000/unofficial-copilot-api"
   }
 }
