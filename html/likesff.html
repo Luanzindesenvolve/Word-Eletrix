@@ -157,10 +157,6 @@
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(2); // Tempo de resposta em segundos
 
       if (data["ID do Jogador"]) {
-        const likesAntes = parseInt(data["Likes Antes"]);
-        const likesDepois = parseInt(data["Likes Depois"]);
-        const enviados = likesDepois - likesAntes;
-
         messageElement.className = 'message success';
         messageElement.textContent =
           `❤️ *Informações de Likes do Jogador*\n\n` +
@@ -168,9 +164,9 @@
           `• ✨ Apelido: ${data["Apelido"]}\n` +
           `• 🌎 Região: ${data["Região"]}\n` +
           `• ⭐ Nível: ${data["Nível"]}\n` +
-          `• 👍 Likes Antes: ${likesAntes}\n` +
-          `• 👍 Likes Depois: ${likesDepois}\n` +
-          `• 🤖 Likes Enviados: ${enviados}\n\n` +
+          `• 👍 Likes Antes: ${data["Likes Antes"]}\n` +
+          `• 👍 Likes Depois: ${data["Likes Depois"]}\n` +
+          `• 🤖 Likes Enviados: ${data["Likes Enviados"]}\n\n` +
           `⏱️ Tempo de resposta: ${elapsed} segundos`;
       } else {
         messageElement.className = 'message error';
