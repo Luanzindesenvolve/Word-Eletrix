@@ -36,6 +36,7 @@ const { NewMessage, CallbackQuery } = require('telegram/events');
 const input = require('input');
 const { AI } = require('unlimited-ai');
 const { gpt, bing, llama, blackbox } = require('gpti'); 
+const ai = require('./ais');
 const router = express.Router();
 const getImageBuffer = async (url) => {
     try {
@@ -12165,7 +12166,7 @@ router.get('/pin/video', (req, res) => {
 
 const apiId = 21844566;
 const apiHash = 'ff82e94bfed22534a083c3aee236761a';
-const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu5VEuI6lsCe4mblYfXBTE2E3Dhmucj88wlcRRWcwUBygj63HFHIb+G5hM82QgC47dO7FpQoOjlajnBmAhUIw9qYN+o2MgL10pthcxX7Dfv+4Bj2U5Gar9/lkOjvWKhRm5Aj9Lw8acwaymYzvPc8cyrso6INDWQ6P5UY0kVP66L81ZeMKxaiYKXBNbBgWatN6H6G+w3efXuuER25ooo0Tt5EeN240haR9BZ3sUYo7c3hkqYruwUNrPdPNJ6KecInqvAgh+3MOOGMkJem3FgZiDAmo/1xnNkMlnvilJdL3f67OpRiulqPi4r+FOn9QvpJjHfY3u2ys9ix1FIPef6bjfnE=');
+const stringSession = new StringSession('1AQAOMTQ5LjE1NC4xNzUuNTcBu0QJWMl2hRf3TFkA53EaMv+cUFUxpbayE84zfhmlFj7Nea2zpuuiA8NK6I2qDFOkxc8JUusf2dd0ecciY++MRVZiIbdrnzxaP/3p867y+BRUTuTfTaAmjsANJ7+sgknaOLvtFQbklBYEyLXvqOzOiLQ2XUv1S1hbovWaNSxf1alqHiQswN+Cq1SiRBH6bwtEoiFXYWcYoR109WCvBvb7Z8TSPUqE1L2Njsh/Q4daNbn9e2casVOoWDGVSSGgdSdYRh0eCYHpCWWos0IBMNyI2r474Xjflc0Th6aj3P9ksuOZmxj+IdFn92L4w1tg4+T9bOGNENTUhHoFmO/hxjidO+A=');
 const grupoChatId = -1002208588695;
 
 const rl = readline.createInterface({
