@@ -50,6 +50,7 @@
     "unlimited-ai": "",
     "gpti": "",
     "ws": "^8.13.0",
+    "uuid": "^9.0.0",
     "puppeteer-core": "^24.16.1",
     "@sparticuz/chromium": "^123.0.0",
     "unofficial-copilot-api": "github:000mistra000/unofficial-copilot-api"
