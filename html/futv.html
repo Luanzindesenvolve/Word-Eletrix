@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futebol TV - Jogos Ao Vivo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: url('https://files.catbox.moe/g5d7qf.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 32px;
+      text-shadow: 2px 2px 5px #000;
+    }
+    #search-input {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #000;
+      cursor: pointer;
+      transition: transform 0.2s;
+      padding: 10px;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .teams {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .team {
+      text-align: center;
+      width: 40%;
+    }
+    .team img {
+      width: 100%;
+      max-width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    .versus {
+      width: 20%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .championship {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .hour-match {
+      text-align: center;
+      font-weight: bold;
+      padding: 5px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+    /* Modal */
+    .players-modal {
+      position: fixed;
+      top:0; left:0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 9999;
+    }
+    .players-modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    #btns-modal button {
+      margin: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background: #ff0000;
+      color: white;
+      font-weight: bold;
+    }
+    #close-modal {
+      position: absolute;
+      top: 10px; right: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Futebol TV - Jogos Ao Vivo</h1>
+  <input type="text" id="search-input" placeholder="Buscar por time...">
+  <div class="grid" id="games"></div>
+
+  <!-- Modal -->
+  <div class="players-modal" id="modal">
+    <div class="modal-content">
+      <span id="close-modal"><i class="fas fa-times"></i></span>
+      <iframe id="screen-modal" src=""></iframe>
+      <div id="btns-modal"></div>
+    </div>
+  </div>
+
+  <script>
+    const ChannelConfig = (() => {
+      const channels = [
+  {channel:"espn",links:["https://www.embedtv.net/embed/espn","https://sporturbo.com/player/canais/dspl-espn","https://sporturbo.com/player/canais/wcbr-espn","https://embedcanais.com/espn/","https://rdcanais.top/espn","https://embedtv-4.icu/espn","https://nossoplayeronlinehd.org/tv/espn","https://embedflix.live/tv/player.php?id=espn","https://playertv.net/e/?v=espn","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn"]},
+  {channel:"espn 2",links:["https://www.embedtv.net/embed/espn-2","https://sporturbo.com/player/canais/dspl-espn2","https://sporturbo.com/player/multi/espn2sd","https://embedcanais.com/espn2/","https://rdcanais.top/espn2","https://embedtv-4.icu/espn2","https://nossoplayeronlinehd.org/tv/espn2","https://embedflix.live/tv/player.php?id=espn-2","https://playertv.net/e/?v=espn2","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn2"]},
+  {channel:"espn 3",links:["https://www.embedtv.net/embed/espn-3","https://sporturbo.com/player/multi/espn3hd","https://sporturbo.com/player/multi/espn3sd","https://embedcanais.com/espn3/","https://rdcanais.top/espn3","https://embedtv-4.icu/espn3","https://nossoplayeronlinehd.org/tv/espn3","https://embedflix.live/tv/player.php?id=espn-3","https://playertv.net/e/?v=espn3","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn3"]},
+  {channel:"espn 4",links:["https://www.embedtv.net/embed/espn-4","https://sporturbo.com/player/canais/dspl-espn4","https://sporturbo.com/player/canais/wcbr-espn4","https://embedcanais.com/espn4/","https://rdcanais.top/espn4","https://embedtv-4.icu/espn4","https://nossoplayeronlinehd.org/tv/espn4","https://embedflix.live/tv/player.php?id=espn-4","https://playertv.net/e/?v=espn4","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn4"]},
+  {channel:"espn 5",links:["https://www.embedtv.net/embed/espn-5","https://sporturbo.com/player/multi/espn5hd","https://sporturbo.com/player/multi/espn5sd","https://embedcanais.com/espn5/","https://rdcanais.top/espn5","https://embedtv-4.icu/espn5","https://nossoplayeronlinehd.org/tv/espn5","https://embedflix.live/tv/player.php?id=espn-5","https://playertv.net/e/?v=espn5","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn5"]},
+  {channel:"espn 6",links:["https://www.embedtv.net/embed/espn-6","https://sporturbo.com/player/multi/espn6hd","https://sporturbo.com/player/multi/espn6sd","https://embedcanais.com/espn6/","https://rdcanais.top/espn6","https://embedtv-4.icu/espn6","https://nossoplayeronlinehd.org/tv/espn6","https://embedflix.live/tv/player.php?id=espn-6","https://playertv.net/e/?v=espn6","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=espn6"]},
+  {channel:"XSPORTS",links:["https://nossoplayeronlinehd.org/tv/xsports","https://www.embedtv.net/embed/xsports","https://embedcanais.com/xsports/","https://rdcanais.top/xsports"]},
+  {channel:"sportv",links:["http://la14hd.com/vivo/canales.php?stream=sportv","https://www.embedtv.net/embed/sportv","https://sporturbo.com/player/canais/ampv-sportv","https://sporturbo.com/player/canais/wcbr-sportv","https://embedcanais.com/sportv/","https://rdcanais.top/sportv","https://embedtv-4.icu/sportv","https://nossoplayeronlinehd.org/tv/sportv","https://embedflix.live/tv/player.php?id=sportv","https://playertv.net/e/?v=sportv","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=sportv1"]},
+  {channel:"sportv 2",links:["https://www.embedtv.net/embed/sportv-2","https://sporturbo.com/player/canais/ampv-sportv2","https://sporturbo.com/player/canais/wcbr-sportv2","https://embedcanais.com/sportv2/","https://rdcanais.top/sportv2","https://embedtv-4.icu/sportv2","https://nossoplayeronlinehd.org/tv/sportv2","https://embedflix.live/tv/player.php?id=sportv-2","https://playertv.net/e/?v=sportv2","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=sportv2"]},
+  {channel:"sportv 3",links:["https://www.embedtv.net/embed/sportv-3","https://sporturbo.com/player/multi/sportv3hd","https://sporturbo.com/player/multi/sportv3sd","https://embedcanais.com/sportv3/","https://rdcanais.top/sportv3","https://embedtv-4.icu/sportv3","https://nossoplayeronlinehd.org/tv/sportv3","https://embedflix.live/tv/player.php?id=sportv-3","https://playertv.net/e/?v=sportv3","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=sportv3"]},
+  {channel:"premiere clubes",links:["https://la14hd.com/vivo/canales.php?stream=premiere1","https://www.embedtv.net/embed/premiere-3","https://embedcanais.com/premiereclubes/","https://rdcanais.top/premiereclubes","https://embedtv-4.icu/premiere","https://nossoplayeronlinehd.org/tv/premiere","https://embedflix.live/tv/prfc-1-hd","https://playertv.net/premiere/","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiereclubes"]},
+  {channel:"premiere",links:["https://la14hd.com/vivo/canales.php?stream=premiere1","https://www.embedtv.net/embed/premiere-3","https://embedcanais.com/premiereclubes/","https://rdcanais.top/premiereclubes","https://embedtv-4.icu/premiere","https://nossoplayeronlinehd.org/tv/premiere","https://embedflix.live/tv/player.php?id=premiere","https://playertv.net/premiere/","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiereclubes"]},
+  {channel:"premiere fc",links:["https://la14hd.com/vivo/canales.php?stream=premiere1","https://www.embedtv.net/embed/premiere-3","https://embedcanais.com/premiereclubes/","https://rdcanais.top/premiereclubes","https://embedtv-4.icu/premiere","https://nossoplayeronlinehd.org/tv/premiere","https://embedflix.live/tv/player.php?id=premiere","https://playertv.net/premiere/","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiereclubes"]},
+  {channel:"premiere 2",links:["https://la14hd.com/vivo/canales.php?stream=premiere2","https://www.embedtv.net/embed/premiere-2","https://embedcanais.com/premiere2/","https://rdcanais.top/premiere2","https://embedtv-4.icu/premiere2","https://nossoplayeronlinehd.org/tv/premiere2","https://embedflix.live/tv/player.php?id=premiere-2","https://playertv.net/e/?v=premiere2","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiere2"]},
+  {channel:"premiere 3",links:["https://la14hd.com/vivo/canales.php?stream=premiere3","https://www.embedtv.net/embed/premiere-3","https://embedcanais.com/premiere3/","https://rdcanais.top/premiere3","https://embedtv-4.icu/premiere3","https://nossoplayeronlinehd.org/tv/premiere3","https://embedflix.live/tv/player.php?id=premiere-3","https://playertv.net/e/?v=premiere3","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiere3"]},
+  {channel:"premiere 4",links:["https://la14hd.com/vivo/canales.php?stream=premiere4","https://embedcanais.com/premiere4/","https://rdcanais.top/premiere4","https://www.embedtv.net/embed/premiere-4","https://embedtv-4.icu/premiere4","https://nossoplayeronlinehd.org/tv/premiere4","https://embedflix.live/tv/player.php?id=premiere-4","https://playertv.net/e/?v=premiere4","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=premiere4"]},
+  {channel:"bandsports",links:["https://www.embedtv.net/embed/band-sports","https://sporturbo.com/player/multi/bandsportssd","https://sporturbo.com/player/multi/bandsportshd","https://embedcanais.com/bandsports/","https://rdcanais.top/bandsports","https://embedtv-4.icu/bandsports","https://nossoplayeronlinehd.org/tv/bandsports","https://embedflix.live/tv/player.php?id=band-sports","https://playertv.net/e/?v=bandSports","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=bandsports"]},
+  {channel:"Paramount+",links:["https://www.embedtv.net/embed/paramount","https://nossoplayeronlinehd.org/tv/paramountplus","https://embedtv-4.icu/paramountplus","https://embedtv-4.icu/paramountplus2","https://embedcanais.com/paramountplus/","https://playertv.net/e/?v=paramount1","https://playertv.net/e/?v=paramount2","https://playertv.net/e/?v=paramount3","https://playertv.net/e/?v=paramount4","https://rdcanais.top/paramountplus3","https://rdcanais.top/paramountplus4","https://embedflix.live/tv/player.php?id=paramount-1"]},
+  {channel:"combate",links:["https://sporturbo.com/player/multi/combatesd","https://sporturbo.com/player/multi/combatehd","https://embedcanais.com/combate/","https://rdcanais.top/combate","https://embedtv-4.icu/combate","https://nossoplayeronlinehd.org/tv/combate","https://embedflix.live/tv/player.php?id=combate","https://playertv.net/e/?v=combate"]},
+  {channel:"Cazé TV",links:["https://www.embedtv.net/embed/caze-tv","https://embedcanais.com/cazetv/","https://rdcanais.top/cazetv","https://embedtv-4.icu/caze1","https://nossoplayeronlinehd.org/tv/caze1","https://playertv.net/e/?v=caze1","https://embedflix.live/tv/player.php?id=caze-tv-1","https://www.embedtv.net/embed/caze-tv-2","https://rdcanais.top/cazetv2","https://embedtv-4.icu/caze2","https://nossoplayeronlinehd.org/tv/caze2","https://playertv.net/e/?v=caze2","https://embedflix.live/tv/player.php?id=caze-tv-2","https://www.embedtv.net/embed/caze-tv-2","https://rdcanais.top/cazetv3","https://embedtv-4.icu/caze3","https://nossoplayeronlinehd.org/tv/caze3","https://playertv.net/e/?v=caze3"]},
+  {channel:"Canal Goat",links:["https://www.embedtv.net/embed/canal-goat","https://nossoplayeronlinehd.org/tv/goat1","https://embedtv-4.icu/goat1","https://www.embedtv.net/embed/canal-goat-2","https://nossoplayeronlinehd.org/tv/goat2","https://embedtv-4.icu/goat2","https://nossoplayeronlinehd.org/tv/goat3","https://embedtv-4.icu/goat3"]},
+  {channel:"Prime Video",links:["https://rdcanais.top/primevideo","https://www.embedtv.net/embed/amazon-prime-video","https://nossoplayeronlinehd.org/tv/primevideo","https://embedtv-4.icu/primevideo","https://playertv.net/e/?v=prime","https://embedcanais.com/amazonprimevideo/","https://embedflix.live/tv/player.php?id=prime-video-1","https://rdcanais.top/primevideo2","https://www.embedtv.net/embed/amazon-prime-video-2","https://nossoplayeronlinehd.org/tv/primevideo2","https://embedtv-4.icu/primevideo2","https://playertv.net/e/?v=primeAlt","https://embedflix.live/tv/player.php?id=prime-video-2"]},
+  {channel:"TNT",links:["https://sporturbo.com/player/multi/tnthd","https://sporturbo.com/player/multi/tntsd","https://embedcanais.com/tnt/","https://rdcanais.top/tnt","https://embedtv-4.icu/tnt","https://nossoplayeronlinehd.org/tv/tnt","https://embedflix.live/tv/player.php?id=tnt","https://playertv.net/e/?v=tnt","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=tnt"]},
+  {channel:"Disney+ Premium",links:["https://www.embedtv.net/embed/disney-plus-eventos","https://nossoplayeronlinehd.org/tv/disneyplus1","https://embedcanais.com/disneyplus/","https://sporturbo.com/player/canais/dspl1","https://embedtv-4.icu/disneyplus1","https://nossoplayeronlinehd.org/tv/disneyplus2","https://embedtv-4.icu/disneyplus2","https://nossoplayeronlinehd.org/tv/disneyplus3"]},
+  {channel:"Disney+",links:["https://www.embedtv.net/embed/disney-plus-eventos","https://nossoplayeronlinehd.org/tv/disneyplus1","https://embedcanais.com/disneyplus/","https://embedtv-4.icu/disneyplus1","https://nossoplayeronlinehd.org/tv/disneyplus2","https://embedtv-4.icu/disneyplus2","https://nossoplayeronlinehd.org/tv/disneyplus3"]},
+  {channel:"sbt",links:["https://nossoplayeronlinehd.org/tv/sbt","https://rdcanais.top/sbt","https://sporturbo.com/player/multi/sbtsd","https://embedtv-4.icu/sbt","https://sporturbo.com/player/multi/sbthd","https://embedflix.live/tv/player.php?id=sbt","https://playertv.net/e/?v=sbt"]},
+  {channel:"Globo SP",links:["https://www.embedtv.net/embed/globo-sp","https://sporturbo.com/player/multi/globosphd","https://embedcanais.com/globosp/","https://rdcanais.top/globosp","https://embedtv-4.icu/globosp","https://nossoplayeronlinehd.org/tv/globosp","https://embedflix.live/tv/player.php?id=globo-sp","https://playertv.net/e/?v=globoSP","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=bobosp"]},
+  {channel:"Globo RJ",links:["https://www.embedtv.net/embed/globo-rj","https://sporturbo.com/player/multi/globorjsd","https://embedcanais.com/globorj/","https://rdcanais.top/globorj","https://embedtv-4.icu/globorj","https://nossoplayeronlinehd.org/tv/globo_rj","https://embedflix.live/tv/player.php?id=globo-rj","https://playertv.net/e/?v=globoRJ","https://%72%65%64%65%63%61%6E%61%69%73%74%76%2E%73%68/player3/ch.php?canal=boborj"]},
+  {channel:"Globo MG",links:["https://embedcanais.com/globomg/","https://rdcanais.top/globomg","https://nossoplayeronlinehd.org/tv/globomg","https://embedflix.live/tv/player.php?id=globo-mg","https://playertv.net/e/?v=globoMG"]},
+  {channel:"record",links:["https://sporturbo.com/player/multi/recordsd","https://sporturbo.com/player/multi/recordhd","https://embedcanais.com/recordsp/","https://rdcanais.top/record","https://embedtv-4.icu/record","https://nossoplayeronlinehd.org/tv/record","https://embedflix.live/tv/player.php?id=record-tv","https://playertv.net/e/?v=recordSP"]},
+  {channel:"Band",links:["https://sporturbo.com/player/multi/bandsd","https://sporturbo.com/player/multi/bandhd","https://embedcanais.com/bandsp/","https://rdcanais.top/band","https://embedtv-4.icu/band","https://nossoplayeronlinehd.org/tv/band","https://embedflix.live/tv/player.php?id=band","https://playertv.net/e/?v=band"]},
+  {channel:"UFC Fight Pass",links:["https://embedcanais.com/ufcfightpass/","https://rdcanais.top/ufcfightpass","https://embedtv-4.icu/ufcfightpass","https://nossoplayeronlinehd.org/tv/ufcfightpass","https://embedflix.live/tv/player.php?id=ufc-fight-pass"]},
+  {channel:"redetv!",links:["https://embedcanais.com/redetv/","https://rdcanais.top/redetv","https://nossoplayeronlinehd.org/tv/redetv","https://embedflix.live/tv/player.php?id=rede-tv","https://playertv.net/e/?v=redetv"]},
+  {channel:"tv brasil",links:["https://rdcanais.top/tvbrasil","https://embedmax.site/tvl/tvbrasil.php"]}
+];
+      const normalize = (str) => str.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+      return {
+        findChannelLinks: (name) => {
+          const c = channels.find(ch => normalize(ch.channel) === normalize(name));
+          return c ? c.links : [];
+        }
+      }
+    })();
+
+    const GamesManager = (() => {
+      let games = [];
+      const updateStatus = () => {
+        const now = new Date();
+        document.querySelectorAll(".hour-match span").forEach(span => {
+          const time = span.dataset.time;
+          if(!time) return;
+          const [h,m] = time.split(":").map(Number);
+          const start = new Date();
+          start.setHours(h, m, 0, 0);
+          const end = new Date(start.getTime() + 2*60*60*1000);
+          if(now >= start && now <= end) {
+            span.innerText = "AO VIVO";
+            span.style.backgroundColor = "#FF0000";
+          } else if(now > end) {
+            span.innerText = "ENCERRADO";
+            span.style.backgroundColor = "#000";
+          } else {
+            span.innerText = time;
+            span.style.backgroundColor = "";
+          }
+        });
+      }
+
+      const openModal = (channels) => {
+        const modal = document.getElementById("modal");
+        const iframe = document.getElementById("screen-modal");
+        const btns = document.getElementById("btns-modal");
+        btns.innerHTML = "";
+        let count = 0;
+        channels.forEach(ch => {
+          ChannelConfig.findChannelLinks(ch).forEach(link => {
+            count++;
+            const btn = document.createElement("button");
+            btn.value = link;
+            btn.innerText = "Opção " + count;
+            btn.onclick = () => iframe.src = link;
+            btns.appendChild(btn);
+          });
+        });
+        if(btns.firstChild) iframe.src = btns.firstChild.value;
+        modal.classList.add("active");
+      }
+
+      const closeModal = () => {
+        const modal = document.getElementById("modal");
+        const iframe = document.getElementById("screen-modal");
+        iframe.src = "";
+        modal.classList.remove("active");
+      }
+
+      const init = async () => {
+        try {
+          const res = await fetch("https://world-ecletix.onrender.com/api/futeproxy");
+          games = await res.json();
+          const container = document.getElementById("games");
+          container.innerHTML = "";
+
+          games.reverse().forEach(game => {
+            if(game.team1.name === "Desconhecido" || game.channels[0]==="Nenhum canal disponível") return;
+            if(!game.channels.some(ch => ChannelConfig.findChannelLinks(ch).length>0)) return;
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            const hour = document.createElement("div");
+            hour.className = "hour-match";
+            const span = document.createElement("span");
+            span.dataset.time = game.time;
+            span.innerText = game.time;
+            hour.appendChild(span);
+
+            const teams = document.createElement("div");
+            teams.className = "teams";
+
+            const createTeam = (t) => {
+              const div = document.createElement("div");
+              div.className = "team";
+              const img = document.createElement("img");
+              img.src = "https://jogosdehoje.live" + t.logo;
+              img.alt = t.name;
+              const caption = document.createElement("div");
+              caption.innerText = t.name;
+              div.appendChild(img);
+              div.appendChild(caption);
+              return div;
+            }
+
+            const versus = document.createElement("div");
+            versus.className = "versus";
+            versus.innerText = "X";
+
+            teams.appendChild(createTeam(game.team1));
+            teams.appendChild(versus);
+            teams.appendChild(createTeam(game.team2));
+
+            const championship = document.createElement("div");
+            championship.className = "championship";
+            championship.innerText = game.championship;
+
+            card.appendChild(hour);
+            card.appendChild(teams);
+            card.appendChild(championship);
+
+            card.onclick = () => openModal(game.channels);
+
+            container.appendChild(card);
+          });
+
+          setInterval(updateStatus, 60000);
+
+          // Busca
+          const search = document.getElementById("search-input");
+          search.addEventListener("input", () => {
+            const val = search.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+            document.querySelectorAll(".card").forEach(card => {
+              const t1 = card.querySelector(".team:first-child div").innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+              const t2 = card.querySelector(".team:last-child div").innerText.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+              card.style.display = (t1.includes(val) || t2.includes(val)) ? "" : "none";
+            });
+          });
+
+          // Modal close
+          document.getElementById("close-modal").onclick = closeModal;
+          document.getElementById("modal").onclick = (e) => {
+            if(e.target.id === "modal") closeModal();
+          }
+
+          updateStatus();
+        } catch(err) {
+          console.error("Erro ao carregar jogos:", err);
+          document.getElementById("games").innerHTML = "<p>Erro ao carregar os jogos.</p>";
+        }
+      }
+
+      return { init };
+    })();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      GamesManager.init();
+    });
+  </script>
+</body>
+</html>
