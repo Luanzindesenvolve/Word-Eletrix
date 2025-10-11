@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Pro</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+:root {
+    --primary: #5865F2;
+    --background: #1E1F22;
+    --surface: #2B2D31;
+    --surface-light: #383A40;
+    --text-primary: #DBDEE1;
+    --text-secondary: #A3A6AA;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    height: calc(var(--vh, 1vh) * 100);
+    background-image: url('https://files.catbox.moe/u98wg9.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#header {
+    background-color: var(--surface);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+#model-select {
+    background: var(--surface-light);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    animation: messageIn 0.15s ease-out;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: var(--primary);
+    color: white;
+}
+
+.assistant-message {
+    align-self: flex-start;
+    background-color: var(--surface);
+    position: relative;
+}
+
+.loading-dots {
+    display: inline-block;
+    width: 18px;
+}
+.loading-dots span {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    margin: 0 2px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    animation: loading 1s infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loading {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+#input-container {
+    padding: 12px;
+    background-color: var(--surface);
+    border-top: 1px solid rgba(0,0,0,0.2);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#user-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: var(--surface-light);
+    outline: none;
+    color: var(--text-primary);
+    min-height: 40px;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+#user-input[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: var(--text-secondary);
+}
+
+#send-button {
+    background: var(--primary);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes messageIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+    <label for="model-select">Modelo:</label>
+    <select id="model-select">
+        <option value="claude/sonnet-4">Claude Sonnet 4</option>
+        <option value="gpt/3.5-turbo">GPT 3.5 turbo</option>
+        <option value="gpt/4.1">GPT 4.1</option>
+        <option value="gpt/4o">GPT 4o</option>
+        <option value="gpt/5">GPT 5</option>
+        <option value="ai4chat">AI 4 chat</option>
+        <option value="ripleai">Ripleai</option>
+        <option value="aoyoai">Aoyoai</option>
+        <option value="copilot">copilot</option>
+        <option value="cf/zephyr-7b">zephyr-7b</option>
+        <option value="cf/openhermes-2.5">GPT 4.1</option>
+        <option value="gpt/4.1">openhermes-2.5</option>
+        <option value="cf/mistral-small-3.1-24b">mistral-small-3.1-24b</option>
+        <option value="cf/neural-chat-7b">neural-chat-7b</option>
+        <option value="cf/openchat-3.5">openchat-3.5</option>
+        <option value="cf/llama-4-scout-17b">Llama 17B</option>
+        <option value="cf/deepseek-r1">DeepSeek R1</option>
+    </select>
+</div>
+
+<div id="chat-container"></div>
+
+<div id="input-container">
+    <div id="user-input" contenteditable="true" placeholder="Digite sua mensagem..."></div>
+    <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+</div>
+
+<script>
+const chatContainer = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+const modelSelect = document.getElementById('model-select');
+
+function addMessage(content, type='user') {
+    const message = document.createElement('div');
+    message.classList.add('message', type === 'user' ? 'user-message' : 'assistant-message');
+    message.innerHTML = content;
+    chatContainer.appendChild(message);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return message;
+}
+
+async function sendMessage() {
+    const text = userInput.innerText.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    userInput.innerText = '';
+    sendButton.disabled = true;
+
+    const loadingMessage = addMessage('<div class="loading-dots"><span></span><span></span><span></span></div>', 'assistant');
+
+    const model = modelSelect.value;
+    const url = `/api/ai/${model}?text=${encodeURIComponent(text)}`;
+
+    try {
+    const res = await fetch(url);
+    const data = await res.json();
+    loadingMessage.remove();
+
+    const replyText = data.result?.text || data.result || data.text;
+
+    if (replyText) {
+        addMessage(replyText, 'assistant');
+    } else {
+        addMessage('Erro: resposta inválida da API.', 'assistant');
+    }
+} catch (err) {
+    loadingMessage.remove();
+    console.error(err);
+    addMessage('Erro ao se comunicar com o servidor.', 'assistant');
+}
+
+sendButton.disabled = false;
+}
+
+sendButton.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// Ajuste altura para mobile
+function adjustViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+window.addEventListener('resize', adjustViewportHeight);
+window.addEventListener('load', adjustViewportHeight);
+</script>
+
+</body>
+</html>
