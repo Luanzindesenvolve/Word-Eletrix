@@ -5292,8 +5292,8 @@ router.get('/ia2', async (req, res) => {
   }
 });
 
-router.get("/ai/:model*", async (req, res) => {
-  const model = req.params.model; // exemplo: "gpt/5"
+router.get(/^\/ai\/(.+)/, async (req, res) => {
+  const model = req.params[0]; // Exemplo: "gpt/5"
   const text = req.query.text || "";
 
   try {
