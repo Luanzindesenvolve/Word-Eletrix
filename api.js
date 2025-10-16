@@ -14541,64 +14541,48 @@ router.get('/spamff', async (req, res) => {
     if (!res.headersSent) res.json({ status: false, resultado: 'Erro interno do servidor.' });
   }
 });
-
-
-// ======== /spamconvite ========
 router.get('/spamconvite', async (req, res) => {
-  try {
-    const id = req.query.id;
-    if (!id) return res.json({ status: false, resultado: 'Cadê o parâmetro id?' });
+try {
+const id = req.query.id;
+if (!id) return res.json({ status: false, resultado: 'Cadê o parâmetro id?' });
 
-    console.log(`[SPAM CONVITE]: ID = ${id}`);
-    await client.sendMessage(grupoChatId, { message: `/spamvip ${id}` });
+console.log(`[SPAM CONVITE]: ID = ${id}`);  
+await client.sendMessage(grupoChatId, { message: `/spamvip ${id}` });  
 
-    const handleResponse = new Promise((resolve, reject) => {
-      let mensagemCount = 0;
-      let segundaMensagem = null;
+const handleResponse = new Promise((resolve, reject) => {  
+  let primeiraMensagem = null;  
 
-      const eventHandler = async (event) => {
-        const message = event.message?.message;
-        if (!message) return;
+  const eventHandler = async (event) => {  
+    const message = event.message?.message;  
+    if (!message) return;  
+    console.log('Nova mensagem recebida:', message);  
 
-        console.log('📩 Nova mensagem recebida:', message);
-        mensagemCount++;
+    if (!primeiraMensagem) {  
+      primeiraMensagem = message;  
+      client.removeEventHandler(eventHandler);  
+      resolve({ status: true, resultado: primeiraMensagem });  
+    }  
+  };  
 
-        if (mensagemCount === 2) {
-          segundaMensagem = message;
-          client.removeEventHandler(eventHandler);
-          resolve({
-            status: true,
-            tipo: 'spamconvite',
-            resultado: segundaMensagem
-          });
-        }
-      };
+  client.addEventHandler(eventHandler, new NewMessage({}));  
 
-      client.addEventHandler(eventHandler, new NewMessage({}));
+  setTimeout(() => {  
+    client.removeEventHandler(eventHandler);  
+    reject({ status: false, resultado: 'Tempo de espera esgotado' });  
+  }, 30000);  
+});  
 
-      setTimeout(() => {
-        client.removeEventHandler(eventHandler);
-        if (!segundaMensagem) {
-          reject({
-            status: false,
-            resultado: '⏰ Tempo de espera esgotado (30s)'
-          });
-        }
-      }, 30000);
-    });
+const resultado = await handleResponse;  
+return res.json(resultado);
 
-    const resultado = await handleResponse;
-    return res.json(resultado);
-
-  } catch (err) {
-    console.error('❌ Erro na rota /spamconvite:', err);
-    if (!res.headersSent)
-      res.json({ status: false, resultado: 'Erro interno do servidor.' });
-  }
+} catch (err) {
+console.error('Erro na rota /spamconvite:', err);
+if (!res.headersSent) res.json({ status: false, resultado: 'Erro interno do servidor.' });
+}
 });
 
-
 // ======== /spamsala ========
+
 router.get('/spamsala', async (req, res) => {
   try {
     const uid = req.query.uid;
@@ -14608,51 +14592,38 @@ router.get('/spamsala', async (req, res) => {
       return res.json({ status: false, resultado: 'Cadê os parâmetros uid e senha?' });
 
     console.log(`[SPAM SALA]: UID = ${uid}, Senha = ${senha}`);
-    await client.sendMessage(grupoChatId, { message: `/spamsala ${uid} ${senha}` });
+    await client.sendMessage(grupoChatId, { message: `/spamsala ${uid} ${senha}` });  
 
-    const handleResponse = new Promise((resolve, reject) => {
-      let mensagemCount = 0;
-      let segundaMensagem = null;
+const handleResponse = new Promise((resolve, reject) => {  
+  let primeiraMensagem = null;  
 
-      const eventHandler = async (event) => {
-        const message = event.message?.message;
-        if (!message) return;
+  const eventHandler = async (event) => {  
+    const message = event.message?.message;  
+    if (!message) return;  
+    console.log('Nova mensagem recebida:', message);  
 
-        console.log('📩 Nova mensagem recebida:', message);
-        mensagemCount++;
+    if (!primeiraMensagem) {  
+      primeiraMensagem = message;  
+      client.removeEventHandler(eventHandler);  
+      resolve({ status: true, resultado: primeiraMensagem });  
+    }  
+  };  
 
-        if (mensagemCount === 2) {
-          segundaMensagem = message;
-          client.removeEventHandler(eventHandler);
-          resolve({
-            status: true,
-            tipo: 'spamsala',
-            resultado: segundaMensagem
-          });
-        }
-      };
+  client.addEventHandler(eventHandler, new NewMessage({}));  
 
-      client.addEventHandler(eventHandler, new NewMessage({}));
+  setTimeout(() => {  
+    client.removeEventHandler(eventHandler);  
+    reject({ status: false, resultado: 'Tempo de espera esgotado' });  
+  }, 30000);  
+});  
 
-      setTimeout(() => {
-        client.removeEventHandler(eventHandler);
-        if (!segundaMensagem) {
-          reject({
-            status: false,
-            resultado: '⏰ Tempo de espera esgotado (30s)'
-          });
-        }
-      }, 30000);
-    });
+const resultado = await handleResponse;  
+return res.json(resultado);
 
-    const resultado = await handleResponse;
-    return res.json(resultado);
-
-  } catch (err) {
-    console.error('❌ Erro na rota /spamsala:', err);
-    if (!res.headersSent)
-      res.json({ status: false, resultado: 'Erro interno do servidor.' });
-  }
+} catch (err) {
+console.error('Erro na rota /spamsala:', err);
+if (!res.headersSent) res.json({ status: false, resultado: 'Erro interno do servidor.' });
+}
 });
 
 
