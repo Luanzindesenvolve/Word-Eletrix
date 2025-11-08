@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World TV - Canais e Eventos ao Vivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 18px 60px 18px 24px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 1.5rem;
+            pointer-events: none;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            color: #667eea;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .channel-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #f0f0f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .channel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .channel-logo {
+            width: 100%;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background: #f5f5f5;
+        }
+
+        .channel-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .channel-category {
+            font-size: 0.9rem;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 5px 12px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 1200px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .player-container {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+
+        .player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .filters {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1800px;
+            }
+
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📺 World TV</h1>
+            <p>Assista seus canais favoritos ao vivo</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="Pesquisar canais...">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="filters" id="filters"></div>
+
+        <div id="categoriesContainer"></div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div class="player-container" id="playerContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        const allChannels = {"Esportes": [{"nome": "Amazon Prime Video", "url": "https://embedcanais.com/amazonprimevideo", "img": "https://embedcanais.com/images/amazonprimevideo.png"}, {"nome": "Band Sports", "url": "https://embedcanais.com/bandsports", "img": "https://embedcanais.com/images/bandsports.png"}, {"nome": "Canal Off", "url": "https://embedcanais.com/canaloff", "img": "https://embedcanais.com/images/canaloff.png"}, {"nome": "CazéTV", "url": "https://embedcanais.com/cazetv", "img": "https://embedcanais.com/images/cazetv.png"}, {"nome": "Combate", "url": "https://embedcanais.com/combate", "img": "https://embedcanais.com/images/combate.png"}, {"nome": "DAZN", "url": "https://embedcanais.com/dazn", "img": "https://embedcanais.com/images/dazn.png"}, {"nome": "Disney+", "url": "https://embedcanais.com/disneyplus", "img": "https://embedcanais.com/images/disneyplus.png"}, {"nome": "ESPN", "url": "https://embedcanais.com/espn", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "ESPN 2", "url": "https://embedcanais.com/espn2", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "ESPN 3", "url": "https://embedcanais.com/espn3", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "ESPN 4", "url": "https://embedcanais.com/espn4", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "ESPN 5", "url": "https://embedcanais.com/espn5", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "ESPN 6", "url": "https://embedcanais.com/espn6", "img": "https://embedcanais.com/images/espn.png"}, {"nome": "Max", "url": "https://embedcanais.com/max", "img": "https://embedcanais.com/images/max.png"}, {"nome": "Nosso Futebol", "url": "https://embedcanais.com/nossofutebol", "img": "https://embedcanais.com/images/nossofutebol.png"}, {"nome": "N Sports", "url": "https://embedcanais.com/nsports", "img": "https://embedcanais.com/images/nsports.png"}, {"nome": "Paramount +", "url": "https://embedcanais.com/paramountplus", "img": "https://embedcanais.com/images/paramountplus.png"}, {"nome": "Premiere Clubes", "url": "https://embedcanais.com/premiereclubes", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 2", "url": "https://embedcanais.com/premiere2", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 3", "url": "https://embedcanais.com/premiere3", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 4", "url": "https://embedcanais.com/premiere4", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 5", "url": "https://embedcanais.com/premiere5", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 6", "url": "https://embedcanais.com/premiere6", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 7", "url": "https://embedcanais.com/premiere7", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "Premiere 8", "url": "https://embedcanais.com/premiere8", "img": "https://embedcanais.com/images/premiere.png"}, {"nome": "SporTV", "url": "https://embedcanais.com/sportv", "img": "https://embedcanais.com/images/sportv.png"}, {"nome": "SporTV 2", "url": "https://embedcanais.com/sportv2", "img": "https://embedcanais.com/images/sportv2.png"}, {"nome": "SporTV 3", "url": "https://embedcanais.com/sportv3", "img": "https://embedcanais.com/images/sportv3.png"}, {"nome": "TNT", "url": "https://embedcanais.com/tnt", "img": "https://embedcanais.com/images/tnt1.png"}, {"nome": "UFC Fight Pass", "url": "https://embedcanais.com/ufcfightpass", "img": "https://embedcanais.com/images/ufcfightpass.png"}, {"nome": "Xsports", "url": "https://embedcanais.com/xsports", "img": "https://embedcanais.com/images/xsports.png"}], "Filmes e Séries": [{"nome": "A&E", "url": "https://embedcanais.com/aee", "img": "https://embedcanais.com/images/aee.png"}, {"nome": "AMC", "url": "https://embedcanais.com/amc", "img": "https://embedcanais.com/images/amc.png"}, {"nome": "AXN", "url": "https://embedcanais.com/axn", "img": "https://embedcanais.com/images/axn.png"}, {"nome": "Cinemax", "url": "https://embedcanais.com/cinemax", "img": "https://embedcanais.com/images/cinemax.png"}, {"nome": "Globoplay Novelas", "url": "https://embedcanais.com/globoplaynovelas", "img": "https://embedcanais.com/images/globoplaynovelas.png"}, {"nome": "HBO", "url": "https://embedcanais.com/hbo", "img": "https://embedcanais.com/images/hbo.png"}, {"nome": "HBO 2", "url": "https://embedcanais.com/hbo2", "img": "https://embedcanais.com/images/hbo2.png"}, {"nome": "HBO Family", "url": "https://embedcanais.com/hbofamily", "img": "https://embedcanais.com/images/hbofamily.png"}, {"nome": "HBO Mundi", "url": "https://embedcanais.com/hbomundi", "img": "https://embedcanais.com/images/hbomundi.png"}, {"nome": "HBO Plus", "url": "https://embedcanais.com/hboplus", "img": "https://embedcanais.com/images/hboplus.png"}, {"nome": "HBO Pop", "url": "https://embedcanais.com/hbopop", "img": "https://embedcanais.com/images/hbopop.png"}, {"nome": "HBO Signature", "url": "https://embedcanais.com/hbosignature", "img": "https://embedcanais.com/images/hbosignature.png"}, {"nome": "HBO Xtreme", "url": "https://embedcanais.com/hboxtreme", "img": "https://embedcanais.com/images/hboxtreme.png"}, {"nome": "Megapix", "url": "https://embedcanais.com/megapix", "img": "https://embedcanais.com/images/megapix.png"}, {"nome": "Paramount Network", "url": "https://embedcanais.com/paramountnetwork", "img": "https://embedcanais.com/images/paramountnetwork.png"}, {"nome": "Sony Channel", "url": "https://embedcanais.com/sonychannel", "img": "https://embedcanais.com/images/sonychannel.png"}, {"nome": "Space", "url": "https://embedcanais.com/space", "img": "https://embedcanais.com/images/space.png"}, {"nome": "Studio Universal", "url": "https://embedcanais.com/studiouniversal", "img": "https://embedcanais.com/images/studiouniversal.png"}, {"nome": "Telecine Action", "url": "https://embedcanais.com/tcaction", "img": "https://embedcanais.com/images/tcaction.png"}, {"nome": "Telecine Cult", "url": "https://embedcanais.com/tccult", "img": "https://embedcanais.com/images/tccult.png"}, {"nome": "Telecine Fun", "url": "https://embedcanais.com/tcfun", "img": "https://embedcanais.com/images/tcfun.png"}, {"nome": "Telecine Pipoca", "url": "https://embedcanais.com/tcpipoca", "img": "https://embedcanais.com/images/tcpipoca.png"}, {"nome": "Telecine Premium", "url": "https://embedcanais.com/tcpremium", "img": "https://embedcanais.com/images/tcpremium.png"}, {"nome": "Telecine Touch", "url": "https://embedcanais.com/tctouch", "img": "https://embedcanais.com/images/tctouch.png"}, {"nome": "TNT", "url": "https://embedcanais.com/tnt", "img": "https://embedcanais.com/images/tnt1.png"}, {"nome": "TNT Novelas", "url": "https://embedcanais.com/tntnovelas", "img": "https://embedcanais.com/images/tntnovelas.png"}, {"nome": "TNT Series", "url": "https://embedcanais.com/tntseries", "img": "https://embedcanais.com/images/tntseries.png"}, {"nome": "Universal TV", "url": "https://embedcanais.com/universaltv", "img": "https://embedcanais.com/images/universaltv.png"}, {"nome": "Warner Channel", "url": "https://embedcanais.com/warner", "img": "https://embedcanais.com/images/warner.png"}], "Canais Abertos": [{"nome": "Band SP", "url": "https://embedcanais.com/bandsp", "img": "https://embedcanais.com/images/bandsp.png"}, {"nome": "Globo MG", "url": "https://embedcanais.com/globomg", "img": "https://embedcanais.com/images/globo.webp"}, {"nome": "Globo RJ", "url": "https://embedcanais.com/globorj", "img": "https://embedcanais.com/images/globo.webp"}, {"nome": "Globo RS", "url": "https://embedcanais.com/globors", "img": "https://embedcanais.com/images/globo.webp"}, {"nome": "Globo SP", "url": "https://embedcanais.com/globosp", "img": "https://embedcanais.com/images/globo.webp"}, {"nome": "Record MG", "url": "https://embedcanais.com/recordmg", "img": "https://embedcanais.com/images/record.png"}, {"nome": "Record RJ", "url": "https://embedcanais.com/recordrj", "img": "https://embedcanais.com/images/record.png"}, {"nome": "Record SP", "url": "https://embedcanais.com/recordsp", "img": "https://embedcanais.com/images/record.png"}, {"nome": "RedeTV!", "url": "https://embedcanais.com/redetv", "img": "https://embedcanais.com/images/redetv.png"}, {"nome": "SBT SP", "url": "https://embedcanais.com/sbtsp", "img": "https://embedcanais.com/images/sbtsp.png"}, {"nome": "TV Cultura", "url": "https://embedcanais.com/tvcultura", "img": "https://embedcanais.com/images/tvcultura.png"}], "Variedades": [{"nome": "Adult Swim", "url": "https://embedcanais.com/adultswim", "img": "https://embedcanais.com/images/adultswim.png"}, {"nome": "Animal Planet", "url": "https://embedcanais.com/animalplanet", "img": "https://embedcanais.com/images/animalplanet.png"}, {"nome": "Comedy Central", "url": "https://embedcanais.com/comedycentral", "img": "https://embedcanais.com/images/comedycentral.png"}, {"nome": "Discovery Channel", "url": "https://embedcanais.com/discoverychannel", "img": "https://embedcanais.com/images/discoverychannel.png"}, {"nome": "Discovery Home & Health", "url": "https://embedcanais.com/discoveryhh", "img": "https://embedcanais.com/images/discoveryhh.png"}, {"nome": "Investigation Discovery", "url": "https://embedcanais.com/discoveryid", "img": "https://embedcanais.com/images/discoveryid.png"}, {"nome": "Discovery Science", "url": "https://embedcanais.com/discoveryscience", "img": "https://embedcanais.com/images/discoveryscience.png"}, {"nome": "Discovery Theater", "url": "https://embedcanais.com/discoverytheater", "img": "https://embedcanais.com/images/discoverytheater.png"}, {"nome": "Discovery Turbo", "url": "https://embedcanais.com/discoveryturbo", "img": "https://embedcanais.com/images/discoveryturbo.png"}, {"nome": "Discovery World", "url": "https://embedcanais.com/discoveryworld", "img": "https://embedcanais.com/images/discoveryworld.png"}, {"nome": "Food Network", "url": "https://embedcanais.com/foodnetwork", "img": "https://embedcanais.com/images/foodnetwork.png"}, {"nome": "GNT", "url": "https://embedcanais.com/gnt", "img": "https://embedcanais.com/images/gnt.png"}, {"nome": "HGTV", "url": "https://embedcanais.com/hgtv", "img": "https://embedcanais.com/images/hgtv.png"}, {"nome": "History", "url": "https://embedcanais.com/history", "img": "https://embedcanais.com/images/history.png"}, {"nome": "History 2", "url": "https://embedcanais.com/history2", "img": "https://embedcanais.com/images/history2.png"}, {"nome": "MTV", "url": "https://embedcanais.com/mtv", "img": "https://embedcanais.com/images/mtv.png"}, {"nome": "Multishow", "url": "https://embedcanais.com/multishow", "img": "https://embedcanais.com/images/multishow.png"}], "Reality Show": [{"nome": "A Fazenda CAM 01", "url": "https://embedcanais.com/afazenda01", "img": "https://embedcanais.com/images/afazenda.webp"}, {"nome": "A Fazenda CAM 02", "url": "https://embedcanais.com/afazenda02", "img": "https://embedcanais.com/images/afazenda.webp"}, {"nome": "A Fazenda CAM 03", "url": "https://embedcanais.com/afazenda03", "img": "https://embedcanais.com/images/afazenda.webp"}, {"nome": "A Fazenda CAM 04", "url": "https://embedcanais.com/afazenda04", "img": "https://embedcanais.com/images/afazenda.webp"}, {"nome": "A Fazenda CAM 05", "url": "https://embedcanais.com/afazenda05", "img": "https://embedcanais.com/images/afazenda.webp"}, {"nome": "A Fazenda CAM 06", "url": "https://embedcanais.com/afazenda06", "img": "https://embedcanais.com/images/afazenda.webp"}], "Notícias": [{"nome": "BandNews", "url": "https://embedcanais.com/bandnews", "img": "https://embedcanais.com/images/bandnews.png"}, {"nome": "CNN Brasil", "url": "https://embedcanais.com/cnnbrasil", "img": "https://embedcanais.com/images/cnnbrasil.png"}, {"nome": "GloboNews", "url": "https://embedcanais.com/globonews", "img": "https://embedcanais.com/images/globonews.png"}, {"nome": "Jovem Pan News", "url": "https://embedcanais.com/jovempannews", "img": "https://embedcanais.com/images/jovempannews.png"}, {"nome": "Record News", "url": "https://embedcanais.com/recordnews", "img": "https://embedcanais.com/images/recordnews.png"}], "Infantil": [{"nome": "Cartoonito", "url": "https://embedcanais.com/cartoonito", "img": "https://embedcanais.com/images/cartoonito.png"}, {"nome": "Cartoon Network", "url": "https://embedcanais.com/cartoonnetwork", "img": "https://embedcanais.com/images/cartoonnetwork.png"}, {"nome": "Discovery Kids", "url": "https://embedcanais.com/discoverykids", "img": "https://embedcanais.com/images/discoverykids.png"}, {"nome": "DreamWorks", "url": "https://embedcanais.com/dreamworks", "img": "https://embedcanais.com/images/dreamworks.png"}, {"nome": "Gloob", "url": "https://embedcanais.com/gloob", "img": "https://embedcanais.com/images/gloob.png"}, {"nome": "Gloobinho", "url": "https://embedcanais.com/gloobinho", "img": "https://embedcanais.com/images/gloobinho.png"}, {"nome": "Nickelodeon", "url": "https://embedcanais.com/nickelodeon", "img": "https://embedcanais.com/images/nickelodeon.png"}, {"nome": "Nick Jr.", "url": "https://embedcanais.com/nickjr", "img": "https://embedcanais.com/images/nickjr.png"}, {"nome": "Tooncast", "url": "https://embedcanais.com/tooncast", "img": "https://embedcanais.com/images/tooncast.png"}]};
+        let allCategories = Object.keys(allChannels);
+        let currentSearchQuery = '';
+        let currentFilter = 'all';
+
+        function renderFilters() {
+            const filtersContainer = document.getElementById('filters');
+            filtersContainer.innerHTML = '';
+
+            const allBtn = document.createElement('button');
+            allBtn.className = 'filter-btn active';
+            allBtn.setAttribute('data-filter', 'all');
+            allBtn.textContent = 'Todos';
+            allBtn.onclick = () => filterChannels('all');
+            filtersContainer.appendChild(allBtn);
+
+            allCategories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.setAttribute('data-filter', category);
+                btn.textContent = category;
+                btn.onclick = () => filterChannels(category);
+                filtersContainer.appendChild(btn);
+            });
+        }
+
+        function filterChannels(filter) {
+            currentFilter = filter;
+            currentSearchQuery = '';
+            document.getElementById('searchInput').value = '';
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === filter) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderCategories();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '';
+
+            const query = currentSearchQuery.toLowerCase();
+            let hasResults = false;
+
+            const categoriesToShow = currentFilter === 'all' ? allCategories : [currentFilter];
+
+            categoriesToShow.forEach(category => {
+                const channels = allChannels[category];
+                if (!channels) return;
+                
+                let filteredChannels = channels;
+                if (query) {
+                    filteredChannels = channels.filter(ch => 
+                        ch.nome.toLowerCase().includes(query)
+                    );
+                }
+
+                if (filteredChannels.length === 0) {
+                    return;
+                }
+
+                hasResults = true;
+
+                const section = document.createElement('div');
+                section.className = 'content-section';
+                section.innerHTML = `
+                    <h2 class="section-title">${category}</h2>
+                    <div class="channels-grid" id="grid-${category}"></div>
+                `;
+
+                container.appendChild(section);
+
+                const grid = section.querySelector('[id="grid-' + category + '"]');
+                filteredChannels.forEach(channel => {
+                    const card = document.createElement('div');
+                    card.className = 'channel-card';
+                    card.onclick = () => openChannel(channel.url, channel.nome);
+                    card.innerHTML = `
+                        <img src="${channel.img}" alt="${channel.nome}" class="channel-logo" 
+                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22120%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22200%22 height=%22120%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22%3E${channel.nome}%3C/text%3E%3C/svg%3E'">
+                        <div class="channel-name">${channel.nome}</div>
+                        <div class="channel-category">${category}</div>
+                    `;
+                    if (grid) grid.appendChild(card);
+                    else console.error('Grid not found for category:', category);
+                });
+            });
+
+            if (!hasResults) {
+                if (query) {
+                    container.innerHTML = `
+                        <div class="content-section">
+                            <div class="no-results">Nenhum canal encontrado para "${query}"</div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="content-section">
+                            <div class="no-results">Nenhum canal disponível</div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderCategories();
+        });
+
+        function openChannel(embedUrl, channelName) {
+            const modal = document.getElementById('modal');
+            const playerContainer = document.getElementById('playerContainer');
+            
+            playerContainer.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const playerContainer = document.getElementById('playerContainer');
+            modal.classList.remove('active');
+            playerContainer.innerHTML = '';
+        }
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        renderFilters();
+        renderCategories();
+    </script>
+</body>
+</html>
